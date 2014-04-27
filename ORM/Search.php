@@ -26,4 +26,9 @@ class Search {
 		return $this;
 	}
 
+	public function callback($name, $config = []) {
+		$this->_config[$name] = new Search\Callback($name, $config);
+		return $this;
+	}
+
 }

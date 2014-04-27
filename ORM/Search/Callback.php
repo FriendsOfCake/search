@@ -3,7 +3,7 @@ namespace Search\ORM\Search;
 
 use Cake\ORM\Query;
 
-class Finder extends Base {
+class Callback extends Base {
 
 /**
  * Process a value condition ($x == $y)
@@ -17,7 +17,7 @@ class Finder extends Base {
 			return;
 		}
 
-		$query->find($this->name(), $args);
+		call_user_func($this->config('callback'), $query, $args, $this);
 	}
 
 }
