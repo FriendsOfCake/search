@@ -12,7 +12,8 @@ class Like extends Base {
  */
 	protected $_defaultConfig = [
 		'before' => false,
-		'after' => false
+		'after' => false,
+		'mode' => 'or'
 	];
 
 /**
@@ -27,10 +28,19 @@ class Like extends Base {
 			return;
 		}
 
-		$left = $this->field() . ' LIKE';
-		$right = $this->_wildCards($this->value($args));
+		$fields = $this->field();
+		if (!is_array($fields)) {
+			$fields = (array)$fields;
+		}
 
-		$query->where([$left => $right]);
+		$conditions = [];
+		foreach ($fields as $field) {
+			$left = $field . ' LIKE';
+			$right = $this->_wildCards($this->value($args));
+			$conditions[] = [$left => $right];
+		}
+
+		$query->where([$this->config('mode') => $conditions]);
 	}
 
 /**

@@ -17,7 +17,7 @@ class Value extends Base {
 			return;
 		}
 
-		$query->where([$this->field() => $this->value($args)]);
+		$query->andWhere([$this->field() => $this->value($args)]);
 	}
 
 }
