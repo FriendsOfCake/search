@@ -40,7 +40,7 @@ class Like extends Base {
 			$conditions[] = [$left => $right];
 		}
 
-		$query->where([$this->config('mode') => $conditions]);
+		$query->andWhere([$this->config('mode') => $conditions]);
 	}
 
 /**
