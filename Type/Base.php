@@ -7,8 +7,7 @@ use Cake\Core\InstanceConfigTrait;
 /**
  * Base class for search type classes
  *
- *
- */
+  */
 abstract class Base {
 
 	use InstanceConfigTrait;
@@ -30,7 +29,12 @@ abstract class Base {
  * @param array 	$config
  */
 	public function __construct($name, array $config = []) {
-		$this->config(array_merge(['field' => $name, 'name' => $name], $config));
+		$defaults = [
+			'field' => $name,
+			'name' => $name
+		];
+
+		$this->config(array_merge($defaults, $config));
 	}
 
 /**
@@ -40,6 +44,15 @@ abstract class Base {
  */
 	public function field() {
 		return $this->config('field');
+	}
+
+/**
+ * Get the database field name(s) as an array
+ *
+ * @return array
+ */
+	public function fields() {
+		return (array)$this->config('field');
 	}
 
 /**

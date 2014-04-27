@@ -28,15 +28,11 @@ class Like extends Base {
 			return;
 		}
 
-		$fields = $this->field();
-		if (!is_array($fields)) {
-			$fields = (array)$fields;
-		}
-
 		$conditions = [];
-		foreach ($fields as $field) {
+		foreach ($this->fields() as $field) {
 			$left = $field . ' LIKE';
 			$right = $this->_wildCards($this->value($args));
+
 			$conditions[] = [$left => $right];
 		}
 
