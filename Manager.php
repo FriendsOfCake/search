@@ -3,7 +3,7 @@ namespace Search;
 
 use Cake\Core\InstanceConfigTrait;
 
-class Search {
+class Manager {
 
 	protected $_config = [];
 
