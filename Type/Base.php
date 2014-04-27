@@ -3,6 +3,7 @@ namespace Search\Type;
 
 use Cake\ORM\Query;
 use Cake\Core\InstanceConfigTrait;
+use Search\Manager;
 
 /**
  * Base class for search type classes
@@ -20,6 +21,13 @@ abstract class Base {
 	protected $_defaultConfig = [];
 
 /**
+ * The parent Search Manager
+ *
+ * @var \Search\Manager
+ */
+	protected $_manager;
+
+/**
  * Constructor
  *
  * By default the name of the HTTP GET query argument will be assumed
@@ -28,7 +36,9 @@ abstract class Base {
  * @param string 	$name
  * @param array 	$config
  */
-	public function __construct($name, array $config = []) {
+	public function __construct($name, array $config = [], Manager $manager) {
+		$this->_manager = $manager;
+
 		$defaults = [
 			'field' => $name,
 			'name' => $name
