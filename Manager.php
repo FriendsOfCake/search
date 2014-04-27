@@ -1,5 +1,5 @@
 <?php
-namespace Search\ORM;
+namespace Search;
 
 use Cake\Core\InstanceConfigTrait;
 
@@ -12,22 +12,22 @@ class Search {
 	}
 
 	public function like($name, $config = []) {
-		$this->_config[$name] = new Search\Like($name, $config);
+		$this->_config[$name] = new Type\Like($name, $config);
 		return $this;
 	}
 
 	public function value($name, $config = []) {
-		$this->_config[$name] = new Search\Value($name, $config);
+		$this->_config[$name] = new Type\Value($name, $config);
 		return $this;
 	}
 
 	public function finder($name, $config = []) {
-		$this->_config[$name] = new Search\Finder($name, $config);
+		$this->_config[$name] = new Type\Finder($name, $config);
 		return $this;
 	}
 
 	public function callback($name, $config = []) {
-		$this->_config[$name] = new Search\Callback($name, $config);
+		$this->_config[$name] = new Type\Callback($name, $config);
 		return $this;
 	}
 
