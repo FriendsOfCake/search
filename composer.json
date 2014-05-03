@@ -24,7 +24,8 @@
 	"require-dev": {
 		"cakephp/cakephp": "3.0.x-dev",
 		"cakephp/app": "dev-master",
-		"jippi/cakephp-test-utilities": "dev-master"
+
+		"friendsofcake/cakephp-test-utilities": "dev-master"
 	},
 	"suggest": {
 
