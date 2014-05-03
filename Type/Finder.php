@@ -8,16 +8,14 @@ class Finder extends Base {
 /**
  * Process a value condition ($x == $y)
  *
- * @param  Query  $query
- * @param  array $args
  * @return void
  */
-	public function process(Query $query, array $args) {
-		if (!$this->present($args)) {
+	public function process() {
+		if (!$this->present()) {
 			return;
 		}
 
-		$query->find($this->name(), $args);
+		$this->query()->find($this->name(), $this->args());
 	}
 
 }

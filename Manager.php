@@ -42,4 +42,9 @@ class Manager {
 		return $this;
 	}
 
+	public function custom($name, $config = []) {
+		$this->_config[$name] = new $config['className']($name, $config, $this);
+		return $this;
+	}
+
 }

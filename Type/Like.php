@@ -19,24 +19,22 @@ class Like extends Base {
 /**
  * Process a LIKE condition ($x LIKE $y)
  *
- * @param  Query  $query
- * @param  array $args
  * @return void
  */
-	public function process(Query $query, array $args) {
-		if (!$this->present($args)) {
+	public function process() {
+		if (!$this->present()) {
 			return;
 		}
 
 		$conditions = [];
 		foreach ($this->fields() as $field) {
 			$left = $field . ' LIKE';
-			$right = $this->_wildCards($this->value($args));
+			$right = $this->_wildCards($this->value());
 
 			$conditions[] = [$left => $right];
 		}
 
-		$query->andWhere([$this->config('mode') => $conditions]);
+		$this->query()->andWhere([$this->config('mode') => $conditions]);
 	}
 
 /**

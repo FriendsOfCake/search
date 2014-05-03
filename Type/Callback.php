@@ -12,12 +12,12 @@ class Callback extends Base {
  * @param  array $args
  * @return void
  */
-	public function process(Query $query, array $args) {
-		if (!$this->present($args)) {
+	public function process() {
+		if (!$this->present()) {
 			return;
 		}
 
-		call_user_func($this->config('callback'), $query, $args, $this);
+		call_user_func($this->config('callback'), $this->query(), $this->args(), $this);
 	}
 
 }

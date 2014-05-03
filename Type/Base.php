@@ -28,6 +28,20 @@ abstract class Base {
 	protected $_manager;
 
 /**
+ * Set the data to process on
+ *
+ * @var array
+ */
+	protected $_args = [];
+
+/**
+ * Query object
+ *
+ * @var \Cake\ORM\Query
+ */
+	protected $_query;
+
+/**
  * Constructor
  *
  * By default the name of the HTTP GET query argument will be assumed
@@ -41,7 +55,8 @@ abstract class Base {
 
 		$defaults = [
 			'field' => $name,
-			'name' => $name
+			'name' => $name,
+			'validate' => []
 		];
 
 		$this->config(array_merge($defaults, $config));
@@ -77,21 +92,69 @@ abstract class Base {
 /**
  * Check if the name is present in the arguments from HTTP GET
  *
- * @param  array $args
  * @return boolean
  */
-	public function present(array $args) {
-		return array_key_exists($this->name(), $args);
+	public function present() {
+		return array_key_exists($this->name(), $this->_args);
 	}
 
 /**
  * Get the value of the "name" from HTTP GET arguments
  *
- * @param  array $args
  * @return mixed
  */
-	public function value($args) {
-		return $args[$this->name()];
+	public function value() {
+		return $this->_args[$this->name()];
+	}
+
+/**
+ * Get / Set the args
+ *
+ * @param  array $value
+ * @return void
+ */
+	public function args(array $value = null) {
+		if ($value === null) {
+			return $this->_args;
+		}
+
+		$this->_args = $value;
+	}
+
+/**
+ * Get / Set the validation rules
+ *
+ * @param  array $value
+ * @return void
+ */
+	public function validate(array $value = null) {
+		if ($value === null) {
+			return $this->config('validate');
+		}
+
+		$this->config('validate', $value);
+	}
+
+	public function valid() {
+		$rules = $this->validate();
+		if (empty($rules)) {
+			return true;
+		}
+
+	}
+
+/**
+ * Get / Set the query object
+ *
+ * @param  Query $value
+ * @return void
+ */
+	public function query(Query $value = null) {
+		if ($value === null) {
+			return $this->_query;
+		}
+
+		$this->_query = $value;
 	}
 
 /**
@@ -102,6 +165,6 @@ abstract class Base {
  * @param  array  $args
  * @return void
  */
-	abstract public function process(Query $query, array $args);
+	abstract public function process();
 
 }
