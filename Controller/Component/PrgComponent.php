@@ -16,7 +16,12 @@ class PrgComponent extends Component {
 			return;
 		}
 
-		$controller->redirect(['?' => $request->data]);
+		$passArgs = '';
+		if (isset($request->params['pass']) && !empty($request->params['pass'])):
+			$passArgs = implode('/', $request->params['pass']);
+		endif;
+
+		$controller->redirect([$passArgs, '?' => $request->data]);
 	}
 
 }
