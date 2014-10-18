@@ -8,8 +8,14 @@ class PrgComponent extends Component {
 
 	public $presetVar = true;
 
-	public function initialize(Event $event) {
-		$controller = $event->subject;
+/**
+ * Initialize properties.
+ *
+ * @param array $config The config data.
+ * @return void
+ */
+	public function initialize(array $config) {
+		$controller = $this->_registry->getController();
 		$request = $controller->request;
 
 		if (!$request->is('post')) {
