@@ -25,7 +25,7 @@ Plugin::load('Search');
 
 ## Usage
 
-* Add a search config method in your model
+* Add a search config method in your table
 ```php
 use Search\Manager;
 
