@@ -56,7 +56,8 @@ abstract class Base {
 		$defaults = [
 			'field' => $name,
 			'name' => $name,
-			'validate' => []
+			'validate' => [],
+			'alwaysRun' => false
 		];
 
 		$this->config(array_merge($defaults, $config));
@@ -95,7 +96,7 @@ abstract class Base {
  * @return boolean
  */
 	public function present() {
-		return array_key_exists($this->name(), $this->_args);
+		return $this->config('alwaysRun') || array_key_exists($this->name(), $this->_args);
 	}
 
 /**
