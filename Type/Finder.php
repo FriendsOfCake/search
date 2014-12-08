@@ -1,9 +1,18 @@
 <?php
 namespace Search\Type;
 
-use Cake\ORM\Query;
-
 class Finder extends Base {
+
+/**
+ * Returns the finder method to use
+ *
+ * @return string
+ */
+	public function finder() {
+		$finder = $this->config('finder');
+
+		return $finder ?: $this->name();
+	}
 
 /**
  * Process a value condition ($x == $y)
@@ -15,7 +24,7 @@ class Finder extends Base {
 			return;
 		}
 
-		$this->query()->find($this->name(), $this->args());
+		$this->query()->find($this->finder(), $this->args());
 	}
 
 }
