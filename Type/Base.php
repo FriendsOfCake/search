@@ -65,7 +65,7 @@ abstract class Base {
 /**
  * Get the manager
  *
- * @return string
+ * @return \Search\Manager
  */
 	public function manager() {
 		return $this->_manager();
