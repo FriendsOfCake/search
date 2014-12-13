@@ -63,6 +63,15 @@ abstract class Base {
 	}
 
 /**
+ * Get the manager
+ *
+ * @return string
+ */
+	public function manager() {
+		return $this->_manager();
+	}
+
+/**
  * Get the database field name
  *
  * @return string|array
