@@ -85,3 +85,10 @@ public function initialize() {
     endif;
   }
 ```
+
+## Filtering your data
+Once you have completed all the setup you can now filter your data by passing query params in your index method. Using the Country example given above, you could filter your countries using the following.
+
+`example.com/countries/index?name=gu`
+
+Would filter your list of countries to any country with "gu" in the name. You might chose to make a `get` form which posts the filter directly to the url, or create links manually.
