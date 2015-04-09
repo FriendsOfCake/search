@@ -31,7 +31,8 @@ use Search\Manager;
 
 ...
 
-public function searchConfiguration() {
+public function searchConfiguration()
+{
   $search = new Manager($this);
   $search
     ->value('currency_id', [
@@ -48,7 +49,8 @@ public function searchConfiguration() {
 
 * Add The Behavior in your initialize method
 ```php
-public function initialize(array $config) {
+public function initialize(array $config)
+{
   ...
   $this->addBehavior('Search.Search');
   ...
@@ -71,14 +73,16 @@ public function index() {
 
 * Then add the component search in the necessary methods (for our example index)
 ```php
-public function index() {
+public function index()
+{
   $this->loadComponent('Search.Prg');
 }
 ```
 
 * Instead, you can add this in your AppController to enable component in all index methods
 ```php
-public function initialize() {
+public function initialize()
+{
     parent::initialize();
     if ($this->request->action === 'index'):
       $this->loadComponent('Search.Prg');
