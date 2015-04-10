@@ -33,17 +33,17 @@ use Search\Manager;
 
 public function searchConfiguration()
 {
-  $search = new Manager($this);
-  $search
+    $search = new Manager($this);
+    $search
     ->value('currency_id', [
-      'field' => $this->alias() . '.currency_id'
+        'field' => $this->alias() . '.currency_id'
     ])
     ->like('name', [
-      'before' => true,
-      'after' => true,
-      'field' => [$this->alias() . '.name']
+        'before' => true,
+        'after' => true,
+        'field' => [$this->alias() . '.name']
     ]);
-  return $search;
+    return $search;
 }
 ```
 
@@ -51,23 +51,24 @@ public function searchConfiguration()
 ```php
 public function initialize(array $config)
 {
-  ...
-  $this->addBehavior('Search.Search');
-  ...
+    ...
+    $this->addBehavior('Search.Search');
+    ...
 }
 ```
 
 * Example of index controller for a model Country
 ```php
-public function index() {
-  $query = $this->Country
+public function index()
+{
+    $query = $this->Country
     ->find('search', $this->request->query)
     ->where(['name !=' => null])
     ->order(['Country.id' => 'asc'])
     ->contain([
-      'Cities'
+        'Cities'
     ]);
-  $this->set('countries', $this->paginate($query));
+    $this->set('countries', $this->paginate($query));
 }
 ```
 
@@ -75,7 +76,7 @@ public function index() {
 ```php
 public function index()
 {
-  $this->loadComponent('Search.Prg');
+    $this->loadComponent('Search.Prg');
 }
 ```
 
@@ -87,7 +88,7 @@ public function initialize()
     if ($this->request->action === 'index'):
       $this->loadComponent('Search.Prg');
     endif;
-  }
+}
 ```
 
 ## Filtering your data
