@@ -1,44 +1,40 @@
 {
-	"name": "friendsofcake/search",
-	"version": "0.0.1",
-	"description": "CakePHP 3.0 easy search framework",
-	"type": "cakephp-plugin",
-	"keywords": [
-		"cakephp",
-		"cakephp3",
-		"cake3",
-		"search"
-		],
-	"homepage": "https://github.com/FriendsOfCake/search",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Christian Winther",
-			"role": "Author",
-			"homepage": "http://cakephp.nu/"
-		}
-	],
-	"require-dev": {
-		"cakephp/cakephp": "3.0.x-dev",
-		"cakephp/app": "dev-master",
-
-		"friendsofcake/cakephp-test-utilities": "dev-master"
-	},
-	"suggest": {
-
-	},
-	"autoload": {
-		"psr-4": {
-			"Search\\": "."
-		}
-	},
-	"support": {
-		"source": "https://github.com/FriendsOfCake/search",
-		"issues": "https://github.com/FriendsOfCake/search/issues",
-		"wiki": "http://cakephp.nu/cakephp-search/",
-		"irc": "irc://irc.freenode.org/friendsofcake"
-	},
-	"extra": {
-		"installer-name": "Search"
-	}
+  "name": "friendsofcake/search",
+  "description": "CakePHP 3.0 easy search framework",
+  "type": "cakephp-plugin",
+  "keywords": [
+    "cakephp",
+    "cakephp3",
+    "cake3",
+    "search"
+  ],
+  "homepage": "https://github.com/FriendsOfCake/search",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Christian Winther",
+      "role": "Author",
+      "homepage": "http://cakephp.nu/"
+    }
+  ],
+  "require-dev": {
+    "cakephp/cakephp": "~3.0",
+    "friendsofcake/cakephp-test-utilities": "dev-master"
+  },
+  "suggest": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Search\\": "."
+    }
+  },
+  "support": {
+    "source": "https://github.com/FriendsOfCake/search",
+    "issues": "https://github.com/FriendsOfCake/search/issues",
+    "wiki": "http://cakephp.nu/cakephp-search/",
+    "irc": "irc://irc.freenode.org/friendsofcake"
+  },
+  "extra": {
+    "installer-name": "Search"
+  }
 }
