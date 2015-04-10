@@ -1,30 +1,32 @@
 <?php
 namespace Search\Type;
 
-class Finder extends Base {
+class Finder extends Base
+{
 
-/**
- * Returns the finder method to use
- *
- * @return string
- */
-	public function finder() {
-		$finder = $this->config('finder');
+    /**
+     * Returns the finder method to use.
+     *
+     * @return string
+     */
+    public function finder()
+    {
+        $finder = $this->config('finder');
 
-		return $finder ?: $this->name();
-	}
+        return $finder ?: $this->name();
+    }
 
-/**
- * Process a value condition ($x == $y)
- *
- * @return void
- */
-	public function process() {
-		if (!$this->present()) {
-			return;
-		}
+    /**
+     * Process a value condition ($x == $y).
+     *
+     * @return void
+     */
+    public function process()
+    {
+        if (!$this->present()) {
+            return;
+        }
 
-		$this->query()->find($this->finder(), $this->args());
-	}
-
+        $this->query()->find($this->finder(), $this->args());
+    }
 }
