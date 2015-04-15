@@ -21,8 +21,6 @@
     "cakephp/cakephp": "~3.0",
     "friendsofcake/cakephp-test-utilities": "dev-master"
   },
-  "suggest": {
-  },
   "autoload": {
     "psr-4": {
       "Search\\": "."
@@ -33,8 +31,5 @@
     "issues": "https://github.com/FriendsOfCake/search/issues",
     "wiki": "http://cakephp.nu/cakephp-search/",
     "irc": "irc://irc.freenode.org/friendsofcake"
-  },
-  "extra": {
-    "installer-name": "Search"
   }
 }
