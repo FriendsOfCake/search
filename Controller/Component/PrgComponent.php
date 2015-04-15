@@ -4,25 +4,31 @@ namespace Search\Controller\Component;
 use Cake\Controller\Component;
 use Cake\Event\Event;
 
-class PrgComponent extends Component {
+class PrgComponent extends Component
+{
 
-	public $presetVar = true;
+    /**
+     * Preset Var.
+     *
+     * @var bool
+     */
+    public $presetVar = true;
 
-/**
- * Initialize properties.
- *
- * @param array $config The config data.
- * @return void
- */
-	public function initialize(array $config) {
-		$controller = $this->_registry->getController();
-		$request = $controller->request;
+    /**
+     * Initialize properties.
+     *
+     * @param array $config The config data.
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        $controller = $this->_registry->getController();
+        $request = $controller->request;
 
-		if (!$request->is('post')) {
-			return;
-		}
+        if (!$request->is('post')) {
+            return;
+        }
 
-		$controller->redirect(['?' => $request->data]);
-	}
-
+        $controller->redirect(['?' => $request->data]);
+    }
 }
