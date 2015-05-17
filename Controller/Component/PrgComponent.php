@@ -26,6 +26,7 @@ class PrgComponent extends Component
         $request = $controller->request;
 
         if (!$request->is('post')) {
+            $request->data = $request->query;
             return;
         }
 

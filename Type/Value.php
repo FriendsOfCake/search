@@ -2,7 +2,6 @@
 namespace Search\Type;
 
 use Cake\ORM\Query;
-use Cake\Database\Expression\TupleComparison;
 
 class Value extends Base
 {
@@ -19,13 +18,7 @@ class Value extends Base
         }
 
         $this->query()->andWhere(function($e) {
-            // $field = $this->field();
-
-            // if (is_array($field)) {
-            //     return new TupleComparison($field, $this->value());
-            // }
-
-            return $e->eq($this->field(), $this->value());
+            return $e->in($this->field(), $this->value());
         });
 
     }
