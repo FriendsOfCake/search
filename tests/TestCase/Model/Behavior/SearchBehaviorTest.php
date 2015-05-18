@@ -14,27 +14,29 @@ class SearchBehaviorTest extends TestCase {
  *
  * @var array
  */
-	public $fixtures = array(
-		'plugin.Search.Articles'
-	);
+    public $fixtures = array(
+        'plugin.Search.Articles'
+    );
 
 /**
  * setup
  *
  * @return void
  */
-	public function setUp() {
-		parent::setUp();
-		$this->Articles = TableRegistry::get('Articles');
-		$this->Articles->addBehavior('Search.Search');
-	}
+    public function setUp()
+    {
+        parent::setUp();
+        $this->Articles = TableRegistry::get('Articles');
+        $this->Articles->addBehavior('Search.Search');
+    }
 
 /**
  * tearDown
  *
  * @return void
  */
-	public function tearDown() {
-		unset($this->Articles);
-	}
+    public function tearDown()
+    {
+        unset($this->Articles);
+    }
 }

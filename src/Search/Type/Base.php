@@ -3,7 +3,7 @@ namespace Search\Seach\Type;
 
 use Cake\ORM\Query;
 use Cake\Core\InstanceConfigTrait;
-use Search\Manager;
+use Search\Search\Manager;
 
 /**
  * Base class for search type classes.

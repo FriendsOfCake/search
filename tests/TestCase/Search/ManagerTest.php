@@ -7,6 +7,7 @@ use Cake\ORM\Table;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 
 }

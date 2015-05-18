@@ -112,7 +112,17 @@ class Manager
      */
     public function custom($name, $config = [])
     {
-        $this->_config[$name] = new $config['className']($name, $config, $this);
-        return $this;
+        if (isset($config['className'])) {
+            $this->_config[$name] = new $config['className']($name, $config, $this);
+               return $this;
+        }
+        if (class_exists('Type\\' . $name)) {
+            $this->_config[$name] = 'Type\\' . $name;
+            return $this;
+        }
+        if (class_exists('\\App\\Search\\Type\\' . $name)) {
+            $this->_config[$name] = '\\App\\Search\\Type\\' . $name;
+            return $this;
+        }
     }
 }
