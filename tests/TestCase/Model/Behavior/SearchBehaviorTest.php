@@ -15,7 +15,7 @@ class SearchBehaviorTest extends TestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.Burzum\UserTools.User'
+		'plugin.Search.Articles'
 	);
 
 /**
@@ -25,8 +25,8 @@ class SearchBehaviorTest extends TestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->User = TableRegistry::get('Articles');
-		$this->User->addBehavior('Search.Searchable');
+		$this->Articles = TableRegistry::get('Articles');
+		$this->Articles->addBehavior('Search.Search');
 	}
 
 /**
