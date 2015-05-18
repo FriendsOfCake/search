@@ -1,5 +1,5 @@
 <?php
-namespace Search;
+namespace Search\Search;
 
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;

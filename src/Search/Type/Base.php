@@ -1,5 +1,5 @@
 <?php
-namespace Search\Type;
+namespace Search\Seach\Type;
 
 use Cake\ORM\Query;
 use Cake\Core\InstanceConfigTrait;
