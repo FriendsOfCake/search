@@ -16,8 +16,8 @@ $root = $findRoot(__FILE__);
 unset($findRoot);
 chdir($root);
 if (file_exists($root . '/config/bootstrap.php')) {
-    //require $root . '/config/bootstrap.php';
-    //return;
+    require $root . '/config/bootstrap.php';
+    return;
 }
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 $loader = require $root . '/vendor/autoload.php';
@@ -47,8 +47,7 @@ $loader->setPsr4('Cake\Test\\', './vendor/cakephp/cakephp/tests');
     ],
 ]);
 
-Plugin::load('Search', [
+Plugin::load('FOC/Search', [
     'path' => dirname(dirname(__FILE__)) . DS,
-    'autoload' => true,
     'bootstrap' => false
 ]);

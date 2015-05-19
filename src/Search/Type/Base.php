@@ -1,9 +1,9 @@
 <?php
-namespace Search\Seach\Type;
+namespace FOC\Search\Search\Type;
 
 use Cake\ORM\Query;
 use Cake\Core\InstanceConfigTrait;
-use Search\Search\Manager;
+use FOC\Search\Search\Manager;
 
 /**
  * Base class for search type classes.

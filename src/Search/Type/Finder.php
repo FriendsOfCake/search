@@ -1,5 +1,5 @@
 <?php
-namespace Search\Search\Type;
+namespace FOC\Search\Search\Type;
 
 class Finder extends Base
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Search\Test\TestCase\Model\Behavior;
+namespace FOC\Search\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
@@ -9,20 +9,20 @@ use Cake\TestSuite\TestCase;
 
 class SearchBehaviorTest extends TestCase {
 
-/**
- * Fixtures
- *
- * @var array
- */
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
     public $fixtures = array(
-        'plugin.Search.Articles'
+        'plugin.FOC/Search.Articles'
     );
 
-/**
- * setup
- *
- * @return void
- */
+    /**
+     * setup
+     *
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();
@@ -30,11 +30,11 @@ class SearchBehaviorTest extends TestCase {
         $this->Articles->addBehavior('Search.Search');
     }
 
-/**
- * tearDown
- *
- * @return void
- */
+    /**
+     * tearDown
+     *
+     * @return void
+     */
     public function tearDown()
     {
         unset($this->Articles);

@@ -1,5 +1,5 @@
 <?php
-namespace Search\Test\TestCase\Search;
+namespace FOC\Search\Test\TestCase\Search;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;

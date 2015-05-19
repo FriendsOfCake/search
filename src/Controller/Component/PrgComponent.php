@@ -1,5 +1,5 @@
 <?php
-namespace Search\Controller\Component;
+namespace FOC\Search\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Event\Event;
