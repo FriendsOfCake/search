@@ -114,7 +114,7 @@ class Manager
     {
         if (isset($config['className'])) {
             $this->_config[$name] = new $config['className']($name, $config, $this);
-               return $this;
+            return $this;
         }
         if (class_exists('Type\\' . $name)) {
             $this->_config[$name] = 'Type\\' . $name;
