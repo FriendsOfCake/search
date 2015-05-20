@@ -104,6 +104,19 @@ class Manager
     }
 
     /**
+     * compare method
+     *
+     * @param string $name Name
+     * @param array $config Config
+     * @return Manager Instance
+     */
+    public function compare($name, $config = [])
+    {
+        $this->_config[$name] = new Type\Compare($name, $config, $this);
+        return $this;
+    }
+
+    /**
      * custom method
      *
      * @param string $name Name
