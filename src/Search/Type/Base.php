@@ -70,7 +70,7 @@ abstract class Base
     /**
      * Get the manager.
      *
-     * @return \Search\Manager
+     * @return \FOC\Search\Search\Manager
      */
     public function manager()
     {

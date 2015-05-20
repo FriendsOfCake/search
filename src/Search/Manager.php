@@ -20,7 +20,10 @@ class Manager
      *
      * @var array
      */
-    protected $_config = [];
+    protected $_config = [
+        'types' => [],
+        'typeClasses' => []
+    ];
 
     /**
      * Constructor
@@ -33,13 +36,13 @@ class Manager
     }
 
     /**
-     * Return all config
+     * Return all configured types.
      *
      * @return array Config
      */
     public function all()
     {
-        return $this->_config;
+        return $this->_config['types'];
     }
 
     /**
@@ -61,16 +64,16 @@ class Manager
      */
     public function custom($name, $config = [])
     {
-        if (isset($config['className'])) {
-            $this->_config[$name] = new $config['className']($name, $config, $this);
+        if (isset($config['typeClasses'][$name])) {
+            $this->_config['types'][$name] = new $config['typeClasses'][$name]($name, $config, $this);
             return $this;
         }
         if (class_exists('\FOC\Search\Search\Type\\' . $name)) {
-            $this->_config[$name] = 'Type\\' . $name;
+            $this->_config['types'][$name] = 'Type\\' . $name;
             return $this;
         }
-        if (class_exists('\\App\\Search\\Type\\' . $name)) {
-            $this->_config[$name] = '\\App\\Search\\Type\\' . $name;
+        if (class_exists('\App\Search\Type\\' . $name)) {
+            $this->_config['types'][$name] = '\App\Search\Type\\' . $name;
             return $this;
         }
     }
@@ -82,5 +85,6 @@ class Manager
             $this->_config[$args[0]] = new $class($args[0], $args[1], $this);
             return $this;
         }
+        return $this->custom($method, $args[0]);
     }
 }
