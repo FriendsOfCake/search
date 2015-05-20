@@ -3,6 +3,7 @@ namespace FOC\Search\Search;
 
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
+use Cake\Utility\Inflector;
 
 class Manager
 {
@@ -52,71 +53,6 @@ class Manager
     }
 
     /**
-     * like method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return Manager Instance
-     */
-    public function like($name, $config = [])
-    {
-        $this->_config[$name] = new Type\Like($name, $config, $this);
-        return $this;
-    }
-
-    /**
-     * value method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return Manager Instance
-     */
-    public function value($name, $config = [])
-    {
-        $this->_config[$name] = new Type\Value($name, $config, $this);
-        return $this;
-    }
-
-    /**
-     * finder method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return Manager Instance
-     */
-    public function finder($name, $config = [])
-    {
-        $this->_config[$name] = new Type\Finder($name, $config, $this);
-        return $this;
-    }
-
-    /**
-     * callback method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return Manager Instance
-     */
-    public function callback($name, $config = [])
-    {
-        $this->_config[$name] = new Type\Callback($name, $config, $this);
-        return $this;
-    }
-
-    /**
-     * compare method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return Manager Instance
-     */
-    public function compare($name, $config = [])
-    {
-        $this->_config[$name] = new Type\Compare($name, $config, $this);
-        return $this;
-    }
-
-    /**
      * custom method
      *
      * @param string $name Name
@@ -129,12 +65,21 @@ class Manager
             $this->_config[$name] = new $config['className']($name, $config, $this);
             return $this;
         }
-        if (class_exists('Type\\' . $name)) {
+        if (class_exists('\FOC\Search\Search\Type\\' . $name)) {
             $this->_config[$name] = 'Type\\' . $name;
             return $this;
         }
         if (class_exists('\\App\\Search\\Type\\' . $name)) {
             $this->_config[$name] = '\\App\\Search\\Type\\' . $name;
+            return $this;
+        }
+    }
+
+    public function __call($method, $args)
+    {
+        $class = '\FOC\Search\Search\Type\\' . Inflector::classify($method);
+        if (class_exists($class)) {
+            $this->_config[$args[0]] = new $class($args[0], $args[1], $this);
             return $this;
         }
     }
