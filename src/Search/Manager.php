@@ -15,8 +15,20 @@ class Manager
      */
     protected $_table;
 
-    protected $_filters = [];
+    /**
+     * Filter collection and their filters
+     *
+     * @var array
+     */
+    protected $_filters = [
+        'default'
+    ];
 
+    /**
+     * Active filter collection.
+     *
+     * @var string
+     */
     protected $_collection = 'default';
 
     /**
@@ -25,7 +37,6 @@ class Manager
      * @var array
      */
     protected $_config = [
-        'types' => [],
         'typeClasses' => []
     ];
 
@@ -46,7 +57,7 @@ class Manager
      */
     public function all()
     {
-        return $this->_filters['types'];
+        return $this->_filters['default'];
     }
 
     /**
@@ -142,11 +153,22 @@ class Manager
     }
 
 /**
+ * Removes filter from the active collection.
+ *
+ * @param string $name Name of the filter to be removed.
+ * @return void
+ */
+    public function remove($name)
+    {
+        unset($this->_filters[$this->_collection][$name]);
+    }
+
+/**
  * Loads a search filter instance.
  *
  * @param string $name Name of the filter class to load.
  * @param array $options Filter options.
- * @return \Search\Search\Type\Base
+ * @return \FOC\Search\Search\Type\Base
  * @throws \InvalidArgumentException When no filter was found.
  */
     public function _loadFilter($name, array $options = [])

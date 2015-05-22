@@ -27,7 +27,7 @@ class SearchBehaviorTest extends TestCase {
     {
         parent::setUp();
         $this->Articles = TableRegistry::get('Articles');
-        $this->Articles->addBehavior('Search.Search');
+        $this->Articles->addBehavior('FOC/Search.Search');
     }
 
     /**
@@ -38,5 +38,13 @@ class SearchBehaviorTest extends TestCase {
     public function tearDown()
     {
         unset($this->Articles);
+    }
+
+    /**
+     * 
+     */
+    public function testFindSearch()
+    {
+        
     }
 }
