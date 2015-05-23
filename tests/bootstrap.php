@@ -20,10 +20,6 @@ if (file_exists($root . '/config/bootstrap.php')) {
     return;
 }
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
-$loader = require $root . '/vendor/autoload.php';
-
-$loader->setPsr4('Cake\\', './vendor/cakephp/cakephp/src');
-$loader->setPsr4('Cake\Test\\', './vendor/cakephp/cakephp/tests');
 
 \Cake\Core\Configure::write('EmailTransport', [
     'default' => [
