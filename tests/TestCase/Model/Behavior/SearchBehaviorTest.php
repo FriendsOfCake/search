@@ -1,5 +1,5 @@
 <?php
-namespace FOC\Search\Test\TestCase\Model\Behavior;
+namespace Search\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
@@ -15,7 +15,7 @@ class SearchBehaviorTest extends TestCase {
      * @var array
      */
     public $fixtures = array(
-        'plugin.FOC/Search.Articles'
+        'plugin.Search.Articles'
     );
 
     /**
@@ -27,7 +27,7 @@ class SearchBehaviorTest extends TestCase {
     {
         parent::setUp();
         $this->Articles = TableRegistry::get('Articles');
-        $this->Articles->addBehavior('FOC/Search.Search');
+        $this->Articles->addBehavior('Search.Search');
     }
 
     /**

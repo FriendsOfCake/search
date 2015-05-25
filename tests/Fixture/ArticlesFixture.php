@@ -1,5 +1,5 @@
 <?php
-namespace FOC\Search\Test\Fixture;
+namespace Search\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
@@ -15,9 +15,6 @@ class ArticlesFixture extends TestFixture {
         'title' => ['type' => 'string', 'null' => false, 'default' => null],
         'created' => ['type' => 'datetime', 'null' => true, 'default' => null],
         'modified' => ['type' => 'datetime', 'null' => true, 'default' => null],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id']],
-        ]
     ];
 
 /**

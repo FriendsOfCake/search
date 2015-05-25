@@ -23,14 +23,14 @@
   },
   "autoload": {
     "psr-4": {
-      "FOC\\Search\\": "src",
-      "FOC\\Search\\Test\\Fixture\\": "tests\\Fixture"
+      "Search\\": "src",
+      "Search\\Test\\Fixture\\": "tests\\Fixture"
     }
   },
   "autoload-dev": {
     "psr-4": {
       "Cake\\Test\\": "vendor/cakephp/cakephp/tests",
-      "FOC\\Search\\Test\\": "tests"
+      "Search\\Test\\": "tests"
     }
   },
   "support": {

@@ -1,14 +1,14 @@
 <?php
-namespace FOC\Search\Test\TestCase\Search\Search\Type;
+namespace Search\Test\TestCase\Search\Search\Type;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\ORM\Table;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
-use FOC\Search\Search\Manager;
-use FOC\Search\Search\Type\Base;
-use FOC\Search\Search\Type\Value;
+use Search\Search\Manager;
+use Search\Search\Type\Base;
+use Search\Search\Type\Value;
 
 class ValueTest extends TestCase
 {
@@ -19,7 +19,7 @@ class ValueTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.FOC/Search.Articles'
+        'plugin.Search.Articles'
     ];
 
     public function testProcess()

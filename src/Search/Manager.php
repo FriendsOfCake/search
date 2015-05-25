@@ -1,5 +1,5 @@
 <?php
-namespace FOC\Search\Search;
+namespace Search\Search;
 
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
@@ -21,7 +21,7 @@ class Manager
      * @var array
      */
     protected $_filters = [
-        'default'
+        'default' => []
     ];
 
     /**
@@ -88,7 +88,7 @@ class Manager
             $this->_config['types'][$name] = new $config['typeClasses'][$name]($name, $config, $this);
             return $this;
         }
-        if (class_exists('\FOC\Search\Search\Type\\' . $name)) {
+        if (class_exists('\Search\Search\Type\\' . $name)) {
             $this->_config['types'][$name] = 'Type\\' . $name;
             return $this;
         }
@@ -101,7 +101,7 @@ class Manager
 
     public function __call($method, $args)
     {
-        $class = '\FOC\Search\Search\Type\\' . Inflector::classify($method);
+        $class = '\Search\Search\Type\\' . Inflector::classify($method);
         if (class_exists($class)) {
             $this->_config[$args[0]] = new $class($args[0], $args[1], $this);
             return $this;
@@ -168,7 +168,7 @@ class Manager
  *
  * @param string $name Name of the filter class to load.
  * @param array $options Filter options.
- * @return \FOC\Search\Search\Type\Base
+ * @return \Search\Search\Type\Base
  * @throws \InvalidArgumentException When no filter was found.
  */
     public function _loadFilter($name, array $options = [])
@@ -183,8 +183,8 @@ class Manager
         if (isset($config['typeClasses'][$name])) {
             return new $config['typeClasses'][$name]($name, $options, $this);
         }
-        if (class_exists('\FOC\Search\Search\Type\\' . $name)) {
-            $className = '\FOC\Search\Search\Type\\' . $name;
+        if (class_exists('\Search\Search\Type\\' . $name)) {
+            $className = '\Search\Search\Type\\' . $name;
             return new $className($name, $options, $this);
         }
         if (class_exists('\App\Search\Type\\' . $name)) {

@@ -6,7 +6,7 @@
  * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link     http://blog.cake-websites.com
  */
-namespace FOC\Search\Model\Behavior;
+namespace Search\Model\Behavior;
 
 use Cake\Event\Event;
 use Cake\ORM\Behavior;

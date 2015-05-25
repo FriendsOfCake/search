@@ -1,5 +1,5 @@
 <?php
-namespace FOC\Search\Search\Type;
+namespace Search\Search\Type;
 
 use Cake\ORM\Query;
 

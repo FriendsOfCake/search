@@ -1,12 +1,12 @@
 <?php
-namespace FOC\Search\Test\TestCase\Search;
+namespace Search\Test\TestCase\Search;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\ORM\Table;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
-use FOC\Search\Search\Manager;
+use Search\Search\Manager;
 
 class ManagerTest extends TestCase {
 
@@ -16,7 +16,7 @@ class ManagerTest extends TestCase {
      * @var array
      */
     public $fixtures = [
-        'plugin.FOC/Search.Articles'
+        'plugin.Search.Articles'
     ];
 
     /**
@@ -30,12 +30,12 @@ class ManagerTest extends TestCase {
         $manager = new Manager($table);
         $manager->add('test', 'Compare');
         $all = $manager->getFilters();
-        $this->assertInstanceOf('\FOC\Search\Search\Type\Compare', $all['test']);
+        $this->assertInstanceOf('\Search\Search\Type\Compare', $all['test']);
         $this->assertEquals(count($all), 1);
 
         $manager->add('test2', 'Value');
         $all = $manager->getFilters();
-        $this->assertInstanceOf('\FOC\Search\Search\Type\Value', $all['test2']);
+        $this->assertInstanceOf('\Search\Search\Type\Value', $all['test2']);
         $this->assertEquals(count($all), 2);
     }
 
