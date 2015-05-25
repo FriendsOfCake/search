@@ -33,10 +33,10 @@ public function searchConfiguration()
 {
     $search = new Manager($this);
     $search
-    ->value('currency_id', [
+    ->add('currency_id', 'value', [
         'field' => $this->alias() . '.currency_id'
     ])
-    ->like('name', [
+    ->add('name', 'like', [
         'before' => true,
         'after' => true,
         'field' => [$this->alias() . '.name']
