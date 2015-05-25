@@ -44,14 +44,12 @@ abstract class Base
 
     /**
      * Constructor.
-     *
      * By default the name of the HTTP GET query argument will be assumed
      * the field name in the database as well.
      *
      * @param string $name Name.
      * @param array $config Config.
      * @param Manager $manager Manager.
-     * @return void
      */
     public function __construct($name, array $config = [], Manager $manager)
     {
