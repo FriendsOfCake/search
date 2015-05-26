@@ -22,9 +22,11 @@ class SearchBehavior extends Behavior
      * @var array
      */
     protected $_defaultConfig = [
+        'filterCallback' => 'searchConfiguration',
+        'filterCollection' => 'default',
         'implementedFinders' => [
             'search' => 'findSearch'
-        ],
+        ]
     ];
 
     /**
@@ -36,7 +38,10 @@ class SearchBehavior extends Behavior
      */
     public function findSearch(Query $query, array $options)
     {
-        foreach ($this->_table->searchConfiguration()->all() as $config) {
+        if (!isset($options['filterCollection'])) {
+            $options['filterCollection'] = 'searchConfiguration';
+        }
+        foreach ($this->_table->{$this->config('filterCallback')}()->getFilters($this->config('filterCollection')) as $config) {
             $config->args($options);
             $config->query($query);
             $config->process();
