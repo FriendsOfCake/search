@@ -15,6 +15,11 @@
       "name": "Christian Winther",
       "role": "Author",
       "homepage": "http://cakephp.nu/"
+    },
+    {
+      "name": "Florian Krämer",
+      "role": "Author",
+      "homepage": "http://florian-kraemer.net/"
     }
   ],
   "require-dev": {
