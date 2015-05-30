@@ -15,6 +15,11 @@
       "name": "Christian Winther",
       "role": "Author",
       "homepage": "http://cakephp.nu/"
+    },
+    {
+      "name": "Florian Krämer",
+      "role": "Author",
+      "homepage": "http://florian-kraemer.net/"
     }
   ],
   "require-dev": {
@@ -23,7 +28,14 @@
   },
   "autoload": {
     "psr-4": {
-      "Search\\": "."
+      "Search\\": "src",
+      "Search\\Test\\Fixture\\": "tests\\Fixture"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Cake\\Test\\": "vendor/cakephp/cakephp/tests",
+      "Search\\Test\\": "tests"
     }
   },
   "support": {

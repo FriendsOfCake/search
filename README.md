@@ -1,6 +1,16 @@
-# CakePHP Search
+# CakePHP Search Plugin
 
-Search provides a search module for CakePHP applications.
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt) 
+[![Build Status](https://img.shields.io/travis/burzum/cakephp-search-plugin/master.svg?style=flat-square)](https://travis-ci.org/burzum/cakephp-search-plugin) 
+[![Build Status](https://img.shields.io/coveralls/burzum/cakephp-search-plugin/master.svg?style=flat-square)](https://coveralls.io/r/burzum/cakephp-search-plugin)
+
+The Search plugin implements the PRG pattern. Post/Redirect/Get (PRG) is a web development design pattern that prevents some duplicate form submissions, creating a more intuitive interface for user agents (users). PRG supports bookmarks and the refresh button in a predictable way that does not create duplicate form submissions.
+
+The plugin allows you to apply filters on the search as well, for example searching between two dates.
+
+---
+
+This is **NOT** a search index or search engine! If you look for something like that checkout Elastic Search or Sphinx.
 
 ## Requirements
 
@@ -8,97 +18,12 @@ The master branch has the following requirements:
 
 * CakePHP 3.0.0 or greater.
 * PHP 5.4.16 or greater.
-* SQLite or another database driver that CakePHP can talk to. By default
-  DebugKit will use SQLite, if you need to use a different database see the
-  Database Configuration section below.
 
-## Installation
+## Documentation
 
-* Install the plugin with composer from your CakePHP Project's ROOT directory (where composer.json file is located)
-```sh
-php composer.phar require FriendsOfCake/search "dev-master"
-```
+For documentation, as well as tutorials, see the [docs](docs/) directory of this repository.
 
-* Load the plugin
-```php
-Plugin::load('Search');
-```
 
-## Usage
+## License
 
-* Add a search config method in your table
-```php
-use Search\Manager;
-
-...
-
-public function searchConfiguration()
-{
-    $search = new Manager($this);
-    $search
-    ->value('currency_id', [
-        'field' => $this->alias() . '.currency_id'
-    ])
-    ->like('name', [
-        'before' => true,
-        'after' => true,
-        'field' => [$this->alias() . '.name']
-    ]);
-    return $search;
-}
-```
-
-* Add The Behavior in your initialize method
-```php
-public function initialize(array $config)
-{
-    ...
-    $this->addBehavior('Search.Search');
-    ...
-}
-```
-
-* Example of index controller for a model Country
-```php
-public function index()
-{
-    $query = $this->Country
-    ->find('search', $this->request->query)
-    ->where(['name !=' => null])
-    ->order(['Country.id' => 'asc'])
-    ->contain([
-        'Cities'
-    ]);
-    $this->set('countries', $this->paginate($query));
-}
-```
-
-* Then add the component search in the necessary methods (for our example index)
-```php
-public function index()
-{
-    $this->loadComponent('Search.Prg');
-}
-```
-
-* Instead, you can add this in your AppController to enable component in all index methods
-```php
-public function initialize()
-{
-    parent::initialize();
-    if ($this->request->action === 'index'):
-      $this->loadComponent('Search.Prg');
-    endif;
-}
-```
-
-## Filtering your data
-Once you have completed all the setup you can now filter your data by passing
-query params in your index method. Using the Country example given above, you
-could filter your countries using the following.
-
-`example.com/countries/index?name=gu`
-
-Would filter your list of countries to any country with "gu" in the name. You
-might chose to make a `get` form which posts the filter directly to the url, or
-create links manually.
+Licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) License. Redistributions of the source code included in this repository must retain the copyright notice found in each file.
