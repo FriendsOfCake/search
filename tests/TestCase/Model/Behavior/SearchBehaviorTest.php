@@ -14,9 +14,9 @@ class SearchBehaviorTest extends TestCase {
      *
      * @var array
      */
-    public $fixtures = array(
-        'plugin.Search.Articles'
-    );
+    public $fixtures = [
+        'plugin.Search.Articles',
+    ];
 
     /**
      * setup

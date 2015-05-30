@@ -24,7 +24,7 @@ abstract class Base
     /**
      * The parent Search Manager.
      *
-     * @var \Search\Manager
+     * @var \Search\Search\Manager
      */
     protected $_manager;
 
