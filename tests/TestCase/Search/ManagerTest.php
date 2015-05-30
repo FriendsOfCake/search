@@ -30,12 +30,12 @@ class ManagerTest extends TestCase {
         $manager = new Manager($table);
         $manager->add('test', 'Compare');
         $all = $manager->getFilters();
-        $this->assertInstanceOf('\Search\Search\Type\Compare', $all['test']);
+        $this->assertInstanceOf('\Search\Search\Filter\Compare', $all['test']);
         $this->assertEquals(count($all), 1);
 
         $manager->add('test2', 'Value');
         $all = $manager->getFilters();
-        $this->assertInstanceOf('\Search\Search\Type\Value', $all['test2']);
+        $this->assertInstanceOf('\Search\Search\Filter\Value', $all['test2']);
         $this->assertEquals(count($all), 2);
     }
 

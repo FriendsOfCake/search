@@ -127,7 +127,7 @@ class Manager
      *
      * @param string $name Name of the filter class to load.
      * @param array $options Filter options.
-     * @return \Search\Search\Type\Base
+     * @return \Search\Search\Filter\Base
      * @throws \InvalidArgumentException When no filter was found.
      */
     public function _loadFilter($name, array $options = [])
@@ -142,8 +142,8 @@ class Manager
         if (isset($config['typeClasses'][$name])) {
             return new $config['typeClasses'][$name]($name, $options, $this);
         }
-        if (class_exists('\Search\Search\Type\\' . $name)) {
-            $className = '\Search\Search\Type\\' . $name;
+        if (class_exists('\Search\Search\Filter\\' . $name)) {
+            $className = '\Search\Search\Filter\\' . $name;
             return new $className($name, $options, $this);
         }
         if (class_exists('\App\Search\Type\\' . $name)) {
