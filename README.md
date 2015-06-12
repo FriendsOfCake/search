@@ -16,8 +16,6 @@ This is **NOT** a search index or search engine! If you look for something like 
 Requirements
 ------------
 
-The master branch has the following requirements:
-
  * CakePHP 3
 
 Documentation
@@ -35,14 +33,14 @@ Contributing
 
 To contribute to this plugin please follow a few basic rules.
 
- * Pull requests must be send to the ```develop``` branch.
- * Contributions must follow the [PSR2-**R** coding standard recommendation](https://github.com/php-fig-rectified/fig-rectified-standards).
+ * Pull requests must be send to the ```develop``` branch. Except hotfixes.
+ * Contributions must follow the [PSR2 coding standard recommendation](https://github.com/php-fig).
  * [Unit tests](http://book.cakephp.org/3.0/en/development/testing.html) are required.
 
 License
 -------
 
-* Copyright Friends of Cake
+* Copyright [Friends of Cake](https://github.com/friendsofcake)
 * Copyright 2012 - 2015, Florian Krämer
 
 Licensed under The MIT License Redistributions of files must retain the above copyright notice.
