@@ -42,9 +42,7 @@
     }
   },
   "support": {
-    "source": "https://github.com/FriendsOfCake/search",
-    "issues": "https://github.com/FriendsOfCake/search/issues",
-    "wiki": "http://cakephp.nu/cakephp-search/",
-    "irc": "irc://irc.freenode.org/friendsofcake"
+    "source": "https://github.com/burzum/cakephp-search-plugin",
+    "issues": "https://github.com/burzum/cakephp-search-plugin/issues"
   }
 }
