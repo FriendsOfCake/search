@@ -1,5 +1,5 @@
 <?php
-namespace Search\Search\Filter;
+namespace Burzum\Search\Search\Filter;
 
 class Finder extends Base
 {

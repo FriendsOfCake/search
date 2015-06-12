@@ -1,12 +1,10 @@
 <?php
-namespace Search\Test\TestCase\Search;
+namespace Burzum\Search\Test\TestCase\Search;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
-use Cake\ORM\Table;
-use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
-use Search\Search\Manager;
+use Burzum\Search\Search\Manager;
 
 class ManagerTest extends TestCase {
 
@@ -16,7 +14,7 @@ class ManagerTest extends TestCase {
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Burzum/Search.Articles'
     ];
 
     /**
@@ -30,12 +28,12 @@ class ManagerTest extends TestCase {
         $manager = new Manager($table);
         $manager->add('test', 'Compare');
         $all = $manager->getFilters();
-        $this->assertInstanceOf('\Search\Search\Filter\Compare', $all['test']);
+        $this->assertInstanceOf('\Burzum\Search\Search\Filter\Compare', $all['test']);
         $this->assertEquals(count($all), 1);
 
         $manager->add('test2', 'Value');
         $all = $manager->getFilters();
-        $this->assertInstanceOf('\Search\Search\Filter\Value', $all['test2']);
+        $this->assertInstanceOf('\Burzum\Search\Search\Filter\Value', $all['test2']);
         $this->assertEquals(count($all), 2);
     }
 

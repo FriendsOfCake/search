@@ -1,7 +1,5 @@
 <?php
-namespace Search\Search\Filter;
-
-use Cake\ORM\Query;
+namespace Burzum\Search\Search\Filter;
 
 class Value extends Base
 {

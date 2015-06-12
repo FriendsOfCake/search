@@ -1,9 +1,9 @@
 <?php
-namespace Search\Search\Filter;
+namespace Burzum\Search\Search\Filter;
 
 use Cake\ORM\Query;
 use Cake\Core\InstanceConfigTrait;
-use Search\Search\Manager;
+use Burzum\Search\Search\Manager;
 
 /**
  * Base class for search type classes.

@@ -43,7 +43,7 @@ require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
     ],
 ]);
 
-Plugin::load('FOC/Search', [
+Plugin::load('Burzum/Search', [
     'path' => dirname(dirname(__FILE__)) . DS,
     'bootstrap' => false
 ]);

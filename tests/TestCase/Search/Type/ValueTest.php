@@ -1,14 +1,14 @@
 <?php
-namespace Search\Test\TestCase\Search\Search\Filter;
+namespace Burzum\Search\Test\TestCase\Search\Search\Filter;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\ORM\Table;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
-use Search\Search\Manager;
-use Search\Search\Filter\Base;
-use Search\Search\Filter\Value;
+use Burzum\Search\Search\Manager;
+use Burzum\Search\Search\Filter\Base;
+use Burzum\Search\Search\Filter\Value;
 
 class ValueTest extends TestCase
 {
@@ -19,7 +19,7 @@ class ValueTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Burzum/Search.Articles'
     ];
 
     public function testProcess()

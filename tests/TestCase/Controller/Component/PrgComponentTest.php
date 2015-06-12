@@ -1,10 +1,10 @@
 <?php
-namespace Search\Test\TestCase\Controller\Component;
+namespace Burzum\Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Network\Http\Request;
-use Search\Controller\Component\PrgComponent;
+use Burzum\Search\Controller\Component\PrgComponent;
 use Cake\TestSuite\TestCase;
 
 class PrgComponentTest extends TestCase {
