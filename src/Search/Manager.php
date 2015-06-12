@@ -106,7 +106,7 @@ class Manager
      */
     public function add($name, $filter, array $options = [])
     {
-        $this->_filters[$this->_collection][$name] = $this->_loadFilter($filter, $options);
+        $this->_filters[$this->_collection][$name] = $this->_loadFilter($name, $filter, $options);
         return $this;
     }
 
@@ -124,29 +124,30 @@ class Manager
     /**
      * Loads a search filter instance.
      *
-     * @param string $name Name of the filter class to load.
+     * @param string $name Name of the field
+     * @param string $filter Filter name
      * @param array $options Filter options.
      * @return \Burzum\Search\Search\Filter\Base
      * @throws \InvalidArgumentException When no filter was found.
      */
-    public function _loadFilter($name, array $options = [])
+    public function _loadFilter($name, $filter, array $options = [])
     {
-        list($plugin, $name) = pluginSplit($name);
+        list($plugin, $filter) = pluginSplit($filter);
         if (!empty($plugin)) {
-            $className = '\\' . $plugin . '\Search\Type\\' . $name;
+            $className = '\\' . $plugin . '\Search\Type\\' . $filter;
             if (class_exists($className)) {
                 return new $className($name, $options, $this);
             }
         }
-        if (isset($config['typeClasses'][$name])) {
-            return new $config['typeClasses'][$name]($name, $options, $this);
+        if (isset($config['typeClasses'][$filter])) {
+            return new $config['typeClasses'][$filter]($filter, $options, $this);
         }
-        if (class_exists('\Burzum\Search\Search\Filter\\' . $name)) {
-            $className = '\Burzum\Search\Search\Filter\\' . $name;
+        if (class_exists('\Burzum\Search\Search\Filter\\' . $filter)) {
+            $className = '\Burzum\Search\Search\Filter\\' . $filter;
             return new $className($name, $options, $this);
         }
-        if (class_exists('\App\Search\Type\\' . $name)) {
-            $className = '\App\Search\Type\\' . $name;
+        if (class_exists('\App\Search\Type\\' . $filter)) {
+            $className = '\App\Search\Type\\' . $filter;
             return new $className($name, $options, $this);
         }
         throw new \InvalidArgumentException(sprintf('Can\'t find filter class %s!', $name));
