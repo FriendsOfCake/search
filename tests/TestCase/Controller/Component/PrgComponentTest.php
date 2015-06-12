@@ -25,7 +25,7 @@ class PrgComponentTest extends TestCase {
     {
         parent::setUp();
         $this->request = $this->getMockBuilder('\Cake\Network\Http\Request')
-            ->setMethods(['is'])
+            ->setMethods(['is', 'method'])
             ->getMock();
         $this->controller = $this->getMockBuilder('\Cake\Controller\Controller')
             ->setMethods(['redirect'])
@@ -49,6 +49,11 @@ class PrgComponentTest extends TestCase {
     {
         $this->request->expects($this->any())
             ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+
+        $this->request->expects($this->any())
+            ->method('method')
             ->with('post')
             ->will($this->returnValue(true));
 
