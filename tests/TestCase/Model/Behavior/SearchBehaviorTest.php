@@ -1,10 +1,8 @@
 <?php
-namespace Search\Test\TestCase\Model\Behavior;
+namespace Burzum\Search\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
-use Cake\ORM\Table;
-use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 
 class SearchBehaviorTest extends TestCase {
@@ -14,9 +12,9 @@ class SearchBehaviorTest extends TestCase {
      *
      * @var array
      */
-    public $fixtures = array(
-        'plugin.Search.Articles'
-    );
+    public $fixtures = [
+        'plugin.Burzum/Search.Articles',
+    ];
 
     /**
      * setup
@@ -27,7 +25,7 @@ class SearchBehaviorTest extends TestCase {
     {
         parent::setUp();
         $this->Articles = TableRegistry::get('Articles');
-        $this->Articles->addBehavior('Search.Search');
+        $this->Articles->addBehavior('Burzum/Search.Search');
     }
 
     /**

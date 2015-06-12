@@ -1,14 +1,16 @@
 {
-  "name": "friendsofcake/search",
-  "description": "CakePHP 3.0 easy search framework",
+  "name": "burzum/cakephp-search-plugin",
+  "description": "CakePHP 3.0 easy PRG search framework",
   "type": "cakephp-plugin",
   "keywords": [
     "cakephp",
     "cakephp3",
     "cake3",
-    "search"
+    "search",
+    "post-redirect-get",
+    "prg"
   ],
-  "homepage": "https://github.com/FriendsOfCake/search",
+  "homepage": "https://github.com/burzum/cakephp-search-plugin",
   "license": "MIT",
   "authors": [
     {
@@ -24,12 +26,13 @@
   ],
   "require-dev": {
     "cakephp/cakephp": "~3.0",
-    "friendsofcake/cakephp-test-utilities": "dev-master"
+    "friendsofcake/cakephp-test-utilities": "dev-master",
+    "phpunit/phpunit": "*"
   },
   "autoload": {
     "psr-4": {
-      "Search\\": "src",
-      "Search\\Test\\Fixture\\": "tests\\Fixture"
+      "Burzum\\Search\\": "src",
+      "Burzum\\Search\\Test\\Fixture\\": "tests\\Fixture"
     }
   },
   "autoload-dev": {

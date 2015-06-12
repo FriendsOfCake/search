@@ -1,4 +1,5 @@
-# CakePHP Search Plugin
+CakePHP Search Plugin
+=====================
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt) 
 [![Build Status](https://img.shields.io/travis/burzum/cakephp-search-plugin/master.svg?style=flat-square)](https://travis-ci.org/burzum/cakephp-search-plugin) 
@@ -12,18 +13,34 @@ The plugin allows you to apply filters on the search as well, for example search
 
 This is **NOT** a search index or search engine! If you look for something like that checkout Elastic Search or Sphinx.
 
-## Requirements
+Requirements
+------------
 
-The master branch has the following requirements:
+ * CakePHP 3
 
-* CakePHP 3.0.0 or greater.
-* PHP 5.4.16 or greater.
-
-## Documentation
+Documentation
+-------------
 
 For documentation, as well as tutorials, see the [docs](docs/) directory of this repository.
 
+Support
+-------
 
-## License
+For bugs and feature requests, please use the [issues](https://github.com/burzum/cakephp-search-plugin/issues) section of this repository.
 
-Licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) License. Redistributions of the source code included in this repository must retain the copyright notice found in each file.
+Contributing
+------------
+
+To contribute to this plugin please follow a few basic rules.
+
+ * Pull requests must be send to the ```develop``` branch. Except hotfixes.
+ * Contributions must follow the [PSR2 coding standard recommendation](https://github.com/php-fig).
+ * [Unit tests](http://book.cakephp.org/3.0/en/development/testing.html) are required.
+
+License
+-------
+
+* Copyright [Friends of Cake](https://github.com/friendsofcake)
+* Copyright 2012 - 2015, Florian Krämer
+
+Licensed under The MIT License Redistributions of files must retain the above copyright notice.

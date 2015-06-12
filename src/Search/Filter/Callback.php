@@ -1,5 +1,5 @@
 <?php
-namespace Search\Search\Filter;
+namespace Burzum\Search\Search\Filter;
 
 use Cake\ORM\Query;
 
