@@ -2,6 +2,7 @@
 namespace Burzum\Search\Search;
 
 use Cake\ORM\Table;
+use Cake\Utility\Inflector;
 use Burzum\Search\Search\Filter;
 
 class Manager
@@ -133,6 +134,7 @@ class Manager
     public function _loadFilter($name, $filter, array $options = [])
     {
         list($plugin, $filter) = pluginSplit($filter);
+        $filter = Inflector::classify($filter);
         if (!empty($plugin)) {
             $className = '\\' . $plugin . '\Search\Type\\' . $filter;
             if (class_exists($className)) {
