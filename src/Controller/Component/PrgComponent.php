@@ -8,13 +8,6 @@ class PrgComponent extends Component
 {
 
     /**
-     * Preset Var.
-     *
-     * @var bool
-     */
-    public $presetVar = true;
-
-    /**
      * Initialize properties.
      *
      * @param array $config The config data.
