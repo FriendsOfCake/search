@@ -86,8 +86,9 @@ public function index()
 public function initialize()
 {
     parent::initialize();
-    if ($this->request->action === 'index'):
-      $this->loadComponent('Search.Prg');
+    if ($this->request->action === 'index') {
+        $this->loadComponent('Search.Prg');
+    }
     endif;
 }
 ```
