@@ -2,9 +2,9 @@
 namespace Search\Test\TestCase\Type;
 
 use Cake\Core\Configure;
-use Cake\ORM\TableRegistry;
-use Cake\ORM\Table;
 use Cake\ORM\Entity;
+use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Type\Base;

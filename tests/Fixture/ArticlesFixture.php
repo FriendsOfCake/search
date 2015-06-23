@@ -6,11 +6,11 @@ use Cake\TestSuite\Fixture\TestFixture;
 class ArticlesFixture extends TestFixture
 {
 
-/**
- * Fields
- *
- * @var array
- */
+    /**
+     * Fields
+     *
+     * @var array
+     */
     public $fields = [
         'id' => ['type' => 'string', 'null' => false, 'length' => 36],
         'title' => ['type' => 'string', 'null' => false, 'default' => null],
@@ -18,11 +18,11 @@ class ArticlesFixture extends TestFixture
         'modified' => ['type' => 'datetime', 'null' => true, 'default' => null],
     ];
 
-/**
- * Records
- *
- * @var array
- */
+    /**
+     * Records
+     *
+     * @var array
+     */
     public $records = [
         [
             'id' => '1',

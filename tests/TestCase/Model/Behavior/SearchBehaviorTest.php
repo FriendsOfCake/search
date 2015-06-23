@@ -2,9 +2,9 @@
 namespace Search\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
-use Cake\ORM\TableRegistry;
-use Cake\ORM\Table;
 use Cake\ORM\Entity;
+use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 class SearchBehaviorTest extends TestCase
@@ -46,6 +46,5 @@ class SearchBehaviorTest extends TestCase
      */
     public function testFindSearch()
     {
-
     }
 }
