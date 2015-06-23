@@ -1,8 +1,8 @@
 <?php
 namespace Search\Type;
 
-use Cake\ORM\Query;
 use Cake\Core\InstanceConfigTrait;
+use Cake\ORM\Query;
 use Search\Manager;
 
 /**
@@ -131,7 +131,7 @@ abstract class Base
      * Get / Set the args.
      *
      * @param array $value Value.
-     * @return void
+     * @return void|array
      */
     public function args(array $value = null)
     {
@@ -146,7 +146,7 @@ abstract class Base
      * Get / Set the validation rules.
      *
      * @param array $value Value.
-     * @return void
+     * @return void|array
      */
     public function validate(array $value = null)
     {
@@ -173,8 +173,8 @@ abstract class Base
     /**
      * Get / Set the query object.
      *
-     * @param Query $value Value.
-     * @return void
+     * @param \Cake\ORM\Query $value Value.
+     * @return void|\Cake\ORM\Query
      */
     public function query(Query $value = null)
     {
@@ -189,8 +189,6 @@ abstract class Base
      * Modify the actual query object and append conditions based on the
      * subclass business rules and type.
      *
-     * @param Query $query Query.
-     * @param array $args Args.
      * @return void
      */
     abstract public function process();

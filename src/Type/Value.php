@@ -3,14 +3,12 @@ namespace Search\Type;
 
 use Cake\ORM\Query;
 
-class Callback extends Base
+class Value extends Base
 {
 
     /**
      * Process a value condition ($x == $y).
      *
-     * @param Query $query Query.
-     * @param array $args Args.
      * @return void
      */
     public function process()
@@ -19,6 +17,8 @@ class Callback extends Base
             return;
         }
 
-        call_user_func($this->config('callback'), $this->query(), $this->args(), $this);
+        $this->query()->andWhere(function ($e) {
+            return $e->in($this->field(), $this->value());
+        });
     }
 }

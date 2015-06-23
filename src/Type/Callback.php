@@ -3,11 +3,11 @@ namespace Search\Type;
 
 use Cake\ORM\Query;
 
-class Value extends Base
+class Callback extends Base
 {
 
     /**
-     * Process a value condition ($x == $y).
+     * Modify query using callback.
      *
      * @return void
      */
@@ -17,9 +17,6 @@ class Value extends Base
             return;
         }
 
-        $this->query()->andWhere(function($e) {
-            return $e->in($this->field(), $this->value());
-        });
-
+        call_user_func($this->config('callback'), $this->query(), $this->args(), $this);
     }
 }
