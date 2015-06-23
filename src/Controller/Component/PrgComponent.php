@@ -30,6 +30,6 @@ class PrgComponent extends Component
             return;
         }
 
-        $controller->redirect(['?' => $request->data]);
+        return $controller->redirect($request->params['pass'] + ['?' => $request->data]);
     }
 }
