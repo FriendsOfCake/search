@@ -89,7 +89,6 @@ public function initialize()
     if ($this->request->action === 'index') {
         $this->loadComponent('Search.Prg');
     }
-    endif;
 }
 ```
 
