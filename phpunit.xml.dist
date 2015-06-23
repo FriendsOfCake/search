@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="./tests/bootstrap.php"
+    colors="true"
+    stopOnFailure="false"
+    >
+
+    <testsuites>
+        <testsuite name="Slug Test Cases">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <!-- Setup a listener for fixtures -->
+    <listeners>
+        <listener
+        class="\Cake\TestSuite\Fixture\FixtureInjector"
+        file="./vendor/cakephp/cakephp/src/TestSuite/Fixture/FixtureInjector.php">
+            <arguments>
+                <object class="\Cake\TestSuite\Fixture\FixtureManager" />
+            </arguments>
+        </listener>
+    </listeners>
+
+    <!-- Prevent coverage reports from looking in tests and vendors -->
+    <filter>
+        <blacklist>
+            <directory suffix=".php">./vendor/</directory>
+            <directory suffix=".ctp">./vendor/</directory>
+
+            <directory suffix=".php">./tests/</directory>
+            <directory suffix=".ctp">./tests/</directory>
+        </blacklist>
+    </filter>
+</phpunit>

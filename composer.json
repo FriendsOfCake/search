@@ -1,35 +1,41 @@
 {
-  "name": "friendsofcake/search",
-  "description": "CakePHP 3.0 easy search framework",
-  "type": "cakephp-plugin",
-  "keywords": [
-    "cakephp",
-    "cakephp3",
-    "cake3",
-    "search"
-  ],
-  "homepage": "https://github.com/FriendsOfCake/search",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Christian Winther",
-      "role": "Author",
-      "homepage": "http://cakephp.nu/"
+    "name": "friendsofcake/search",
+    "description": "CakePHP 3.0 easy search framework",
+    "type": "cakephp-plugin",
+    "keywords": [
+        "cakephp",
+        "cakephp3",
+        "cake3",
+        "search"
+    ],
+    "homepage": "https://github.com/FriendsOfCake/search",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Winther",
+            "role": "Author",
+            "homepage": "http://cakephp.nu/"
+        }
+    ],
+    "require-dev": {
+        "cakephp/cakephp": "~3.0",
+        "friendsofcake/cakephp-test-utilities": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Search\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Search\\Test\\": "tests",
+            "Cake\\Test\\Fixture\\": "./vendor/cakephp/cakephp/tests/Fixture"
+        }
+    },
+    "support": {
+        "source": "https://github.com/FriendsOfCake/search",
+        "issues": "https://github.com/FriendsOfCake/search/issues",
+        "wiki": "http://cakephp.nu/cakephp-search/",
+        "irc": "irc://irc.freenode.org/friendsofcake"
     }
-  ],
-  "require-dev": {
-    "cakephp/cakephp": "~3.0",
-    "friendsofcake/cakephp-test-utilities": "dev-master"
-  },
-  "autoload": {
-    "psr-4": {
-      "Search\\": "src"
-    }
-  },
-  "support": {
-    "source": "https://github.com/FriendsOfCake/search",
-    "issues": "https://github.com/FriendsOfCake/search/issues",
-    "wiki": "http://cakephp.nu/cakephp-search/",
-    "irc": "irc://irc.freenode.org/friendsofcake"
-  }
 }
