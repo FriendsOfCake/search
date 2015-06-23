@@ -7,10 +7,8 @@ class Callback extends Base
 {
 
     /**
-     * Process a value condition ($x == $y).
+     * Modify query using callback.
      *
-     * @param Query $query Query.
-     * @param array $args Args.
      * @return void
      */
     public function process()

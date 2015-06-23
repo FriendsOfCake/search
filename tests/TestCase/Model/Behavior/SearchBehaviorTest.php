@@ -7,16 +7,17 @@ use Cake\ORM\Table;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 
-class SearchBehaviorTest extends TestCase {
+class SearchBehaviorTest extends TestCase
+{
 
     /**
      * Fixtures
      *
      * @var array
      */
-    public $fixtures = array(
+    public $fixtures = [
         'plugin.Search.Articles'
-    );
+    ];
 
     /**
      * setup

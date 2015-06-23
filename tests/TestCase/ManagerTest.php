@@ -8,7 +8,8 @@ use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 
     /**
      * Fixtures
@@ -33,5 +34,4 @@ class ManagerTest extends TestCase {
         $this->assertInstanceOf('\Search\Type\Value', $all['test2']);
         $this->assertEquals(count($all), 2);
     }
-
 }
