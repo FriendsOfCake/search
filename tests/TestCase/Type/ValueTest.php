@@ -26,7 +26,7 @@ class ValueTest extends TestCase
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
-        $value = new Value('title', [], $manager);
+        $value = new Value('title', $manager);
         $value->args(['title' => ['test']]);
         $value->query($articles->find());
         $result = $value->process();

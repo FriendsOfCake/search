@@ -49,11 +49,11 @@ abstract class Base
      * the field name in the database as well.
      *
      * @param string $name Name.
+     * @param \Search\Manager $manager Manager.
      * @param array $config Config.
-     * @param Manager $manager Manager.
      * @return void
      */
-    public function __construct($name, array $config = [], Manager $manager)
+    public function __construct($name, Manager $manager, array $config = [])
     {
         $this->_manager = $manager;
 
