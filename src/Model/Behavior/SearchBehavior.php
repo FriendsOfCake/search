@@ -1,11 +1,4 @@
 <?php
-/**
- * Search Behavior
- *
- * @author   cake17
- * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
- * @link     http://blog.cake-websites.com
- */
 namespace Search\Model\Behavior;
 
 use Cake\Event\Event;

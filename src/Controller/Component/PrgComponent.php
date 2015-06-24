@@ -8,13 +8,6 @@ class PrgComponent extends Component
 {
 
     /**
-     * Preset Var.
-     *
-     * @var bool
-     */
-    public $presetVar = true;
-
-    /**
      * Initialize properties.
      *
      * @param array $config The config data.
@@ -30,6 +23,6 @@ class PrgComponent extends Component
             return;
         }
 
-        $controller->redirect(['?' => $request->data]);
+        return $controller->redirect($request->params['pass'] + ['?' => $request->data]);
     }
 }
