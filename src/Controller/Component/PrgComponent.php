@@ -18,11 +18,13 @@ class PrgComponent extends Component
         $controller = $this->_registry->getController();
         $request = $controller->request;
 
-        if ($request->is('get') && !empty($request->query)) {
+        if ($request->is(['get']) && !empty($request->query)) {
             $request->data = $request->query;
             return;
         }
 
-        $controller->redirect(['?' => $request->data]);
+        if ($request->is(['post', 'put', 'delete']) && !empty($request->data)) {
+            $controller->redirect(['?' => $request->data]);
+        }
     }
 }
