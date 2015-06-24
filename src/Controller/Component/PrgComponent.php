@@ -8,13 +8,6 @@ class PrgComponent extends Component
 {
 
     /**
-     * Preset Var.
-     *
-     * @var bool
-     */
-    public $presetVar = true;
-
-    /**
      * Initialize properties.
      *
      * @param array $config The config data.
@@ -25,7 +18,7 @@ class PrgComponent extends Component
         $controller = $this->_registry->getController();
         $request = $controller->request;
 
-        if (!$request->is('post')) {
+        if ($request->is('get') && !empty($request->query)) {
             $request->data = $request->query;
             return;
         }
