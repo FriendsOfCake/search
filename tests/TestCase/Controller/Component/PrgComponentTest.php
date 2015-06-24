@@ -43,29 +43,52 @@ class PrgComponentTest extends TestCase {
     }
 
     /**
-     * 
+     * testInitializeWithPost
+     *
+     * @return void
      */
-    public function testInitialize()
+    public function testInitializeWithPost()
     {
-        $this->request->expects($this->any())
+        $this->request->expects($this->at(0))
             ->method('is')
-            ->with('post')
+            ->with(['get'])
+            ->will($this->returnValue(false));
+
+        $this->request->expects($this->at(1))
+            ->method('is')
+            ->with(['post', 'put', 'delete'])
             ->will($this->returnValue(true));
 
-        $this->request->expects($this->any())
-            ->method('method')
-            ->with('post')
+        $this->controller->expects($this->at(0))
+            ->method('redirect')
+            ->with(['?' => ['title' => 'foobar']])
             ->will($this->returnValue(true));
 
         $this->request->data = ['title' => 'foobar'];
-
         $this->controller->request = $this->request;
 
         $PrgComponent = new PrgComponent($this->registry);
         $PrgComponent->initialize([]);
-
-        $this->controller->expects($this->any(1))
-            ->method('redirect')
-            ->with(['?' => ['title' => 'foobar']]);
     }
+
+     /**
+      * testInitializeWithGet
+      *
+      * @return void
+      */
+     public function testInitializeWithGet()
+     {
+         $this->request->expects($this->at(0))
+             ->method('is')
+             ->with(['get'])
+             ->will($this->returnValue(true));
+
+         $this->request->query = ['?' => ['title' => 'foobar']];
+         $this->controller->request = $this->request;
+    
+         $PrgComponent = new PrgComponent($this->registry);
+         $PrgComponent->initialize([]);
+
+         $this->assertEquals($this->request->data, ['?' => ['title' => 'foobar']]);
+     }
 }
