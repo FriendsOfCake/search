@@ -24,7 +24,7 @@ class Manager
     /**
      * Constructor
      *
-     * @param Table $table Table
+     * @param \Cake\ORM\Table $table Table
      */
     public function __construct(Table $table)
     {
@@ -44,7 +44,7 @@ class Manager
     /**
      * Return Table
      *
-     * @return Table Table Instance
+     * @return \Cake\ORM\Table Table Instance
      */
     public function table()
     {
@@ -56,11 +56,11 @@ class Manager
      *
      * @param string $name Name
      * @param array $config Config
-     * @return Manager Instance
+     * @return $this
      */
-    public function like($name, $config = [])
+    public function like($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Like($name, $config, $this);
+        $this->_config[$name] = new Type\Like($name, $this, $config);
         return $this;
     }
 
@@ -69,11 +69,11 @@ class Manager
      *
      * @param string $name Name
      * @param array $config Config
-     * @return Manager Instance
+     * @return $this
      */
-    public function value($name, $config = [])
+    public function value($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Value($name, $config, $this);
+        $this->_config[$name] = new Type\Value($name, $this, $config);
         return $this;
     }
 
@@ -82,11 +82,11 @@ class Manager
      *
      * @param string $name Name
      * @param array $config Config
-     * @return Manager Instance
+     * @return $this
      */
-    public function finder($name, $config = [])
+    public function finder($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Finder($name, $config, $this);
+        $this->_config[$name] = new Type\Finder($name, $this, $config);
         return $this;
     }
 
@@ -95,11 +95,11 @@ class Manager
      *
      * @param string $name Name
      * @param array $config Config
-     * @return Manager Instance
+     * @return $this
      */
-    public function callback($name, $config = [])
+    public function callback($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Callback($name, $config, $this);
+        $this->_config[$name] = new Type\Callback($name, $this, $config);
         return $this;
     }
 
@@ -108,11 +108,11 @@ class Manager
      *
      * @param string $name Name
      * @param array $config Config
-     * @return Manager Instance
+     * @return $this
      */
-    public function compare($name, $config = [])
+    public function compare($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Compare($name, $config, $this);
+        $this->_config[$name] = new Type\Compare($name, $this, $config);
         return $this;
     }
 
@@ -121,11 +121,11 @@ class Manager
      *
      * @param string $name Name
      * @param array $config Config
-     * @return Manager Instance
+     * @return $this
      */
-    public function custom($name, $config = [])
+    public function custom($name, array $config = [])
     {
-        $this->_config[$name] = new $config['className']($name, $config, $this);
+        $this->_config[$name] = new $config['className']($name, $this, $config);
         return $this;
     }
 }
