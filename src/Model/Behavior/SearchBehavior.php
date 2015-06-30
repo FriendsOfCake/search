@@ -54,22 +54,7 @@ class SearchBehavior extends Behavior
      */
     public function filterParams($params)
     {
-        $blacklist = [
-            'fields' => 1,
-            'conditions' => 1,
-            'join' => 1,
-            'order' => 1,
-            'limit' => 1,
-            'offset' => 1,
-            'group' => 1,
-            'having' => 1,
-            'contain' => 1,
-            'page' => 1,
-        ];
-
-        $params = array_diff_key($params, $blacklist);
         $valid = $this->_table->searchConfiguration()->all();
-
-        return array_intersect_key($params, $valid);
+        return ['search' => array_intersect_key($params, $valid)];
     }
 }

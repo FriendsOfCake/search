@@ -59,14 +59,13 @@ class SearchBehaviorTest extends TestCase
     public function testFilterParams()
     {
         $result = $this->Articles->filterParams([
-            'limit' => 10,
-            'page' => 1,
             'conditions' => 'troll',
             'foo' => 'a',
             'bar' => 'b',
             'group' => 'main'
         ]);
-        $this->assertEquals(['foo' => 'a', 'bar' => 'b'], $result);
+        $expected = ['search' => ['foo' => 'a', 'bar' => 'b', 'group' => 'main']];
+        $this->assertEquals($expected, $result);
     }
 
     /**
