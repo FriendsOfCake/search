@@ -6,14 +6,13 @@ use Cake\Event\Event;
 
 class PrgComponent extends Component
 {
-
     /**
-     * Initialize properties.
+     * Checks if the current request has posted data and redirects the users
+     * to the same action after converting the post data into GET params
      *
-     * @param array $config The config data.
-     * @return void
+     * @return void|Cake\Network\Response
      */
-    public function initialize(array $config)
+    public function startup()
     {
         $controller = $this->_registry->getController();
         $request = $controller->request;
