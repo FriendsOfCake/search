@@ -14,14 +14,20 @@ The master branch has the following requirements:
 
 ## Installation
 
-* Install the plugin with composer from your CakePHP Project's ROOT directory (where composer.json file is located)
+* Install the plugin with composer from your CakePHP Project's ROOT directory
+(where composer.json file is located)
 ```sh
 php composer.phar require friendsofcake/search "dev-master"
 ```
 
-* Load the plugin
+* Load the plugin by adding following to your `config/bootstrap.php`
 ```php
 Plugin::load('Search');
+```
+
+or running command
+```sh
+./bin/cake plugin load Search
 ```
 
 ## Usage
@@ -36,13 +42,13 @@ public function searchConfiguration()
 {
     $search = new Manager($this);
     $search
-    ->value('currency_id', [
-        'field' => $this->alias() . '.currency_id'
+    ->value('author_id', [
+        'field' => $this->aliasField('author_id')
     ])
-    ->like('name', [
+    ->like('q', [
         'before' => true,
         'after' => true,
-        'field' => [$this->alias() . '.name']
+        'field' => [$this->aliasField('title'), $this->aliasField('title')]
     ]);
     return $search;
 }
@@ -58,18 +64,18 @@ public function initialize(array $config)
 }
 ```
 
-* Example of index controller for a model Country
+* Example of index controller for a model `Article`
 ```php
 public function index()
 {
     $query = $this->Countries
-        ->find('search', $this->Countries->filterParams($this->request->query))
-        ->where(['name !=' => null])
-        ->order(['Country.id' => 'asc'])
+        ->find('search', $this->Articles->filterParams($this->request->query))
+        ->where(['title !=' => null])
+        ->order(['Article.id' => 'asc'])
         ->contain([
-            'Cities'
+            'Comments'
         ]);
-    $this->set('countries', $this->paginate($query));
+    $this->set('articles', $this->paginate($query));
 }
 ```
 
@@ -97,11 +103,11 @@ public function initialize()
 
 ## Filtering your data
 Once you have completed all the setup you can now filter your data by passing
-query params in your index method. Using the Country example given above, you
-could filter your countries using the following.
+query params in your index method. Using the Article example given above, you
+could filter your articles using the following.
 
-`example.com/countries/index?name=gu`
+`example.com/articles?q=cakephp`
 
-Would filter your list of countries to any country with "gu" in the name. You
-might chose to make a `get` form which posts the filter directly to the url, or
-create links manually.
+Would filter your list of articles to any article with "cakephp" in the `title`
+or `content` field. You might choose to make a `get` form which posts the filter
+directly to the url, or create links manually.
