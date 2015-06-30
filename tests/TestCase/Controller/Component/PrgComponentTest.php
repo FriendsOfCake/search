@@ -30,7 +30,7 @@ class SearchComponentTest extends TestCase
         $expected = ['foo' => 'bar'];
         $this->Controller->request->query = $expected;
 
-        $this->Prg->initialize([]);
+        $this->Prg->startup();
         $this->assertEquals($expected, $this->Controller->request->data);
     }
 
@@ -44,7 +44,7 @@ class SearchComponentTest extends TestCase
         $this->Controller->request->data = ['foo' => 'bar'];
         $this->Controller->request->env('REQUEST_METHOD', 'POST');
 
-        $response = $this->Prg->initialize([]);
+        $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/index/pass?foo=bar', $response->header()['Location']);
     }
 }
