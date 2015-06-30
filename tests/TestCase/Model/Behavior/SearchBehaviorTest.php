@@ -16,7 +16,8 @@ class ArticlesTable extends Table {
         return $manager
             ->value('foo')
             ->value('bar')
-            ->value('baz');
+            ->value('baz')
+            ->value('group');
     }
 }
 
@@ -40,7 +41,11 @@ class SearchBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Articles = new ArticlesTable;
+
+        TableRegistry::clear();
+        $this->Articles = TableRegistry::get('Articles', [
+            'className' => 'Search\Test\TestCase\Model\Behavior\ArticlesTable'
+        ]);
         $this->Articles->addBehavior('Search.Search');
     }
 
@@ -57,8 +62,33 @@ class SearchBehaviorTest extends TestCase
             'page' => 1,
             'conditions' => 'troll',
             'foo' => 'a',
-            'bar' => 'b'
+            'bar' => 'b',
+            'group' => 'main'
         ]);
         $this->assertEquals(['foo' => 'a', 'bar' => 'b'], $result);
+    }
+
+    /**
+     * Test the custom "search" finder
+     *
+     * @return void
+     */
+    public function testFindSearch()
+    {
+        $query = $this->Articles->find('search', [
+            'foo' => 'a',
+            'bar' => 'b',
+            'group' => 'main'
+        ]);
+        $this->assertEquals(2, $query->clause('where')->count());
+
+        $query = $this->Articles->find('search', [
+            'search' => [
+                'foo' => 'a',
+                'bar' => 'b',
+                'group' => 'main'
+            ]
+        ]);
+        $this->assertEquals(3, $query->clause('where')->count());
     }
 }

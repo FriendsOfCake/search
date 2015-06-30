@@ -32,6 +32,10 @@ class SearchBehavior extends Behavior
      */
     public function findSearch(Query $query, array $options)
     {
+        if (isset($options['search'])) {
+            $options = $options['search'];
+        }
+
         foreach ($this->_table->searchConfiguration()->all() as $config) {
             $config->args($options);
             $config->query($query);
