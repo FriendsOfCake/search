@@ -62,16 +62,19 @@ public function initialize(array $config)
 ```php
 public function index()
 {
-    $query = $this->Country
-    ->find('search', $this->request->query)
-    ->where(['name !=' => null])
-    ->order(['Country.id' => 'asc'])
-    ->contain([
-        'Cities'
-    ]);
+    $query = $this->Countries
+        ->find('search', $this->Countries->filterParams($this->request->query))
+        ->where(['name !=' => null])
+        ->order(['Country.id' => 'asc'])
+        ->contain([
+            'Cities'
+        ]);
     $this->set('countries', $this->paginate($query));
 }
 ```
+
+The `search` finder and the `filterParams()` method are dynamically provided by the
+`Search` behavior.
 
 * Then add the component search in the necessary methods (for our example index)
 ```php

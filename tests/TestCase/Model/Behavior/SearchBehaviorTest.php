@@ -6,6 +6,19 @@ use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Search\Manager;
+
+class ArticlesTable extends Table {
+
+    public function searchConfiguration()
+    {
+        $manager = new Manager($this);
+        return $manager
+            ->value('foo')
+            ->value('bar')
+            ->value('baz');
+    }
+}
 
 class SearchBehaviorTest extends TestCase
 {
@@ -27,24 +40,25 @@ class SearchBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Articles = TableRegistry::get('Articles');
+        $this->Articles = new ArticlesTable;
         $this->Articles->addBehavior('Search.Search');
     }
 
+
     /**
-     * tearDown
+     * Tests the filterParams method
      *
      * @return void
      */
-    public function tearDown()
+    public function testFilterParams()
     {
-        unset($this->Articles);
-    }
-
-    /**
-     *
-     */
-    public function testFindSearch()
-    {
+        $result = $this->Articles->filterParams([
+            'limit' => 10,
+            'page' => 1,
+            'conditions' => 'troll',
+            'foo' => 'a',
+            'bar' => 'b'
+        ]);
+        $this->assertEquals(['foo' => 'a', 'bar' => 'b'], $result);
     }
 }
