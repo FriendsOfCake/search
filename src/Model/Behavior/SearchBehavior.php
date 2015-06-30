@@ -49,7 +49,7 @@ class SearchBehavior extends Behavior
      * Returns the valid search parameter values according to those that are defined
      * in the searchConfiguration() method of the table.
      *
-     * @param array $param a key value list of search parameters to use for a search.
+     * @param array $params a key value list of search parameters to use for a search.
      * @return array
      */
     public function filterParams($params)

@@ -8,7 +8,8 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 
-class ArticlesTable extends Table {
+class ArticlesTable extends Table
+{
 
     public function searchConfiguration()
     {
