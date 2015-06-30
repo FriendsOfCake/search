@@ -32,6 +32,10 @@ class SearchBehavior extends Behavior
      */
     public function findSearch(Query $query, array $options)
     {
+        if (isset($options['search'])) {
+            $options = $options['search'];
+        }
+
         foreach ($this->_table->searchConfiguration()->all() as $config) {
             $config->args($options);
             $config->query($query);
@@ -45,27 +49,12 @@ class SearchBehavior extends Behavior
      * Returns the valid search parameter values according to those that are defined
      * in the searchConfiguration() method of the table.
      *
-     * @param array $param a key value list of search parameters to use for a search.
+     * @param array $params a key value list of search parameters to use for a search.
      * @return array
      */
     public function filterParams($params)
     {
-        $blacklist = [
-            'fields' => 1,
-            'conditions' => 1,
-            'join' => 1,
-            'order' => 1,
-            'limit' => 1,
-            'offset' => 1,
-            'group' => 1,
-            'having' => 1,
-            'contain' => 1,
-            'page' => 1,
-        ];
-
-        $params = array_diff_key($params, $blacklist);
         $valid = $this->_table->searchConfiguration()->all();
-
-        return array_intersect_key($params, $valid);
+        return ['search' => array_intersect_key($params, $valid)];
     }
 }
