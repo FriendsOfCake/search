@@ -23,7 +23,7 @@ class Finder extends Base
      */
     public function process()
     {
-        if (!$this->present()) {
+        if ($this->skip()) {
             return;
         }
 

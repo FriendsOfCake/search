@@ -16,7 +16,7 @@ class ArticlesTable extends Table
         $manager = new Manager($this);
         return $manager
             ->value('foo')
-            ->value('bar')
+            ->value('bar', ['filterEmpty' => true])
             ->value('baz')
             ->value('group');
     }
@@ -50,6 +50,30 @@ class SearchBehaviorTest extends TestCase
         $this->Articles->addBehavior('Search.Search');
     }
 
+    /**
+     * [testFinder description]
+     *
+     * @return void
+     */
+    public function testFinder()
+    {
+        $queryString = [
+            'foo' => 'a',
+            'bar' => 'b',
+            'group' => 'main'
+        ];
+
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertEquals(3, $query->clause('where')->count());
+
+        $queryString['bar'] = '';
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertEquals(2, $query->clause('where')->count());
+
+        $queryString['foo'] = '';
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertEquals(2, $query->clause('where')->count());
+    }
 
     /**
      * Tests the filterParams method
