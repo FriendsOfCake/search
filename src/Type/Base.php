@@ -51,7 +51,6 @@ abstract class Base
      * @param string $name Name.
      * @param \Search\Manager $manager Manager.
      * @param array $config Config.
-     * @return void
      */
     public function __construct($name, Manager $manager, array $config = [])
     {
