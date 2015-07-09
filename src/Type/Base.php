@@ -61,7 +61,8 @@ abstract class Base
             'field' => $name,
             'name' => $name,
             'validate' => [],
-            'alwaysRun' => false
+            'alwaysRun' => false,
+            'filterEmpty' => false
         ];
 
         $this->config(array_merge($defaults, $config));
@@ -115,6 +116,27 @@ abstract class Base
     public function present()
     {
         return $this->config('alwaysRun') || array_key_exists($this->name(), $this->_args);
+    }
+
+    /**
+     * Check if empty value for name in query string should be filtered out.
+     *
+     * @return bool
+     */
+    public function filterEmpty()
+    {
+        return $this->config('filterEmpty');
+    }
+
+    /**
+     * Checks whether this finder should be skipped.
+     *
+     * @return bool
+     */
+    public function skip()
+    {
+        return !$this->present() ||
+            ($this->filterEmpty() && empty($this->_args[$this->name()]));
     }
 
     /**

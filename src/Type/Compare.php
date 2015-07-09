@@ -31,7 +31,7 @@ class Compare extends Base
      */
     public function process()
     {
-        if (!$this->present()) {
+        if ($this->skip()) {
             return;
         }
 
