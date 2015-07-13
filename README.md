@@ -7,10 +7,6 @@ Search provides a search module for CakePHP applications.
 The master branch has the following requirements:
 
 * CakePHP 3.0.0 or greater.
-* PHP 5.4.16 or greater.
-* SQLite or another database driver that CakePHP can talk to. By default
-  DebugKit will use SQLite, if you need to use a different database see the
-  Database Configuration section below.
 
 ## Installation
 
