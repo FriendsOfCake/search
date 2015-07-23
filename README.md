@@ -44,7 +44,7 @@ public function searchConfiguration()
     ->like('q', [
         'before' => true,
         'after' => true,
-        'field' => [$this->aliasField('title'), $this->aliasField('title')]
+        'field' => [$this->aliasField('title'), $this->aliasField('content')]
     ]);
     return $search;
 }
@@ -64,7 +64,7 @@ public function initialize(array $config)
 ```php
 public function index()
 {
-    $query = $this->Countries
+    $query = $this->Articles
         ->find('search', $this->Articles->filterParams($this->request->query))
         ->where(['title !=' => null])
         ->order(['Article.id' => 'asc'])
