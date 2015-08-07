@@ -1,10 +1,9 @@
 <?php
 namespace Search\View\Helper;
 
+use Cake\ORM\TableRegistry;
 use Cake\View\Helper;
 use Cake\View\View;
-use Cake\ORM\TableRegistry;
-
 
 /**
  * SearchForm helper
@@ -25,7 +24,7 @@ class SearchFormHelper extends Helper
      * Output a complete search form, based on the search configurations set up
      * in the specified table
      *
-     * @param $model string The Table to load
+     * @param string $model The Table to load
      * @return null|string An formatted FORM with inputs.
      */
     public function form($model)
