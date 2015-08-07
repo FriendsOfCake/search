@@ -50,9 +50,9 @@ class SearchFormHelper extends Helper
             // the form input
             $fields[$config['name']] = $config;
         }
-        $output .= $this->Form->inputs($fields, ['legend' => __('Search')]);
+        $output .= $this->Form->inputs($fields, ['legend' => __d('search', 'Search')]);
 
-        $output .= $this->Form->button(__('Submit'));
+        $output .= $this->Form->button(__d('search', 'Submit'));
         $output .= $this->Form->end();
 
         return $output;
