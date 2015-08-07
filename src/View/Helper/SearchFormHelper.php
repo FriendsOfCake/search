@@ -12,7 +12,7 @@ use Cake\ORM\TableRegistry;
 class SearchFormHelper extends Helper
 {
 
-    public $helpers = ['Form', 'Html'];
+    public $helpers = ['Form'];
 
     /**
      * Default configuration.
@@ -42,19 +42,20 @@ class SearchFormHelper extends Helper
 
         $searchConfig = $table->searchConfiguration()->all();
 
-        $output = $this->Html->tag('h3', __('Search'));
-        $output .= $this->Form->create();
+        $output = $this->Form->create();
 
+        $fields = [];
         foreach ($searchConfig as $object) {
             $config = $object->config();
 
             // you can add stuff like `'multiple' => true` or `'empty' => ' '`
             // to the individual searchConfiguration field calls to be passed to
             // the form input
-            $output .= $this->Form->input($config['name'], $config);
+            $fields[$config['name']] = $config;
         }
+        $output .= $this->Form->inputs($fields, ['legend' => __('Search')]);
 
-        $output .= $this->Form->submit();
+        $output .= $this->Form->button(__('Submit'));
         $output .= $this->Form->end();
 
         return $output;

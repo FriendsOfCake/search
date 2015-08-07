@@ -134,25 +134,26 @@ example is what would be rendered from the `Articles` table example above)
 ```html
 <h3>Search</h3>
 <form action="/admin/articles" accept-charset="utf-8" method="post" autocomplete="on">
-    <div style="display:none;">
-        <input type="hidden" value="POST" name="_method" autocomplete="on">
-    </div>
-    <div class="input text">
-        <label for="id">Id</label>
-        <input type="text" id="id" validate="" field="Articles.id" name="id" autocomplete="on">
-    </div>
-    <div class="input select">
-        <label for="author-id">Author</label>
-        <input type="hidden" value="" name="author_id" autocomplete="on">
-        <select id="author-id" validate="" field="Articles.author_id" name="author_id">
-            <option value="1">Author 1</option>
-            <option value="2">Author 2</option>
-            ...
-        </select>
-    </div>
-    <div class="submit">
-        <input type="submit" value="Submit" autocomplete="on">
-    </div>
+    <fieldset>
+        <legend>Search</legend>
+        <div style="display:none;">
+            <input type="hidden" value="POST" name="_method" autocomplete="on">
+        </div>
+        <div class="input text">
+            <label for="id">Id</label>
+            <input type="text" id="id" validate="" field="Articles.id" name="id" autocomplete="on">
+        </div>
+        <div class="input select">
+            <label for="author-id">Author</label>
+            <input type="hidden" value="" name="author_id" autocomplete="on">
+            <select id="author-id" validate="" field="Articles.author_id" name="author_id">
+                <option value="1">Author 1</option>
+                <option value="2">Author 2</option>
+                ...
+            </select>
+        </div>
+    </fieldset>
+    <button type="submit">Submit</button>
 </form>
 ```
 
