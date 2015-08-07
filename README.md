@@ -105,5 +105,73 @@ could filter your articles using the following.
 `example.com/articles?q=cakephp`
 
 Would filter your list of articles to any article with "cakephp" in the `title`
-or `content` field. You might choose to make a `get` form which posts the filter
-directly to the url, or create links manually.
+or `content` field. You might choose to use the helper to make a `get` form
+that posts the filter directly to the url, or create links manually.
+
+## Using the helper
+The plugin includes a helper `SearchForm` with a function `form()` that you can
+use in your application to automagically generate a form based on the
+`searchConfiguration()` set up in your table.
+
+First, load the helper in your view (either `app/src/View/AppView.php` or some
+custom view):
+
+```php
+$this->loadHelper('Search.SearchForm');
+```
+
+Then you can use the helper in your template
+```php
+<?= $this->SearchForm->form('Articles') ?>
+```
+(or if you want to be lazy and copy-paste the same thing in all of your templates, you can call it like this)
+```php
+<?= $this->SearchForm->form($this->request->params['controller']) ?>
+```
+
+The helper parses your table's `searchConfiguration` and generates a form (this
+example is what would be rendered from the `Articles` table example above)
+```html
+<h3>Search</h3>
+<form action="/admin/articles" accept-charset="utf-8" method="post" autocomplete="on">
+    <div style="display:none;">
+        <input type="hidden" value="POST" name="_method" autocomplete="on">
+    </div>
+    <div class="input text">
+        <label for="id">Id</label>
+        <input type="text" id="id" validate="" field="Articles.id" name="id" autocomplete="on">
+    </div>
+    <div class="input select">
+        <label for="author-id">Author</label>
+        <input type="hidden" value="" name="author_id" autocomplete="on">
+        <select id="author-id" validate="" field="Articles.author_id" name="author_id">
+            <option value="1">Author 1</option>
+            <option value="2">Author 2</option>
+            ...
+        </select>
+    </div>
+    <div class="submit">
+        <input type="submit" value="Submit" autocomplete="on">
+    </div>
+</form>
+```
+
+You can also add custom form input attributes to your `searchConfiguration`
+fields
+```php
+->value('author_id', [
+    'field' => $this->aliasField('author_id'),
+    'multiple' => true, // creates a select where multiple authors can be selected for filtering
+])
+```
+
+```php
+->like('email', [
+    'before' => true,
+    'after' => true,
+    'type' => 'text', // forces this email field to use a text type instead of the default email (so you don't have to enter a full valid email address)
+    'field' => $this->aliasField('email')
+])
+```
+
+Anything valid for `$options` to be passed into [`$this->Form->input()`](http://book.cakephp.org/3.0/en/views/helpers/form.html#creating-form-inputs) works here as well.
