@@ -32,8 +32,8 @@ class SearchFormHelper extends Helper
         $table = TableRegistry::get($model);
 
         // make sure the table has the behavior and has implemented the searchConfiguration method
-        if (! $table->behaviors()->has('Search') ||
-            ! method_exists($table, 'searchConfiguration')) {
+        if (!$table->behaviors()->has('Search') ||
+            !method_exists($table, 'searchConfiguration')) {
             return null;
         }
 
