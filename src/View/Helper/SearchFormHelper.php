@@ -11,6 +11,11 @@ use Cake\View\View;
 class SearchFormHelper extends Helper
 {
 
+    /**
+     * Other helpers used by SearchFormHelper
+     *
+     * @var array
+     */
     public $helpers = ['Form'];
 
     /**
