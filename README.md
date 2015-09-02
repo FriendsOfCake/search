@@ -78,14 +78,6 @@ public function index()
 The `search` finder and the `filterParams()` method are dynamically provided by the
 `Search` behavior.
 
-* Then add the component search in the necessary methods (for our example index)
-```php
-public function index()
-{
-    $this->loadComponent('Search.Prg');
-}
-```
-
 * Instead, you can add this in your AppController to enable component in all index methods
 ```php
 public function initialize()
