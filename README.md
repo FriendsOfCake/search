@@ -116,7 +116,7 @@ directly to the url, or create links manually.
 
 ## Types
 
-The Search plugin comes with a set of predefined ``Types`` that allow you to
+The Search plugin comes with a set of predefined search filters that allow you to
 easily create the search results you need. Use:
 
 - ``value`` to limit results to exact matches
