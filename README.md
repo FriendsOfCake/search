@@ -1,5 +1,11 @@
 # CakePHP Search
 
+
+[![Build Status](https://img.shields.io/travis/FriendsOfCake/search/master.svg?style=flat-square)](https://travis-ci.org/FriendsOfCake/search)
+[![Coverage Status](https://img.shields.io/coveralls/FriendsOfCake/search/master.svg?style=flat-square)](https://coveralls.io/r/FriendsOfCake/search?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/friendsofcake/search.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/search)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/search)
+
 Search provides a search module for CakePHP applications.
 
 ## Requirements
@@ -107,3 +113,15 @@ could filter your articles using the following.
 Would filter your list of articles to any article with "cakephp" in the `title`
 or `content` field. You might choose to make a `get` form which posts the filter
 directly to the url, or create links manually.
+
+## Types
+
+The Search plugin comes with a set of predefined ``Types`` that allow you to
+easily create the search results you need. Use:
+
+- ``value`` to limit results to exact matches
+- ``like`` to produce results containing the search query (``LIKE``)
+- ``finder`` to produce results using a [(custom)](http://book.cakephp.org/3.0/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
+- ``compare`` to produce results requiring operator comparison (
+    ``>``, ``<``, ``>=`` and ``<=``)
+- ``callback`` to produce results using your own custom callable function
