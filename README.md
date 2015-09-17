@@ -117,15 +117,16 @@ could filter your articles using the following.
 
 Would filter your list of articles to any article with "cakephp" in the `title`
 or `content` field. You might choose to make a `get` form which posts the filter
-directly to the url, or create links manually.
+directly to the url, but if you're using the `Search.Prg` component, you'll want to use `POST`.
 
-### Creating your GET form
-You can change the method of a form when you create it.
+### Creating your form
+In most cases you'll want to add a form to your index view which will search your data.
 
 ```php
-    echo $this->Form->create(null, ['type' => 'get']);
+    echo $this->Form->create(null);
     // You'll need to populate $authors in the template from your controller
     echo $this->Form->input('author_id'); 
+    // Match the search param in your table configuration
     echo $this->Form->input('q');
     echo $this->Form->button('Filter',['type' => 'submit');
     echo $this->Html->link('Reset', ['action' => 'index']);
