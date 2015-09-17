@@ -93,7 +93,7 @@ The `search` finder and the `filterParams()` method are dynamically provided by 
 Then add the Search Prg component to the necessary methods in your controller. 
 
 :warning: Make sure, 
-* That you add this in the controllers `initialize` method. 
+* That you add this in the controller's `initialize` method. 
 * That you only add this to methods which are using search, such as your `index` method.
 
 ```php
