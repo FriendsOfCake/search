@@ -128,7 +128,7 @@ In most cases you'll want to add a form to your index view which will search you
     echo $this->Form->input('author_id'); 
     // Match the search param in your table configuration
     echo $this->Form->input('q');
-    echo $this->Form->button('Filter',['type' => 'submit');
+    echo $this->Form->button('Filter', ['type' => 'submit']);
     echo $this->Html->link('Reset', ['action' => 'index']);
     echo $this->Form->end();
 ```
