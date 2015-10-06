@@ -115,4 +115,15 @@ class SearchBehaviorTest extends TestCase
         ]);
         $this->assertEquals(3, $query->clause('where')->count());
     }
+
+    /**
+     * testSearchManager
+     *
+     * @return void
+     */
+    public function testSearchManager()
+    {
+        $manager = $this->Articles->searchManager();
+        $this->assertInstanceOf('\Search\Manager', $manager);
+    }
 }

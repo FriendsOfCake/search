@@ -15,11 +15,13 @@ class SearchBehavior extends Behavior
      * @var array
      */
     protected $_defaultConfig = [
+        'searchConfigurationMethod' => 'searchConfiguration',
         'implementedFinders' => [
             'search' => 'findSearch'
         ],
         'implementendMethods' => [
-            'filterParams' => 'filterParams'
+            'filterParams' => 'filterParams',
+            'searchManager' => 'searchManager'
         ]
     ];
 
@@ -36,7 +38,7 @@ class SearchBehavior extends Behavior
             $options = $options['search'];
         }
 
-        foreach ($this->_table->searchConfiguration()->all() as $config) {
+        foreach ($this->_table->{$this->config('searchConfigurationMethod')}()->all() as $config) {
             $config->args($options);
             $config->query($query);
             $config->process();
@@ -54,7 +56,20 @@ class SearchBehavior extends Behavior
      */
     public function filterParams($params)
     {
-        $valid = $this->_table->searchConfiguration()->all();
+        $valid = $this->_table->{$this->config('searchConfigurationMethod')}()->all();
         return ['search' => array_intersect_key($params, $valid)];
+    }
+
+    /**
+     * Returns the search filter manager.
+     *
+     * @return \Search\Manager;
+     */
+    public function searchManager()
+    {
+        if (empty($this->_manager)) {
+            $this->_manager = new Manager($this->_table);
+        }
+        return $this->_manager;
     }
 }
