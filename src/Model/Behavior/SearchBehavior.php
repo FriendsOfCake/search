@@ -15,7 +15,7 @@ class SearchBehavior extends Behavior
      *
      * ### Options
      * - `searchConfigMethod` Method name of the method that returns the filters.
-     * 
+     *
      * @var array
      */
     protected $_defaultConfig = [
