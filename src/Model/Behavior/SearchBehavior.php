@@ -5,6 +5,7 @@ use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
+use Search\Manager;
 
 class SearchBehavior extends Behavior
 {
@@ -12,14 +13,19 @@ class SearchBehavior extends Behavior
     /**
      * $_defaultConfig For the Behavior.
      *
+     * ### Options
+     * - `searchConfigMethod` Method name of the method that returns the filters.
+     *
      * @var array
      */
     protected $_defaultConfig = [
+        'searchConfigMethod' => 'searchConfiguration',
         'implementedFinders' => [
             'search' => 'findSearch'
         ],
         'implementendMethods' => [
-            'filterParams' => 'filterParams'
+            'filterParams' => 'filterParams',
+            'searchManager' => 'searchManager'
         ]
     ];
 
@@ -36,7 +42,7 @@ class SearchBehavior extends Behavior
             $options = $options['search'];
         }
 
-        foreach ($this->_table->searchConfiguration()->all() as $config) {
+        foreach ($this->_table->{$this->config('searchConfigMethod')}()->all() as $config) {
             $config->args($options);
             $config->query($query);
             $config->process();
@@ -54,7 +60,20 @@ class SearchBehavior extends Behavior
      */
     public function filterParams($params)
     {
-        $valid = $this->_table->searchConfiguration()->all();
+        $valid = $this->_table->{$this->config('searchConfigMethod')}()->all();
         return ['search' => array_intersect_key($params, $valid)];
+    }
+
+    /**
+     * Returns the search filter manager.
+     *
+     * @return \Search\Manager;
+     */
+    public function searchManager()
+    {
+        if (empty($this->_manager)) {
+            $this->_manager = new Manager($this->_table);
+        }
+        return $this->_manager;
     }
 }
