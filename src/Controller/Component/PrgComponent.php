@@ -10,7 +10,7 @@ class PrgComponent extends Component
      * $_defaultConfig For the Component.
      *
      * ### Options
-     * - `stripParams` Fields to strip from the data to query param conversion. Strips the `__csrfToken` by default.
+     * - `stripParams` Fields to strip from the data to query param conversion. Strips the `_csrfToken` by default.
      *
      * @var array
      */
