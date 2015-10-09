@@ -100,9 +100,9 @@ class Manager
     /**
      * Adds a new filter to the active collection.
      *
-     * @param string $name
-     * @param string $filter
-     * @param array $options
+     * @param string $name Field name.
+     * @param string $filter Filter name.
+     * @param array $options Filter options.
      * @return $this
      */
     public function add($name, $filter, array $options = [])
