@@ -1,12 +1,15 @@
 <?php
 namespace Search;
 
+use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use Search\Type;
 
 class Manager
 {
+
+    use InstanceConfigTrait;
 
     /**
      * Table
@@ -32,11 +35,13 @@ class Manager
     protected $_collection = 'default';
 
     /**
-     * Config
+     * Default config
      *
      * @var array
      */
-    protected $_config = [];
+    protected $_defaultConfig = [
+        'typeClasses' => []
+    ];
 
     /**
      * Constructor
@@ -141,8 +146,9 @@ class Manager
                 return new $className($name, $this, $options);
             }
         }
-        if (isset($config['typeClasses'][$filter])) {
-            return new $config['typeClasses'][$filter]($filter, $this, $options);
+        $typeClasses = $this->config('typeClasses');
+        if (isset($typeClasses[$filter])) {
+            return new $typeClasses[$filter]($filter, $this, $options);
         }
         if (class_exists('\Search\Type\\' . $filter)) {
             $className = '\Search\Type\\' . $filter;
@@ -152,7 +158,7 @@ class Manager
             $className = '\App\Search\Type\\' . $filter;
             return new $className($name, $this, $options);
         }
-        throw new \InvalidArgumentException(sprintf('Can\'t find filter class %s!', $name));
+        throw new \InvalidArgumentException(sprintf('Can\'t find filter class "%s"!', $className));
     }
 
     /**
