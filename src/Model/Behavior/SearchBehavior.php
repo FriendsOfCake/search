@@ -11,6 +11,13 @@ class SearchBehavior extends Behavior
 {
 
     /**
+     * Search Manager instance.
+     *
+     * @var \Search\Manager
+     */
+    public $_manager = null;
+
+    /**
      * $_defaultConfig For the Behavior.
      *
      * ### Options
@@ -67,7 +74,7 @@ class SearchBehavior extends Behavior
     /**
      * Returns the search filter manager.
      *
-     * @return \Search\Manager;
+     * @return \Search\Manager
      */
     public function searchManager()
     {
