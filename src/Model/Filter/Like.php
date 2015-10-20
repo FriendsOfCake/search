@@ -35,8 +35,10 @@ class Like extends Base
             $columnType = 'string';
 
             if (is_string($field)) {
-                $columnExists = $this->manager()->table()->schema()->column($field);
-                $columnType = (!$columnExists) ? $this->manager()->table()->schema()->columnType($field) : 'string';
+                $scheme = $this->manager()->table()->schema();
+
+                $columnExists = $scheme->column($field);
+                $columnType = (!$columnExists) ? $scheme->columnType($field) : 'string';
             }
 
             $value = $this->_wildCards($this->value());
