@@ -41,7 +41,7 @@ class Like extends Base
 
             $value = $this->_wildCards($this->value());
 
-            $conditions[] = new Comparison($field, $value, $columnType, 'LIKE');;
+            $conditions[] = new Comparison($field, $value, $columnType, 'LIKE');
         }
 
         $this->query()->andWhere([$this->config('mode') => $conditions]);

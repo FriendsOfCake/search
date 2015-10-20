@@ -48,7 +48,7 @@ class Compare extends Base
                 $columnType = (!$columnExists) ? $this->manager()->table()->schema()->columnType($field) : 'string';
             }
 
-            $conditions[] = new Comparison($field, $this->value(), $columnType, $this->config('operator'));;
+            $conditions[] = new Comparison($field, $this->value(), $columnType, $this->config('operator'));
         }
 
         $this->query()->andWhere($conditions);
