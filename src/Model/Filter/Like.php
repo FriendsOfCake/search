@@ -1,6 +1,7 @@
 <?php
 namespace Search\Model\Filter;
 
+use Cake\Database\Expression\Comparison;
 use Cake\ORM\Query;
 
 class Like extends Base
@@ -31,10 +32,16 @@ class Like extends Base
 
         $conditions = [];
         foreach ($this->fields() as $field) {
-            $left = $field . ' ' . $this->config('comparison');
-            $right = $this->_wildCards($this->value());
+            $columnType = 'string';
 
-            $conditions[] = [$left => $right];
+            if (is_string($field)) {
+                $columnExists = $this->manager()->table()->schema()->column($field);
+                $columnType = (!$columnExists) ? $this->manager()->table()->schema()->columnType($field) : 'string';
+            }
+
+            $value = $this->_wildCards($this->value());
+
+            $conditions[] = new Comparison($field, $value, $columnType, 'LIKE');;
         }
 
         $this->query()->andWhere([$this->config('mode') => $conditions]);
