@@ -81,7 +81,7 @@ public function index()
         ->find('search', $this->Articles->filterParams($this->request->query))
         // You can add extra things to the query if you need to
         ->contain(['Comments'])
-        ->where(['title !=' => null]);
+        ->where(['title IS NOT' => null]);
     $this->set('articles', $this->paginate($query));
 }
 ```
