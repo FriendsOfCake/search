@@ -3,9 +3,13 @@ namespace Search;
 
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
+use Cake\Utility\Inflector;
+use Search\Type;
 
 class Manager
 {
+
+    use InstanceConfigTrait;
 
     /**
      * Table
@@ -15,16 +19,34 @@ class Manager
     protected $_table;
 
     /**
-     * Config
+     * Filter collection and their filters
      *
      * @var array
      */
-    protected $_config = [];
+    protected $_filters = [
+        'default' => []
+    ];
+
+    /**
+     * Active filter collection.
+     *
+     * @var string
+     */
+    protected $_collection = 'default';
+
+    /**
+     * Default config
+     *
+     * @var array
+     */
+    protected $_defaultConfig = [
+        'typeClasses' => []
+    ];
 
     /**
      * Constructor
      *
-     * @param \Cake\ORM\Table $table Table
+     * @param Table $table Table
      */
     public function __construct(Table $table)
     {
@@ -32,19 +54,19 @@ class Manager
     }
 
     /**
-     * Return all config
+     * Return all configured types.
      *
      * @return array Config
      */
     public function all()
     {
-        return $this->_config;
+        return $this->_filters['default'];
     }
 
     /**
      * Return Table
      *
-     * @return \Cake\ORM\Table Table Instance
+     * @return Table Table Instance
      */
     public function table()
     {
@@ -52,80 +74,105 @@ class Manager
     }
 
     /**
-     * like method
+     * Gets all filters in a given collection.
      *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
+     * @param string $collection Name of the filter collection.
+     * @return array Array of filter instances.
      */
-    public function like($name, array $config = [])
+    public function getFilters($collection = 'default')
     {
-        $this->_config[$name] = new Type\Like($name, $this, $config);
+        return $this->_filters[$collection];
+    }
+
+    /**
+     * Sets or gets the filter collection name.
+     *
+     * @param string $name Name of the active filter collection to set.
+     * @return mixed Returns $this or the name of the active collection if no $name was provided.
+     */
+    public function collection($name = null)
+    {
+        if ($name === null) {
+            return $this->_collection;
+        }
+        if (!isset($this->_filters[$name])) {
+            $this->_filters[$name] = [];
+        }
+        $this->_collection = $name;
         return $this;
     }
 
     /**
-     * value method
+     * Adds a new filter to the active collection.
      *
-     * @param string $name Name
-     * @param array $config Config
+     * @param string $name Field name.
+     * @param string $filter Filter name.
+     * @param array $options Filter options.
      * @return $this
      */
-    public function value($name, array $config = [])
+    public function add($name, $filter, array $options = [])
     {
-        $this->_config[$name] = new Type\Value($name, $this, $config);
+        $this->_filters[$this->_collection][$name] = $this->loadFilter($name, $filter, $options);
         return $this;
     }
 
     /**
-     * finder method
+     * Removes filter from the active collection.
      *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
+     * @param string $name Name of the filter to be removed.
+     * @return void
      */
-    public function finder($name, array $config = [])
+    public function remove($name)
     {
-        $this->_config[$name] = new Type\Finder($name, $this, $config);
-        return $this;
+        unset($this->_filters[$this->_collection][$name]);
     }
 
     /**
-     * callback method
+     * Loads a search filter.
      *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
+     * @param string $name Name of the field
+     * @param string $filter Filter name
+     * @param array $options Filter options.
+     * @return \Search\Type\Base
+     * @throws \InvalidArgumentException When no filter was found.
      */
-    public function callback($name, array $config = [])
+    public function loadFilter($name, $filter, array $options = [])
     {
-        $this->_config[$name] = new Type\Callback($name, $this, $config);
-        return $this;
+        list($plugin, $filter) = pluginSplit($filter);
+        $filter = Inflector::classify($filter);
+        if (!empty($plugin)) {
+            $className = '\\' . $plugin . '\Search\Type\\' . $filter;
+            if (class_exists($className)) {
+                return new $className($name, $this, $options);
+            }
+        }
+        $typeClasses = $this->config('typeClasses');
+        if (isset($typeClasses[$filter])) {
+            return new $typeClasses[$filter]($filter, $this, $options);
+        }
+        if (class_exists('\Search\Type\\' . $filter)) {
+            $className = '\Search\Type\\' . $filter;
+            return new $className($name, $this, $options);
+        }
+        if (class_exists('\App\Search\Type\\' . $filter)) {
+            $className = '\App\Search\Type\\' . $filter;
+            return new $className($name, $this, $options);
+        }
+        throw new \InvalidArgumentException(sprintf('Can\'t find filter class "%s"!', $className));
     }
 
     /**
-     * compare method
+     * Provides backward compatibility.
      *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
+     * @param string $method Method name.
+     * @param array $args Arguments.
+     * @return mixed
      */
-    public function compare($name, array $config = [])
+    public function __call($method, $args)
     {
-        $this->_config[$name] = new Type\Compare($name, $this, $config);
-        return $this;
-    }
-
-    /**
-     * custom method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function custom($name, array $config = [])
-    {
-        $this->_config[$name] = new $config['className']($name, $this, $config);
-        return $this;
+        if (!isset($args[1])) {
+            $args[1] = [];
+        }
+        return $this->add($args[0], $method, $args[1]);
     }
 }
