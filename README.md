@@ -67,6 +67,11 @@ class ExampleTable extends Table {
                 'before' => true,
                 'after' => true,
                 'field' => [$this->aliasField('title'), $this->aliasField('content')]
+            ])
+            ->callback('foo', [
+                'callback' => function ($query, $args, $manager) {
+                    // Modify $query as required
+                }
             ]);
 
         return $search;
