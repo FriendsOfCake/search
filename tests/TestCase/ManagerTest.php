@@ -15,7 +15,6 @@ class TestType extends Base
      */
     public function process()
     {
-
     }
 }
 
