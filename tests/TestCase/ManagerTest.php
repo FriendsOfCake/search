@@ -9,7 +9,11 @@ use Search\Type\Base;
 
 class TestType extends Base {
 
-    public function process() {
+    /**
+     * Dummy method for testing
+     */
+    public function process()
+    {
 
     }
 }

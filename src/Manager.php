@@ -47,6 +47,7 @@ class Manager
      * Constructor
      *
      * @param Table $table Table
+     * @param array $config Configuration options
      */
     public function __construct(Table $table, array $config = [])
     {
