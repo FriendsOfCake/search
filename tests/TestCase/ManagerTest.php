@@ -2,11 +2,17 @@
 namespace Search\Test\TestCase;
 
 use Cake\Core\Configure;
-use Cake\ORM\Entity;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
+use Search\Type\base;
+
+class TestType extends Base {
+
+    public function process() {
+
+    }
+}
 
 class ManagerTest extends TestCase
 {
@@ -43,6 +49,18 @@ class ManagerTest extends TestCase
         $this->assertInstanceOf('\Search\Type\Value', $result);
         $result = $manager->loadFilter('test', 'compare');
         $this->assertInstanceOf('\Search\Type\Compare', $result);
+    }
+
+    public function testAdd()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $manager->add('testOne', 'value');
+        $manager->add('testTwo', 'compare');
+        $result = $manager->getFilters();
+        $this->assertCount(2, $result);
+        $this->assertInstanceOf('\Search\Type\Value', $result['testOne']);
+        $this->assertInstanceOf('\Search\Type\Compare', $result['testTwo']);
     }
 
     /**
@@ -89,5 +107,17 @@ class ManagerTest extends TestCase
         $manager = new Manager($table);
         $result = $manager->table();
         $this->assertInstanceOf('\Cake\ORM\Table', $result);
+    }
+
+    public function testTypeClasses()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table, [
+            'typeClasses' => [
+                'Test' => '\Search\Test\TestCase\TestType'
+            ]
+        ]);
+        $result = $manager->loadFilter('test', 'Test');
+        $this->assertInstanceOf('\Search\Test\TestCase\TestType', $result);
     }
 }

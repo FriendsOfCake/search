@@ -48,8 +48,9 @@ class Manager
      *
      * @param Table $table Table
      */
-    public function __construct(Table $table)
+    public function __construct(Table $table, array $config = [])
     {
+        $this->config($config);
         $this->_table = $table;
     }
 
