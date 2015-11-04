@@ -150,15 +150,15 @@ class Manager
         if (isset($typeClasses[$filter])) {
             return new $typeClasses[$filter]($filter, $this, $options);
         }
-        if (class_exists('\Search\Type\\' . $filter)) {
-            $className = '\Search\Type\\' . $filter;
+        $className = '\Search\Type\\' . $filter;
+        if (class_exists($className)) {
             return new $className($name, $this, $options);
         }
-        if (class_exists('\App\Search\Type\\' . $filter)) {
-            $className = '\App\Search\Type\\' . $filter;
+        $className = '\App\Search\Type\\' . $filter;
+        if (class_exists($className)) {
             return new $className($name, $this, $options);
         }
-        throw new \InvalidArgumentException(sprintf('Can\'t find filter class "%s"!', $className));
+        throw new \InvalidArgumentException(sprintf('Can\'t find filter class for filter "%s"!', $filter));
     }
 
     /**

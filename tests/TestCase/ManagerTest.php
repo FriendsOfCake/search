@@ -34,4 +34,60 @@ class ManagerTest extends TestCase
         $this->assertInstanceOf('\Search\Type\Value', $all['test2']);
         $this->assertEquals(count($all), 2);
     }
+
+    public function testLoadFilter()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $result = $manager->loadFilter('test', 'value');
+        $this->assertInstanceOf('\Search\Type\Value', $result);
+        $result = $manager->loadFilter('test', 'compare');
+        $this->assertInstanceOf('\Search\Type\Compare', $result);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testLoadFilterInvalidArgumentException()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $manager->loadFilter('test', 'DOES-NOT-EXIST');
+    }
+
+    public function testGetFilters()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $manager->add('test', 'value');
+        $manager->add('test2', 'compare');
+        $result = $manager->getFilters();
+        $this->assertCount(2, $result);
+        $this->assertInstanceOf('\Search\Type\Value', $result['test']);
+        $this->assertInstanceOf('\Search\Type\Compare', $result['test2']);
+    }
+
+    public function testRemove()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $manager->add('test', 'value');
+        $manager->add('test2', 'compare');
+        $result = $manager->getFilters();
+        $this->assertCount(2, $result);
+        $manager->remove('test2');
+        $result = $manager->getFilters();
+        $this->assertCount(1, $result);
+        $manager->remove('test');
+        $result = $manager->getFilters();
+        $this->assertCount(0, $result);
+    }
+
+    public function testTable()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $result = $manager->table();
+        $this->assertInstanceOf('\Cake\ORM\Table', $result);
+    }
 }
