@@ -7,7 +7,8 @@ use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Type\Base;
 
-class TestType extends Base {
+class TestType extends Base
+{
 
     /**
      * Dummy method for testing
