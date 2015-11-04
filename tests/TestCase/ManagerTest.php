@@ -5,7 +5,7 @@ use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
-use Search\Type\base;
+use Search\Type\Base;
 
 class TestType extends Base {
 
