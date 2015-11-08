@@ -124,4 +124,24 @@ class ManagerTest extends TestCase
         $result = $manager->loadFilter('test', 'Test');
         $this->assertInstanceOf('\Search\Test\TestCase\TestType', $result);
     }
+
+    public function testCollection()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $result = $manager->collection('default');
+        $this->assertInstanceOf('\Search\Manager', $result);
+        $manager->add('test', 'value');
+        $result = $manager->collection('otherFilters');
+        $this->assertInstanceOf('\Search\Manager', $result);
+        $manager->add('test2', 'value');
+        $manager->add('test3', 'value');
+        $result = $manager->getFilters('default');
+        $this->assertCount(1, $result);
+        $this->assertArrayHasKey('test', $result);
+        $result = $manager->getFilters('otherFilters');
+        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('test2', $result);
+        $this->assertArrayHasKey('test3', $result);
+    }
 }
