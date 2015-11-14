@@ -1,8 +1,10 @@
 <?php
 namespace Search;
 
+use Cake\Core\App;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
+use InvalidArgumentException;
 use Search\Type;
 
 class Manager
@@ -125,7 +127,7 @@ class Manager
      */
     public function like($name, array $config = [])
     {
-        $this->add($name, 'Like', $config);
+        $this->add($name, 'Search.Like', $config);
         return $this;
     }
 
@@ -139,7 +141,7 @@ class Manager
      */
     public function value($name, array $config = [])
     {
-        $this->add($name, 'Value', $config);
+        $this->add($name, 'Search.Value', $config);
         return $this;
     }
 
@@ -153,7 +155,7 @@ class Manager
      */
     public function finder($name, array $config = [])
     {
-        $this->add($name, 'Finder', $config);
+        $this->add($name, 'Search.Finder', $config);
         return $this;
     }
 
@@ -167,7 +169,7 @@ class Manager
      */
     public function callback($name, array $config = [])
     {
-        $this->add($name, 'Callback', $config);
+        $this->add($name, 'Search.Callback', $config);
         return $this;
     }
     /**
@@ -180,7 +182,7 @@ class Manager
      */
     public function compare($name, array $config = [])
     {
-        $this->add($name, 'Compare', $config);
+        $this->add($name, 'Search.Compare', $config);
         return $this;
     }
     /**
@@ -208,23 +210,17 @@ class Manager
      */
     public function loadFilter($name, $filter, array $options = [])
     {
-        list($plugin, $filter) = pluginSplit($filter);
-        $filter = Inflector::classify($filter);
-        if (!empty($plugin)) {
-            $className = '\\' . $plugin . '\Search\Type\\' . $filter;
-            if (class_exists($className)) {
-                return new $className($name, $this, $options);
-            }
+        if (!empty($options['className'])) {
+            $class = $options['className'];
+            unset($options['className']);
+        } else {
+            $class = Inflector::classify($filter);
         }
-        $className = '\Search\Type\\' . $filter;
-        if (class_exists($className)) {
-            return new $className($name, $this, $options);
+        $className = App::className($class, 'Type');
+        if (!class_exists($className)) {
+            throw new InvalidArgumentException(sprintf('Filter type "%s" was not found.', $class));
         }
-        $className = '\App\Search\Type\\' . $filter;
-        if (class_exists($className)) {
-            return new $className($name, $this, $options);
-        }
-        throw new \InvalidArgumentException(sprintf('Can\'t find filter class for filter "%s"!', $filter));
+        return new $className($name, $this, $options);
     }
 
     /**

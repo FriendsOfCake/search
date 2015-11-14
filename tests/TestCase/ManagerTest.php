@@ -49,9 +49,9 @@ class ManagerTest extends TestCase
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $result = $manager->loadFilter('test', 'value');
+        $result = $manager->loadFilter('test', 'Search.Value');
         $this->assertInstanceOf('\Search\Type\Value', $result);
-        $result = $manager->loadFilter('test', 'compare');
+        $result = $manager->loadFilter('test', 'Search.Compare');
         $this->assertInstanceOf('\Search\Type\Compare', $result);
     }
 
@@ -59,8 +59,8 @@ class ManagerTest extends TestCase
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $manager->add('testOne', 'value');
-        $manager->add('testTwo', 'compare');
+        $manager->add('testOne', 'Search.Value');
+        $manager->add('testTwo', 'Search.Compare');
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
         $this->assertInstanceOf('\Search\Type\Value', $result['testOne']);
@@ -81,8 +81,8 @@ class ManagerTest extends TestCase
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $manager->add('test', 'value');
-        $manager->add('test2', 'compare');
+        $manager->add('test', 'Search.Value');
+        $manager->add('test2', 'Search.Compare');
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
         $this->assertInstanceOf('\Search\Type\Value', $result['test']);
@@ -93,8 +93,8 @@ class ManagerTest extends TestCase
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $manager->add('test', 'value');
-        $manager->add('test2', 'compare');
+        $manager->add('test', 'Search.Value');
+        $manager->add('test2', 'Search.Compare');
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
         $manager->remove('test2');
@@ -119,11 +119,11 @@ class ManagerTest extends TestCase
         $manager = new Manager($table);
         $result = $manager->collection('default');
         $this->assertInstanceOf('\Search\Manager', $result);
-        $manager->add('test', 'value');
+        $manager->add('test', 'Search.Value');
         $result = $manager->collection('otherFilters');
         $this->assertInstanceOf('\Search\Manager', $result);
-        $manager->add('test2', 'value');
-        $manager->add('test3', 'value');
+        $manager->add('test2', 'Search.Value');
+        $manager->add('test3', 'Search.Value');
         $result = $manager->getFilters('default');
         $this->assertCount(1, $result);
         $this->assertArrayHasKey('test', $result);
