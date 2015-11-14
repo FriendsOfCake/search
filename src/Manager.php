@@ -130,6 +130,89 @@ class Manager
     }
 
     /**
+     * like method
+     *
+     * @deprecated Use Manager::add() instead.
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function like($name, array $config = [])
+    {
+        $this->add($name, 'Like', $config);
+        return $this;
+    }
+
+    /**
+     * value method
+     *
+     * @deprecated Use Manager::add() instead.
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function value($name, array $config = [])
+    {
+        $this->add($name, 'Value', $config);
+        return $this;
+    }
+
+    /**
+     * finder method
+     *
+     * @deprecated Use Manager::add() instead.
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function finder($name, array $config = [])
+    {
+        $this->add($name, 'Finder', $config);
+        return $this;
+    }
+
+    /**
+     * callback method
+     *
+     * @deprecated Use Manager::add() instead.
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function callback($name, array $config = [])
+    {
+        $this->add($name, 'Callback', $config);
+        return $this;
+    }
+    /**
+     * compare method
+     *
+     * @deprecated Use Manager::add() instead.
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function compare($name, array $config = [])
+    {
+        $this->add($name, 'Compare', $config);
+        return $this;
+    }
+    /**
+     * custom method
+     *
+     * @deprecated Use Manager::add() instead.
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function custom($name, array $config = [])
+    {
+        $this->config('typeClasses.' . $config['className'], $config['className']);
+        $this->add($name, $config['className'], $config);
+        return $this;
+    }
+
+    /**
      * Loads a search filter.
      *
      * @param string $name Name of the field
