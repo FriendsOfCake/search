@@ -113,18 +113,6 @@ class ManagerTest extends TestCase
         $this->assertInstanceOf('\Cake\ORM\Table', $result);
     }
 
-    public function testTypeClasses()
-    {
-        $table = TableRegistry::get('Articles');
-        $manager = new Manager($table, [
-            'typeClasses' => [
-                'Test' => '\Search\Test\TestCase\TestType'
-            ]
-        ]);
-        $result = $manager->loadFilter('test', 'Test');
-        $this->assertInstanceOf('\Search\Test\TestCase\TestType', $result);
-    }
-
     public function testCollection()
     {
         $table = TableRegistry::get('Articles');

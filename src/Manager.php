@@ -1,15 +1,12 @@
 <?php
 namespace Search;
 
-use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use Search\Type;
 
 class Manager
 {
-
-    use InstanceConfigTrait;
 
     /**
      * Table
@@ -35,23 +32,12 @@ class Manager
     protected $_collection = 'default';
 
     /**
-     * Default config
-     *
-     * @var array
-     */
-    protected $_defaultConfig = [
-        'typeClasses' => []
-    ];
-
-    /**
      * Constructor
      *
      * @param Table $table Table
-     * @param array $config Configuration options
      */
-    public function __construct(Table $table, array $config = [])
+    public function __construct(Table $table)
     {
-        $this->config($config);
         $this->_table = $table;
     }
 
@@ -207,7 +193,6 @@ class Manager
      */
     public function custom($name, array $config = [])
     {
-        $this->config('typeClasses.' . $config['className'], $config['className']);
         $this->add($name, $config['className'], $config);
         return $this;
     }
@@ -230,10 +215,6 @@ class Manager
             if (class_exists($className)) {
                 return new $className($name, $this, $options);
             }
-        }
-        $typeClasses = $this->config('typeClasses');
-        if (isset($typeClasses[$filter])) {
-            return new $typeClasses[$filter]($filter, $this, $options);
         }
         $className = '\Search\Type\\' . $filter;
         if (class_exists($className)) {
