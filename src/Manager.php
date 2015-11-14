@@ -36,7 +36,7 @@ class Manager
     /**
      * Constructor
      *
-     * @param Table $table Table
+     * @param \Cake\ORM\Table $table Table
      */
     public function __construct(Table $table)
     {
@@ -56,7 +56,7 @@ class Manager
     /**
      * Return Table
      *
-     * @return Table Table Instance
+     * @return \Cake\ORM\Table Table Instance
      */
     public function table()
     {
@@ -120,7 +120,6 @@ class Manager
     /**
      * like method
      *
-     * @deprecated Use Manager::add() instead.
      * @param string $name Name
      * @param array $config Config
      * @return $this
@@ -134,7 +133,6 @@ class Manager
     /**
      * value method
      *
-     * @deprecated Use Manager::add() instead.
      * @param string $name Name
      * @param array $config Config
      * @return $this
@@ -148,7 +146,6 @@ class Manager
     /**
      * finder method
      *
-     * @deprecated Use Manager::add() instead.
      * @param string $name Name
      * @param array $config Config
      * @return $this
@@ -162,7 +159,6 @@ class Manager
     /**
      * callback method
      *
-     * @deprecated Use Manager::add() instead.
      * @param string $name Name
      * @param array $config Config
      * @return $this
@@ -172,10 +168,10 @@ class Manager
         $this->add($name, 'Search.Callback', $config);
         return $this;
     }
+
     /**
      * compare method
      *
-     * @deprecated Use Manager::add() instead.
      * @param string $name Name
      * @param array $config Config
      * @return $this
@@ -185,10 +181,10 @@ class Manager
         $this->add($name, 'Search.Compare', $config);
         return $this;
     }
+
     /**
      * custom method
      *
-     * @deprecated Use Manager::add() instead.
      * @param string $name Name
      * @param array $config Config
      * @return $this
@@ -224,11 +220,11 @@ class Manager
     }
 
     /**
-     * Provides backward compatibility.
+     * Magic method to add filters using custom types.
      *
      * @param string $method Method name.
      * @param array $args Arguments.
-     * @return mixed
+     * @return $this
      */
     public function __call($method, $args)
     {
