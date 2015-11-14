@@ -206,11 +206,11 @@ class Manager
      */
     public function loadFilter($name, $filter, array $options = [])
     {
-        if (!empty($options['className'])) {
+        if (empty($options['className'])) {
+            $class = Inflector::classify($filter);
+        } else {
             $class = $options['className'];
             unset($options['className']);
-        } else {
-            $class = Inflector::classify($filter);
         }
         $className = App::className($class, 'Type');
         if (!class_exists($className)) {
