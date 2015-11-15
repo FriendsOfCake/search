@@ -5,7 +5,6 @@ use Cake\Core\App;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use InvalidArgumentException;
-use Search\Type;
 
 class Manager
 {
@@ -201,7 +200,7 @@ class Manager
      * @param string $name Name of the field
      * @param string $filter Filter name
      * @param array $options Filter options.
-     * @return \Search\Type\Base
+     * @return \Search\Model\Filter\Base
      * @throws \InvalidArgumentException When no filter was found.
      */
     public function loadFilter($name, $filter, array $options = [])
@@ -212,9 +211,9 @@ class Manager
             $class = $options['className'];
             unset($options['className']);
         }
-        $className = App::className($class, 'Type');
+        $className = App::className($class, 'Model\Filter');
         if (!class_exists($className)) {
-            throw new InvalidArgumentException(sprintf('Filter type "%s" was not found.', $class));
+            throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
         }
         return new $className($name, $this, $options);
     }

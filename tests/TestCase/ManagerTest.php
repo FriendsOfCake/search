@@ -5,9 +5,9 @@ use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
-use Search\Type\Base;
+use Search\Model\Filter\Base;
 
-class TestType extends Base
+class TestFilter extends Base
 {
 
     /**
@@ -36,12 +36,12 @@ class ManagerTest extends TestCase
         $manager = new Manager($table);
         $manager->compare('test');
         $all = $manager->all();
-        $this->assertInstanceOf('\Search\Type\Compare', $all['test']);
+        $this->assertInstanceOf('\Search\Model\Filter\Compare', $all['test']);
         $this->assertEquals(count($all), 1);
 
         $manager->value('test2');
         $all = $manager->all();
-        $this->assertInstanceOf('\Search\Type\Value', $all['test2']);
+        $this->assertInstanceOf('\Search\Model\Filter\Value', $all['test2']);
         $this->assertEquals(count($all), 2);
     }
 
@@ -50,9 +50,9 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
         $result = $manager->loadFilter('test', 'Search.Value');
-        $this->assertInstanceOf('\Search\Type\Value', $result);
+        $this->assertInstanceOf('\Search\Model\Filter\Value', $result);
         $result = $manager->loadFilter('test', 'Search.Compare');
-        $this->assertInstanceOf('\Search\Type\Compare', $result);
+        $this->assertInstanceOf('\Search\Model\Filter\Compare', $result);
     }
 
     public function testAdd()
@@ -63,8 +63,8 @@ class ManagerTest extends TestCase
         $manager->add('testTwo', 'Search.Compare');
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
-        $this->assertInstanceOf('\Search\Type\Value', $result['testOne']);
-        $this->assertInstanceOf('\Search\Type\Compare', $result['testTwo']);
+        $this->assertInstanceOf('\Search\Model\Filter\Value', $result['testOne']);
+        $this->assertInstanceOf('\Search\Model\Filter\Compare', $result['testTwo']);
     }
 
     /**
@@ -85,8 +85,8 @@ class ManagerTest extends TestCase
         $manager->add('test2', 'Search.Compare');
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
-        $this->assertInstanceOf('\Search\Type\Value', $result['test']);
-        $this->assertInstanceOf('\Search\Type\Compare', $result['test2']);
+        $this->assertInstanceOf('\Search\Model\Filter\Value', $result['test']);
+        $this->assertInstanceOf('\Search\Model\Filter\Compare', $result['test2']);
     }
 
     public function testRemove()

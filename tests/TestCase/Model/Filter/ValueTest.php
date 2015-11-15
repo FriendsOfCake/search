@@ -1,5 +1,5 @@
 <?php
-namespace Search\Test\TestCase\Type;
+namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\Core\Configure;
 use Cake\ORM\Entity;
@@ -7,8 +7,8 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
-use Search\Type\Base;
-use Search\Type\Value;
+use Search\Model\Filter\Base;
+use Search\Model\Filter\Value;
 
 class ValueTest extends TestCase
 {
