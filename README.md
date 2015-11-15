@@ -1,6 +1,5 @@
 # CakePHP Search
 
-
 [![Build Status](https://img.shields.io/travis/FriendsOfCake/search/master.svg?style=flat-square)](https://travis-ci.org/FriendsOfCake/search)
 [![Coverage Status](https://img.shields.io/coveralls/FriendsOfCake/search/master.svg?style=flat-square)](https://coveralls.io/r/FriendsOfCake/search?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/friendsofcake/search.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/search)
@@ -105,8 +104,8 @@ the `Search` behavior.
 Then add the Search Prg component to the necessary methods in your controller.
 
 :warning: Make sure,
-* That you add this in the controller's `initialize` method.
-* That you only add this to methods which are using search, such as your `index` method.
+* That you add this in the controller's `initialize()` method.
+* That you only add this to methods which are using search, such as your `index()` method.
 
 ```php
 public function initialize()
@@ -152,7 +151,7 @@ your data.
 If you are using the `Search.Prg` component the forms current values will be
 populated from the query params.
 
-## Types
+## Filters
 
 The Search plugin comes with a set of predefined search filters that allow you to
 easily create the search results you need. Use:

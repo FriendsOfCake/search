@@ -1,5 +1,5 @@
 <?php
-namespace Search\Type;
+namespace Search\Model\Filter;
 
 class Finder extends Base
 {

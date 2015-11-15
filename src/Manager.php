@@ -1,8 +1,10 @@
 <?php
 namespace Search;
 
-use Cake\Core\InstanceConfigTrait;
+use Cake\Core\App;
 use Cake\ORM\Table;
+use Cake\Utility\Inflector;
+use InvalidArgumentException;
 
 class Manager
 {
@@ -15,11 +17,20 @@ class Manager
     protected $_table;
 
     /**
-     * Config
+     * Filter collection and their filters
      *
      * @var array
      */
-    protected $_config = [];
+    protected $_filters = [
+        'default' => []
+    ];
+
+    /**
+     * Active filter collection.
+     *
+     * @var string
+     */
+    protected $_collection = 'default';
 
     /**
      * Constructor
@@ -32,13 +43,13 @@ class Manager
     }
 
     /**
-     * Return all config
+     * Return all configured types.
      *
      * @return array Config
      */
     public function all()
     {
-        return $this->_config;
+        return $this->_filters['default'];
     }
 
     /**
@@ -52,6 +63,60 @@ class Manager
     }
 
     /**
+     * Gets all filters in a given collection.
+     *
+     * @param string $collection Name of the filter collection.
+     * @return array Array of filter instances.
+     */
+    public function getFilters($collection = 'default')
+    {
+        return $this->_filters[$collection];
+    }
+
+    /**
+     * Sets or gets the filter collection name.
+     *
+     * @param string $name Name of the active filter collection to set.
+     * @return mixed Returns $this or the name of the active collection if no $name was provided.
+     */
+    public function collection($name = null)
+    {
+        if ($name === null) {
+            return $this->_collection;
+        }
+        if (!isset($this->_filters[$name])) {
+            $this->_filters[$name] = [];
+        }
+        $this->_collection = $name;
+        return $this;
+    }
+
+    /**
+     * Adds a new filter to the active collection.
+     *
+     * @param string $name Field name.
+     * @param string $filter Filter name.
+     * @param array $options Filter options.
+     * @return $this
+     */
+    public function add($name, $filter, array $options = [])
+    {
+        $this->_filters[$this->_collection][$name] = $this->loadFilter($name, $filter, $options);
+        return $this;
+    }
+
+    /**
+     * Removes filter from the active collection.
+     *
+     * @param string $name Name of the filter to be removed.
+     * @return void
+     */
+    public function remove($name)
+    {
+        unset($this->_filters[$this->_collection][$name]);
+    }
+
+    /**
      * like method
      *
      * @param string $name Name
@@ -60,7 +125,7 @@ class Manager
      */
     public function like($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Like($name, $this, $config);
+        $this->add($name, 'Search.Like', $config);
         return $this;
     }
 
@@ -73,7 +138,7 @@ class Manager
      */
     public function value($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Value($name, $this, $config);
+        $this->add($name, 'Search.Value', $config);
         return $this;
     }
 
@@ -86,7 +151,7 @@ class Manager
      */
     public function finder($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Finder($name, $this, $config);
+        $this->add($name, 'Search.Finder', $config);
         return $this;
     }
 
@@ -99,7 +164,7 @@ class Manager
      */
     public function callback($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Callback($name, $this, $config);
+        $this->add($name, 'Search.Callback', $config);
         return $this;
     }
 
@@ -112,7 +177,7 @@ class Manager
      */
     public function compare($name, array $config = [])
     {
-        $this->_config[$name] = new Type\Compare($name, $this, $config);
+        $this->add($name, 'Search.Compare', $config);
         return $this;
     }
 
@@ -125,7 +190,46 @@ class Manager
      */
     public function custom($name, array $config = [])
     {
-        $this->_config[$name] = new $config['className']($name, $this, $config);
+        $this->add($name, $config['className'], $config);
         return $this;
+    }
+
+    /**
+     * Loads a search filter.
+     *
+     * @param string $name Name of the field
+     * @param string $filter Filter name
+     * @param array $options Filter options.
+     * @return \Search\Model\Filter\Base
+     * @throws \InvalidArgumentException When no filter was found.
+     */
+    public function loadFilter($name, $filter, array $options = [])
+    {
+        if (empty($options['className'])) {
+            $class = Inflector::classify($filter);
+        } else {
+            $class = $options['className'];
+            unset($options['className']);
+        }
+        $className = App::className($class, 'Model\Filter');
+        if (!class_exists($className)) {
+            throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
+        }
+        return new $className($name, $this, $options);
+    }
+
+    /**
+     * Magic method to add filters using custom types.
+     *
+     * @param string $method Method name.
+     * @param array $args Arguments.
+     * @return $this
+     */
+    public function __call($method, $args)
+    {
+        if (!isset($args[1])) {
+            $args[1] = [];
+        }
+        return $this->add($args[0], $method, $args[1]);
     }
 }

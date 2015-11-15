@@ -1,5 +1,5 @@
 <?php
-namespace Search\Type;
+namespace Search\Model\Filter;
 
 use Cake\ORM\Query;
 
