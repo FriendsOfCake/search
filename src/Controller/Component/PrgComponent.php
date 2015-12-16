@@ -26,7 +26,7 @@ class PrgComponent extends Component {
         $this->request = $this->controller->request;
 
         if ($this->_actionCheck()) {
-            $this->conversion();
+            return $this->conversion();
         }
     }
 
