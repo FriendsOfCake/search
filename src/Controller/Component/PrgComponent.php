@@ -41,12 +41,12 @@ class PrgComponent extends Component
     {
         if (!$this->request->is('post')) {
             $this->request->data = $this->controller->request->query;
-            return;
+            return null;
         }
         if ($redirect) {
             return $this->controller->redirect($this->request->params['pass'] + ['?' => $this->request->data]);
         }
-        return;
+        return null;
     }
 
     /**
