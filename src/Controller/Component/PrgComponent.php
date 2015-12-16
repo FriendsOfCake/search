@@ -3,7 +3,8 @@ namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
 
-class PrgComponent extends Component {
+class PrgComponent extends Component
+{
 
     /**
      * Default config
@@ -45,12 +46,13 @@ class PrgComponent extends Component {
         if ($redirect) {
             return $this->controller->redirect($this->request->params['pass'] + ['?' => $this->request->data]);
         }
+        return;
     }
 
     /**
      * Checks if the action should be processed by the component.
      *
-     * @return boolean
+     * @return bool
      */
     protected function _actionCheck()
     {
