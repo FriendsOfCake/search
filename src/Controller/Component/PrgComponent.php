@@ -28,9 +28,6 @@ class PrgComponent extends Component
      */
     public function startup()
     {
-        $this->controller = $this->_registry->getController();
-        $this->request = $this->controller->request;
-
         if ($this->_actionCheck()) {
             return $this->conversion();
         }
@@ -45,11 +42,13 @@ class PrgComponent extends Component
     public function conversion($redirect = true)
     {
         if (!$this->request->is('post')) {
-            $this->request->data = $this->controller->request->query;
+            $this->request->data = $this->request->query;
             return null;
         }
         if ($redirect) {
-            return $this->controller->redirect($this->request->params['pass'] + ['?' => $this->request->data]);
+            return $this->_registry->getController()->redirect(
+                $this->request->params['pass'] + ['?' => $this->request->data]
+            );
         }
         return null;
     }
