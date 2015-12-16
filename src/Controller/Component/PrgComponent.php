@@ -9,6 +9,11 @@ class PrgComponent extends Component
     /**
      * Default config
      *
+     * ### Options
+     * - `actions` Method name(s) of actions to use PRG. Or bool for all or none.
+     *   You can pass a single action as string or multiple as array. Default is
+     *   true and all actions will be processed by the component.
+     *
      * @var array
      */
     protected $_defaultConfig = [
