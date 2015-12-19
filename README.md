@@ -32,27 +32,73 @@ or running command
 ```
 
 ## Usage
+
 The plugin has three main parts which you will need to configure and include in
 your application.
 
 ### Table class
+
 There are three tasks during setup in your table class. Firstly you must add a
 `use` statement for the `Search\Manager`. Next you need to attach the `Search`
-behaviour to your table class. Lastly you must add a `searchConfiguration`
-method to your table class so that you can configure how the search will work.
+behaviour to your table class. Then you have two options to work with the search
+filters:
+
+The first way is the prefered way as it works the same as many core classes as
+well. In your table classes `initialize()` method call the `searchManager()`
+method, it will return a search manager instance. You can now add filters to the
+manager by chaining them. The first arg of the `add()` method is the field, the
+second the filter using the dot notation of cake to load filters from plugins.
+The third one is an array o filter specific options.
 
 ```php
 use Search\Manager;
 
 class ExampleTable extends Table {
 
-	public function initialize(array $config)
-	{
-		// Add the behaviour to your table
-		$this->addBehavior('Search.Search');
-	}
+    public function initialize(array $config)
+    {
+        parent::initialize();
+        // Add the behaviour to your table
+        $this->addBehavior('Search.Search');
 
-	// Configure how you want the search plugin to work with this table class
+        $this->searchManager()
+            ->add('author_id', 'Search.Value')
+            // Here we will alias the 'q' query param to search the `Articles.title`
+            // field and the `Articles.content` field, using a LIKE match, with `%`
+            // both before and after.
+            ->add('q', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'field' => [$this->aliasField('title'), $this->aliasField('content')]
+            ])
+            ->add('foo', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+                    // Modify $query as required
+                }
+            ]);
+    }
+```
+
+The old way is to add a `searchConfiguration()` method to the class. The
+behavior will look if such a method exists and if yes use it to get the search
+manager instance from it. This method **must** return a search manager instance.
+
+If you want to change the name of the method, or have multiple methods and
+switch between them, you can configure the name of the method by setting the
+behaviors option `searchConfigMethod` to the name of the method you want.
+
+```php
+use Search\Manager;
+
+class ExampleTable extends Table {
+
+    public function initialize(array $config)
+    {
+        // Add the behaviour to your table
+        $this->addBehavior('Search.Search');
+    }
+
+    // Configure how you want the search plugin to work with this table class
     public function searchConfiguration()
     {
         $search = new Manager($this)
@@ -86,8 +132,8 @@ accomodate this.
 public function index()
 {
     $query = $this->Articles
-    	// Use the plugins 'search' custom finder and pass in the
-    	// processed query params
+        // Use the plugins 'search' custom finder and pass in the
+        // processed query params
         ->find('search', $this->Articles->filterParams($this->request->query))
         // You can add extra things to the query if you need to
         ->contain(['Comments'])
@@ -164,6 +210,7 @@ easily create the search results you need. Use:
 - ``callback`` to produce results using your own custom callable function
 
 ## Optional fields
+
 Sometimes you might want to search your data based on two of three inputs in
 your form. You can use the `filterEmpty` search option to ignore any empty fields.
 
