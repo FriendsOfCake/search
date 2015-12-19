@@ -151,16 +151,15 @@ Then add the Search Prg component to the necessary methods in your controller.
 
 :warning: Make sure,
 * That you add this in the controller's `initialize()` method.
-* That you only add this to methods which are using search, such as your `index()` method.
+* That you only add the methods which are using search, such as your `index()` method.
 
 ```php
 public function initialize()
 {
     parent::initialize();
-
-    if ($this->request->action === 'index') {
-        $this->loadComponent('Search.Prg');
-    }
+    $this->loadComponent('Search.Prg', [
+        'actions' => ['index']
+    ]);
 }
 ```
 
