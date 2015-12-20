@@ -49,7 +49,8 @@ class SearchBehavior extends Behavior
             $options = $options['search'];
         }
 
-        foreach ($this->_table->{$this->config('searchConfigMethod')}()->all() as $config) {
+        $filters = $this->_getAllFilters();
+        foreach ($filters as $config) {
             $config->args($options);
             $config->query($query);
             $config->process();
@@ -67,8 +68,7 @@ class SearchBehavior extends Behavior
      */
     public function filterParams($params)
     {
-        $valid = $this->_table->{$this->config('searchConfigMethod')}()->all();
-        return ['search' => array_intersect_key($params, $valid)];
+        return ['search' => array_intersect_key($params, $this->_getAllFilters())];
     }
 
     /**
@@ -82,5 +82,19 @@ class SearchBehavior extends Behavior
             $this->_manager = new Manager($this->_table);
         }
         return $this->_manager;
+    }
+
+    /**
+     * Gets all filters from the search manager.
+     *
+     * @return array An array of filters for the defined fields.
+     */
+    protected function _getAllFilters()
+    {
+        $method = $this->config('searchConfigMethod');
+        if (method_exists($this->_table, $method)) {
+            return $this->_table->{$method}()->all();
+        }
+        return $this->searchManager()->all();
     }
 }
