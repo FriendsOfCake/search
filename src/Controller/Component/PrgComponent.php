@@ -67,9 +67,6 @@ class PrgComponent extends Component
         if (is_string($actions)) {
             $actions = [$actions];
         }
-        if (in_array($this->request->action, $actions)) {
-            return true;
-        }
-        return false;
+        return in_array($this->request->action, $actions);
     }
 }
