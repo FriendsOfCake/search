@@ -45,7 +45,7 @@ class SearchBehavior extends Behavior
      */
     public function findSearch(Query $query, array $options)
     {
-        if (!isset($options['_filter']) || $options['_filter'] === true) {
+        if (!isset($options['_search']) && (!isset($options['_filter']) || $options['_filter'] === true)) {
             $options = $this->filterParams($options);
         }
 
@@ -72,7 +72,7 @@ class SearchBehavior extends Behavior
      */
     public function filterParams($params)
     {
-        return ['search' => array_intersect_key($params, $this->_getAllFilters())];
+        return ['_search' => array_intersect_key($params, $this->_getAllFilters())];
     }
 
     /**
