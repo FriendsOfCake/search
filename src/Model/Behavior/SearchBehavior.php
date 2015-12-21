@@ -45,8 +45,8 @@ class SearchBehavior extends Behavior
      */
     public function findSearch(Query $query, array $options)
     {
-        if (isset($options['search'])) {
-            $options = $options['search'];
+        if (isset($options['_search'])) {
+            $options = $options['_search'];
         }
 
         $filters = $this->_getAllFilters();

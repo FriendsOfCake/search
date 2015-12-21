@@ -63,15 +63,15 @@ class SearchBehaviorTest extends TestCase
             'group' => 'main'
         ];
 
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', ['_search' => $queryString]);
         $this->assertEquals(3, $query->clause('where')->count());
 
         $queryString['bar'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', ['_search' => $queryString]);
         $this->assertEquals(2, $query->clause('where')->count());
 
         $queryString['foo'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', ['_search' => $queryString]);
         $this->assertEquals(2, $query->clause('where')->count());
     }
 
