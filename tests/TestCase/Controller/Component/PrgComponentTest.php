@@ -46,5 +46,25 @@ class SearchComponentTest extends TestCase
 
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/index/pass?foo=bar', $response->header()['Location']);
+
+        $this->Prg->config('actions', false);
+        $response = $this->Prg->startup();
+        $this->assertEquals(null, $response);
+
+        $this->Prg->config('actions', 'does-not-exist', false);
+        $response = $this->Prg->startup();
+        $this->assertEquals(null, $response);
+
+        $this->Prg->config('actions', 'index', false);
+        $response = $this->Prg->startup();
+        $this->assertEquals('http://localhost/index/pass?foo=bar', $response->header()['Location']);
+
+        $this->Prg->config('actions', ['index', 'does-not-exist'], false);
+        $response = $this->Prg->startup();
+        $this->assertEquals('http://localhost/index/pass?foo=bar', $response->header()['Location']);
+
+        $this->Prg->config('actions', ['does-not-exist'], false);
+        $response = $this->Prg->startup();
+        $this->assertEquals(null, $response);
     }
 }
