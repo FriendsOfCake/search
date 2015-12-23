@@ -138,7 +138,7 @@ class Manager
      */
     public function ilike($name, array $config = [])
     {
-        $config['comparison'] => 'ilike';
+        $config['comparison'] = 'ilike';
         $this->add($name, 'Search.Like', $config);
         return $this;
     }
