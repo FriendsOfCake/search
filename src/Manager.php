@@ -130,20 +130,6 @@ class Manager
     }
 
     /**
-     * ilike method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function ilike($name, array $config = [])
-    {
-        $config['comparison'] = 'ilike';
-        $this->add($name, 'Search.Like', $config);
-        return $this;
-    }
-
-    /**
      * value method
      *
      * @param string $name Name
