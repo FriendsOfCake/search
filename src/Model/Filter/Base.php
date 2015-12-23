@@ -135,7 +135,10 @@ abstract class Base
     public function skip()
     {
         return !$this->present() ||
-            ($this->filterEmpty() && empty($this->_args[$this->name()]));
+            ($this->filterEmpty() &&
+                empty($this->_args[$this->name()]) &&
+                !is_numeric($this->_args[$this->name()])
+            );
     }
 
     /**
