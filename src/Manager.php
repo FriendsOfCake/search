@@ -142,6 +142,12 @@ class Manager
         return $this;
     }
 
+    public function date_between($name, array $config = [])
+    {
+        $this->add($name, 'Search.DateBetween', $config);
+        return $this;
+    }
+
     /**
      * finder method
      *
