@@ -154,7 +154,6 @@ class Manager
     public function dateBetween($name, array $config = [])
     {
         $this->add($name, 'Search.DateBetween', $config);
-
         return $this;
     }
 
