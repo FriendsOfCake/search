@@ -30,5 +30,11 @@ class ArticlesFixture extends TestFixture
             'created' => '2012-12-12 12:12:12',
             'modified' => '2013-01-01 11:11:11',
         ],
+        [
+            'id' => '2',
+            'title' => 'Test title two',
+            'created' => '2012-12-12 14:12:12',
+            'modified' => '2013-01-01 11:11:11',
+        ],
     ];
 }
