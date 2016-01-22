@@ -48,7 +48,7 @@ well. In your table classes `initialize()` method call the `searchManager()`
 method, it will return a search manager instance. You can now add filters to the
 manager by chaining them. The first arg of the `add()` method is the field, the
 second the filter using the dot notation of cake to load filters from plugins.
-The third one is an array o filter specific options.
+The third one is an array of filter specific options.
 
 ```php
 use Search\Manager;
