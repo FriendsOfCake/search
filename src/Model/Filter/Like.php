@@ -14,7 +14,8 @@ class Like extends Base
     protected $_defaultConfig = [
         'before' => false,
         'after' => false,
-        'mode' => 'or'
+        'mode' => 'or',
+        'comparison' => 'LIKE'
     ];
 
     /**
@@ -30,7 +31,7 @@ class Like extends Base
 
         $conditions = [];
         foreach ($this->fields() as $field) {
-            $left = $field . ' LIKE';
+            $left = $field . ' ' . $this->config('comparison');
             $right = $this->_wildCards($this->value());
 
             $conditions[] = [$left => $right];

@@ -202,7 +202,7 @@ The Search plugin comes with a set of predefined search filters that allow you t
 easily create the search results you need. Use:
 
 - ``value`` to limit results to exact matches
-- ``like`` to produce results containing the search query (``LIKE``)
+- ``like`` to produce results containing the search query (``LIKE`` or ``ILIKE``)
 - ``finder`` to produce results using a [(custom)](http://book.cakephp.org/3.0/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
 - ``compare`` to produce results requiring operator comparison (
     ``>``, ``<``, ``>=`` and ``<=``)
