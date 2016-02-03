@@ -1,7 +1,7 @@
 # CakePHP Search
 
 [![Build Status](https://img.shields.io/travis/FriendsOfCake/search/master.svg?style=flat-square)](https://travis-ci.org/FriendsOfCake/search)
-[![Coverage Status](https://img.shields.io/coveralls/FriendsOfCake/search/master.svg?style=flat-square)](https://coveralls.io/r/FriendsOfCake/search?branch=master)
+[![Coverage Status](https://img.shields.io/codecov/c/github/FriendsOfCake/search.svg?style=flat-square)](https://codecov.io/github/FriendsOfCake/search)
 [![Total Downloads](https://img.shields.io/packagist/dt/friendsofcake/search.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/search)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/search)
 
