@@ -1,6 +1,7 @@
 <?php
 namespace Search\Model\Filter;
 
+use Cake\Database\Driver\Postgres;
 use Cake\ORM\Query;
 
 class Like extends Base
@@ -27,6 +28,11 @@ class Like extends Base
     {
         if ($this->skip()) {
             return;
+        }
+
+        $driver = $this->query()->connection()->driver();
+        if (!$driver instanceof Postgres) {
+            $this->config('comparison', 'LIKE');
         }
 
         $conditions = [];
