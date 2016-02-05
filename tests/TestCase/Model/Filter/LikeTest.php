@@ -2,6 +2,7 @@
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\Core\Configure;
+use Cake\Database\Driver\Postgres;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -40,6 +41,13 @@ class LikeTest extends TestCase
         $value->process();
 
         $sql = $value->query()->sql();
-        $this->assertEquals(1, preg_match('/WHERE title ilike/', $sql));
+
+        $driver = $value->query()->connection()->driver();
+
+        if ($driver instanceof Postgres) {
+            $this->assertEquals(1, preg_match('/WHERE title ilike/', $sql));
+        } else {
+            $this->assertEquals(1, preg_match('/WHERE title like/', $sql));
+        }
     }
 }
