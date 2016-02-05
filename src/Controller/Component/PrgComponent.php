@@ -46,9 +46,10 @@ class PrgComponent extends Component
             return null;
         }
         if ($redirect) {
-            return $this->_registry->getController()->redirect(
-                $this->request->params['pass'] + ['?' => $this->request->data]
-            );
+            $parsedUrl = parse_url($this->request->here(false));
+            $url = $parsedUrl['path'] . '?' . http_build_query($this->request->data);
+
+            return $this->_registry->getController()->redirect($url);
         }
         return null;
     }
