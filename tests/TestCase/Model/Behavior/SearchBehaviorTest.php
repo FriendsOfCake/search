@@ -63,15 +63,15 @@ class SearchBehaviorTest extends TestCase
             'group' => 'main'
         ];
 
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', ['_search' => $queryString]);
         $this->assertEquals(3, $query->clause('where')->count());
 
         $queryString['bar'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', ['_search' => $queryString]);
         $this->assertEquals(2, $query->clause('where')->count());
 
         $queryString['foo'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', ['_search' => $queryString]);
         $this->assertEquals(2, $query->clause('where')->count());
     }
 
@@ -88,7 +88,7 @@ class SearchBehaviorTest extends TestCase
             'bar' => 'b',
             'group' => 'main'
         ]);
-        $expected = ['search' => ['foo' => 'a', 'bar' => 'b', 'group' => 'main']];
+        $expected = ['_search' => ['foo' => 'a', 'bar' => 'b', 'group' => 'main']];
         $this->assertEquals($expected, $result);
     }
 
@@ -107,7 +107,7 @@ class SearchBehaviorTest extends TestCase
         $this->assertEquals(2, $query->clause('where')->count());
 
         $query = $this->Articles->find('search', [
-            'search' => [
+            '_search' => [
                 'foo' => 'a',
                 'bar' => 'b',
                 'group' => 'main'
