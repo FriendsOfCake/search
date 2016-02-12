@@ -16,9 +16,9 @@ The master branch has the following requirements:
 ## Installation
 
 * Install the plugin with composer from your CakePHP Project's ROOT directory
-(where composer.json file is located)
+(where composer.json file is located). Following command will automatically set composer to use the latest stable branch.
 ```shell
-php composer.phar require friendsofcake/search:~1.2
+php composer.phar require friendsofcake/search
 ```
 
 ### Enable plugin
