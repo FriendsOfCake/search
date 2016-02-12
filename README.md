@@ -12,7 +12,6 @@ Search provides a search module for CakePHP applications.
 The master branch has the following requirements:
 
 * CakePHP 3.0.0 or greater.
-* Patience
 
 ## Installation
 
