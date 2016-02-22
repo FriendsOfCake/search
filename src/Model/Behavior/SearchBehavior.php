@@ -68,6 +68,11 @@ class SearchBehavior extends Behavior
      */
     public function filterParams($params)
     {
+        foreach ($params as $k => $param) {
+            if (is_string($param) && strlen($param) === 0) {
+                unset($params[$k]);
+            }
+        }
         return ['search' => array_intersect_key($params, $this->_getAllFilters())];
     }
 
