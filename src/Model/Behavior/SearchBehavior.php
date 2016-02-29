@@ -30,7 +30,7 @@ class SearchBehavior extends Behavior
         'implementedFinders' => [
             'search' => 'findSearch'
         ],
-        'implementendMethods' => [
+        'implementedMethods' => [
             'filterParams' => 'filterParams',
             'searchManager' => 'searchManager'
         ]
