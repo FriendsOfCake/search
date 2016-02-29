@@ -16,18 +16,19 @@ The master branch has the following requirements:
 ## Installation
 
 * Install the plugin with composer from your CakePHP Project's ROOT directory
-(where composer.json file is located)
-```sh
+(where composer.json file is located). Following command will automatically set composer to use the latest stable branch.
+```shell
 php composer.phar require friendsofcake/search
 ```
 
-* Load the plugin by adding following to your `config/bootstrap.php`
-```php
-Plugin::load('Search');
-```
+### Enable plugin
 
-or running command
-```sh
+Load the plugin in your app's `config/bootstrap.php` file:
+
+	Plugin::load('Search');
+
+... or by running the cake command
+```shell
 ./bin/cake plugin load Search
 ```
 
