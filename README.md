@@ -9,26 +9,27 @@ Search provides a search module for CakePHP applications.
 
 ## Requirements
 
-The master branch has the following requirements:
-
 * CakePHP 3.0.0 or greater.
 
 ## Installation
 
 * Install the plugin with composer from your CakePHP Project's ROOT directory
 (where composer.json file is located)
+
 ```sh
 php composer.phar require friendsofcake/search
 ```
 
-* Load the plugin by adding following to your `config/bootstrap.php`
-```php
-Plugin::load('Search');
-```
+* Load the plugin by running command
 
-or running command
 ```sh
 ./bin/cake plugin load Search
+```
+
+or adding following to your `config/bootstrap.php`
+
+```php
+Plugin::load('Search');
 ```
 
 ## Usage
