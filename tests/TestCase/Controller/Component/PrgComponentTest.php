@@ -82,5 +82,10 @@ class SearchComponentTest extends TestCase
         $this->Controller->response->header('Location', '');
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/users/my-predictions?foo=bar', $response->header()['Location']);
+
+        $this->Controller->request->data = ['foo' => ''];
+        $this->Controller->response->header('Location', '');
+        $response = $this->Prg->startup();
+        $this->assertEquals('http://localhost/users/my-predictions', $response->header()['Location']);
     }
 }
