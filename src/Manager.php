@@ -2,7 +2,7 @@
 namespace Search;
 
 use Cake\Core\App;
-use Cake\ORM\Table;
+use Cake\Datasource\RepositoryInterface;
 use Cake\Utility\Inflector;
 use InvalidArgumentException;
 
@@ -10,11 +10,11 @@ class Manager
 {
 
     /**
-     * Table
+     * Repository
      *
-     * @var Table Instance
+     * @var \Cake\Datasource\RepositoryInterface Repository instance
      */
-    protected $_table;
+    protected $_repository;
 
     /**
      * Filter collection and their filters
@@ -35,11 +35,11 @@ class Manager
     /**
      * Constructor
      *
-     * @param \Cake\ORM\Table $table Table
+     * @param \Cake\Datasource\RepositoryInterface $repository Repository
      */
-    public function __construct(Table $table)
+    public function __construct(RepositoryInterface $repository)
     {
-        $this->_table = $table;
+        $this->_repository = $repository;
     }
 
     /**
@@ -53,13 +53,24 @@ class Manager
     }
 
     /**
+     * Return repository instance.
+     *
+     * @return \Cake\Datasource\RepositoryInterface Repository Instance
+     */
+    public function repository()
+    {
+        return $this->_repository;
+    }
+
+    /**
      * Return Table
      *
      * @return \Cake\ORM\Table Table Instance
+     * @deprecated Use repository() instead.
      */
     public function table()
     {
-        return $this->_table;
+        return $this->_repository;
     }
 
     /**

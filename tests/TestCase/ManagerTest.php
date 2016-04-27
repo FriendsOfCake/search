@@ -105,12 +105,12 @@ class ManagerTest extends TestCase
         $this->assertCount(0, $result);
     }
 
-    public function testTable()
+    public function testRepository()
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $result = $manager->table();
-        $this->assertInstanceOf('\Cake\ORM\Table', $result);
+        $result = $manager->repository();
+        $this->assertInstanceOf('\Cake\Datasource\RepositoryInterface', $result);
     }
 
     public function testCollection()
