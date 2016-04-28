@@ -102,7 +102,8 @@ class ExampleTable extends Table {
     // Configure how you want the search plugin to work with this table class
     public function searchConfiguration()
     {
-        $search = new Manager($this)
+        $search = new Manager($this);
+        $search
             ->value('author_id', [
                 'field' => $this->aliasField('author_id')
             ])
