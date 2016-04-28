@@ -111,7 +111,9 @@ class LikeTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
 
-        $filter = new Like('title', $manager,
+        $filter = new Like(
+            'title',
+            $manager,
             ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_']);
         $filter->args(['title' => '22% 44_']);
         $filter->query($articles->find());
@@ -122,5 +124,4 @@ class LikeTest extends TestCase
         $value = $values[':c0']['value'];
         $this->assertEquals('%22% 44_%', $value);
     }
-
 }

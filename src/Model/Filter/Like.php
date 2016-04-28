@@ -88,10 +88,11 @@ class Like extends Base
      * Replace substitutions with original wildcards
      * but first, escape the original wildcards in the text to use them as normal search text
      *
-     * @param string $value
+     * @param string $value Value
      * @return string Value
      */
-    protected function _formatWildCards($value) {
+    protected function _formatWildCards($value)
+    {
         $from = $to = $substFrom = $substTo = [];
         if ($this->config('wildcardAny') !== '%') {
             $from[] = '%';
@@ -113,5 +114,4 @@ class Like extends Base
         }
         return $value;
     }
-
 }
