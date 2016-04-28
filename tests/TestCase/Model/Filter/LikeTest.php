@@ -114,7 +114,8 @@ class LikeTest extends TestCase
         $filter = new Like(
             'title',
             $manager,
-            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_']);
+            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_']
+        );
         $filter->args(['title' => '22% 44_']);
         $filter->query($articles->find());
         $filter->process();
