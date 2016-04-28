@@ -90,7 +90,7 @@ class SearchBehavior extends Behavior
     /**
      * Gets all filters from the search manager.
      *
-     * @return array An array of filters for the defined fields.
+     * @return \Search\Model\Filter\Base[] An array of filters for the defined fields.
      */
     protected function _getAllFilters()
     {

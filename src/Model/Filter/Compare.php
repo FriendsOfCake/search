@@ -34,7 +34,7 @@ class Compare extends Base
         }
 
         $conditions = [];
-        if (!in_array($this->config('operator'), $this->_operators)) {
+        if (!in_array($this->config('operator'), $this->_operators, true)) {
             throw new \InvalidArgumentException(sprintf('The operator %s is invalid!', $this->config('operator')));
         }
         foreach ($this->fields() as $field) {
