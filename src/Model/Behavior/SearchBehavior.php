@@ -81,7 +81,7 @@ class SearchBehavior extends Behavior
      */
     public function searchManager()
     {
-        if (empty($this->_manager)) {
+        if ($this->_manager === null) {
             $this->_manager = new Manager($this->_table);
         }
         return $this->_manager;
