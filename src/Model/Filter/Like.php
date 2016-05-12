@@ -15,7 +15,8 @@ class Like extends Base
         'before' => false,
         'after' => false,
         'mode' => 'or',
-        'comparison' => 'LIKE'
+        'comparison' => 'LIKE',
+        'escapeWildcards' => false
     ];
 
     /**
@@ -32,7 +33,9 @@ class Like extends Base
         $conditions = [];
         foreach ($this->fields() as $field) {
             $left = $field . ' ' . $this->config('comparison');
-            $right = $this->_wildCards($this->value());
+
+            $value = $this->_escapeWildCards($this->value());
+            $right = $this->_wildCards($value);
 
             $conditions[] = [$left => $right];
         }
@@ -57,5 +60,22 @@ class Like extends Base
         }
 
         return $value;
+    }
+
+    /**
+     * Escape wild cards in value.
+     *
+     * @param string $value Value.
+     * @return string
+     */
+    protected function _escapeWildCards($value)
+    {
+        if (!$this->config('escapeWildcards')) {
+            return $value;
+        }
+
+        $from = ['%', '_'];
+        $to = ['\%', '\_'];
+        return str_replace($from, $to, $value);
     }
 }
