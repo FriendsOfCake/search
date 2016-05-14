@@ -1,8 +1,6 @@
 <?php
 namespace Search\Model\Filter;
 
-use Cake\ORM\Query;
-
 class Compare extends Base
 {
 

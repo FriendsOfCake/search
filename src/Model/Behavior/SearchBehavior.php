@@ -1,10 +1,8 @@
 <?php
 namespace Search\Model\Behavior;
 
-use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
-use Cake\ORM\Table;
 use Search\Manager;
 
 class SearchBehavior extends Behavior
@@ -18,7 +16,7 @@ class SearchBehavior extends Behavior
     public $_manager = null;
 
     /**
-     * $_defaultConfig For the Behavior.
+     * Default config for the behavior.
      *
      * ### Options
      * - `searchConfigMethod` Method name of the method that returns the filters.
@@ -69,7 +67,7 @@ class SearchBehavior extends Behavior
     public function filterParams($params)
     {
         foreach ($params as $k => $param) {
-            if (is_string($param) && strlen($param) === 0) {
+            if (is_string($param) && $param === '') {
                 unset($params[$k]);
             }
         }
