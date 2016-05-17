@@ -61,7 +61,8 @@ abstract class Base
             'name' => $name,
             'validate' => [],
             'alwaysRun' => false,
-            'filterEmpty' => false
+            'filterEmpty' => false,
+            'defaultValue' => null
         ];
 
         $this->config(array_merge($defaults, $config));
@@ -148,7 +149,7 @@ abstract class Base
      */
     public function value()
     {
-        return $this->_args[$this->name()];
+        return isset($this->_args[$this->name()]) ? $this->_args[$this->name()] : $this->_config['defaultValue'];
     }
 
     /**
