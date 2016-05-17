@@ -32,7 +32,7 @@ class Like extends Base
         $conditions = [];
         foreach ($this->fields() as $field) {
             $left = $field . ' ' . $this->config('comparison');
-            $right = $this->_wildCards($this->value());
+            $right = $this->_wildcards($this->value());
 
             $conditions[] = [$left => $right];
         }
@@ -46,22 +46,22 @@ class Like extends Base
      * @param  string $value Value.
      * @return string
      */
-    protected function _wildCards($value)
+    protected function _wildcards($value)
     {
         if (is_array($value)) {
             foreach ($value as $k => $v) {
-                $value[$k] = $this->_wildCards($v);
+                $value[$k] = $this->_wildcards($v);
             }
             return $value;
         }
 
-        $value = $this->_formatWildCards($value);
+        $value = $this->_formatWildcards($value);
         if ($this->config('before')) {
-            $value = $this->_formatWildCards($this->config('wildcardAny')) . $value;
+            $value = $this->_formatWildcards($this->config('wildcardAny')) . $value;
         }
 
         if ($this->config('after')) {
-            $value = $value . $this->_formatWildCards($this->config('wildcardAny'));
+            $value = $value . $this->_formatWildcards($this->config('wildcardAny'));
         }
 
         return $value;
@@ -73,7 +73,7 @@ class Like extends Base
      * @param string $value Value.
      * @return string
      */
-    protected function _escapeWildCards($value)
+    protected function _escapeWildcards($value)
     {
         if (!$this->config('escapeWildcards')) {
             return $value;
@@ -91,7 +91,7 @@ class Like extends Base
      * @param string $value Value
      * @return string Value
      */
-    protected function _formatWildCards($value)
+    protected function _formatWildcards($value)
     {
         $from = $to = $substFrom = $substTo = [];
         if ($this->config('wildcardAny') !== '%') {

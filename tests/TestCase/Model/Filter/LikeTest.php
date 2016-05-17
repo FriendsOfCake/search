@@ -49,7 +49,7 @@ class LikeTest extends TestCase
     /**
      * @return void
      */
-    public function testWildCardsEscaping()
+    public function testWildcardsEscaping()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
