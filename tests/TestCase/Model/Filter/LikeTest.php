@@ -42,4 +42,23 @@ class LikeTest extends TestCase
         $sql = $value->query()->sql();
         $this->assertEquals(1, preg_match('/WHERE title ilike/', $sql));
     }
+
+    /**
+     * @return void
+     */
+    public function testWildCardsEscaping()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Like('title', $manager, ['escapeWildcards' => true]);
+        $filter->args(['title' => 'part_1 100%']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $filter->query()->sql();
+        $values = $filter->query()->valueBinder()->bindings();
+        $value = $values[':c0']['value'];
+        $this->assertEquals('part\_1 100\%', $value);
+    }
 }

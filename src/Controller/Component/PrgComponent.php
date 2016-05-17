@@ -2,6 +2,7 @@
 namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Utility\Hash;
 
 class PrgComponent extends Component
 {
@@ -24,7 +25,7 @@ class PrgComponent extends Component
      * Checks if the current request has posted data and redirects the users
      * to the same action after converting the post data into GET params
      *
-     * @return void|\Cake\Network\Response|null
+     * @return \Cake\Network\Response|null
      */
     public function startup()
     {
@@ -45,22 +46,18 @@ class PrgComponent extends Component
             $this->request->data = $this->request->query;
             return null;
         }
-        if ($redirect) {
-            $params = $this->request->data;
-
-            foreach ($params as $k => $param) {
-                if (is_string($param) && strlen($param) === 0) {
-                    unset($params[$k]);
-                }
-            }
-
-            list($url) = explode('?', $this->request->here(false));
-            if ($params) {
-                $url .= '?' . http_build_query($params);
-            }
-            return $this->_registry->getController()->redirect($url);
+        if (!$redirect) {
+            return null;
         }
-        return null;
+
+        list($url) = explode('?', $this->request->here(false));
+
+        $params = Hash::filter($this->request->data);
+        if ($params) {
+            $url .= '?' . http_build_query($params);
+        }
+
+        return $this->_registry->getController()->redirect($url);
     }
 
     /**

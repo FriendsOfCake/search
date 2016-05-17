@@ -1,8 +1,6 @@
 <?php
 namespace Search\Model\Filter;
 
-use Cake\ORM\Query;
-
 class Callback extends Base
 {
 
