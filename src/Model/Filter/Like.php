@@ -71,7 +71,7 @@ class Like extends Base
      * Replace substitutions with original wildcards
      * but first, escape the original wildcards in the text to use them as normal search text
      *
-     * @param string $value Value
+     * @param string $value Value.
      * @return string Value
      */
     protected function _formatWildcards($value)
@@ -89,7 +89,7 @@ class Like extends Base
             $substFrom[] = $this->config('wildcardOne');
             $substTo[] = '_';
         }
-        if (!empty($from)) {
+        if ($from) {
             // Escape first
             $value = str_replace($from, $to, $value);
             // Replace wildcards
