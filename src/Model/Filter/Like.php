@@ -68,23 +68,6 @@ class Like extends Base
     }
 
     /**
-     * Escape wild cards in value.
-     *
-     * @param string $value Value.
-     * @return string
-     */
-    protected function _escapeWildcards($value)
-    {
-        if (!$this->config('escapeWildcards')) {
-            return $value;
-        }
-
-        $from = ['%', '_'];
-        $to = ['\%', '\_'];
-        return str_replace($from, $to, $value);
-    }
-
-    /**
      * Replace substitutions with original wildcards
      * but first, escape the original wildcards in the text to use them as normal search text
      *
