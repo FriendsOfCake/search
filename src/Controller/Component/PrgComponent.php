@@ -13,13 +13,13 @@ class PrgComponent extends Component
      * ### Options
      * - `actions` : Action name(s) to use PRG for. You can pass a single action
      *   as string or multiple as array. If boolean `true` all actions will be
-     *   processsed if `false` none. Default is ['index'].
+     *   processsed if `false` none. Default is ['index', 'lookup'].
      * - `queryStringToData` : Set query string as request data. Default `true`.
      *
      * @var array
      */
     protected $_defaultConfig = [
-        'actions' => ['index'],
+        'actions' => ['index', 'lookup'],
         'queryStringToData' => true
     ];
 
