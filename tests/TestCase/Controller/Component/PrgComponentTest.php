@@ -34,6 +34,7 @@ class SearchComponentTest extends TestCase
     {
         $expected = ['foo' => 'bar'];
         $this->Controller->request->query = $expected;
+        $this->Controller->request->action = 'index';
 
         $this->Prg->startup();
         $this->assertEquals($expected, $this->Controller->request->data);
