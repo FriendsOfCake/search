@@ -3,6 +3,7 @@ namespace Search\Model\Behavior;
 
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
+use Cake\Utility\Hash;
 use Search\Manager;
 
 class SearchBehavior extends Behavior
@@ -38,40 +39,28 @@ class SearchBehavior extends Behavior
      * Callback fired from the controller.
      *
      * @param Query $query Query.
-     * @param array $options The GET arguments.
+     * @param array $options The options for the find.
+     *   - `_search`: If set it's value will be used as search arguments else
+     *     $options itself will be used.
      * @return \Cake\ORM\Query The Query object used in pagination.
      */
     public function findSearch(Query $query, array $options)
     {
-        if (isset($options['search'])) {
-            $options = $options['search'];
+        $params = $options;
+        if (isset($params['_search'])) {
+            $params = $params['_search'];
         }
 
         $filters = $this->_getAllFilters();
-        foreach ($filters as $config) {
-            $config->args($options);
-            $config->query($query);
-            $config->process();
+        $params = array_intersect_key(Hash::filter($params), $filters);
+
+        foreach ($filters as $filter) {
+            $filter->args($params);
+            $filter->query($query);
+            $filter->process();
         }
 
         return $query;
-    }
-
-    /**
-     * Returns the valid search parameter values according to those that are defined
-     * in the searchConfiguration() method of the table.
-     *
-     * @param array $params a key value list of search parameters to use for a search.
-     * @return array
-     */
-    public function filterParams($params)
-    {
-        foreach ($params as $k => $param) {
-            if (is_string($param) && $param === '') {
-                unset($params[$k]);
-            }
-        }
-        return ['search' => array_intersect_key($params, $this->_getAllFilters())];
     }
 
     /**
