@@ -65,7 +65,7 @@ abstract class Base
             'defaultValue' => null
         ];
 
-        $this->config(array_merge($defaults, $config));
+        $this->config($config + $defaults);
     }
 
     /**
@@ -155,8 +155,8 @@ abstract class Base
     /**
      * Get / Set the args.
      *
-     * @param array $value Value.
-     * @return void|array
+     * @param array|null $value Value.
+     * @return array|null
      */
     public function args(array $value = null)
     {
@@ -170,8 +170,8 @@ abstract class Base
     /**
      * Get / Set the validation rules.
      *
-     * @param array $value Value.
-     * @return void|array
+     * @param array|null $value Value.
+     * @return array|null
      */
     public function validate(array $value = null)
     {
@@ -198,7 +198,7 @@ abstract class Base
     /**
      * Get / Set the query object.
      *
-     * @param \Cake\ORM\Query $value Value.
+     * @param \Cake\ORM\Query|null $value Value.
      * @return void|\Cake\ORM\Query
      */
     public function query(Query $value = null)

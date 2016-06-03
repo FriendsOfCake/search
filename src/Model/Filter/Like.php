@@ -14,7 +14,8 @@ class Like extends Base
         'after' => false,
         'mode' => 'or',
         'comparison' => 'LIKE',
-        'escapeWildcards' => false
+        'wildcardAny' => '*',
+        'wildcardOne' => '?',
     ];
 
     /**
@@ -31,9 +32,7 @@ class Like extends Base
         $conditions = [];
         foreach ($this->fields() as $field) {
             $left = $field . ' ' . $this->config('comparison');
-
-            $value = $this->_escapeWildCards($this->value());
-            $right = $this->_wildCards($value);
+            $right = $this->_wildcards($this->value());
 
             $conditions[] = [$left => $right];
         }
@@ -47,33 +46,55 @@ class Like extends Base
      * @param  string $value Value.
      * @return string
      */
-    protected function _wildCards($value)
+    protected function _wildcards($value)
     {
+        if (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $value[$k] = $this->_wildcards($v);
+            }
+            return $value;
+        }
+
+        $value = $this->_formatWildcards($value);
         if ($this->config('before')) {
-            $value = '%' . $value;
+            $value = $this->_formatWildcards($this->config('wildcardAny')) . $value;
         }
 
         if ($this->config('after')) {
-            $value = $value . '%';
+            $value = $value . $this->_formatWildcards($this->config('wildcardAny'));
         }
 
         return $value;
     }
 
     /**
-     * Escape wild cards in value.
+     * Replace substitutions with original wildcards
+     * but first, escape the original wildcards in the text to use them as normal search text
      *
      * @param string $value Value.
-     * @return string
+     * @return string Value
      */
-    protected function _escapeWildCards($value)
+    protected function _formatWildcards($value)
     {
-        if (!$this->config('escapeWildcards')) {
-            return $value;
+        $from = $to = $substFrom = $substTo = [];
+        if ($this->config('wildcardAny') !== '%') {
+            $from[] = '%';
+            $to[] = '\%';
+            $substFrom[] = $this->config('wildcardAny');
+            $substTo[] = '%';
         }
-
-        $from = ['%', '_'];
-        $to = ['\%', '\_'];
-        return str_replace($from, $to, $value);
+        if ($this->config('wildcardOne') !== '_') {
+            $from[] = '_';
+            $to[] = '\_';
+            $substFrom[] = $this->config('wildcardOne');
+            $substTo[] = '_';
+        }
+        if ($from) {
+            // Escape first
+            $value = str_replace($from, $to, $value);
+            // Replace wildcards
+            $value = str_replace($substFrom, $substTo, $value);
+        }
+        return $value;
     }
 }

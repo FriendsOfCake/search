@@ -87,7 +87,7 @@ class Manager
     /**
      * Sets or gets the filter collection name.
      *
-     * @param string $name Name of the active filter collection to set.
+     * @param string|null $name Name of the active filter collection to set.
      * @return mixed Returns $this or the name of the active collection if no $name was provided.
      */
     public function collection($name = null)

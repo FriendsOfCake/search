@@ -127,8 +127,8 @@ class ExampleTable extends Table {
 
 ### Controller class
 In order for the Search plugin to work it will need to process the query params
-which are passed in your url. So you will need to edit your `index` method to
-accomodate this.
+which are passed in your URL. So you will need to edit your `index` method to
+accommodate this.
 
 ```php
 public function index()
@@ -177,7 +177,7 @@ could filter your articles using the following.
 
 Would filter your list of articles to any article with "cakephp" in the `title`
 or `content` field. You might choose to make a `get` form which posts the filter
-directly to the url, but if you're using the `Search.Prg` component, you'll want
+directly to the URL, but if you're using the `Search.Prg` component, you'll want
 to use `POST`.
 
 ### Creating your form

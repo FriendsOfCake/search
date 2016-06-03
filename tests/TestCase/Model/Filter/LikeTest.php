@@ -22,43 +22,107 @@ class LikeTest extends TestCase
         'plugin.Search.Articles'
     ];
 
+    /**
+     * @return void
+     */
     public function testProcess()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
 
-        $value = new Like('title', $manager);
-        $value->args(['title' => ['test']]);
-        $value->query($articles->find());
-        $value->process();
+        $filter = new Like('title', $manager);
+        $filter->args(['title' => 'test']);
+        $filter->query($articles->find());
+        $filter->process();
 
-        $sql = $value->query()->sql();
+        $sql = $filter->query()->sql();
         $this->assertEquals(1, preg_match('/WHERE title like/', $sql));
 
-        $value->config('comparison', 'ILIKE');
-        $value->query($articles->find());
-        $value->process();
+        $filter->config('comparison', 'ILIKE');
+        $filter->query($articles->find());
+        $filter->process();
 
-        $sql = $value->query()->sql();
+        $sql = $filter->query()->sql();
         $this->assertEquals(1, preg_match('/WHERE title ilike/', $sql));
     }
 
     /**
      * @return void
      */
-    public function testWildCardsEscaping()
+    public function testWildcardsEscaping()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
 
-        $filter = new Like('title', $manager, ['escapeWildcards' => true]);
-        $filter->args(['title' => 'part_1 100%']);
+        $filter = new Like('title', $manager);
+        $filter->args(['title' => 'part_1 ? 100% *']);
         $filter->query($articles->find());
         $filter->process();
 
         $filter->query()->sql();
         $values = $filter->query()->valueBinder()->bindings();
         $value = $values[':c0']['value'];
-        $this->assertEquals('part\_1 100\%', $value);
+        $this->assertEquals('part\_1 _ 100\% %', $value);
+    }
+
+    /**
+     * @return void
+     */
+    public function testWildcardsBeforeAfter()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Like('title', $manager, ['before' => true, 'after' => true]);
+        $filter->args(['title' => '22% 44_']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $filter->query()->sql();
+        $values = $filter->query()->valueBinder()->bindings();
+        $value = $values[':c0']['value'];
+        $this->assertEquals('%22\% 44\_%', $value);
+    }
+
+    /**
+     * @return void
+     */
+    public function testWildcardsArray()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Like('title', $manager, ['before' => true, 'after' => true]);
+        $filter->args(['title' => ['22% 44_']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $filter->query()->sql();
+        $values = $filter->query()->valueBinder()->bindings();
+        $value = $values[':c0']['value'][0];
+        $this->assertEquals('%22\% 44\_%', $value);
+    }
+
+    /**
+     * @return void
+     */
+    public function testWildcardsAlternatives()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Like(
+            'title',
+            $manager,
+            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_']
+        );
+        $filter->args(['title' => '22% 44_']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $filter->query()->sql();
+        $values = $filter->query()->valueBinder()->bindings();
+        $value = $values[':c0']['value'];
+        $this->assertEquals('%22% 44_%', $value);
     }
 }
