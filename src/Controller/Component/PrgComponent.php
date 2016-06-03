@@ -14,11 +14,13 @@ class PrgComponent extends Component
      * - `actions` : Action name(s) to use PRG for. You can pass a single action
      *   as string or multiple as array. If boolean `true` all actions will be
      *   processsed if `false` none. Default is ['index'].
+     * - `queryStringToData` : Set query string as request data. Default `true`.
      *
      * @var array
      */
     protected $_defaultConfig = [
-        'actions' => ['index']
+        'actions' => ['index'],
+        'queryStringToData' => true
     ];
 
     /**
@@ -43,7 +45,9 @@ class PrgComponent extends Component
     public function conversion($redirect = true)
     {
         if (!$this->request->is('post')) {
-            $this->request->data = $this->request->query;
+            if ($this->config('queryStringToData')) {
+                $this->request->data = $this->request->query;
+            }
             return null;
         }
         if (!$redirect) {
