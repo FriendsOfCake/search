@@ -11,14 +11,16 @@ class PrgComponent extends Component
      * Default config
      *
      * ### Options
-     * - `actions` Method name(s) of actions to use PRG. Or bool for all or none.
-     *   You can pass a single action as string or multiple as array. Default is
-     *   true and all actions will be processed by the component.
+     * - `actions` : Action name(s) to use PRG for. You can pass a single action
+     *   as string or multiple as array. If boolean `true` all actions will be
+     *   processsed if `false` none. Default is ['index', 'lookup'].
+     * - `queryStringToData` : Set query string as request data. Default `true`.
      *
      * @var array
      */
     protected $_defaultConfig = [
-        'actions' => true,
+        'actions' => ['index', 'lookup'],
+        'queryStringToData' => true
     ];
 
     /**
@@ -43,7 +45,9 @@ class PrgComponent extends Component
     public function conversion($redirect = true)
     {
         if (!$this->request->is('post')) {
-            $this->request->data = $this->request->query;
+            if ($this->config('queryStringToData')) {
+                $this->request->data = $this->request->query;
+            }
             return null;
         }
         if (!$redirect) {
@@ -71,9 +75,6 @@ class PrgComponent extends Component
         if (is_bool($actions)) {
             return $actions;
         }
-        if (is_string($actions)) {
-            $actions = [$actions];
-        }
-        return in_array($this->request->action, $actions, true);
+        return in_array($this->request->action, (array)$actions, true);
     }
 }

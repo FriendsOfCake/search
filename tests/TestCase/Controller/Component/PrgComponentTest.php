@@ -3,7 +3,6 @@ namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
 use Cake\Network\Request;
-use Cake\Network\Response;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Search\Controller\Component\PrgComponent;
@@ -34,9 +33,16 @@ class SearchComponentTest extends TestCase
     {
         $expected = ['foo' => 'bar'];
         $this->Controller->request->query = $expected;
+        $this->Controller->request->action = 'index';
 
         $this->Prg->startup();
         $this->assertEquals($expected, $this->Controller->request->data);
+
+        $this->Controller->request->data = [];
+        $this->Prg->config('queryStringToData', false);
+
+        $this->Prg->startup();
+        $this->assertEquals([], $this->Controller->request->data);
     }
 
     public function testInitializePost()
