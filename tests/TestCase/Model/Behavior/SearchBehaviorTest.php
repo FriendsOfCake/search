@@ -1,8 +1,6 @@
 <?php
 namespace Search\Test\TestCase\Model\Behavior;
 
-use Cake\Core\Configure;
-use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -16,9 +14,9 @@ class ArticlesTable extends Table
         $manager = new Manager($this);
         return $manager
             ->value('foo')
-            ->value('bar', ['filterEmpty' => true])
+            ->like('search', ['filterEmpty' => true])
             ->value('baz')
-            ->value('group');
+            ->value('group', ['field' => 'Articles.group']);
     }
 }
 
@@ -59,37 +57,20 @@ class SearchBehaviorTest extends TestCase
     {
         $queryString = [
             'foo' => 'a',
-            'bar' => 'b',
+            'search' => 'b',
             'group' => 'main'
         ];
 
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', ['_search' => $queryString]);
         $this->assertEquals(3, $query->clause('where')->count());
 
-        $queryString['bar'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $queryString['search'] = '';
+        $query = $this->Articles->find('search', ['_search' => $queryString]);
         $this->assertEquals(2, $query->clause('where')->count());
 
         $queryString['foo'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
-        $this->assertEquals(2, $query->clause('where')->count());
-    }
-
-    /**
-     * Tests the filterParams method
-     *
-     * @return void
-     */
-    public function testFilterParams()
-    {
-        $result = $this->Articles->filterParams([
-            'conditions' => 'troll',
-            'foo' => 'a',
-            'bar' => 'b',
-            'group' => 'main'
-        ]);
-        $expected = ['search' => ['foo' => 'a', 'bar' => 'b', 'group' => 'main']];
-        $this->assertEquals($expected, $result);
+        $query = $this->Articles->find('search', ['_search' => $queryString]);
+        $this->assertEquals(1, $query->clause('where')->count());
     }
 
     /**
@@ -101,19 +82,37 @@ class SearchBehaviorTest extends TestCase
     {
         $query = $this->Articles->find('search', [
             'foo' => 'a',
-            'bar' => 'b',
+            'search' => 'b',
             'group' => 'main'
         ]);
         $this->assertEquals(2, $query->clause('where')->count());
 
         $query = $this->Articles->find('search', [
-            'search' => [
+            'foo' => 0,
+            'search' => 'b',
+            'page' => 1
+        ]);
+        $this->assertEquals(2, $query->clause('where')->count());
+
+        $query = $this->Articles->find('search', [
+            '_search' => [
                 'foo' => 'a',
-                'bar' => 'b',
+                'search' => 'b',
                 'group' => 'main'
             ]
         ]);
         $this->assertEquals(3, $query->clause('where')->count());
+    }
+
+    /**
+     * Tests the filterParams method
+     *
+     * @return void
+     */
+    public function testFilterParams()
+    {
+        $result = $this->Articles->filterParams(['foo' => 'bar']);
+        $this->assertEquals(['_search' => ['foo' => 'bar']], $result);
     }
 
     /**
