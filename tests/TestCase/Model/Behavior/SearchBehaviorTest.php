@@ -105,6 +105,17 @@ class SearchBehaviorTest extends TestCase
     }
 
     /**
+     * Tests the filterParams method
+     *
+     * @return void
+     */
+    public function testFilterParams()
+    {
+        $result = $this->Articles->filterParams(['foo' => 'bar']);
+        $this->assertEquals(['_search' => ['foo' => 'bar']], $result);
+    }
+
+    /**
      * testSearchManager
      *
      * @return void
