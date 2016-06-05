@@ -59,71 +59,35 @@ class ExampleTable extends Table {
     public function initialize(array $config)
     {
         parent::initialize();
+
         // Add the behaviour to your table
         $this->addBehavior('Search.Search');
 
+        // Setup search filter using search manager
         $this->searchManager()
-            ->add('author_id', 'Search.Value')
+            ->value('author_id')
             // Here we will alias the 'q' query param to search the `Articles.title`
             // field and the `Articles.content` field, using a LIKE match, with `%`
             // both before and after.
             ->add('q', 'Search.Like', [
                 'before' => true,
                 'after' => true,
+                'mode' => 'or',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?'
                 'field' => [$this->aliasField('title'), $this->aliasField('content')]
             ])
             ->add('foo', 'Search.Callback', [
-                'callback' => function ($query, $args, $manager) {
+                'callback' => function ($query, $args, $filter) {
                     // Modify $query as required
                 }
             ]);
     }
 ```
 
-The old way is to add a `searchConfiguration()` method to the class. The
-behavior will look if such a method exists and if yes use it to get the search
-manager instance from it. This method **must** return a search manager instance.
-
-If you want to change the name of the method, or have multiple methods and
-switch between them, you can configure the name of the method by setting the
-behaviors option `searchConfigMethod` to the name of the method you want.
-
-```php
-use Search\Manager;
-
-class ExampleTable extends Table {
-
-    public function initialize(array $config)
-    {
-        // Add the behaviour to your table
-        $this->addBehavior('Search.Search');
-    }
-
-    // Configure how you want the search plugin to work with this table class
-    public function searchConfiguration()
-    {
-        $search = new Manager($this);
-        $search
-            ->value('author_id', [
-                'field' => $this->aliasField('author_id')
-            ])
-            // Here we will alias the 'q' query param to search the `Articles.title`
-            // field and the `Articles.content` field, using a LIKE match, with `%`
-            // both before and after.
-            ->like('q', [
-                'before' => true,
-                'after' => true,
-                'field' => [$this->aliasField('title'), $this->aliasField('content')]
-            ])
-            ->callback('foo', [
-                'callback' => function ($query, $args, $manager) {
-                    // Modify $query as required
-                }
-            ]);
-
-        return $search;
-    }
-```
+You can use `SearchManager::add()` method to add filter or use specific methods
+like `value()`, `like()` etc. for in built filters.
 
 ### Controller class
 In order for the Search plugin to work it will need to process the query params
@@ -136,7 +100,7 @@ public function index()
     $query = $this->Articles
         // Use the plugins 'search' custom finder and pass in the
         // processed query params
-        ->find('search', $this->Articles->filterParams($this->request->query))
+        ->find('search', ['_search' => $this->request->query])
         // You can add extra things to the query if you need to
         ->contain(['Comments'])
         ->where(['title IS NOT' => null]);
@@ -145,22 +109,19 @@ public function index()
 }
 ```
 
-The `search` finder and the `filterParams()` method are dynamically provided by
-the `Search` behavior.
+The `search` finder is dynamically provided by the `Search` behavior.
 
 ### Component
 Then add the Search Prg component to the necessary methods in your controller.
-
-:warning: Make sure,
-* That you add this in the controller's `initialize()` method.
-* That you only add the methods which are using search, such as your `index()` method.
 
 ```php
 public function initialize()
 {
     parent::initialize();
     $this->loadComponent('Search.Prg', [
-        'actions' => ['index']
+        // This is default config. You can modify "actions" as needed to make
+        // the PRG component work only for specified methods.
+        'actions' => ['index', 'lookup']
     ]);
 }
 ```
@@ -216,9 +177,8 @@ Sometimes you might want to search your data based on two of three inputs in
 your form. You can use the `filterEmpty` search option to ignore any empty fields.
 
 ```php
-// ExampleTable.php
-// Inside your searchConfiguration() method
-    $search->value('author_id', [
+// ExampleTable::initialize()
+    $searchManager->value('author_id', [
         'filterEmpty' => true
     ]);
 ```
