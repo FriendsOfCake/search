@@ -1,10 +1,10 @@
 <?php
 namespace Search\Model\Behavior;
 
-use Exception;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
 use Cake\Utility\Hash;
+use Exception;
 use Search\Manager;
 
 class SearchBehavior extends Behavior
