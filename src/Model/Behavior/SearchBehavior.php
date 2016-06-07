@@ -1,6 +1,7 @@
 <?php
 namespace Search\Model\Behavior;
 
+use Exception;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
 use Cake\Utility\Hash;
@@ -40,18 +41,20 @@ class SearchBehavior extends Behavior
      *
      * @param Query $query Query.
      * @param array $options The options for the find.
-     *   - `_search`: If set it's value will be used as search arguments else
-     *     $options itself will be used.
+     *   - `search`: Array of search arguments.
      * @return \Cake\ORM\Query The Query object used in pagination.
      */
     public function findSearch(Query $query, array $options)
     {
-        $params = $options;
-        if (isset($params['_search'])) {
-            $params = $params['_search'];
+        if (!isset($options['search'])) {
+            throw new Exception(
+                'Custom finder "search" expects search arguments ' .
+                'to be nested under key "search" in find() options.'
+            );
         }
 
         $filters = $this->_getAllFilters();
+        $params = (array)$options['search'];
         $params = array_intersect_key(Hash::filter($params), $filters);
 
         foreach ($filters as $filter) {
@@ -70,11 +73,11 @@ class SearchBehavior extends Behavior
      * @param array $params A key value list of search parameters to use for a search.
      * @return array
      * @deprecated 2.0.0 You can directly call find like
-     *   `find('search', ['_search' => $this->request->query])`
+     *   `find('search', ['search' => $this->request->query])`
      */
     public function filterParams($params)
     {
-        return ['_search' => $params];
+        return ['search' => $params];
     }
 
     /**
