@@ -137,7 +137,8 @@ public function index()
 The `search` finder is dynamically provided by the `Search` behavior.
 
 If you are using the [crud](https://github.com/FriendsOfCake/crud) plugin you
-just need to enable the [search](http://crud.readthedocs.io/en/latest/listeners/search.html) for your crud action.
+just need to enable the [search](http://crud.readthedocs.io/en/latest/listeners/search.html)
+listener for your crud action.
 
 ### Component
 Then add the Search Prg component to the necessary methods in your controller.
