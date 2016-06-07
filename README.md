@@ -89,6 +89,31 @@ class ExampleTable extends Table {
 You can use `SearchManager::add()` method to add filter or use specific methods
 like `value()`, `like()` etc. for in built filters.
 
+If you do not want to clutter your `initialize()` method with search config you
+can instead add a `searchConfiguration()` method to the table class. The behavior
+will look if such a method exists and if present use it to get the search manager
+instance from it. This method **must** return a search manager instance.
+
+If you want to change the name of the method, or have multiple methods and
+switch between them, you can configure the name of the method by setting the
+behaviors option `searchConfigMethod` to the name of the method you want.
+
+```php
+use Search\Manager;
+
+class ExampleTable extends Table {
+
+    public function searchConfiguration()
+    {
+        $search = new Manager($this);
+
+        $search->like('title');
+
+        return $search;
+    }
+}
+```
+
 ### Controller class
 In order for the Search plugin to work it will need to process the query params
 which are passed in your URL. So you will need to edit your `index` method to
@@ -110,6 +135,9 @@ public function index()
 ```
 
 The `search` finder is dynamically provided by the `Search` behavior.
+
+If you are using the [crud](https://github.com/FriendsOfCake/crud) plugin you
+just need to enable the [search](http://crud.readthedocs.io/en/latest/listeners/search.html) for your crud action.
 
 ### Component
 Then add the Search Prg component to the necessary methods in your controller.
