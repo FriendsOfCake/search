@@ -23,7 +23,7 @@ class Compare extends Base
     ];
 
     /**
-     * Process a LIKE condition ($x LIKE $y).
+     * Process a comparison-based condition (e.g. $field <= $value).
      *
      * @return void
      */
