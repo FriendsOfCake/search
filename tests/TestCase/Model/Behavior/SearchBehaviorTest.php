@@ -49,7 +49,7 @@ class SearchBehaviorTest extends TestCase
     }
 
     /**
-     * [testFinder description]
+     * Test the custom "search" finder
      *
      * @return void
      */
@@ -61,47 +61,37 @@ class SearchBehaviorTest extends TestCase
             'group' => 'main'
         ];
 
-        $query = $this->Articles->find('search', ['_search' => $queryString]);
+        $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertEquals(3, $query->clause('where')->count());
 
         $queryString['search'] = '';
-        $query = $this->Articles->find('search', ['_search' => $queryString]);
+        $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertEquals(2, $query->clause('where')->count());
 
         $queryString['foo'] = '';
-        $query = $this->Articles->find('search', ['_search' => $queryString]);
+        $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertEquals(1, $query->clause('where')->count());
+
+        $query = $this->Articles->find('search', [
+            'search' => [
+                'foo' => 0,
+                'search' => 'b',
+                'page' => 1
+            ]
+        ]);
+        $this->assertEquals(2, $query->clause('where')->count());
     }
 
     /**
-     * Test the custom "search" finder
+     * testFindSearchException
      *
+     * @expectedException Exception
+     * @expectedExceptionMessage Custom finder "search" expects search arguments to be nested under key "search" in find() options.
      * @return void
      */
-    public function testFindSearch()
+    public function testFindSearchException()
     {
-        $query = $this->Articles->find('search', [
-            'foo' => 'a',
-            'search' => 'b',
-            'group' => 'main'
-        ]);
-        $this->assertEquals(2, $query->clause('where')->count());
-
-        $query = $this->Articles->find('search', [
-            'foo' => 0,
-            'search' => 'b',
-            'page' => 1
-        ]);
-        $this->assertEquals(2, $query->clause('where')->count());
-
-        $query = $this->Articles->find('search', [
-            '_search' => [
-                'foo' => 'a',
-                'search' => 'b',
-                'group' => 'main'
-            ]
-        ]);
-        $this->assertEquals(3, $query->clause('where')->count());
+        $query = $this->Articles->find('search');
     }
 
     /**
@@ -112,7 +102,7 @@ class SearchBehaviorTest extends TestCase
     public function testFilterParams()
     {
         $result = $this->Articles->filterParams(['foo' => 'bar']);
-        $this->assertEquals(['_search' => ['foo' => 'bar']], $result);
+        $this->assertEquals(['search' => ['foo' => 'bar']], $result);
     }
 
     /**
