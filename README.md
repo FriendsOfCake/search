@@ -75,7 +75,7 @@ class ExampleTable extends Table {
                 'mode' => 'or',
                 'comparison' => 'LIKE',
                 'wildcardAny' => '*',
-                'wildcardOne' => '?'
+                'wildcardOne' => '?',
                 'field' => [$this->aliasField('title'), $this->aliasField('content')]
             ])
             ->add('foo', 'Search.Callback', [
