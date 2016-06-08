@@ -17,7 +17,7 @@ class Finder extends Base
     }
 
     /**
-     * Process a value condition ($x == $y).
+     * Add a condition based on a custom finder.
      *
      * @return void
      */
