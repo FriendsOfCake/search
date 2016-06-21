@@ -5,7 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/friendsofcake/search.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/search)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/search)
 
-Search provides a search module for CakePHP applications.
+Search provides a simple interface to create paginate-able filters for your CakePHP 3.x application.
 
 ## Requirements
 
