@@ -58,6 +58,7 @@ abstract class Base
 
         $defaults = [
             'field' => $name,
+            'aliasField' => true,
             'name' => $name,
             'validate' => [],
             'alwaysRun' => false,
@@ -85,7 +86,25 @@ abstract class Base
      */
     public function field()
     {
-        return $this->config('field');
+        $field = $this->config('field');
+        if (!$this->config('aliasField')) {
+            return $field;
+        }
+
+        $repository = $this->manager()->repository();
+        if (!method_exists($repository, 'aliasField')) {
+            return $field;
+        }
+
+        if (is_string($field)) {
+            return $repository->aliasField($field);
+        }
+
+        $return = [];
+        foreach ($field as $fld) {
+            $return[] = $repository->aliasField($fld);
+        }
+        return $return;
     }
 
     /**
