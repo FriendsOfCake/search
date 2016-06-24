@@ -2,6 +2,7 @@
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\TestSuite\TestCase;
+use Cake\ORM\TableRegistry;
 use Search\Manager;
 use Search\Model\Filter\Base;
 
@@ -16,12 +17,22 @@ class Filter extends Base
 class BaseTest extends TestCase
 {
 
+    public $fixtures = [
+        'plugin.Search.Articles'
+    ];
+
+    public function setup()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $this->manager = new Manager($table);
+    }
+
     public function testSkip()
     {
-        $manager = $this->getMock('\Search\Manager', null, [], 'Manager', false);
         $filter = new Filter(
             'field',
-            $manager,
+            $this->manager,
             ['alwaysRun' => true, 'filterEmpty' => true]
         );
 
@@ -36,5 +47,28 @@ class BaseTest extends TestCase
 
         $filter->args(['field' => []]);
         $this->assertTrue($filter->skip());
+    }
+
+    public function testFieldAliasing()
+    {
+        $filter = new Filter(
+            'field',
+            $this->manager,
+            []
+        );
+
+        $this->assertEquals('Articles.field', $filter->field());
+
+        $filter->config('aliasField', false);
+        $this->assertEquals('field', $filter->field());
+
+        $filter = new Filter(
+            ['field1', 'field2'],
+            $this->manager,
+            []
+        );
+
+        $expected = ['Articles.field1', 'Articles.field2'];
+        $this->assertEquals($expected, $filter->field());
     }
 }
