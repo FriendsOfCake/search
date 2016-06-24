@@ -1,8 +1,8 @@
 <?php
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\TestSuite\TestCase;
 use Cake\ORM\TableRegistry;
+use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Model\Filter\Base;
 
