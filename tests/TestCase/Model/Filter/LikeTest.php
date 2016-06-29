@@ -36,14 +36,14 @@ class LikeTest extends TestCase
         $filter->process();
 
         $sql = $filter->query()->sql();
-        $this->assertEquals(1, preg_match('/WHERE title like/', $sql));
+        $this->assertEquals(1, preg_match('/WHERE Articles.title like/', $sql));
 
         $filter->config('comparison', 'ILIKE');
         $filter->query($articles->find());
         $filter->process();
 
         $sql = $filter->query()->sql();
-        $this->assertEquals(1, preg_match('/WHERE title ilike/', $sql));
+        $this->assertEquals(1, preg_match('/WHERE Articles.title ilike/', $sql));
     }
 
     /**
