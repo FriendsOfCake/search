@@ -114,7 +114,7 @@ abstract class Base
      */
     public function fields()
     {
-        return (array)$this->config('field');
+        return (array)$this->field();
     }
 
     /**
