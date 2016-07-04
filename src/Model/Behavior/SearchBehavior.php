@@ -43,6 +43,7 @@ class SearchBehavior extends Behavior
      * @param array $options The options for the find.
      *   - `search`: Array of search arguments.
      * @return \Cake\ORM\Query The Query object used in pagination.
+     * @throws Exception When missing search arguments.
      */
     public function findSearch(Query $query, array $options)
     {
