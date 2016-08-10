@@ -48,6 +48,7 @@ class PrgComponent extends Component
             if ($this->config('queryStringToData')) {
                 $this->request->data = $this->request->query;
             }
+
             return null;
         }
         if (!$redirect) {
@@ -75,6 +76,7 @@ class PrgComponent extends Component
         if (is_bool($actions)) {
             return $actions;
         }
+
         return in_array($this->request->action, (array)$actions, true);
     }
 }

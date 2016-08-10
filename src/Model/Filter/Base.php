@@ -104,6 +104,7 @@ abstract class Base
         foreach ($field as $fld) {
             $return[] = $repository->aliasField($fld);
         }
+
         return $return;
     }
 

@@ -14,6 +14,7 @@ class ArticlesFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'string', 'null' => false, 'length' => 36],
         'title' => ['type' => 'string', 'null' => false, 'default' => null],
+        'is_active' => ['type' => 'boolean', 'null' => false, 'default' => true],
         'created' => ['type' => 'datetime', 'null' => true, 'default' => null],
         'modified' => ['type' => 'datetime', 'null' => true, 'default' => null],
     ];
@@ -27,6 +28,7 @@ class ArticlesFixture extends TestFixture
         [
             'id' => '1',
             'title' => 'Test title one',
+            'is_active' => true,
             'created' => '2012-12-12 12:12:12',
             'modified' => '2013-01-01 11:11:11',
         ],
