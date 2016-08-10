@@ -12,6 +12,7 @@ class ArticlesTable extends Table
     public function searchConfiguration()
     {
         $manager = new Manager($this);
+
         return $manager
             ->value('foo')
             ->like('search', ['filterEmpty' => true])

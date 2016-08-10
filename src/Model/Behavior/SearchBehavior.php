@@ -91,6 +91,7 @@ class SearchBehavior extends Behavior
         if ($this->_manager === null) {
             $this->_manager = new Manager($this->_table);
         }
+
         return $this->_manager;
     }
 
@@ -105,6 +106,7 @@ class SearchBehavior extends Behavior
         if (method_exists($this->_table, $method)) {
             return $this->_table->{$method}()->all();
         }
+
         return $this->searchManager()->all();
     }
 }

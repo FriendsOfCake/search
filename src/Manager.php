@@ -99,6 +99,7 @@ class Manager
             $this->_filters[$name] = [];
         }
         $this->_collection = $name;
+
         return $this;
     }
 
@@ -113,6 +114,7 @@ class Manager
     public function add($name, $filter, array $options = [])
     {
         $this->_filters[$this->_collection][$name] = $this->loadFilter($name, $filter, $options);
+
         return $this;
     }
 
@@ -137,6 +139,7 @@ class Manager
     public function like($name, array $config = [])
     {
         $this->add($name, 'Search.Like', $config);
+
         return $this;
     }
 
@@ -150,6 +153,7 @@ class Manager
     public function value($name, array $config = [])
     {
         $this->add($name, 'Search.Value', $config);
+
         return $this;
     }
 
@@ -163,6 +167,7 @@ class Manager
     public function finder($name, array $config = [])
     {
         $this->add($name, 'Search.Finder', $config);
+
         return $this;
     }
 
@@ -176,6 +181,7 @@ class Manager
     public function callback($name, array $config = [])
     {
         $this->add($name, 'Search.Callback', $config);
+
         return $this;
     }
 
@@ -189,6 +195,7 @@ class Manager
     public function compare($name, array $config = [])
     {
         $this->add($name, 'Search.Compare', $config);
+
         return $this;
     }
 
@@ -202,6 +209,7 @@ class Manager
     public function custom($name, array $config = [])
     {
         $this->add($name, $config['className'], $config);
+
         return $this;
     }
 
@@ -226,6 +234,7 @@ class Manager
         if (!class_exists($className)) {
             throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
         }
+
         return new $className($name, $this, $options);
     }
 
@@ -241,6 +250,7 @@ class Manager
         if (!isset($args[1])) {
             $args[1] = [];
         }
+
         return $this->add($args[0], $method, $args[1]);
     }
 }

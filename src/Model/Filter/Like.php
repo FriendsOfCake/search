@@ -52,6 +52,7 @@ class Like extends Base
             foreach ($value as $k => $v) {
                 $value[$k] = $this->_wildcards($v);
             }
+
             return $value;
         }
 
@@ -95,6 +96,7 @@ class Like extends Base
             // Replace wildcards
             $value = str_replace($substFrom, $substTo, $value);
         }
+
         return $value;
     }
 }
