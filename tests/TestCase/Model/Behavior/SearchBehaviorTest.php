@@ -83,6 +83,45 @@ class SearchBehaviorTest extends TestCase
     }
 
     /**
+     * Test the custom "search" finder with scoped/nested/dotnotated params
+     *
+     * @return void
+     */
+    public function testFinderWithDotnotatedParams()
+    {
+        $queryString = [
+            'Articles' => [
+                'id' => '5',
+                'title' => 'foo'
+            ]
+        ];
+
+        $this->Articles->searchManager()
+            ->add('Articles.id', 'Search.Value', [
+                'aliasField' => false
+            ])
+            ->add('Articles.title', 'Search.Like', [
+                'aliasField' => false
+            ]);
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertEquals(2, $query->clause('where')->count());
+
+        $queryString['Articles']['id'] = '';
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertEquals(1, $query->clause('where')->count());
+
+        $query = $this->Articles->find('search', [
+            'search' => [
+                'Articles' => [
+                    'id' => '5',
+                    'title' => 'foo'
+                ]
+            ]
+        ]);
+        $this->assertEquals(2, $query->clause('where')->count());
+    }
+
+    /**
      * testFindSearchException
      *
      * @expectedException Exception
