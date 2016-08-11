@@ -12,11 +12,27 @@ class ArticlesTable extends Table
     public function searchConfiguration()
     {
         $manager = new Manager($this);
+
         return $manager
             ->value('foo')
             ->like('search', ['filterEmpty' => true])
             ->value('baz')
             ->value('group', ['field' => 'Articles.group']);
+    }
+}
+
+class CommentsTable extends Table
+{
+
+    public function searchConfiguration()
+    {
+        $manager = new Manager($this);
+
+        return $manager
+            ->value('Comments.foo')
+            ->like('Comments.search', ['filterEmpty' => true])
+            ->value('Comments.baz')
+            ->value('Comments.group', ['field' => 'Comments.group']);
     }
 }
 
@@ -29,7 +45,8 @@ class SearchBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Search.Articles',
+        'plugin.Search.Comments'
     ];
 
     /**
@@ -46,6 +63,10 @@ class SearchBehaviorTest extends TestCase
             'className' => 'Search\Test\TestCase\Model\Behavior\ArticlesTable'
         ]);
         $this->Articles->addBehavior('Search.Search');
+        $this->Comments = TableRegistry::get('Comments', [
+            'className' => 'Search\Test\TestCase\Model\Behavior\CommentsTable'
+        ]);
+        $this->Comments->addBehavior('Search.Search');
     }
 
     /**
@@ -80,6 +101,33 @@ class SearchBehaviorTest extends TestCase
             ]
         ]);
         $this->assertEquals(2, $query->clause('where')->count());
+    }
+
+    /**
+     * Test the custom "search" finder
+     *
+     * @return void
+     */
+    public function testAliasedFinder()
+    {
+        $queryString = [
+            'Comments' => [
+                'foo' => 'a',
+                'search' => 'b',
+                'group' => 'main'
+            ]
+        ];
+
+        $query = $this->Comments->find('search', ['search' => $queryString]);
+        $this->assertEquals(3, $query->clause('where')->count());
+
+        $queryString['Comments']['search'] = '';
+        $query = $this->Comments->find('search', ['search' => $queryString]);
+        $this->assertEquals(2, $query->clause('where')->count());
+
+        $queryString['Comments']['foo'] = '';
+        $query = $this->Comments->find('search', ['search' => $queryString]);
+        $this->assertEquals(1, $query->clause('where')->count());
     }
 
     /**
