@@ -20,7 +20,7 @@ class ArticlesTable extends Table
     }
 }
 
-class SearchBehaviorTest extends TestCase
+class SearchBehaviorDotNotationTest extends TestCase
 {
 
     /**
