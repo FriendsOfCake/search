@@ -195,7 +195,7 @@ easily create the search results you need. Use:
 
 - ``value`` to limit results to exact matches
 - ``like`` to produce results containing the search query (``LIKE`` or ``ILIKE``)
-- ``boolean`` to limit results by truthy (by default: 1, true, '1', 'true', 'yes', 'on') and falsy (by default: ([0, false, '0', 'false', 'no', 'off') values which are passed down to the ORM as true/1 or false/0 or ignored when being neither truthy or falsy.
+- ``boolean`` to limit results by truthy (by default: 1, true, '1', 'true', 'yes', 'on') and falsy (by default: 0, false, '0', 'false', 'no', 'off') values which are passed down to the ORM as true/1 or false/0 or ignored when being neither truthy or falsy.
 - ``finder`` to produce results using a [(custom)](http://book.cakephp.org/3.0/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
 - ``compare`` to produce results requiring operator comparison (
     ``>``, ``<``, ``>=`` and ``<=``)
