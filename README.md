@@ -201,7 +201,6 @@ easily create the search results you need. Use:
     ``>``, ``<``, ``>=`` and ``<=``)
 - ``callback`` to produce results using your own custom callable function
 
-
 ## Optional fields
 
 Sometimes you might want to search your data based on two of three inputs in
