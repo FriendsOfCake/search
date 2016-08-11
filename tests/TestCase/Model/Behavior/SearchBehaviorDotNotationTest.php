@@ -6,17 +6,17 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 
-class ArticlesTable extends Table
+class CommentsTable extends Table
 {
 
     public function searchConfiguration()
     {
         $manager = new Manager($this);
         return $manager
-            ->value('Articles.foo')
-            ->like('Articles.search', ['filterEmpty' => true])
-            ->value('Articles.baz')
-            ->value('Articles.group', ['field' => 'Articles.group']);
+            ->value('Comments.foo')
+            ->like('Comments.search', ['filterEmpty' => true])
+            ->value('Comments.baz')
+            ->value('Comments.group', ['field' => 'Comments.group']);
     }
 }
 
@@ -29,7 +29,7 @@ class SearchBehaviorDotNotationTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Search.Comments'
     ];
 
     /**
@@ -42,10 +42,10 @@ class SearchBehaviorDotNotationTest extends TestCase
         parent::setUp();
 
         TableRegistry::clear();
-        $this->Articles = TableRegistry::get('Articles', [
-            'className' => 'Search\Test\TestCase\Model\Behavior\ArticlesTable'
+        $this->Comments = TableRegistry::get('Comments', [
+            'className' => 'Search\Test\TestCase\Model\Behavior\CommentsTable'
         ]);
-        $this->Articles->addBehavior('Search.Search');
+        $this->Comments->addBehavior('Search.Search');
     }
 
     /**
@@ -53,25 +53,25 @@ class SearchBehaviorDotNotationTest extends TestCase
      *
      * @return void
      */
-    public function testFinder()
+    public function testCommentsFinder()
     {
         $queryString = [
-            'Articles' => [
+            'Comments' => [
                 'foo' => 'a',
                 'search' => 'b',
                 'group' => 'main'
             ]
         ];
 
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Comments->find('search', ['search' => $queryString]);
         $this->assertEquals(3, $query->clause('where')->count());
 
-        $queryString['Articles']['search'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $queryString['Comments']['search'] = '';
+        $query = $this->Comments->find('search', ['search' => $queryString]);
         $this->assertEquals(2, $query->clause('where')->count());
 
-        $queryString['Articles']['foo'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $queryString['Comments']['foo'] = '';
+        $query = $this->Comments->find('search', ['search' => $queryString]);
         $this->assertEquals(1, $query->clause('where')->count());
     }
 }
