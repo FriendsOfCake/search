@@ -56,6 +56,7 @@ class SearchBehavior extends Behavior
 
         $filters = $this->_getAllFilters();
         $params = (array)$options['search'];
+        $params = Hash::flatten($params);
         $params = array_intersect_key(Hash::filter($params), $filters);
 
         foreach ($filters as $filter) {
