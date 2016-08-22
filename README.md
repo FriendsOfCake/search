@@ -220,7 +220,7 @@ echo $this->Form->input('author_id', ['empty' => 'Pick an author']);
 
 ## Persisting the Query String
 
-To persit the query string, such as keeping CakePHP's Paginator params when filtering you can do this, for example:
+To persist the query string - such as keeping CakePHP's Paginator params when filtering - you can do this, for example:
 
 ```php
 <?= $this->Form->create() ?>
