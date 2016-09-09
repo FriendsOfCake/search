@@ -42,6 +42,7 @@ class SearchBehavior extends Behavior
      * @param Query $query Query.
      * @param array $options The options for the find.
      *   - `search`: Array of search arguments.
+     *   - `collection`: Filter collection name.
      * @return \Cake\ORM\Query The Query object used in pagination.
      * @throws \Exception When missing search arguments.
      */
@@ -53,8 +54,7 @@ class SearchBehavior extends Behavior
                 'to be nested under key "search" in find() options.'
             );
         }
-
-        $filters = $this->_getAllFilters();
+        $filters = $this->_getAllFilters(Hash::get($options, 'collection', 'default'));
         $params = (array)$options['search'];
         $params = Hash::flatten($params);
         $params = array_intersect_key(Hash::filter($params), $filters);
@@ -97,17 +97,20 @@ class SearchBehavior extends Behavior
     }
 
     /**
-     * Gets all filters from the search manager.
+     * Gets all filters by the default or given collection from the search manager
      *
+     * @param string|null $collection name of collection
      * @return \Search\Model\Filter\Base[] An array of filters for the defined fields.
      */
-    protected function _getAllFilters()
+    protected function _getAllFilters($collection = 'default')
     {
         $method = $this->config('searchConfigMethod');
         if (method_exists($this->_table, $method)) {
-            return $this->_table->{$method}()->all();
+            $manager = $this->_table->{$method}();
+        } else {
+            $manager = $this->searchManager();
         }
 
-        return $this->searchManager()->all();
+        return $manager->getFilters($collection);
     }
 }

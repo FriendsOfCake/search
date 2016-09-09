@@ -81,6 +81,10 @@ class Manager
      */
     public function getFilters($collection = 'default')
     {
+        if (!isset($this->_filters[$collection])) {
+            throw new InvalidArgumentException(__d('Search', 'The collection "{0}" does not exist.', $collection));
+        }
+
         return $this->_filters[$collection];
     }
 
