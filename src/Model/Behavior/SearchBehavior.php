@@ -72,7 +72,7 @@ class SearchBehavior extends Behavior
             }
             $filter->process();
         }
-        $this->config('isSearch', true);
+        $this->config('isSearch', $isSearch);
 
         return $query;
     }
