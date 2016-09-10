@@ -32,8 +32,10 @@ class SearchBehavior extends Behavior
         ],
         'implementedMethods' => [
             'filterParams' => 'filterParams',
-            'searchManager' => 'searchManager'
-        ]
+            'searchManager' => 'searchManager',
+            'isSearch' => 'isSearch'
+        ],
+        'isSearch' => false
     ];
 
     /**
@@ -47,6 +49,7 @@ class SearchBehavior extends Behavior
      */
     public function findSearch(Query $query, array $options)
     {
+        $this->config('isSearch', false);
         if (!isset($options['search'])) {
             throw new Exception(
                 'Custom finder "search" expects search arguments ' .
@@ -59,13 +62,30 @@ class SearchBehavior extends Behavior
         $params = Hash::flatten($params);
         $params = array_intersect_key(Hash::filter($params), $filters);
 
+        $isSearch = false;
         foreach ($filters as $filter) {
             $filter->args($params);
             $filter->query($query);
+
+            if (!$filter->skip()) {
+                $isSearch = true;
+            }
             $filter->process();
         }
+        $this->config('isSearch', true);
 
         return $query;
+    }
+
+    /**
+     * Returns true if the findSearch call modified the query in a way
+     * that at least one search filter has been applied.
+     *
+     * @return bool
+     */
+    public function isSearch()
+    {
+        return $this->config('isSearch');
     }
 
     /**
