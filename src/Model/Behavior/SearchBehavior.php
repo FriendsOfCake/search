@@ -53,7 +53,6 @@ class SearchBehavior extends Behavior
      */
     public function findSearch(Query $query, array $options)
     {
-        $this->config('isSearch', false);
         if (!isset($options['search'])) {
             throw new Exception(
                 'Custom finder "search" expects search arguments ' .
