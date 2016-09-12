@@ -35,8 +35,12 @@ class SearchBehavior extends Behavior
             'searchManager' => 'searchManager',
             'isSearch' => 'isSearch'
         ],
-        'isSearch' => false
     ];
+    
+    /**
+     * @var bool
+     */
+    protected $_isSearch = false;
 
     /**
      * Callback fired from the controller.
@@ -62,17 +66,16 @@ class SearchBehavior extends Behavior
         $params = Hash::flatten($params);
         $params = array_intersect_key(Hash::filter($params), $filters);
 
-        $isSearch = false;
+        $this->_isSearch = false;
         foreach ($filters as $filter) {
             $filter->args($params);
             $filter->query($query);
 
             if (!$filter->skip()) {
-                $isSearch = true;
+                $this->_isSearch = true;
             }
             $filter->process();
         }
-        $this->config('isSearch', $isSearch);
 
         return $query;
     }
@@ -85,7 +88,7 @@ class SearchBehavior extends Behavior
      */
     public function isSearch()
     {
-        return $this->config('isSearch');
+        return $this->_isSearch;
     }
 
     /**
