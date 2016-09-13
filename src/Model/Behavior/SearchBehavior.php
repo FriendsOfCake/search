@@ -32,9 +32,17 @@ class SearchBehavior extends Behavior
         ],
         'implementedMethods' => [
             'filterParams' => 'filterParams',
-            'searchManager' => 'searchManager'
-        ]
+            'searchManager' => 'searchManager',
+            'isSearch' => 'isSearch'
+        ],
     ];
+
+    /**
+     * Internal flag to check whether the behavior modified the query.
+     *
+     * @var bool
+     */
+    protected $_isSearch = false;
 
     /**
      * Callback fired from the controller.
@@ -59,13 +67,29 @@ class SearchBehavior extends Behavior
         $params = Hash::flatten($params);
         $params = array_intersect_key(Hash::filter($params), $filters);
 
+        $this->_isSearch = false;
         foreach ($filters as $filter) {
             $filter->args($params);
             $filter->query($query);
+
+            if (!$filter->skip()) {
+                $this->_isSearch = true;
+            }
             $filter->process();
         }
 
         return $query;
+    }
+
+    /**
+     * Returns true if the findSearch call modified the query in a way
+     * that at least one search filter has been applied.
+     *
+     * @return bool
+     */
+    public function isSearch()
+    {
+        return $this->_isSearch;
     }
 
     /**

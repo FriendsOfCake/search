@@ -81,6 +81,7 @@ class SearchBehaviorTest extends TestCase
             'search' => 'b',
             'group' => 'main'
         ];
+        $this->assertFalse($this->Articles->isSearch());
 
         $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertEquals(3, $query->clause('where')->count());
@@ -101,6 +102,7 @@ class SearchBehaviorTest extends TestCase
             ]
         ]);
         $this->assertEquals(2, $query->clause('where')->count());
+        $this->assertTrue($this->Articles->isSearch());
     }
 
     /**
