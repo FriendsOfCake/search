@@ -2,6 +2,7 @@
 namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Controller\ComponentRegistry;
 use Cake\Utility\Hash;
 
 class PrgComponent extends Component
@@ -13,14 +14,15 @@ class PrgComponent extends Component
      * ### Options
      * - `actions` : Action name(s) to use PRG for. You can pass a single action
      *   as string or multiple as array. If boolean `true` all actions will be
-     *   processsed if `false` none. Default is ['index', 'lookup'].
+     *   processed if `false` none. Default is ['index', 'lookup'].
      * - `queryStringToData` : Set query string as request data. Default `true`.
      *
      * @var array
      */
     protected $_defaultConfig = [
         'actions' => ['index', 'lookup'],
-        'queryStringToData' => true
+        'queryStringToData' => true,
+        'queryStringWhitelist' => ['sort', 'direction']
     ];
 
     /**
@@ -31,9 +33,11 @@ class PrgComponent extends Component
      */
     public function startup()
     {
-        if ($this->_actionCheck()) {
-            return $this->conversion();
+        if (!$this->_actionCheck()) {
+            return null;
         }
+
+        return $this->conversion();
     }
 
     /**
@@ -57,7 +61,7 @@ class PrgComponent extends Component
 
         list($url) = explode('?', $this->request->here(false));
 
-        $params = Hash::filter($this->request->data);
+        $params = $this->_filterParams();
         if ($params) {
             $url .= '?' . http_build_query($params);
         }
@@ -78,5 +82,25 @@ class PrgComponent extends Component
         }
 
         return in_array($this->request->action, (array)$actions, true);
+    }
+
+    /**
+     * @return array
+     */
+    protected function _filterParams()
+    {
+        $params = Hash::filter($this->request->data);
+
+        if (!$this->config('queryStringWhitelist')) {
+            return $params;
+        }
+
+        foreach ($this->config('queryStringWhitelist') as $field) {
+            if (!isset($params[$field]) && $this->request->query($field) !== null) {
+                $params[$field] = $this->request->query($field);
+            }
+        }
+
+        return $params;
     }
 }
