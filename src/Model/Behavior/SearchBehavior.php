@@ -36,8 +36,10 @@ class SearchBehavior extends Behavior
             'isSearch' => 'isSearch'
         ],
     ];
-    
+
     /**
+     * Internal flag to check whether the behavior modified the query.
+     *
      * @var bool
      */
     protected $_isSearch = false;
