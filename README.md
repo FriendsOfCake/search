@@ -188,6 +188,21 @@ your data.
 If you are using the `Search.Prg` component the forms current values will be
 populated from the query params.
 
+#### Adding a reset button dynamically
+If you pass down the information on whether the query was modified by your search query strings, you can also include a reset button only if necessary:
+```php
+// in your controller action
+$this->set('isSearch', $this->Articles->isSearch());
+```
+
+Then one can switch based on that in the template:
+```php
+// in your form
+if ($isSearch) {
+	echo $this->Html->link('Reset', ['action' => 'index']);
+}
+```
+
 ## Filters
 
 The Search plugin comes with a set of predefined search filters that allow you to
