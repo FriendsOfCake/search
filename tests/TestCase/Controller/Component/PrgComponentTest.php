@@ -9,7 +9,7 @@ use Search\Controller\Component\PrgComponent;
 
 class SearchComponentTest extends TestCase
 {
-    /*
+    /**
      * @return void
      */
     public function setUp()
@@ -32,7 +32,7 @@ class SearchComponentTest extends TestCase
         $this->Prg = new PrgComponent($this->Controller->components());
     }
 
-    /*
+    /**
      * @return void
      */
     public function testInitializeGet()
@@ -51,7 +51,7 @@ class SearchComponentTest extends TestCase
         $this->assertEquals([], $this->Controller->request->data);
     }
 
-    /*
+    /**
      * @return void
      */
     public function testInitializePost()
@@ -104,7 +104,7 @@ class SearchComponentTest extends TestCase
         $this->assertEquals('http://localhost/users/my-predictions', $response->header()['Location']);
     }
 
-    /*
+    /**
      * @return void
      */
     public function testInitializePostWithQueryStringWhitelist()
@@ -127,7 +127,7 @@ class SearchComponentTest extends TestCase
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar&sort=created&direction=desc', $response->header()['Location']);
     }
 
-    /*
+    /**
      * @return void
      */
     public function testInitializePostWithQueryStringWhitelistEmpty()
