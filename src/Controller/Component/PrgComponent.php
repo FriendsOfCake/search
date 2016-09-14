@@ -16,7 +16,7 @@ class PrgComponent extends Component
      *   as string or multiple as array. If boolean `true` all actions will be
      *   processed if `false` none. Default is ['index', 'lookup'].
      * - `queryStringToData` : Set query string as request data. Default `true`.
-     * - `queryStringWhitelist` : An array of whitelisted query strings to be kept.
+     * - `queryStringWhitelist` : An array of whitelisted query string keys to be kept.
      *   Defaults to the Paginator `'sort'` and `'direction'` ones.
      *
      * @var array
