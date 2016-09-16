@@ -17,14 +17,14 @@ class PrgComponent extends Component
      *   processed if `false` none. Default is ['index', 'lookup'].
      * - `queryStringToData` : Set query string as request data. Default `true`.
      * - `queryStringWhitelist` : An array of whitelisted query strings to be kept.
-     *   Defaults to the Paginator `'sort'` and `'direction'` ones.
+     *   Defaults to the Paginator `'sort'`, `'direction'` and `'limit'` ones.
      *
      * @var array
      */
     protected $_defaultConfig = [
         'actions' => ['index', 'lookup'],
         'queryStringToData' => true,
-        'queryStringWhitelist' => ['sort', 'direction']
+        'queryStringWhitelist' => ['sort', 'direction', 'limit']
     ];
 
     /**
