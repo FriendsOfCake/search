@@ -36,6 +36,21 @@ class CommentsTable extends Table
     }
 }
 
+class GroupsTable extends Table
+{
+
+    public function searchConfiguration()
+    {
+        $manager = new Manager($this);
+
+        return $manager
+            ->collection('frontend')
+            ->value('title')
+            ->collection('backend')
+            ->like('title', ['before' => true, 'after' => true]);
+    }
+}
+
 class SearchBehaviorTest extends TestCase
 {
 
@@ -46,7 +61,8 @@ class SearchBehaviorTest extends TestCase
      */
     public $fixtures = [
         'plugin.Search.Articles',
-        'core.Comments'
+        'core.Comments',
+        'core.Groups',
     ];
 
     /**
@@ -67,6 +83,10 @@ class SearchBehaviorTest extends TestCase
             'className' => 'Search\Test\TestCase\Model\Behavior\CommentsTable'
         ]);
         $this->Comments->addBehavior('Search.Search');
+        $this->Groups = TableRegistry::get('Groups', [
+            'className' => 'Search\Test\TestCase\Model\Behavior\GroupsTable'
+        ]);
+        $this->Groups->addBehavior('Search.Search');
     }
 
     /**
@@ -130,6 +150,36 @@ class SearchBehaviorTest extends TestCase
         $queryString['Comments']['foo'] = '';
         $query = $this->Comments->find('search', ['search' => $queryString]);
         $this->assertEquals(1, $query->clause('where')->count());
+    }
+
+    /**
+     * Test the custom "search" finder
+     *
+     * @dataProvider testCollectionFinderProvider
+     * @return void
+     */
+    public function testCollectionFinder($collection, $queryString, $expected)
+    {
+        $query = $this->Groups->find('search', ['search' => $queryString, 'collection' => $collection]);
+        $this->assertEquals($expected, $query->count());
+    }
+
+    /**
+     * DataProvider of testCollectionFinder
+     *
+     * @return void
+     */
+    public function testCollectionFinderProvider()
+    {
+        return [
+            ['frontend', ['title' => 'foo'], 1],
+            ['frontend', ['title' => 'bar'], 1],
+            ['frontend', ['title' => 'foobar'], 0],
+            ['backend', ['title' => 'f'], 1],
+            ['backend', ['title' => 'ba'], 1],
+            ['backend', ['title' => 'baa'], 0],
+            ['frontend', ['title' => 'fooo'], 0],
+        ];
     }
 
     /**
