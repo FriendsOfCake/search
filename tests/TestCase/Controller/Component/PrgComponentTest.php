@@ -9,6 +9,9 @@ use Search\Controller\Component\PrgComponent;
 
 class SearchComponentTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();
@@ -29,6 +32,9 @@ class SearchComponentTest extends TestCase
         $this->Prg = new PrgComponent($this->Controller->components());
     }
 
+    /**
+     * @return void
+     */
     public function testInitializeGet()
     {
         $expected = ['foo' => 'bar'];
@@ -45,6 +51,9 @@ class SearchComponentTest extends TestCase
         $this->assertEquals([], $this->Controller->request->data);
     }
 
+    /**
+     * @return void
+     */
     public function testInitializePost()
     {
         $this->Controller->request->params = [
@@ -93,5 +102,53 @@ class SearchComponentTest extends TestCase
         $this->Controller->response->header('Location', '');
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/users/my-predictions', $response->header()['Location']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testInitializePostWithQueryStringWhitelist()
+    {
+        $this->Controller->request->query = [
+            'sort' => 'created',
+            'direction' => 'desc',
+            'page' => 9,
+        ];
+        $this->Controller->request->params = [
+            'controller' => 'Posts',
+            'action' => 'index',
+            'pass' => ['pass']
+        ];
+        $this->Controller->request->here = '/Posts/index/pass';
+        $this->Controller->request->data = ['foo' => 'bar'];
+        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+
+        $response = $this->Prg->startup();
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar&sort=created&direction=desc', $response->header()['Location']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testInitializePostWithQueryStringWhitelistEmpty()
+    {
+        $this->Controller->request->query = [
+            'sort' => 'created',
+            'direction' => 'desc',
+            'page' => 9,
+        ];
+        $this->Controller->request->params = [
+            'controller' => 'Posts',
+            'action' => 'index',
+            'pass' => ['pass']
+        ];
+        $this->Controller->request->here = '/Posts/index/pass';
+        $this->Controller->request->data = ['foo' => 'bar'];
+        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+
+        // Needed as config() would not do anything here due to internal default behavior of merging here
+        $this->Prg->configShallow('queryStringWhitelist', []);
+        $response = $this->Prg->startup();
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
     }
 }
