@@ -87,6 +87,8 @@ class PrgComponent extends Component
     }
 
     /**
+     * Filters the params from POST data and merges in the whitelisted query string ones.
+     *
      * @return array
      */
     protected function _filterParams()
