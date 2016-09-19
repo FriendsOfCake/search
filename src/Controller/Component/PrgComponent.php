@@ -35,11 +35,11 @@ class PrgComponent extends Component
      */
     public function startup()
     {
-        if (!$this->_actionCheck()) {
-            return null;
+        if ($this->_actionCheck()) {
+            return $this->conversion();
         }
 
-        return $this->conversion();
+        return null;
     }
 
     /**
