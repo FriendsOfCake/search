@@ -82,13 +82,13 @@ class Manager
      */
     public function getFilters($collection = 'default')
     {
-        if (isset($this->_filters[$collection])) {
-            return $this->_filters[$collection];
+        if (!isset($this->_filters[$collection])) {
+            throw new InvalidArgumentException(
+                sprintf('The collection "{0}" does not exist.', $collection)
+            );
         }
 
-        throw new InvalidArgumentException(
-            sprintf('The collection "{0}" does not exist.', $collection)
-        );
+        return $this->_filters[$collection];
     }
 
     /**
@@ -102,6 +102,7 @@ class Manager
         if ($name === null) {
             return $this->_collection;
         }
+
         if (!isset($this->_filters[$name])) {
             $this->_filters[$name] = [];
         }
