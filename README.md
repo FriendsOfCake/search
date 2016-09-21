@@ -49,7 +49,9 @@ well. In your table classes `initialize()` method call the `searchManager()`
 method, it will return a search manager instance. You can now add filters to the
 manager by chaining them. The first arg of the `add()` method is the field, the
 second the filter using the dot notation of cake to load filters from plugins.
-The third one is an array of filter specific options.
+The third one is an array of filter specific options. Please refer to
+[the Options section](#options) for an explanation of the available options
+supported by the different filters.
 
 ```php
 use Search\Manager;
@@ -215,6 +217,95 @@ easily create the search results you need. Use:
 - ``Compare`` to produce results requiring operator comparison (
     ``>``, ``<``, ``>=`` and ``<=``)
 - ``Callback`` to produce results using your own custom callable function
+
+### Options
+
+#### All filters
+
+The following options are supported by all filters.
+
+- `field` (`string`, defaults to the name passed to the first argument of the
+  add filter method) The name of the field to use for searching. Use this option
+  if you need to use a name in your forms that doesn't match the actual field name.
+
+- `name` (`string`, defaults to the name passed to the first argument of the add
+  filter method) The name of the field to look up in the request data. Use this
+  option if you need to configure the name of the filter differently than the name
+  of the field, in cases where you can't use the `field` option, for example when it
+  is being used to define multiple fields, which is supported by the `Like` filter.
+
+- `alwaysRun` (`bool`, defaults to `false`) Defines whether the filter should always
+  run, irrespectively of whether the corresponding field exists in the request data.
+
+- `filterEmpty` (`bool`, defaults to `false`) Defines whether the filter should not
+  run in case the corresponding field in the request is empty. Refer to
+  [the Optional fields section](#optional-fields) for additional details.
+
+The following options are supported by all filters except `Callback` and `Finder`.
+
+- `aliasField` (`bool`, defaults to `true`) Defines whether the field name should
+  be aliased with respect to the alias used by the table class to which the behavior
+  is attached to.
+
+- `defaultValue` (`mixed`, defaults to `null`) The default value that is being
+  used in case the value passed for the corresponding field is invalid or missing.
+
+#### `Compare`
+
+- `operator` (`string`, defaults to `>=`) The operator to use for comparison. Valid
+  values are `>=`, `<=`, `>` and `<`.
+
+#### `Like`
+
+- `multiValue` (`bool`, defaults to `false`) Defines whether the filter accepts
+  multiple values. If disabled, and multiple values are being passed, the filter
+  will fall back to using the default value defined by the `defaultValue` option.
+
+- `field` (`string|array`, defaults to ) The name of the field to use for
+  searching. Works like the base `field` option but also accepts multiple field
+  names as an array. When defining multiple fields, the search term is going to
+  be looked up in all the given fields, using the conditional operator defined by
+  the `fieldMode` option. 
+
+- `before` (`bool`, defaults to `false`) Whether to automatically add a wildcard
+  *before* the search term.
+
+- `after` (`bool`, defaults to `false`) Whether to automatically add a wildcard
+  *after* the search term.
+
+- `mode` (`string`, default to `or`) **This options is deprecated**, please use
+  `fieldMode` instead.
+
+- `fieldMode` (`string`, defaults to `or`) The conditional mode to use when
+  matching against multiple fields.
+
+- `valueMode` (`string`, defaults to `or`) The conditional mode to use when
+  searching for multiple values.
+
+- `comparison` (`string`, defaults to `LIKE`) The comparison operator to use.
+
+- `wildcardAny` (`string`, defaults to `*`) Defines the string that should be
+  treated as a _any_ wildcard in case it is being encountered in the search term.
+  The behavior will internally replace this with the appropriate `LIKE`
+  compatible wildcard. This is useful if you want to pass wildcards inside of the
+  search term, while still being able to use the actual wildcard character inside
+  of the search term so that it is being treated as a part of the term. For example
+  a search term of `* has reached 100%` would be converted to `% has reached 100\%`.
+
+- `wildcardOne` (`string`, defaults to `?`) Defines the string that should be
+  treated as a _one_ wildcard in case it is being encountered in the search term.
+  Behaves similar to `wildcardAny`, that is, the actual `LIKE` compatible wildcard
+  (`_`) is being escaped in case used the search term.
+
+#### `Value`
+
+- `multiValue` (`bool`, defaults to `false`) Defines whether the filter accepts
+  multiple values. If disabled, and multiple values are being passed, the filter
+  will fall back to using the default value defined by the `defaultValue` option.
+
+- `mode` (`string`, possible values are `or` and `and`, defaults to `or`) The
+  conditional mode to use when searching for multiple values.
+
 
 ## Optional fields
 
