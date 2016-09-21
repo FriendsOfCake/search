@@ -24,27 +24,13 @@ class LikeTest extends TestCase
      */
     public function testDeprecatedModeOption()
     {
-        $message = null;
-        $oldHandler = set_error_handler(function ($errno, $errstr) use (&$oldHandler, &$message) {
-            if ($errno === E_USER_DEPRECATED) {
-                $message = $errstr;
-            } else {
-                call_user_func_array($oldHandler, func_get_args());
-            }
-        });
-
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
-
         $filter = new Like('title', $manager, ['mode' => 'modeValue']);
 
-        restore_error_handler();
-
-        $this->assertEquals(
-            'The `mode` configuration option is deprecated, use `fieldMode` and `valueMode` instead.',
-            $message
-        );
+        $this->assertEquals('modeValue', $filter->config('mode'));
         $this->assertEquals('modeValue', $filter->config('fieldMode'));
+        $this->assertEquals('or', $filter->config('valueMode'));
     }
 
     public function testProcess()

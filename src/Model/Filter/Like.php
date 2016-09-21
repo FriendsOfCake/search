@@ -35,10 +35,6 @@ class Like extends Base
 
         $mode = $this->config('mode');
         if ($mode !== null) {
-            trigger_error(
-                'The `mode` configuration option is deprecated, use `fieldMode` and `valueMode` instead.',
-                E_USER_DEPRECATED
-            );
             $this->config('fieldMode', $mode);
         }
     }
