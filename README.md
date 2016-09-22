@@ -261,11 +261,11 @@ The following options are supported by all filters except `Callback` and `Finder
   multiple values. If disabled, and multiple values are being passed, the filter
   will fall back to using the default value defined by the `defaultValue` option.
 
-- `field` (`string|array`, defaults to ) The name of the field to use for
-  searching. Works like the base `field` option but also accepts multiple field
-  names as an array. When defining multiple fields, the search term is going to
-  be looked up in all the given fields, using the conditional operator defined by
-  the `fieldMode` option. 
+- `field` (`string|array`, defaults to the name passed to the first argument of the
+  add filter method) The name of the field to use for searching. Works like the base
+  `field` option but also accepts multiple field names as an array. When defining
+  multiple fields, the search term is going to be looked up in all the given fields,
+  using the conditional operator defined by the `fieldMode` option.
 
 - `before` (`bool`, defaults to `false`) Whether to automatically add a wildcard
   *before* the search term.
@@ -273,14 +273,14 @@ The following options are supported by all filters except `Callback` and `Finder
 - `after` (`bool`, defaults to `false`) Whether to automatically add a wildcard
   *after* the search term.
 
-- `mode` (`string`, default to `or`) **This options is deprecated**, please use
+- ~~`mode`~~ (`string`, default to `or`) **This options is deprecated**, please use
   `fieldMode` instead.
 
 - `fieldMode` (`string`, defaults to `or`) The conditional mode to use when
-  matching against multiple fields.
+  matching against multiple fields. Valid values are `or` and `and`.
 
 - `valueMode` (`string`, defaults to `or`) The conditional mode to use when
-  searching for multiple values.
+  searching for multiple values. Valid values are `or` and `and`.
 
 - `comparison` (`string`, defaults to `LIKE`) The comparison operator to use.
 
@@ -303,8 +303,8 @@ The following options are supported by all filters except `Callback` and `Finder
   multiple values. If disabled, and multiple values are being passed, the filter
   will fall back to using the default value defined by the `defaultValue` option.
 
-- `mode` (`string`, possible values are `or` and `and`, defaults to `or`) The
-  conditional mode to use when searching for multiple values.
+- `mode` (`string`, defaults to `or`) The conditional mode to use when searching for
+  multiple values. Valid values are `or` and `and`.
 
 
 ## Optional fields
