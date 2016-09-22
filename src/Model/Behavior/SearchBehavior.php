@@ -62,23 +62,13 @@ class SearchBehavior extends Behavior
                 'to be nested under key "search" in find() options.'
             );
         }
+
         $filters = $this->_getAllFilters(Hash::get($options, 'collection', 'default'));
-        $params = (array)$options['search'];
-        $params = Hash::flatten($params);
-        $params = array_intersect_key(Hash::filter($params), $filters);
 
-        $this->_isSearch = false;
-        foreach ($filters as $filter) {
-            $filter->args($params);
-            $filter->query($query);
+        $params = $this->_flattenParams((array)$options['search']);
+        $params = $this->_extractParams($params, $filters);
 
-            if (!$filter->skip()) {
-                $this->_isSearch = true;
-            }
-            $filter->process();
-        }
-
-        return $query;
+        return $this->_processFilters($filters, $params, $query);
     }
 
     /**
@@ -121,6 +111,77 @@ class SearchBehavior extends Behavior
     }
 
     /**
+     * Extracts all parameters for wich a filter with a matching field
+     * name exists.
+     *
+     * @param array $params The parameters array to extract from.
+     * @param \Search\Model\Filter\Base[] $filters The filters to match against.
+     * @return array The extracted parameters.
+     */
+    protected function _extractParams($params, $filters)
+    {
+        return array_intersect_key(Hash::filter($params), $filters);
+    }
+
+    /**
+     * Flattens a parameters array, so that possible aliased parameter
+     * keys that are provided in a nested fashion, are being grouped
+     * using flat keys.
+     *
+     * ### Example:
+     *
+     * The following parameters array:
+     *
+     * ```
+     * [
+     *     'Alias' => [
+     *         'field' => 'value'
+     *         'otherField' => [
+     *             'value',
+     *             'otherValue'
+     *         ]
+     *     ],
+     *     'field' => 'value'
+     * ]
+     * ```
+     *
+     * would return as
+     *
+     * ```
+     * [
+     *     'Alias.field' => 'value',
+     *     'Alias.otherField' => [
+     *         'value',
+     *         'otherValue'
+     *     ],
+     *     'field' => 'value'
+     * ]
+     * ```
+     *
+     * @param array $params The parameters array to flatten.
+     * @return array The flattened parameters array.
+     */
+    protected function _flattenParams($params)
+    {
+        $flattened = [];
+        foreach ($params as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $childKey => $childValue) {
+                    if (!is_numeric($childKey)) {
+                        $flattened[$key . '.' . $childKey] = $childValue;
+                    } else {
+                        $flattened[$key][$childKey] = $childValue;
+                    }
+                }
+            } else {
+                $flattened[$key] = $value;
+            }
+        }
+
+        return $flattened;
+    }
+
+    /**
      * Gets all filters by the default or given collection from the search manager
      *
      * @param string|null $collection name of collection
@@ -136,5 +197,29 @@ class SearchBehavior extends Behavior
         }
 
         return $manager->getFilters($collection);
+    }
+
+    /**
+     * Processes the given filters.
+     *
+     * @param \Search\Model\Filter\Base[] $filters The filters to process.
+     * @param array $params The parameters to pass to the filters.
+     * @param \Cake\ORM\Query $query The query to pass to the filters.
+     * @return \Cake\ORM\Query The query processed by the filters.
+     */
+    protected function _processFilters($filters, $params, $query)
+    {
+        $this->_isSearch = false;
+        foreach ($filters as $filter) {
+            $filter->args($params);
+            $filter->query($query);
+
+            if (!$filter->skip()) {
+                $this->_isSearch = true;
+            }
+            $filter->process();
+        }
+
+        return $query;
     }
 }

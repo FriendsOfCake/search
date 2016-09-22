@@ -1,6 +1,8 @@
 <?php
 namespace Search\Model\Filter;
 
+use Search\Manager;
+
 class Like extends Base
 {
 
@@ -12,11 +14,30 @@ class Like extends Base
     protected $_defaultConfig = [
         'before' => false,
         'after' => false,
-        'mode' => 'or',
+        'mode' => null,
+        'fieldMode' => 'or',
+        'valueMode' => 'or',
         'comparison' => 'LIKE',
         'wildcardAny' => '*',
         'wildcardOne' => '?',
     ];
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param string $name Name.
+     * @param \Search\Manager $manager Manager.
+     * @param array $config Config.
+     */
+    public function __construct($name, Manager $manager, array $config = [])
+    {
+        parent::__construct($name, $manager, $config);
+
+        $mode = $this->config('mode');
+        if ($mode !== null) {
+            $this->config('fieldMode', $mode);
+        }
+    }
 
     /**
      * Process a LIKE condition ($x LIKE $y).
@@ -29,31 +50,49 @@ class Like extends Base
             return;
         }
 
+        $comparison = $this->config('comparison');
+        $valueMode = $this->config('valueMode');
+        $value = $this->value();
+        $isMultiValue = is_array($value);
+
         $conditions = [];
         foreach ($this->fields() as $field) {
-            $left = $field . ' ' . $this->config('comparison');
-            $right = $this->_wildcards($this->value());
-
-            $conditions[] = [$left => $right];
+            $left = $field . ' ' . $comparison;
+            if ($isMultiValue) {
+                $valueConditions = [];
+                foreach ($value as $val) {
+                    $right = $this->_wildcards($val);
+                    if ($right !== false) {
+                        $valueConditions[] = [$left => $right];
+                    }
+                }
+                if (!empty($valueConditions)) {
+                    $conditions[] = [$valueMode => $valueConditions];
+                }
+            } else {
+                $right = $this->_wildcards($value);
+                if ($right !== false) {
+                    $conditions[] = [$left => $right];
+                }
+            }
         }
 
-        $this->query()->andWhere([$this->config('mode') => $conditions]);
+        if (!empty($conditions)) {
+            $this->query()->andWhere([$this->config('fieldMode') => $conditions]);
+        }
     }
 
     /**
      * Wrap wild cards around the value.
      *
-     * @param  string $value Value.
-     * @return string
+     * @param string $value Value.
+     * @return string|false Either the wildcard decorated input value, or `false` when
+     *  encountering a non-string value.
      */
     protected function _wildcards($value)
     {
-        if (is_array($value)) {
-            foreach ($value as $k => $v) {
-                $value[$k] = $this->_wildcards($v);
-            }
-
-            return $value;
+        if (!is_string($value)) {
+            return false;
         }
 
         $value = $this->_formatWildcards($value);

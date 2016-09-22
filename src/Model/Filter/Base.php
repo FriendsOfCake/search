@@ -63,7 +63,8 @@ abstract class Base
             'validate' => [],
             'alwaysRun' => false,
             'filterEmpty' => false,
-            'defaultValue' => null
+            'defaultValue' => null,
+            'multiValue' => false,
         ];
 
         $this->config($config + $defaults);
@@ -169,7 +170,17 @@ abstract class Base
      */
     public function value()
     {
-        return isset($this->_args[$this->name()]) ? $this->_args[$this->name()] : $this->_config['defaultValue'];
+        $value = $this->_config['defaultValue'];
+        if (isset($this->_args[$this->name()])) {
+            $passedValue = $this->_args[$this->name()];
+            if (!is_array($passedValue) ||
+                $this->config('multiValue')
+            ) {
+                return $passedValue;
+            }
+        }
+
+        return $value;
     }
 
     /**

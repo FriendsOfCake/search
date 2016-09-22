@@ -5,6 +5,15 @@ class Value extends Base
 {
 
     /**
+     * Default configuration.
+     *
+     * @var array
+     */
+    protected $_defaultConfig = [
+        'mode' => 'or',
+    ];
+
+    /**
      * Process a value condition ($x == $y).
      *
      * @return void
@@ -16,7 +25,25 @@ class Value extends Base
         }
 
         $this->query()->andWhere(function ($e) {
-            return $e->in($this->field(), $this->value());
+            /* @var $e \Cake\Database\Expression\QueryExpression */
+            $value = $this->value();
+            if ($value === null) {
+                return $e;
+            }
+
+            $field = $this->field();
+
+            if (strtolower($this->config('mode')) === 'or' &&
+                is_array($value)
+            ) {
+                return $e->in($field, $value);
+            }
+
+            foreach ((array)$value as $val) {
+                $e->eq($field, $val);
+            }
+
+            return $e;
         });
     }
 }

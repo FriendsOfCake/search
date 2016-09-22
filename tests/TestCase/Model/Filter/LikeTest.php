@@ -1,13 +1,10 @@
 <?php
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\Core\Configure;
-use Cake\ORM\Entity;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 use Search\Manager;
-use Search\Model\Filter\Base;
 use Search\Model\Filter\Like;
 
 class LikeTest extends TestCase
@@ -25,6 +22,17 @@ class LikeTest extends TestCase
     /**
      * @return void
      */
+    public function testDeprecatedModeOption()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, ['mode' => 'modeValue']);
+
+        $this->assertEquals('modeValue', $filter->config('mode'));
+        $this->assertEquals('modeValue', $filter->config('fieldMode'));
+        $this->assertEquals('or', $filter->config('valueMode'));
+    }
+
     public function testProcess()
     {
         $articles = TableRegistry::get('Articles');
@@ -35,15 +43,231 @@ class LikeTest extends TestCase
         $filter->query($articles->find());
         $filter->process();
 
-        $sql = $filter->query()->sql();
-        $this->assertEquals(1, preg_match('/WHERE Articles.title like/', $sql));
+        $this->assertRegExp(
+            '/WHERE Articles\.title like \:c0$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['test'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
 
         $filter->config('comparison', 'ILIKE');
         $filter->query($articles->find());
         $filter->process();
 
-        $sql = $filter->query()->sql();
-        $this->assertEquals(1, preg_match('/WHERE Articles.title ilike/', $sql));
+        $this->assertRegExp(
+            '/WHERE Articles\.title ilike \:c0$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['test'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessSingleValueWithAndValueMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, ['valueMode' => 'and']);
+        $filter->args(['title' => 'foo']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE Articles\.title like :c0$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessSingleValueAndMultiFieldWithAndValueMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, [
+            'field' => ['title', 'other'],
+            'valueMode' => 'and'
+        ]);
+        $filter->args(['title' => 'foo']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title like :c0 OR Articles\.other like :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'foo'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, ['multiValue' => true]);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title like :c0 OR Articles\.title like :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'bar'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValueWithAndValueMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, [
+            'multiValue' => true,
+            'valueMode' => 'and'
+        ]);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title like :c0 AND Articles\.title like :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'bar'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValueAndMultiField()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, [
+            'multiValue' => true,
+            'field' => ['title', 'other']
+        ]);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(\(Articles\.title like :c0 OR Articles\.title like :c1\) ' .
+                'OR \(Articles\.other like :c2 OR Articles\.other like :c3\)\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'bar', 'foo', 'bar'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValueAndMultiFieldWithAndFieldMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, [
+            'multiValue' => true,
+            'field' => ['title', 'other'],
+            'fieldMode' => 'and'
+        ]);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(\(Articles\.title like :c0 OR Articles\.title like :c1\) ' .
+                'AND \(Articles\.other like :c2 OR Articles\.other like :c3\)\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'bar', 'foo', 'bar'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValueWithNonScalarValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, ['multiValue' => true]);
+        $filter->args(['title' => ['foo' => ['bar']]]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertEmpty($filter->query()->clause('where'));
+        $this->assertEmpty(Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessDefaultFallbackForDisallowedMultiValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, ['defaultValue' => 'default']);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE Articles\.title like :c0$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['default'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessNoDefaultFallbackForDisallowedMultiValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertNotRegExp(
+            '/Articles\.title like/',
+            $filter->query()->sql()
+        );
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
     /**
@@ -60,9 +284,10 @@ class LikeTest extends TestCase
         $filter->process();
 
         $filter->query()->sql();
-        $values = $filter->query()->valueBinder()->bindings();
-        $value = $values[':c0']['value'];
-        $this->assertEquals('part\_1 _ 100\% %', $value);
+        $this->assertEquals(
+            ['part\_1 _ 100\% %'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
     }
 
     /**
@@ -79,28 +304,10 @@ class LikeTest extends TestCase
         $filter->process();
 
         $filter->query()->sql();
-        $values = $filter->query()->valueBinder()->bindings();
-        $value = $values[':c0']['value'];
-        $this->assertEquals('%22\% 44\_%', $value);
-    }
-
-    /**
-     * @return void
-     */
-    public function testWildcardsArray()
-    {
-        $articles = TableRegistry::get('Articles');
-        $manager = new Manager($articles);
-
-        $filter = new Like('title', $manager, ['before' => true, 'after' => true]);
-        $filter->args(['title' => ['22% 44_']]);
-        $filter->query($articles->find());
-        $filter->process();
-
-        $filter->query()->sql();
-        $values = $filter->query()->valueBinder()->bindings();
-        $value = $values[':c0']['value'][0];
-        $this->assertEquals('%22\% 44\_%', $value);
+        $this->assertEquals(
+            ['%22\% 44\_%'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
     }
 
     /**
@@ -121,8 +328,9 @@ class LikeTest extends TestCase
         $filter->process();
 
         $filter->query()->sql();
-        $values = $filter->query()->valueBinder()->bindings();
-        $value = $values[':c0']['value'];
-        $this->assertEquals('%22% 44_%', $value);
+        $this->assertEquals(
+            ['%22% 44_%'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
     }
 }

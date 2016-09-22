@@ -49,6 +49,31 @@ class BaseTest extends TestCase
         $this->assertTrue($filter->skip());
     }
 
+    /**
+     * @return void
+     */
+    public function testValue()
+    {
+        $filter = new Filter(
+            'field',
+            $this->manager,
+            ['defaultValue' => 'default']
+        );
+
+        $filter->args(['field' => 'value']);
+        $this->assertEquals('value', $filter->value());
+
+        $filter->args(['other_field' => 'value']);
+        $this->assertEquals('default', $filter->value());
+
+        $filter->args(['field' => ['value1', 'value2']]);
+        $this->assertEquals('default', $filter->value());
+
+        $filter->config('multiValue', true);
+        $filter->args(['field' => ['value1', 'value2']]);
+        $this->assertEquals(['value1', 'value2'], $filter->value());
+    }
+
     public function testFieldAliasing()
     {
         $filter = new Filter(

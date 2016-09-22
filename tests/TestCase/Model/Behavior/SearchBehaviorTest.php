@@ -5,6 +5,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
+use Search\Model\Filter\Base;
 
 class ArticlesTable extends Table
 {
@@ -30,9 +31,11 @@ class CommentsTable extends Table
 
         return $manager
             ->value('Comments.foo')
-            ->like('Comments.search', ['filterEmpty' => true])
+            ->like('Comments.search', ['filterEmpty' => true, 'multiValue' => true])
             ->value('Comments.baz')
-            ->value('Comments.group', ['field' => 'Comments.group']);
+            ->value('Comments.group', ['field' => 'Comments.group'])
+            ->value('group', ['multiValue' => true])
+            ->value('published');
     }
 }
 
@@ -48,6 +51,13 @@ class GroupsTable extends Table
             ->value('title')
             ->collection('backend')
             ->like('title', ['before' => true, 'after' => true]);
+    }
+}
+
+class Filter extends Base
+{
+    public function process()
+    {
     }
 }
 
@@ -87,6 +97,120 @@ class SearchBehaviorTest extends TestCase
             'className' => 'Search\Test\TestCase\Model\Behavior\GroupsTable'
         ]);
         $this->Groups->addBehavior('Search.Search');
+    }
+
+    /**
+     * Tests that the query string parameters are being flattened and
+     * extracted as expected before being passed to the filters for
+     * processing.
+     *
+     * @return void
+     */
+    public function testFlattenAndExtractParameters()
+    {
+        $behavior = $this
+            ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
+            ->setConstructorArgs([$this->Comments])
+            ->setMethods(['_processFilters'])
+            ->getMock();
+        $this->Comments->behaviors()->reset();
+        $this->Comments->addBehavior('Search', [
+            'className' => '\\' . get_class($behavior)
+        ]);
+
+        $filters = $this->Comments->searchConfiguration()->all();
+        $expected = [
+            'Comments.foo' => 'a',
+            'Comments.search' => ['b', 'c'],
+            'Comments.group' => 'main',
+            'group' => [
+                'main',
+                'secondary'
+            ],
+            'published' => 'Y'
+        ];
+        $query = $this->Comments->find();
+
+        /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
+        $behavior = $this->Comments->behaviors()->get('Search');
+        $behavior
+            ->expects($this->once())
+            ->method('_processFilters')
+            ->with($filters, $expected, $query)
+            ->willReturn($query);
+
+        $queryString = [
+            'Comments' => [
+                'foo' => 'a',
+                'search' => ['b', 'c'],
+                'group' => 'main'
+            ],
+            'group' => [
+                '0' => 'main',
+                1 => 'secondary'
+            ],
+            'published' => 'Y',
+            'unknown' => 'foo'
+        ];
+         $behavior->findSearch($query, ['search' => $queryString]);
+    }
+
+    /**
+     * Tests that the filters do receive the expected values, and that
+     * they are being processed.
+     *
+     * @return void
+     */
+    public function testProcessFilters()
+    {
+        $behavior = $this
+            ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
+            ->setConstructorArgs([$this->Comments])
+            ->setMethods(['_getAllFilters'])
+            ->getMock();
+        $this->Comments->behaviors()->reset();
+        $this->Comments->addBehavior('Search', [
+            'className' => '\\' . get_class($behavior)
+        ]);
+
+        $params = [
+            'name' => 'value'
+        ];
+        $query = $this->Comments->find();
+
+        $filter = $this
+            ->getMockBuilder('\Search\Test\TestCase\Model\Behavior\Filter')
+            ->setConstructorArgs(['name', new Manager($this->Comments)])
+            ->setMethods(['args', 'process', 'query'])
+            ->getMock();
+        $filter
+            ->expects($this->at(0))
+            ->method('args')
+            ->with($params);
+        $filter
+            ->expects($this->at(1))
+            ->method('query')
+            ->with($query);
+        $filter
+            ->expects($this->at(2))
+            ->method('process');
+
+        $filters = [
+            'name' => $filter
+        ];
+
+        /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
+        $behavior = $this->Comments->behaviors()->get('Search');
+        $behavior
+            ->expects($this->once())
+            ->method('_getAllFilters')
+            ->with('default')
+            ->willReturn($filters);
+
+        $queryString = [
+            'name' => 'value'
+        ];
+        $behavior->findSearch($query, ['search' => $queryString]);
     }
 
     /**
