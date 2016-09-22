@@ -279,10 +279,7 @@ class LikeTest extends TestCase
         $filter->query($articles->find());
         $filter->process();
 
-        $this->assertNotRegExp(
-            '/Articles\.title like/',
-            $filter->query()->sql()
-        );
+        $this->assertEmpty($filter->query()->clause('where'));
         $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 

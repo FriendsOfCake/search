@@ -141,6 +141,7 @@ class BooleanTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
     /**

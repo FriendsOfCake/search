@@ -54,6 +54,7 @@ class CompareTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
     /**
@@ -91,5 +92,6 @@ class CompareTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 }
