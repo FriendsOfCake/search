@@ -53,13 +53,7 @@ class Like extends Base
         $comparison = $this->config('comparison');
         $valueMode = $this->config('valueMode');
         $value = $this->value();
-
         $isMultiValue = is_array($value);
-        if ($isMultiValue &&
-            !$this->isValidMultiValue($value)
-        ) {
-            return;
-        }
 
         $conditions = [];
         foreach ($this->fields() as $field) {

@@ -31,17 +31,17 @@ class Value extends Base
 
         $isMultiValue = is_array($value);
         if ($isMultiValue &&
-            !$this->isValidMultiValue($value)
+            empty($value)
         ) {
             return;
         }
 
-        $this->query()->andWhere(function ($e) use ($value) {
+        $this->query()->andWhere(function ($e) use ($value, $isMultiValue) {
             /* @var $e \Cake\Database\Expression\QueryExpression */
             $field = $this->field();
 
             if (strtolower($this->config('mode')) === 'or' &&
-                is_array($value)
+                $isMultiValue
             ) {
                 return $e->in($field, $value);
             }

@@ -119,8 +119,14 @@ class ValueTest extends TestCase
         $filter->query($articles->find());
         $filter->process();
 
-        $this->assertEmpty($filter->query()->clause('where'));
-        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+        $this->assertRegExp(
+            '/WHERE Articles\.title IN \(:c0\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            [['bar']],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
     }
 
     /**
