@@ -24,13 +24,20 @@ class Value extends Base
             return;
         }
 
-        $this->query()->andWhere(function ($e) {
-            /* @var $e \Cake\Database\Expression\QueryExpression */
-            $value = $this->value();
-            if ($value === null) {
-                return $e;
-            }
+        $value = $this->value();
+        if ($value === null) {
+            return;
+        }
 
+        $isMultiValue = is_array($value);
+        if ($isMultiValue &&
+            !$this->isValidMultiValue($value)
+        ) {
+            return;
+        }
+
+        $this->query()->andWhere(function ($e) use ($value) {
+            /* @var $e \Cake\Database\Expression\QueryExpression */
             $field = $this->field();
 
             if (strtolower($this->config('mode')) === 'or' &&

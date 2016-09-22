@@ -119,14 +119,24 @@ class ValueTest extends TestCase
         $filter->query($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
-            '/WHERE Articles\.title IN \(:c0\)$/',
-            $filter->query()->sql()
-        );
-        $this->assertEquals(
-            [['bar']],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
-        );
+        $this->assertEmpty($filter->query()->clause('where'));
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessEmptyMultiValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, ['multiValue' => true]);
+        $filter->args(['title' => []]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertEmpty($filter->query()->clause('where'));
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
     /**

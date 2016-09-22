@@ -96,4 +96,35 @@ class BaseTest extends TestCase
         $expected = ['Articles.field1', 'Articles.field2'];
         $this->assertEquals($expected, $filter->field());
     }
+
+    /**
+     * @return array
+     */
+    public function multiValueDataProvider()
+    {
+        return [
+            [true, [1, true, 'foo']],
+            [false, ['foo', ['bar']]],
+            [false, []],
+            [false, null]
+        ];
+    }
+
+    /**
+     * @dataProvider multiValueDataProvider
+     *
+     * @param bool $expected
+     * @param mixed $value
+     * @return void
+     */
+    public function testIsValidMultiValue($expected, $value)
+    {
+        $filter = new Filter(
+            'field',
+            $this->manager,
+            []
+        );
+
+        $this->assertEquals($expected, $filter->isValidMultiValue($value));
+    }
 }

@@ -242,6 +242,26 @@ abstract class Base
     }
 
     /**
+     * Returns whether the given value is a valid multi value, that
+     * is, a non-empty array containing only scalar values.
+     *
+     * @param mixed $value The value to test.
+     * @return bool
+     */
+    public function isValidMultiValue($value)
+    {
+        if (is_array($value) &&
+            !empty($value)
+        ) {
+            return collection($value)->every(function ($val) {
+                return is_scalar($val);
+            });
+        }
+
+        return false;
+    }
+
+    /**
      * Modify the actual query object and append conditions based on the
      * subclass business rules and type.
      *

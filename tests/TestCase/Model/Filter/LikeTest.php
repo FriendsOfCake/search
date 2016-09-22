@@ -226,7 +226,23 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
-        $this->assertEmpty(Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value'));
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessEmptyMultiValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, ['multiValue' => true]);
+        $filter->args(['title' => []]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertEmpty($filter->query()->clause('where'));
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
     /**
