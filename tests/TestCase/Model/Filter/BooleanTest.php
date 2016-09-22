@@ -6,6 +6,7 @@ use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 use Search\Manager;
 use Search\Model\Filter\Base;
 use Search\Model\Filter\Boolean;
@@ -125,5 +126,57 @@ class BooleanTest extends TestCase
 
         $boolean->process();
         $this->assertEmpty($query->clause('where'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValueSafe()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Boolean('is_active', $manager, ['multiValue' => true]);
+        $filter->args(['is_active' => [0, 1]]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertEmpty($filter->query()->clause('where'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessDefaultFallbackForDisallowedMultiValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Boolean('is_active', $manager, ['defaultValue' => true]);
+        $filter->args(['is_active' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE Articles\.is_active = :c0$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            [true],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessNoDefaultFallbackForDisallowedMultiValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Boolean('is_active', $manager);
+        $filter->args(['is_active' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertEmpty($filter->query()->clause('where'));
     }
 }

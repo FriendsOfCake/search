@@ -25,7 +25,12 @@ class Boolean extends Base
             return;
         }
 
-        $value = strtolower($this->value());
+        $value = $this->value();
+        if (!is_scalar($value)) {
+            return;
+        }
+
+        $value = strtolower($value);
         $bool = null;
         if (in_array($value, $this->config('truthy'), true)) {
             $bool = true;
