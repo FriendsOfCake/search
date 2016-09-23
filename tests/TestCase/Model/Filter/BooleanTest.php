@@ -223,6 +223,7 @@ class BooleanTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
+        $filter->query()->sql();
         $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
@@ -239,6 +240,7 @@ class BooleanTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
+        $filter->query()->sql();
         $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
@@ -277,6 +279,7 @@ class BooleanTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
+        $filter->query()->sql();
         $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 }

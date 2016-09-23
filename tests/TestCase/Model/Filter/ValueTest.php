@@ -142,6 +142,7 @@ class ValueTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
+        $filter->query()->sql();
         $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
@@ -180,6 +181,7 @@ class ValueTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
+        $filter->query()->sql();
         $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
