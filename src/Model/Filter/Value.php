@@ -10,7 +10,7 @@ class Value extends Base
      * @var array
      */
     protected $_defaultConfig = [
-        'mode' => 'or',
+        'mode' => 'OR',
     ];
 
     /**
@@ -40,7 +40,7 @@ class Value extends Base
             /* @var $e \Cake\Database\Expression\QueryExpression */
             $field = $this->field();
 
-            if (strtolower($this->config('mode')) === 'or' &&
+            if (strtoupper($this->config('mode')) === 'OR' &&
                 $isMultiValue
             ) {
                 return $e->in($field, $value);

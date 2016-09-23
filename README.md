@@ -273,28 +273,28 @@ The following options are supported by all filters except `Callback` and `Finder
 - `after` (`bool`, defaults to `false`) Whether to automatically add a wildcard
   *after* the search term.
 
-- ~~`mode`~~ (`string`, default to `or`) **This options is deprecated**, please use
+- ~~`mode`~~ (`string`, default to `OR`) **This options is deprecated**, please use
   `fieldMode` instead.
 
-- `fieldMode` (`string`, defaults to `or`) The conditional mode to use when
-  matching against multiple fields. Valid values are `or` and `and`.
+- `fieldMode` (`string`, defaults to `OR`) The conditional mode to use when
+  matching against multiple fields. Valid values are `OR` and `AND`.
 
-- `valueMode` (`string`, defaults to `or`) The conditional mode to use when
-  searching for multiple values. Valid values are `or` and `and`.
+- `valueMode` (`string`, defaults to `OR`) The conditional mode to use when
+  searching for multiple values. Valid values are `OR` and `AND`.
 
 - `comparison` (`string`, defaults to `LIKE`) The comparison operator to use.
 
 - `wildcardAny` (`string`, defaults to `*`) Defines the string that should be
   treated as a _any_ wildcard in case it is being encountered in the search term.
-  The behavior will internally replace this with the appropriate `LIKE`
-  compatible wildcard. This is useful if you want to pass wildcards inside of the
-  search term, while still being able to use the actual wildcard character inside
-  of the search term so that it is being treated as a part of the term. For example
-  a search term of `* has reached 100%` would be converted to `% has reached 100\%`.
+  The behavior will internally replace this with the appropriate SQL compatible
+  wildcard. This is useful if you want to pass wildcards inside of the search term,
+  while still being able to use the actual wildcard character inside of the search
+  term so that it is being treated as a part of the term. For example a search term
+  of `* has reached 100%` would be converted to `% has reached 100\%`.
 
 - `wildcardOne` (`string`, defaults to `?`) Defines the string that should be
   treated as a _one_ wildcard in case it is being encountered in the search term.
-  Behaves similar to `wildcardAny`, that is, the actual `LIKE` compatible wildcard
+  Behaves similar to `wildcardAny`, that is, the actual SQL compatible wildcard
   (`_`) is being escaped in case used the search term.
 
 #### `Value`
@@ -303,8 +303,8 @@ The following options are supported by all filters except `Callback` and `Finder
   multiple values. If disabled, and multiple values are being passed, the filter
   will fall back to using the default value defined by the `defaultValue` option.
 
-- `mode` (`string`, defaults to `or`) The conditional mode to use when searching for
-  multiple values. Valid values are `or` and `and`.
+- `mode` (`string`, defaults to `OR`) The conditional mode to use when searching for
+  multiple values. Valid values are `OR` and `AND`.
 
 
 ## Optional fields

@@ -30,7 +30,7 @@ class LikeTest extends TestCase
 
         $this->assertEquals('modeValue', $filter->config('mode'));
         $this->assertEquals('modeValue', $filter->config('fieldMode'));
-        $this->assertEquals('or', $filter->config('valueMode'));
+        $this->assertEquals('OR', $filter->config('valueMode'));
     }
 
     public function testProcess()
