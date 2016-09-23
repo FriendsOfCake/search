@@ -10,7 +10,7 @@ class Value extends Base
      * @var array
      */
     protected $_defaultConfig = [
-        'mode' => 'or',
+        'mode' => 'OR',
     ];
 
     /**
@@ -24,17 +24,24 @@ class Value extends Base
             return;
         }
 
-        $this->query()->andWhere(function ($e) {
-            /* @var $e \Cake\Database\Expression\QueryExpression */
-            $value = $this->value();
-            if ($value === null) {
-                return $e;
-            }
+        $value = $this->value();
+        if ($value === null) {
+            return;
+        }
 
+        $isMultiValue = is_array($value);
+        if ($isMultiValue &&
+            empty($value)
+        ) {
+            return;
+        }
+
+        $this->query()->andWhere(function ($e) use ($value, $isMultiValue) {
+            /* @var $e \Cake\Database\Expression\QueryExpression */
             $field = $this->field();
 
-            if (strtolower($this->config('mode')) === 'or' &&
-                is_array($value)
+            if (strtoupper($this->config('mode')) === 'OR' &&
+                $isMultiValue
             ) {
                 return $e->in($field, $value);
             }

@@ -30,7 +30,7 @@ class LikeTest extends TestCase
 
         $this->assertEquals('modeValue', $filter->config('mode'));
         $this->assertEquals('modeValue', $filter->config('fieldMode'));
-        $this->assertEquals('or', $filter->config('valueMode'));
+        $this->assertEquals('OR', $filter->config('valueMode'));
     }
 
     public function testProcess()
@@ -226,7 +226,25 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->query()->clause('where'));
-        $this->assertEmpty(Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value'));
+        $filter->query()->sql();
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessEmptyMultiValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, ['multiValue' => true]);
+        $filter->args(['title' => []]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertEmpty($filter->query()->clause('where'));
+        $filter->query()->sql();
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 
     /**
@@ -263,10 +281,8 @@ class LikeTest extends TestCase
         $filter->query($articles->find());
         $filter->process();
 
-        $this->assertNotRegExp(
-            '/Articles\.title like/',
-            $filter->query()->sql()
-        );
+        $this->assertEmpty($filter->query()->clause('where'));
+        $filter->query()->sql();
         $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 

@@ -132,6 +132,23 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
+    public function testProcessEmptyMultiValue()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, ['multiValue' => true]);
+        $filter->args(['title' => []]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertEmpty($filter->query()->clause('where'));
+        $filter->query()->sql();
+        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+    }
+
+    /**
+     * @return void
+     */
     public function testProcessDefaultFallbackForDisallowedMultiValue()
     {
         $articles = TableRegistry::get('Articles');
@@ -163,10 +180,8 @@ class ValueTest extends TestCase
         $filter->query($articles->find());
         $filter->process();
 
-        $this->assertNotRegExp(
-            '/Articles\.title like/',
-            $filter->query()->sql()
-        );
+        $this->assertEmpty($filter->query()->clause('where'));
+        $filter->query()->sql();
         $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
 

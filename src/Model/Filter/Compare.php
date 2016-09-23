@@ -37,11 +37,15 @@ class Compare extends Base
         if (!in_array($this->config('operator'), $this->_operators, true)) {
             throw new \InvalidArgumentException(sprintf('The operator %s is invalid!', $this->config('operator')));
         }
+
+        $value = $this->value();
+        if (!is_scalar($value)) {
+            return;
+        }
+
         foreach ($this->fields() as $field) {
             $left = $field . ' ' . $this->config('operator');
-            $right = $this->value();
-
-            $conditions[] = [$left => $right];
+            $conditions[] = [$left => $value];
         }
 
         $this->query()->andWhere($conditions);
