@@ -30,7 +30,10 @@ class Boolean extends Base
             return;
         }
 
-        $value = strtolower($value);
+        if (is_string($value)) {
+            $value = strtolower($value);
+        }
+
         $bool = null;
         if (in_array($value, $this->config('truthy'), true)) {
             $bool = true;
