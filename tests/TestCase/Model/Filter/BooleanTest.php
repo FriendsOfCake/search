@@ -126,4 +126,34 @@ class BooleanTest extends TestCase
         $boolean->process();
         $this->assertEmpty($query->clause('where'));
     }
+    
+    public function testProcessWithRealTrueBoolean()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $boolean = new Boolean('is_active', $manager);
+        $boolean->args(['is_active' => true]);
+        $boolean->query($articles->find());
+
+        $query = $boolean->query();
+        $this->assertEmpty($query->clause('where'));
+
+        $boolean->process();
+        $this->assertNotEmpty($query->clause('where'));
+    }
+
+    public function testProcessWithRealFalseBoolean()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $boolean = new Boolean('is_active', $manager);
+        $boolean->args(['is_active' => false]);
+        $boolean->query($articles->find());
+
+        $query = $boolean->query();
+        $this->assertEmpty($query->clause('where'));
+
+        $boolean->process();
+        $this->assertNotEmpty($query->clause('where'));
+    }
 }
