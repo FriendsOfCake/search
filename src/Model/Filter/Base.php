@@ -203,6 +203,8 @@ abstract class Base
      *
      * @param array|null $value Value.
      * @return array|null
+     * @codeCoverageIgnore
+     * @internal
      */
     public function validate(array $value = null)
     {
@@ -217,6 +219,8 @@ abstract class Base
      * Valid method.
      *
      * @return bool
+     * @codeCoverageIgnore
+     * @internal
      */
     public function valid()
     {
