@@ -210,13 +210,13 @@ if ($isSearch) {
 The Search plugin comes with a set of predefined search filters that allow you to
 easily create the search results you need. Use:
 
-- ``Value`` to limit results to exact matches
-- ``Like`` to produce results containing the search query (``LIKE`` or ``ILIKE``)
-- ``Boolean`` to limit results by truthy (by default: 1, true, '1', 'true', 'yes', 'on') and falsy (by default: 0, false, '0', 'false', 'no', 'off') values which are passed down to the ORM as true/1 or false/0 or ignored when being neither truthy or falsy.
-- ``Finder`` to produce results using a [(custom)](http://book.cakephp.org/3.0/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
-- ``Compare`` to produce results requiring operator comparison (
-    ``>``, ``<``, ``>=`` and ``<=``)
-- ``Callback`` to produce results using your own custom callable function
+- `Value` to limit results to exact matches
+- `Like` to produce results containing the search query (`LIKE` or `ILIKE`)
+- `Boolean` to limit results by truthy (by default: 1, true, '1', 'true', 'yes', 'on') and falsy (by default: 0, false, '0', 'false', 'no', 'off') values which are passed down to the ORM as true/1 or false/0 or ignored when being neither truthy or falsy.
+- `Finder` to produce results using a [(custom)](http://book.cakephp.org/3.0/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
+- `Compare` to produce results requiring operator comparison (
+    `>`, `<`, `>=` and `<=`)
+- `Callback` to produce results using your own custom callable function
 
 ### Options
 
@@ -273,7 +273,7 @@ The following options are supported by all filters except `Callback` and `Finder
 - `after` (`bool`, defaults to `false`) Whether to automatically add a wildcard
   *after* the search term.
 
-- ~~`mode`~~ (`string`, default to `OR`) **This options is deprecated**, please use
+- ~~`mode`~~ (`string`, defaults to `OR`) **This option is deprecated**, please use
   `fieldMode` instead.
 
 - `fieldMode` (`string`, defaults to `OR`) The conditional mode to use when
@@ -327,5 +327,5 @@ echo $this->Form->input('author_id', ['empty' => 'Pick an author']);
 ## Persisting the Query String
 
 Persisting the query string can be done with the `queryStringWhitelist` option.
-The CakePHP's Paginator params `sort` and `direction` when filtering are kept by default. 
+The CakePHP's Paginator params `sort` and `direction` when filtering are kept by default.
 Simply add all query strings that should be whitelisted.
