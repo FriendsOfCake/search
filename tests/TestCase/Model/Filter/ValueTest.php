@@ -43,6 +43,9 @@ class ValueTest extends TestCase
         $this->assertEmpty($filter->query()->clause('where'));
     }
 
+    /**
+     * @return void
+     */
     public function testProcess()
     {
         $articles = TableRegistry::get('Articles');

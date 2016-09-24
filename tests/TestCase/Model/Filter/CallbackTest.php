@@ -1,14 +1,10 @@
 <?php
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\Core\Configure;
-use Cake\ORM\Entity;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
-use Search\Model\Filter\Base;
 use Search\Model\Filter\Callback;
 
 class CallbackTest extends TestCase
@@ -47,6 +43,9 @@ class CallbackTest extends TestCase
         $this->assertEmpty($filter->query()->clause('where'));
     }
 
+    /**
+     * @return void
+     */
     public function testProcess()
     {
         $articles = TableRegistry::get('Articles');

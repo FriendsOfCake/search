@@ -235,7 +235,7 @@ class SearchBehaviorTest extends TestCase
     /**
      * DataProvider of testCollectionFinder
      *
-     * @return void
+     * @return array
      */
     public function testCollectionFinderProvider()
     {
@@ -253,13 +253,13 @@ class SearchBehaviorTest extends TestCase
     /**
      * testFindSearchException
      *
-     * @expectedException Exception
+     * @expectedException \Exception
      * @expectedExceptionMessage Custom finder "search" expects search arguments to be nested under key "search" in find() options.
      * @return void
      */
     public function testFindSearchException()
     {
-        $query = $this->Articles->find('search');
+        $this->Articles->find('search');
     }
 
     /**
@@ -282,5 +282,32 @@ class SearchBehaviorTest extends TestCase
     {
         $manager = $this->Articles->searchManager();
         $this->assertInstanceOf('\Search\Manager', $manager);
+    }
+
+    /**
+     * @return void
+     */
+    public function testNoSearchManager()
+    {
+        $behavior = $this
+            ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
+            ->setConstructorArgs([$this->Articles])
+            ->setMethods(['searchManager'])
+            ->getMock();
+        $this->Articles->behaviors()->reset();
+        $this->Articles->addBehavior('Search', [
+            'className' => '\\' . get_class($behavior),
+            'searchConfigMethod' => 'nonExistent'
+        ]);
+
+        /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
+        $behavior = $this->Articles->behaviors()->get('Search');
+        $behavior
+            ->expects($this->once())
+            ->method('searchManager')
+            ->willReturn(new Manager($this->Articles));
+
+        $query = $this->Articles->find('search', ['search' => []]);
+        $this->assertEmpty($query->clause('where'));
     }
 }

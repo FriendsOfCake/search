@@ -5,6 +5,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Test\TestApp\Model\Filter\TestFilter;
+use Search\Test\TestApp\Model\TestRepository;
 
 class BaseTest extends TestCase
 {
@@ -16,10 +17,12 @@ class BaseTest extends TestCase
     public function setup()
     {
         $table = TableRegistry::get('Articles');
-        $manager = new Manager($table);
         $this->manager = new Manager($table);
     }
 
+    /**
+     * @return void
+     */
     public function testSkip()
     {
         $filter = new TestFilter(
@@ -66,6 +69,9 @@ class BaseTest extends TestCase
         $this->assertEquals(['value1', 'value2'], $filter->value());
     }
 
+    /**
+     * @return void
+     */
     public function testFieldAliasing()
     {
         $filter = new TestFilter(
@@ -87,5 +93,19 @@ class BaseTest extends TestCase
 
         $expected = ['Articles.field1', 'Articles.field2'];
         $this->assertEquals($expected, $filter->field());
+    }
+
+    /**
+     * @return void
+     */
+    public function testFieldAliasingWithNonSupportingRepository()
+    {
+        $filter = new TestFilter(
+            'field',
+            new Manager(new TestRepository()),
+            ['aliasField' => true]
+        );
+
+        $this->assertEquals('field', $filter->field());
     }
 }

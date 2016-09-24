@@ -26,7 +26,10 @@ class SearchComponentTest extends TestCase
             $routes->fallbacks();
         });
         $request = new Request();
-        $response = $this->getMock('Cake\Network\Response', ['stop']);
+        $response = $this
+            ->getMockBuilder('Cake\Network\Response')
+            ->setMethods(['stop'])
+            ->getMock();
 
         $this->Controller = new Controller($request, $response);
         $this->Prg = new PrgComponent($this->Controller->components());
@@ -150,5 +153,14 @@ class SearchComponentTest extends TestCase
         $this->Prg->configShallow('queryStringWhitelist', []);
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testConversionWithoutRedirect()
+    {
+        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+        $this->assertNull($this->Prg->conversion(false));
     }
 }

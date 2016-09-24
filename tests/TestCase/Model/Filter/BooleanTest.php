@@ -1,14 +1,10 @@
 <?php
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\Core\Configure;
-use Cake\ORM\Entity;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
-use Search\Model\Filter\Base;
 use Search\Model\Filter\Boolean;
 
 class BooleanTest extends TestCase
@@ -47,6 +43,9 @@ class BooleanTest extends TestCase
         $this->assertEmpty($filter->query()->clause('where'));
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithFlagOn()
     {
         $articles = TableRegistry::get('Articles');
@@ -66,6 +65,9 @@ class BooleanTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithFlagOff()
     {
         $articles = TableRegistry::get('Articles');
@@ -85,6 +87,9 @@ class BooleanTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithStringFlagTrue()
     {
         $articles = TableRegistry::get('Articles');
@@ -104,6 +109,9 @@ class BooleanTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithStringFlagFalse()
     {
         $articles = TableRegistry::get('Articles');
@@ -123,6 +131,9 @@ class BooleanTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithBooleanFlagTrue()
     {
         $articles = TableRegistry::get('Articles');
@@ -142,6 +153,9 @@ class BooleanTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithBooleanFlagFalse()
     {
         $articles = TableRegistry::get('Articles');
@@ -161,6 +175,9 @@ class BooleanTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithStringFlag1()
     {
         $articles = TableRegistry::get('Articles');
@@ -180,6 +197,9 @@ class BooleanTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithStringFlag0()
     {
         $articles = TableRegistry::get('Articles');
@@ -199,6 +219,9 @@ class BooleanTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithIntegerFlag1()
     {
         $articles = TableRegistry::get('Articles');
@@ -237,6 +260,9 @@ class BooleanTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessWithFlagInvalid()
     {
         $articles = TableRegistry::get('Articles');

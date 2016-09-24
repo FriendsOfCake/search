@@ -18,6 +18,9 @@ class ManagerTest extends TestCase
         'plugin.Search.Articles'
     ];
 
+    /**
+     * @return void
+     */
     public function testShorthandMethods()
     {
         $table = TableRegistry::get('Articles');
@@ -52,6 +55,9 @@ class ManagerTest extends TestCase
         $this->assertEquals('bar', $result['value']->config('foo'));
     }
 
+    /**
+     * @return void
+     */
     public function testMagicShorthandMethods()
     {
         Configure::write('App.namespace', 'Search\Test\TestApp');
@@ -71,22 +77,52 @@ class ManagerTest extends TestCase
         $this->assertEquals('bar', $result['test2']->config('foo'));
     }
 
+    /**
+     * @return void
+     */
+    public function testAll()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+
+        $this->assertEmpty($manager->all());
+
+        $manager->collection('other');
+        $manager->add('field', 'Search.Value');
+        $this->assertEmpty($manager->all());
+
+        $manager->collection('default');
+        $manager->add('field', 'Search.Value');
+        $all = $manager->all();
+        $this->assertCount(1, $all);
+        $this->assertInstanceOf('\Search\Model\Filter\Value', $all['field']);
+    }
+
+    /**
+     * @return void
+     */
     public function testLoadFilter()
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
+
         $result = $manager->loadFilter('test', 'Search.Value');
         $this->assertInstanceOf('\Search\Model\Filter\Value', $result);
+
         $result = $manager->loadFilter('test', 'Search.Compare');
         $this->assertInstanceOf('\Search\Model\Filter\Compare', $result);
     }
 
+    /**
+     * @return void
+     */
     public function testAdd()
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
         $manager->add('testOne', 'Search.Value');
         $manager->add('testTwo', 'Search.Compare');
+
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
         $this->assertInstanceOf('\Search\Model\Filter\Value', $result['testOne']);
@@ -95,6 +131,7 @@ class ManagerTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
+     * @return void
      */
     public function testLoadFilterInvalidArgumentException()
     {
@@ -103,12 +140,16 @@ class ManagerTest extends TestCase
         $manager->loadFilter('test', 'DOES-NOT-EXIST');
     }
 
+    /**
+     * @return void
+     */
     public function testGetFilters()
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
         $manager->add('test', 'Search.Value');
         $manager->add('test2', 'Search.Compare');
+
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
         $this->assertInstanceOf('\Search\Model\Filter\Value', $result['test']);
@@ -118,6 +159,7 @@ class ManagerTest extends TestCase
     /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The collection "nonExistentCollection" does not exist.
+     * @return void
      */
     public function testGetFiltersNonExistentCollection()
     {
@@ -126,22 +168,31 @@ class ManagerTest extends TestCase
         $manager->getFilters('nonExistentCollection');
     }
 
+    /**
+     * @return void
+     */
     public function testRemove()
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
+
         $manager->add('test', 'Search.Value');
         $manager->add('test2', 'Search.Compare');
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
+
         $manager->remove('test2');
         $result = $manager->getFilters();
         $this->assertCount(1, $result);
+
         $manager->remove('test');
         $result = $manager->getFilters();
         $this->assertCount(0, $result);
     }
 
+    /**
+     * @return void
+     */
     public function testRepository()
     {
         $table = TableRegistry::get('Articles');
@@ -150,20 +201,41 @@ class ManagerTest extends TestCase
         $this->assertInstanceOf('\Cake\Datasource\RepositoryInterface', $result);
     }
 
+    /**
+     * @return void
+     */
+    public function testTable()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $result = $manager->table();
+        $this->assertInstanceOf('\Cake\Datasource\RepositoryInterface', $result);
+    }
+
+    /**
+     * @return void
+     */
     public function testCollection()
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
+
+        $result = $manager->collection();
+        $this->assertEquals('default', $result);
+
         $result = $manager->collection('default');
         $this->assertInstanceOf('\Search\Manager', $result);
+
         $manager->add('test', 'Search.Value');
         $result = $manager->collection('otherFilters');
         $this->assertInstanceOf('\Search\Manager', $result);
+
         $manager->add('test2', 'Search.Value');
         $manager->add('test3', 'Search.Value');
         $result = $manager->getFilters('default');
         $this->assertCount(1, $result);
         $this->assertArrayHasKey('test', $result);
+
         $result = $manager->getFilters('otherFilters');
         $this->assertCount(2, $result);
         $this->assertArrayHasKey('test2', $result);
