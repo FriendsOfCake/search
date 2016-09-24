@@ -18,19 +18,57 @@ class ManagerTest extends TestCase
         'plugin.Search.Articles'
     ];
 
-    public function testMethods()
+    public function testShorthandMethods()
     {
         $table = TableRegistry::get('Articles');
-        $manager = new Manager($table);
-        $manager->compare('test');
-        $all = $manager->all();
-        $this->assertInstanceOf('\Search\Model\Filter\Compare', $all['test']);
-        $this->assertEquals(count($all), 1);
 
-        $manager->value('test2');
-        $all = $manager->all();
-        $this->assertInstanceOf('\Search\Model\Filter\Value', $all['test2']);
-        $this->assertEquals(count($all), 2);
+        $options = ['foo' => 'bar'];
+
+        $manager = new Manager($table);
+        $manager->boolean('boolean', $options);
+        $manager->callback('callback', $options);
+        $manager->compare('compare', $options);
+        $manager->custom('custom', ['className' => '\Search\Test\TestApp\Model\Filter\TestFilter'] + $options);
+        $manager->finder('finder', $options);
+        $manager->like('like', $options);
+        $manager->value('value', $options);
+
+        $result = $manager->getFilters();
+        $this->assertCount(7, $result);
+        $this->assertInstanceOf('\Search\Model\Filter\Boolean', $result['boolean']);
+        $this->assertInstanceOf('\Search\Model\Filter\Callback', $result['callback']);
+        $this->assertInstanceOf('\Search\Model\Filter\Compare', $result['compare']);
+        $this->assertInstanceOf('\Search\Test\TestApp\Model\Filter\TestFilter', $result['custom']);
+        $this->assertInstanceOf('\Search\Model\Filter\Finder', $result['finder']);
+        $this->assertInstanceOf('\Search\Model\Filter\Like', $result['like']);
+        $this->assertInstanceOf('\Search\Model\Filter\Value', $result['value']);
+
+        $this->assertEquals('bar', $result['boolean']->config('foo'));
+        $this->assertEquals('bar', $result['callback']->config('foo'));
+        $this->assertEquals('bar', $result['compare']->config('foo'));
+        $this->assertEquals('bar', $result['custom']->config('foo'));
+        $this->assertEquals('bar', $result['finder']->config('foo'));
+        $this->assertEquals('bar', $result['like']->config('foo'));
+        $this->assertEquals('bar', $result['value']->config('foo'));
+    }
+
+    public function testMagicShorthandMethods()
+    {
+        Configure::write('App.namespace', 'Search\Test\TestApp');
+
+        $table = TableRegistry::get('Articles');
+
+        $manager = new Manager($table);
+        $manager->testFilter('test1');
+        $manager->testFilter('test2', ['foo' => 'bar']);
+
+        Configure::clear();
+
+        $result = $manager->getFilters();
+        $this->assertCount(2, $result);
+        $this->assertInstanceOf('\Search\Test\TestApp\Model\Filter\TestFilter', $result['test1']);
+        $this->assertInstanceOf('\Search\Test\TestApp\Model\Filter\TestFilter', $result['test2']);
+        $this->assertEquals('bar', $result['test2']->config('foo'));
     }
 
     public function testLoadFilter()

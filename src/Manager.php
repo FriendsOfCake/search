@@ -138,6 +138,20 @@ class Manager
     }
 
     /**
+     * boolean method
+     *
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function boolean($name, array $config = [])
+    {
+        $this->add($name, 'Search.Boolean', $config);
+
+        return $this;
+    }
+
+    /**
      * like method
      *
      * @param string $name Name
