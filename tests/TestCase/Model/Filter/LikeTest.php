@@ -33,6 +33,30 @@ class LikeTest extends TestCase
         $this->assertEquals('OR', $filter->config('valueMode'));
     }
 
+    /**
+     * @return void
+     */
+    public function testSkipProcess()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        /* @var $filter \Search\Model\Filter\Like|\PHPUnit_Framework_MockObject_MockObject */
+        $filter = $this
+            ->getMockBuilder('Search\Model\Filter\Like')
+            ->setConstructorArgs(['title', $manager])
+            ->setMethods(['skip'])
+            ->getMock();
+        $filter
+            ->expects($this->once())
+            ->method('skip')
+            ->willReturn(true);
+        $filter->args(['title' => 'test']);
+        $filter->query($articles->find()->select(['id']));
+        $filter->process();
+
+        $this->assertEmpty($filter->query()->clause('where'));
+    }
+
     public function testProcess()
     {
         $articles = TableRegistry::get('Articles');
