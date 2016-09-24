@@ -6,6 +6,7 @@ use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 use Search\Manager;
 use Search\Model\Filter\Base;
 use Search\Model\Filter\Callback;
@@ -51,18 +52,22 @@ class CallbackTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
 
-        $callback = new Callback('title', $manager, [
+        $filter = new Callback('title', $manager, [
             'callback' => function ($query, $args, $manager) {
                 $query->where(['title' => 'test']);
             }
         ]);
-        $callback->args(['title' => ['test']]);
-        $callback->query($articles->find());
+        $filter->args(['title' => ['test']]);
+        $filter->query($articles->find());
+        $filter->process();
 
-        $query = $callback->query();
-        $this->assertEmpty($query->clause('where'));
-
-        $callback->process();
-        $this->assertNotEmpty($query->clause('where'));
+        $this->assertRegExp(
+            '/WHERE title = \:c0$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['test'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
     }
 }
