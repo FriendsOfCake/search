@@ -1,68 +1,26 @@
 <?php
 namespace Search\Test\TestCase\Model\Behavior;
 
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
-use Search\Model\Filter\Base;
-
-class ArticlesTable extends Table
-{
-
-    public function searchConfiguration()
-    {
-        $manager = new Manager($this);
-
-        return $manager
-            ->value('foo')
-            ->like('search', ['filterEmpty' => true])
-            ->value('baz')
-            ->value('group', ['field' => 'Articles.group']);
-    }
-}
-
-class CommentsTable extends Table
-{
-
-    public function searchConfiguration()
-    {
-        $manager = new Manager($this);
-
-        return $manager
-            ->value('Comments.foo')
-            ->like('Comments.search', ['filterEmpty' => true, 'multiValue' => true])
-            ->value('Comments.baz')
-            ->value('Comments.group', ['field' => 'Comments.group'])
-            ->value('group', ['multiValue' => true])
-            ->value('published');
-    }
-}
-
-class GroupsTable extends Table
-{
-
-    public function searchConfiguration()
-    {
-        $manager = new Manager($this);
-
-        return $manager
-            ->collection('frontend')
-            ->value('title')
-            ->collection('backend')
-            ->like('title', ['before' => true, 'after' => true]);
-    }
-}
-
-class Filter extends Base
-{
-    public function process()
-    {
-    }
-}
 
 class SearchBehaviorTest extends TestCase
 {
+    /**
+     * @var \Search\Test\TestApp\Model\Table\ArticlesTable
+     */
+    public $Articles;
+
+    /**
+     * @var \Search\Test\TestApp\Model\Table\CommentsTable
+     */
+    public $Comments;
+
+    /**
+     * @var \Search\Test\TestApp\Model\Table\GroupsTable
+     */
+    public $Groups;
 
     /**
      * Fixtures
@@ -86,15 +44,15 @@ class SearchBehaviorTest extends TestCase
 
         TableRegistry::clear();
         $this->Articles = TableRegistry::get('Articles', [
-            'className' => 'Search\Test\TestCase\Model\Behavior\ArticlesTable'
+            'className' => 'Search\Test\TestApp\Model\Table\ArticlesTable'
         ]);
         $this->Articles->addBehavior('Search.Search');
         $this->Comments = TableRegistry::get('Comments', [
-            'className' => 'Search\Test\TestCase\Model\Behavior\CommentsTable'
+            'className' => 'Search\Test\TestApp\Model\Table\CommentsTable'
         ]);
         $this->Comments->addBehavior('Search.Search');
         $this->Groups = TableRegistry::get('Groups', [
-            'className' => 'Search\Test\TestCase\Model\Behavior\GroupsTable'
+            'className' => 'Search\Test\TestApp\Model\Table\GroupsTable'
         ]);
         $this->Groups->addBehavior('Search.Search');
     }
@@ -179,7 +137,7 @@ class SearchBehaviorTest extends TestCase
         $query = $this->Comments->find();
 
         $filter = $this
-            ->getMockBuilder('\Search\Test\TestCase\Model\Behavior\Filter')
+            ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
             ->setConstructorArgs(['name', new Manager($this->Comments)])
             ->setMethods(['args', 'process', 'query'])
             ->getMock();
@@ -280,6 +238,9 @@ class SearchBehaviorTest extends TestCase
      * Test the custom "search" finder
      *
      * @dataProvider testCollectionFinderProvider
+     * @param string $collection The collection name.
+     * @param string $queryString The query string data.
+     * @param integer $expected The expected record count.
      * @return void
      */
     public function testCollectionFinder($collection, $queryString, $expected)
@@ -291,7 +252,7 @@ class SearchBehaviorTest extends TestCase
     /**
      * DataProvider of testCollectionFinder
      *
-     * @return void
+     * @return array
      */
     public function testCollectionFinderProvider()
     {
@@ -309,13 +270,13 @@ class SearchBehaviorTest extends TestCase
     /**
      * testFindSearchException
      *
-     * @expectedException Exception
+     * @expectedException \Exception
      * @expectedExceptionMessage Custom finder "search" expects search arguments to be nested under key "search" in find() options.
      * @return void
      */
     public function testFindSearchException()
     {
-        $query = $this->Articles->find('search');
+        $this->Articles->find('search');
     }
 
     /**
@@ -338,5 +299,32 @@ class SearchBehaviorTest extends TestCase
     {
         $manager = $this->Articles->searchManager();
         $this->assertInstanceOf('\Search\Manager', $manager);
+    }
+
+    /**
+     * @return void
+     */
+    public function testNoSearchManager()
+    {
+        $behavior = $this
+            ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
+            ->setConstructorArgs([$this->Articles])
+            ->setMethods(['searchManager'])
+            ->getMock();
+        $this->Articles->behaviors()->reset();
+        $this->Articles->addBehavior('Search', [
+            'className' => '\\' . get_class($behavior),
+            'searchConfigMethod' => 'nonExistent'
+        ]);
+
+        /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
+        $behavior = $this->Articles->behaviors()->get('Search');
+        $behavior
+            ->expects($this->once())
+            ->method('searchManager')
+            ->willReturn(new Manager($this->Articles));
+
+        $query = $this->Articles->find('search', ['search' => []]);
+        $this->assertEmpty($query->clause('where'));
     }
 }

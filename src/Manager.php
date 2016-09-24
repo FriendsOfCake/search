@@ -84,7 +84,7 @@ class Manager
     {
         if (!isset($this->_filters[$collection])) {
             throw new InvalidArgumentException(
-                sprintf('The collection "{0}" does not exist.', $collection)
+                sprintf('The collection "%s" does not exist.', $collection)
             );
         }
 
@@ -135,6 +135,20 @@ class Manager
     public function remove($name)
     {
         unset($this->_filters[$this->_collection][$name]);
+    }
+
+    /**
+     * boolean method
+     *
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function boolean($name, array $config = [])
+    {
+        $this->add($name, 'Search.Boolean', $config);
+
+        return $this;
     }
 
     /**

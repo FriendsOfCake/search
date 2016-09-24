@@ -3,12 +3,23 @@ namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
 use Cake\Network\Request;
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Search\Controller\Component\PrgComponent;
 
 class SearchComponentTest extends TestCase
 {
+    /**
+     * @var \Cake\Controller\Controller
+     */
+    public $Controller;
+
+    /**
+     * @var \Search\Controller\Component\PrgComponent
+     */
+    public $Prg;
+
     /**
      * @return void
      */
@@ -17,7 +28,7 @@ class SearchComponentTest extends TestCase
         parent::setUp();
 
         Router::$initialized = true;
-        Router::scope('/', function ($routes) {
+        Router::scope('/', function (RouteBuilder $routes) {
             $routes->connect(
                 '/users/my-predictions',
                 ['controller' => 'UserAnswers', 'action' => 'index', 'type' => 'open'],
@@ -26,7 +37,10 @@ class SearchComponentTest extends TestCase
             $routes->fallbacks();
         });
         $request = new Request();
-        $response = $this->getMock('Cake\Network\Response', ['stop']);
+        $response = $this
+            ->getMockBuilder('Cake\Network\Response')
+            ->setMethods(['stop'])
+            ->getMock();
 
         $this->Controller = new Controller($request, $response);
         $this->Prg = new PrgComponent($this->Controller->components());
@@ -150,5 +164,14 @@ class SearchComponentTest extends TestCase
         $this->Prg->configShallow('queryStringWhitelist', []);
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testConversionWithoutRedirect()
+    {
+        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+        $this->assertNull($this->Prg->conversion(false));
     }
 }

@@ -4,35 +4,44 @@ namespace Search\Test\TestCase\Model\Filter;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
-use Search\Model\Filter\Base;
-
-class Filter extends Base
-{
-
-    public function process()
-    {
-    }
-}
+use Search\Test\TestApp\Model\Filter\TestFilter;
+use Search\Test\TestApp\Model\TestRepository;
 
 class BaseTest extends TestCase
 {
+    /**
+     * @var \Search\Manager
+     */
+    public $Manager;
 
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
     public $fixtures = [
         'plugin.Search.Articles'
     ];
 
+    /**
+     * setup
+     *
+     * @return void
+     */
     public function setup()
     {
         $table = TableRegistry::get('Articles');
-        $manager = new Manager($table);
-        $this->manager = new Manager($table);
+        $this->Manager = new Manager($table);
     }
 
+    /**
+     * @return void
+     */
     public function testSkip()
     {
-        $filter = new Filter(
+        $filter = new TestFilter(
             'field',
-            $this->manager,
+            $this->Manager,
             ['alwaysRun' => true, 'filterEmpty' => true]
         );
 
@@ -54,9 +63,9 @@ class BaseTest extends TestCase
      */
     public function testValue()
     {
-        $filter = new Filter(
+        $filter = new TestFilter(
             'field',
-            $this->manager,
+            $this->Manager,
             ['defaultValue' => 'default']
         );
 
@@ -74,11 +83,14 @@ class BaseTest extends TestCase
         $this->assertEquals(['value1', 'value2'], $filter->value());
     }
 
+    /**
+     * @return void
+     */
     public function testFieldAliasing()
     {
-        $filter = new Filter(
+        $filter = new TestFilter(
             'field',
-            $this->manager,
+            $this->Manager,
             []
         );
 
@@ -87,13 +99,27 @@ class BaseTest extends TestCase
         $filter->config('aliasField', false);
         $this->assertEquals('field', $filter->field());
 
-        $filter = new Filter(
+        $filter = new TestFilter(
             ['field1', 'field2'],
-            $this->manager,
+            $this->Manager,
             []
         );
 
         $expected = ['Articles.field1', 'Articles.field2'];
         $this->assertEquals($expected, $filter->field());
+    }
+
+    /**
+     * @return void
+     */
+    public function testFieldAliasingWithNonSupportingRepository()
+    {
+        $filter = new TestFilter(
+            'field',
+            new Manager(new TestRepository()),
+            ['aliasField' => true]
+        );
+
+        $this->assertEquals('field', $filter->field());
     }
 }
