@@ -84,7 +84,7 @@ class Manager
     {
         if (!isset($this->_filters[$collection])) {
             throw new InvalidArgumentException(
-                sprintf('The collection "{0}" does not exist.', $collection)
+                sprintf('The collection "%s" does not exist.', $collection)
             );
         }
 

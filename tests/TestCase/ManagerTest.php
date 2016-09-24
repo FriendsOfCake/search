@@ -77,6 +77,17 @@ class ManagerTest extends TestCase
         $this->assertInstanceOf('\Search\Model\Filter\Compare', $result['test2']);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The collection "nonExistentCollection" does not exist.
+     */
+    public function testGetFiltersNonExistentCollection()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+        $manager->getFilters('nonExistentCollection');
+    }
+
     public function testRemove()
     {
         $table = TableRegistry::get('Articles');
