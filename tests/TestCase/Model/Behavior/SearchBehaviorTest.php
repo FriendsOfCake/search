@@ -7,6 +7,20 @@ use Search\Manager;
 
 class SearchBehaviorTest extends TestCase
 {
+    /**
+     * @var \Search\Test\TestApp\Model\Table\ArticlesTable
+     */
+    public $Articles;
+
+    /**
+     * @var \Search\Test\TestApp\Model\Table\CommentsTable
+     */
+    public $Comments;
+
+    /**
+     * @var \Search\Test\TestApp\Model\Table\GroupsTable
+     */
+    public $Groups;
 
     /**
      * Fixtures
@@ -224,6 +238,9 @@ class SearchBehaviorTest extends TestCase
      * Test the custom "search" finder
      *
      * @dataProvider testCollectionFinderProvider
+     * @param string $collection The collection name.
+     * @param string $queryString The query string data.
+     * @param integer $expected The expected record count.
      * @return void
      */
     public function testCollectionFinder($collection, $queryString, $expected)

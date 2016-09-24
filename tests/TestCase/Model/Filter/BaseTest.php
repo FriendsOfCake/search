@@ -9,15 +9,29 @@ use Search\Test\TestApp\Model\TestRepository;
 
 class BaseTest extends TestCase
 {
+    /**
+     * @var \Search\Manager
+     */
+    public $Manager;
 
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
     public $fixtures = [
         'plugin.Search.Articles'
     ];
 
+    /**
+     * setup
+     *
+     * @return void
+     */
     public function setup()
     {
         $table = TableRegistry::get('Articles');
-        $this->manager = new Manager($table);
+        $this->Manager = new Manager($table);
     }
 
     /**
@@ -27,7 +41,7 @@ class BaseTest extends TestCase
     {
         $filter = new TestFilter(
             'field',
-            $this->manager,
+            $this->Manager,
             ['alwaysRun' => true, 'filterEmpty' => true]
         );
 
@@ -51,7 +65,7 @@ class BaseTest extends TestCase
     {
         $filter = new TestFilter(
             'field',
-            $this->manager,
+            $this->Manager,
             ['defaultValue' => 'default']
         );
 
@@ -76,7 +90,7 @@ class BaseTest extends TestCase
     {
         $filter = new TestFilter(
             'field',
-            $this->manager,
+            $this->Manager,
             []
         );
 
@@ -87,7 +101,7 @@ class BaseTest extends TestCase
 
         $filter = new TestFilter(
             ['field1', 'field2'],
-            $this->manager,
+            $this->Manager,
             []
         );
 

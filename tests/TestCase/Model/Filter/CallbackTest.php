@@ -1,6 +1,7 @@
 <?php
 namespace Search\Test\TestCase\Model\Filter;
 
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
@@ -52,7 +53,7 @@ class CallbackTest extends TestCase
         $manager = new Manager($articles);
 
         $filter = new Callback('title', $manager, [
-            'callback' => function ($query, $args, $manager) {
+            'callback' => function (Query $query, array $args, Callback $filter) {
                 $query->where(['title' => 'test']);
             }
         ]);

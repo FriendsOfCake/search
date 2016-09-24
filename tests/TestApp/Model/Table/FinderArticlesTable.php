@@ -4,6 +4,9 @@ namespace Search\Test\TestApp\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 
+/**
+ * @mixin \Search\Model\Behavior\SearchBehavior
+ */
 class FinderArticlesTable extends Table
 {
     public function initialize(array $config)

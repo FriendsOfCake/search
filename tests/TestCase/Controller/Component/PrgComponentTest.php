@@ -3,12 +3,23 @@ namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
 use Cake\Network\Request;
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Search\Controller\Component\PrgComponent;
 
 class SearchComponentTest extends TestCase
 {
+    /**
+     * @var \Cake\Controller\Controller
+     */
+    public $Controller;
+
+    /**
+     * @var \Search\Controller\Component\PrgComponent
+     */
+    public $Prg;
+
     /**
      * @return void
      */
@@ -17,7 +28,7 @@ class SearchComponentTest extends TestCase
         parent::setUp();
 
         Router::$initialized = true;
-        Router::scope('/', function ($routes) {
+        Router::scope('/', function (RouteBuilder $routes) {
             $routes->connect(
                 '/users/my-predictions',
                 ['controller' => 'UserAnswers', 'action' => 'index', 'type' => 'open'],

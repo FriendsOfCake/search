@@ -4,6 +4,9 @@ namespace Search\Test\TestApp\Model\Table;
 use Cake\ORM\Table;
 use Search\Manager;
 
+/**
+ * @mixin \Search\Model\Behavior\SearchBehavior
+ */
 class ArticlesTable extends Table
 {
 
