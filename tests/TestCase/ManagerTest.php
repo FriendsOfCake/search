@@ -5,18 +5,6 @@ use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
-use Search\Model\Filter\Base;
-
-class TestFilter extends Base
-{
-
-    /**
-     * Dummy method for testing
-     */
-    public function process()
-    {
-    }
-}
 
 class ManagerTest extends TestCase
 {

@@ -4,15 +4,7 @@ namespace Search\Test\TestCase\Model\Filter;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
-use Search\Model\Filter\Base;
-
-class Filter extends Base
-{
-
-    public function process()
-    {
-    }
-}
+use Search\Test\TestApp\Model\Filter\TestFilter;
 
 class BaseTest extends TestCase
 {
@@ -30,7 +22,7 @@ class BaseTest extends TestCase
 
     public function testSkip()
     {
-        $filter = new Filter(
+        $filter = new TestFilter(
             'field',
             $this->manager,
             ['alwaysRun' => true, 'filterEmpty' => true]
@@ -54,7 +46,7 @@ class BaseTest extends TestCase
      */
     public function testValue()
     {
-        $filter = new Filter(
+        $filter = new TestFilter(
             'field',
             $this->manager,
             ['defaultValue' => 'default']
@@ -76,7 +68,7 @@ class BaseTest extends TestCase
 
     public function testFieldAliasing()
     {
-        $filter = new Filter(
+        $filter = new TestFilter(
             'field',
             $this->manager,
             []
@@ -87,7 +79,7 @@ class BaseTest extends TestCase
         $filter->config('aliasField', false);
         $this->assertEquals('field', $filter->field());
 
-        $filter = new Filter(
+        $filter = new TestFilter(
             ['field1', 'field2'],
             $this->manager,
             []

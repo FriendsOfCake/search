@@ -1,65 +1,9 @@
 <?php
 namespace Search\Test\TestCase\Model\Behavior;
 
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
-use Search\Model\Filter\Base;
-
-class ArticlesTable extends Table
-{
-
-    public function searchConfiguration()
-    {
-        $manager = new Manager($this);
-
-        return $manager
-            ->value('foo')
-            ->like('search', ['filterEmpty' => true])
-            ->value('baz')
-            ->value('group', ['field' => 'Articles.group']);
-    }
-}
-
-class CommentsTable extends Table
-{
-
-    public function searchConfiguration()
-    {
-        $manager = new Manager($this);
-
-        return $manager
-            ->value('Comments.foo')
-            ->like('Comments.search', ['filterEmpty' => true, 'multiValue' => true])
-            ->value('Comments.baz')
-            ->value('Comments.group', ['field' => 'Comments.group'])
-            ->value('group', ['multiValue' => true])
-            ->value('published');
-    }
-}
-
-class GroupsTable extends Table
-{
-
-    public function searchConfiguration()
-    {
-        $manager = new Manager($this);
-
-        return $manager
-            ->collection('frontend')
-            ->value('title')
-            ->collection('backend')
-            ->like('title', ['before' => true, 'after' => true]);
-    }
-}
-
-class Filter extends Base
-{
-    public function process()
-    {
-    }
-}
 
 class SearchBehaviorTest extends TestCase
 {
@@ -86,15 +30,15 @@ class SearchBehaviorTest extends TestCase
 
         TableRegistry::clear();
         $this->Articles = TableRegistry::get('Articles', [
-            'className' => 'Search\Test\TestCase\Model\Behavior\ArticlesTable'
+            'className' => 'Search\Test\TestApp\Model\Table\ArticlesTable'
         ]);
         $this->Articles->addBehavior('Search.Search');
         $this->Comments = TableRegistry::get('Comments', [
-            'className' => 'Search\Test\TestCase\Model\Behavior\CommentsTable'
+            'className' => 'Search\Test\TestApp\Model\Table\CommentsTable'
         ]);
         $this->Comments->addBehavior('Search.Search');
         $this->Groups = TableRegistry::get('Groups', [
-            'className' => 'Search\Test\TestCase\Model\Behavior\GroupsTable'
+            'className' => 'Search\Test\TestApp\Model\Table\GroupsTable'
         ]);
         $this->Groups->addBehavior('Search.Search');
     }
@@ -179,7 +123,7 @@ class SearchBehaviorTest extends TestCase
         $query = $this->Comments->find();
 
         $filter = $this
-            ->getMockBuilder('\Search\Test\TestCase\Model\Behavior\Filter')
+            ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
             ->setConstructorArgs(['name', new Manager($this->Comments)])
             ->setMethods(['args', 'process', 'query'])
             ->getMock();
