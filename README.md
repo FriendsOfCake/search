@@ -306,6 +306,37 @@ The following options are supported by all filters except `Callback` and `Finder
 - `mode` (`string`, defaults to `OR`) The conditional mode to use when searching for
   multiple values. Valid values are `OR` and `AND`.
 
+## Filter collections
+
+The SearchManager has the ability to maintain multiple filter collections. For e.g. you can have separate collections for *backend* and *frontend*.
+
+All you need to do is:
+
+```php
+// ExampleTable::initialize()
+    $this->searchManager()
+        ->collection('backend')
+        ->add('q', 'Search.Like', [
+            'before' => true,
+            'after' => true,
+            'mode' => 'or',
+            'comparison' => 'LIKE',
+            'wildcardAny' => '*',
+            'wildcardOne' => '?',
+            'field' => ['body']
+        ])
+        ->collection('frontend')
+        ->value('name');
+```
+
+Let's use the *backend*'s filters by doing:
+
+```php
+// ExampleController::action()
+    $query = $this->{this->name}
+        ->find('search', ['search' => $this->request->query, 'collection' => 'backend']);
+    }
+```
 
 ## Optional fields
 
