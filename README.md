@@ -333,7 +333,7 @@ Let's use the *backend*'s filters by doing:
 
 ```php
 // ExampleController::action()
-    $query = $this->{this->name}
+    $query = $this->Examples
         ->find('search', ['search' => $this->request->query, 'collection' => 'backend']);
     }
 ```
