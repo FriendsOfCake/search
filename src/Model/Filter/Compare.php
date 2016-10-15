@@ -11,6 +11,7 @@ class Compare extends Base
      */
     protected $_defaultConfig = [
         'operator' => '>=',
+        'mode' => 'AND'
     ];
 
     /**
@@ -48,6 +49,6 @@ class Compare extends Base
             $conditions[] = [$left => $value];
         }
 
-        $this->query()->andWhere($conditions);
+        $this->query()->andWhere([$this->config('mode') => $conditions]);
     }
 }
