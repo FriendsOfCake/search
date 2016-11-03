@@ -1,5 +1,4 @@
 <?php
-
 namespace Search\Model\Filter;
 
 use Cake\Database\Expression\QueryExpression;
@@ -7,6 +6,7 @@ use Search\Manager;
 
 class Value extends Base
 {
+
     /**
      * Default configuration.
      *
