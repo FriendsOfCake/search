@@ -60,7 +60,7 @@ class ExampleTable extends Table {
 
     public function initialize(array $config)
     {
-        parent::initialize();
+        parent::initialize($config);
 
         // Add the behaviour to your table
         $this->addBehavior('Search.Search');
