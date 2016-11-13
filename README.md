@@ -56,6 +56,9 @@ supported by the different filters.
 ```php
 use Search\Manager;
 
+/**
+ * @mixin \Search\Model\Behavior\SearchBehavior
+ */
 class ExampleTable extends Table {
 
     public function initialize(array $config)
