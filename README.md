@@ -77,7 +77,7 @@ class ExampleTable extends Table {
             ->add('q', 'Search.Like', [
                 'before' => true,
                 'after' => true,
-                'mode' => 'or',
+                'fieldMode' => 'OR',
                 'comparison' => 'LIKE',
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
