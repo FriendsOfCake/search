@@ -309,6 +309,10 @@ The following options are supported by all filters except `Callback` and `Finder
 - `mode` (`string`, defaults to `OR`) The conditional mode to use when searching for
   multiple values. Valid values are `OR` and `AND`.
 
+#### `Finder`
+
+- `finder` (`string`) The name of the finder method to use, without the 'find' prefix.
+
 ## Filter collections
 
 The SearchManager has the ability to maintain multiple filter collections. For e.g. you can have separate collections for *backend* and *frontend*.
