@@ -121,7 +121,7 @@ class Like extends Base
         $driverName = 'Sqlserver';
         if ($this->config('wildcardAny') !== '%') {
             $from[] = '%';
-            if (substr_compare( $driver, $driverName, -strlen( $driverName ) ) === 0) {
+            if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
                 $to[] = '[%]';
             } else {
                 $to[] = '\%';
@@ -131,7 +131,7 @@ class Like extends Base
         }
         if ($this->config('wildcardOne') !== '_') {
             $from[] = '_';
-            if (substr_compare( $driver, $driverName, -strlen( $driverName ) ) === 0) {
+            if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
                 $to[] = '[_]';
             } else {
                 $to[] = '\_';
