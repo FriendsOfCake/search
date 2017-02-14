@@ -1,10 +1,20 @@
 <?php
 namespace Search\Model\Filter;
 
+use Cake\Core\App;
+use InvalidArgumentException;
 use Search\Manager;
 
 class Like extends Base
 {
+
+    /**
+     * driver to do escaping
+     *
+     * @var Search\Model\Filter\EscapeDriver\Base
+     */
+    protected $escapeDriver;
+
 
     /**
      * Default configuration.
@@ -20,6 +30,7 @@ class Like extends Base
         'comparison' => 'LIKE',
         'wildcardAny' => '*',
         'wildcardOne' => '?',
+        'escapeDriver' => null,
     ];
 
     /**
@@ -50,6 +61,7 @@ class Like extends Base
             return;
         }
 
+        $this->_setEscapeDriver();
         $comparison = $this->config('comparison');
         $valueMode = $this->config('valueMode');
         $value = $this->value();
@@ -116,36 +128,34 @@ class Like extends Base
      */
     protected function _formatWildcards($value)
     {
-        $from = $to = $substFrom = $substTo = [];
-        $driver = get_class($this->query()->connection()->driver());
-        $driverName = 'Sqlserver';
-        if ($this->config('wildcardAny') !== '%') {
-            $from[] = '%';
-            if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
-                $to[] = '[%]';
-            } else {
-                $to[] = '\%';
-            }
-            $substFrom[] = $this->config('wildcardAny');
-            $substTo[] = '%';
-        }
-        if ($this->config('wildcardOne') !== '_') {
-            $from[] = '_';
-            if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
-                $to[] = '[_]';
-            } else {
-                $to[] = '\_';
-            }
-            $substFrom[] = $this->config('wildcardOne');
-            $substTo[] = '_';
-        }
-        if ($from) {
-            // Escape first
-            $value = str_replace($from, $to, $value);
-            // Replace wildcards
-            $value = str_replace($substFrom, $substTo, $value);
-        }
+        $value = $this->escapeDriver->formatWildcards($value);
 
         return $value;
+    }
+
+    /**
+     * set configuration for escape driver name
+     *
+     * @return void
+     */
+    protected function _setEscapeDriver()
+    {
+        if ($this->config('escapeDriver') === null) {
+            $driver = get_class($this->query()->connection()->driver());
+            $driverName = 'Sqlserver';
+            if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
+                $this->config('escapeDriver', 'Search.Sqlserver');
+            } else {
+                $this->config('escapeDriver', 'Search.Normal');
+            }
+        }
+
+        $class = $this->config('escapeDriver');
+        $className = App::className($class, 'Model/Filter/EscapeDriver');
+        if (!class_exists($className)) {
+            throw new InvalidArgumentException(sprintf('Escape driver "%s" in like filter was not found.', $class));
+        }
+
+        $this->escapeDriver = new $className($this->config());
     }
 }
