@@ -1,7 +1,7 @@
 <?php
 namespace Search\Model\Filter\EscapeDriver;
 
-class Normal extends Base
+class Default extends Base
 {
     /**
      * Replace substitutions with original wildcards

@@ -11,7 +11,7 @@ class Like extends Base
     /**
      * driver to do escaping
      *
-     * @var Search\Model\Filter\EscapeDriver\Base
+     * @var \Search\Model\Filter\EscapeDriver\Base
      */
     protected $escapeDriver;
 
@@ -146,7 +146,7 @@ class Like extends Base
             if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
                 $this->config('escapeDriver', 'Search.Sqlserver');
             } else {
-                $this->config('escapeDriver', 'Search.Normal');
+                $this->config('escapeDriver', 'Search.Default');
             }
         }
 
