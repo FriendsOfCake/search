@@ -117,15 +117,25 @@ class Like extends Base
     protected function _formatWildcards($value)
     {
         $from = $to = $substFrom = $substTo = [];
+        $driver = get_class($this->query()->connection()->driver());
+        $driverName = 'Sqlserver';
         if ($this->config('wildcardAny') !== '%') {
             $from[] = '%';
-            $to[] = '\%';
+            if (substr_compare( $driver, $driverName, -strlen( $driverName ) ) === 0) {
+                $to[] = '[%]';
+            } else {
+                $to[] = '\%';
+            }
             $substFrom[] = $this->config('wildcardAny');
             $substTo[] = '%';
         }
         if ($this->config('wildcardOne') !== '_') {
             $from[] = '_';
-            $to[] = '\_';
+            if (substr_compare( $driver, $driverName, -strlen( $driverName ) ) === 0) {
+                $to[] = '[_]';
+            } else {
+                $to[] = '\_';
+            }
             $substFrom[] = $this->config('wildcardOne');
             $substTo[] = '_';
         }
