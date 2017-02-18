@@ -264,11 +264,15 @@ The following options are supported by all filters except `Callback` and `Finder
   multiple values. If disabled, and multiple values are being passed, the filter
   will fall back to using the default value defined by the `defaultValue` option.
 
-- `field` (`string|array`, defaults to the name passed to the first argument of the
+- `field` (`string|array`), defaults to the name passed to the first argument of the
   add filter method) The name of the field to use for searching. Works like the base
   `field` option but also accepts multiple field names as an array. When defining
   multiple fields, the search term is going to be looked up in all the given fields,
   using the conditional operator defined by the `fieldMode` option.
+  
+- `colType` (`array|bool`), defaults to auto-detecting any column that needs to be treated as
+  string column despite its actual type. You can also manually define the types for those fields.
+  Set to `false` to completely remove the detection.
 
 - `before` (`bool`, defaults to `false`) Whether to automatically add a wildcard
   *before* the search term.

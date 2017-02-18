@@ -90,8 +90,7 @@ class Like extends Base
     }
 
     /**
-     * @param string $field
-     *
+     * @param string $field Field
      * @return bool
      */
     protected function _requiresTypeMapping($field)
