@@ -260,6 +260,35 @@ class LikeTest extends TestCase
     /**
      * @return void
      */
+    public function testProcessWithNumericFields()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('search', $manager, ['field' => ['title', 'number']]);
+        $filter->args(['search' => '234']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $filter->query()->sql();
+        $bindings = $filter->query()->valueBinder()->bindings();
+        $expected = [
+            ':c0' => [
+                'value' => '234',
+                'type' => 'string',
+                'placeholder' => 'c0'
+            ],
+            ':c1' => [
+                'value' => '234',
+                'type' => 'string',
+                'placeholder' => 'c1'
+            ],
+        ];
+        $this->assertSame($expected, $bindings);
+    }
+
+    /**
+     * @return void
+     */
     public function testProcessEmptyMultiValue()
     {
         $articles = TableRegistry::get('Articles');
