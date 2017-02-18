@@ -89,7 +89,7 @@ class Like extends Base
     }
 
     /**
-     * @param array $colTypes
+     * @param array $colTypes Column types
      * @return array
      */
     protected function _aliasColTypes($colTypes)
