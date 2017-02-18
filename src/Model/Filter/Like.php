@@ -20,6 +20,7 @@ class Like extends Base
         'comparison' => 'LIKE',
         'wildcardAny' => '*',
         'wildcardOne' => '?',
+        'colType' => [],
     ];
 
     /**
@@ -56,10 +57,11 @@ class Like extends Base
         $isMultiValue = is_array($value);
 
         $conditions = [];
-        $types = [];
+        $colTypes = $this->config('colType') ?: [];
+        $detectColTypesFromSchema = ($colTypes || $this->config('colType') === false) ? false : true;
         foreach ($this->fields() as $field) {
-            if ($this->_requiresTypeMapping($field)) {
-                $types[$field] = 'string';
+            if ($detectColTypesFromSchema && $this->_requiresTypeMapping($field)) {
+                $colTypes[$field] = 'string';
             }
 
             $left = $field . ' ' . $comparison;
@@ -83,7 +85,7 @@ class Like extends Base
         }
 
         if (!empty($conditions)) {
-            $this->query()->andWhere([$this->config('fieldMode') => $conditions], $types);
+            $this->query()->andWhere([$this->config('fieldMode') => $conditions], $colTypes);
         }
     }
 
