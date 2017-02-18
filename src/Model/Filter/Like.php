@@ -20,6 +20,7 @@ class Like extends Base
         'comparison' => 'LIKE',
         'wildcardAny' => '*',
         'wildcardOne' => '?',
+        'colType' => [],
     ];
 
     /**
@@ -56,6 +57,7 @@ class Like extends Base
         $isMultiValue = is_array($value);
 
         $conditions = [];
+        $colTypes = $this->config('colType') ?: [];
         foreach ($this->fields() as $field) {
             $left = $field . ' ' . $comparison;
             if ($isMultiValue) {
@@ -78,8 +80,31 @@ class Like extends Base
         }
 
         if (!empty($conditions)) {
-            $this->query()->andWhere([$this->config('fieldMode') => $conditions]);
+            if ($colTypes) {
+                $colTypes = $this->_aliasColTypes($colTypes);
+            }
+
+            $this->query()->andWhere([$this->config('fieldMode') => $conditions], $colTypes);
         }
+    }
+
+    /**
+     * @param array $colTypes
+     * @return array
+     */
+    protected function _aliasColTypes($colTypes)
+    {
+        $repository = $this->manager()->repository();
+        if (!method_exists($repository, 'aliasField')) {
+            return $colTypes;
+        }
+
+        $return = [];
+        foreach ($colTypes as $field => $colType) {
+            $return[$repository->aliasField($field)] = $colType;
+        }
+
+        return $return;
     }
 
     /**
