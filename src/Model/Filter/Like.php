@@ -20,6 +20,7 @@ class Like extends Base
         'comparison' => 'LIKE',
         'wildcardAny' => '*',
         'wildcardOne' => '?',
+        'colType' => [],
     ];
 
     /**
@@ -78,8 +79,34 @@ class Like extends Base
         }
 
         if (!empty($conditions)) {
-            $this->query()->andWhere([$this->config('fieldMode') => $conditions]);
+            $colTypes = $this->config('colType');
+            if ($colTypes) {
+                $colTypes = $this->_aliasColTypes($colTypes);
+            }
+
+            $this->query()->andWhere([$this->config('fieldMode') => $conditions], $colTypes);
         }
+    }
+
+    /**
+     * Alias the column type fields to match the field aliases of the conditions.
+     *
+     * @param array $colTypes Column types to be aliased.
+     * @return array Aliased column types.
+     */
+    protected function _aliasColTypes($colTypes)
+    {
+        $repository = $this->manager()->repository();
+        if (!method_exists($repository, 'aliasField')) {
+            return $colTypes;
+        }
+
+        $return = [];
+        foreach ($colTypes as $field => $colType) {
+            $return[$repository->aliasField($field)] = $colType;
+        }
+
+        return $return;
     }
 
     /**
