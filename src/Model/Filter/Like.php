@@ -20,6 +20,7 @@ class Like extends Base
         'comparison' => 'LIKE',
         'wildcardAny' => '*',
         'wildcardOne' => '?',
+        'colType' => [],
     ];
 
     /**
@@ -56,7 +57,13 @@ class Like extends Base
         $isMultiValue = is_array($value);
 
         $conditions = [];
+        $colTypes = $this->config('colType') ?: [];
+        $detectColTypesFromSchema = ($colTypes || $this->config('colType') === false) ? false : true;
         foreach ($this->fields() as $field) {
+            if ($detectColTypesFromSchema && $this->_requiresTypeMapping($field)) {
+                $colTypes[$field] = 'string';
+            }
+
             $left = $field . ' ' . $comparison;
             if ($isMultiValue) {
                 $valueConditions = [];
@@ -78,8 +85,30 @@ class Like extends Base
         }
 
         if (!empty($conditions)) {
-            $this->query()->andWhere([$this->config('fieldMode') => $conditions]);
+            $this->query()->andWhere([$this->config('fieldMode') => $conditions], $colTypes);
         }
+    }
+
+    /**
+     * @param string $field Field
+     * @return bool
+     */
+    protected function _requiresTypeMapping($field)
+    {
+        if (strpos($field, '.') === false) {
+            return false;
+        }
+        list($model, $field) = explode('.', $field);
+
+        $columnSchema = $this->query()->repository()->schema()->column($field);
+        if (!$columnSchema) {
+            return false;
+        }
+        if ($columnSchema['type'] === 'string') {
+            return false;
+        }
+
+        return true;
     }
 
     /**
