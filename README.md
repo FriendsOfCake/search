@@ -271,7 +271,8 @@ The following options are supported by all filters except `Callback` and `Finder
   using the conditional operator defined by the `fieldMode` option.
   
 - `colType` (`array`), Use to set a custom type for any column that needs to be treated as
-  string column despite its actual type.
+  string column despite its actual type. This is important for integer fields, for example, if they
+  are part of the fields to be searched.
 
 - `before` (`bool`, defaults to `false`) Whether to automatically add a wildcard
   *before* the search term.

@@ -57,7 +57,6 @@ class Like extends Base
         $isMultiValue = is_array($value);
 
         $conditions = [];
-        $colTypes = $this->config('colType') ?: [];
         foreach ($this->fields() as $field) {
             $left = $field . ' ' . $comparison;
             if ($isMultiValue) {
@@ -80,6 +79,7 @@ class Like extends Base
         }
 
         if (!empty($conditions)) {
+            $colTypes = $this->config('colType');
             if ($colTypes) {
                 $colTypes = $this->_aliasColTypes($colTypes);
             }
@@ -89,8 +89,10 @@ class Like extends Base
     }
 
     /**
-     * @param array $colTypes Column types
-     * @return array
+     * Alias the column type fields to match the field aliases of the conditions.
+     *
+     * @param array $colTypes Column types to be aliased.
+     * @return array Aliased column types.
      */
     protected function _aliasColTypes($colTypes)
     {
