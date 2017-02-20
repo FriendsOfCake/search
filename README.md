@@ -309,7 +309,7 @@ The following options are supported by all filters except `Callback` and `Finder
   escape `%` and `_`. If no escaper is set (`escapeDriver => 'null'`) the escaper 
   is set by database driver. If the driver is `Sqlserver` the `SqlserverEscaper` 
   is used (escaping `%` to `[%]` and `_` to `[_]`). In all other cases the 
-  `NormalEscaper` is used (escaping `%` to `\%` and `_` to `\_`). You can add an 
+  `DefaultEscaper` is used (escaping `%` to `\%` and `_` to `\_`). You can add an 
   own escaper by adding a escaper in `App\Model\Filter\EscapeDriver\YourEscaper`.
 
 #### `Value`
