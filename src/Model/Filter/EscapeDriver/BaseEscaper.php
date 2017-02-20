@@ -3,7 +3,7 @@ namespace Search\Model\Filter\EscapeDriver;
 
 use Cake\Core\InstanceConfigTrait;
 
-abstract class Base
+abstract class BaseEscaper
 {
 
     use InstanceConfigTrait;

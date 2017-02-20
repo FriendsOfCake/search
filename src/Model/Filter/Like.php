@@ -151,7 +151,7 @@ class Like extends Base
         }
 
         $class = $this->config('escapeDriver');
-        $className = App::className($class, 'Model/Filter/EscapeDriver');
+        $className = App::className($class, 'Model/Filter/EscapeDriver', 'Escaper');
         if (!class_exists($className)) {
             throw new InvalidArgumentException(sprintf('Escape driver "%s" in like filter was not found.', $class));
         }

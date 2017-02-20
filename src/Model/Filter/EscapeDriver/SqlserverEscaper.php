@@ -1,7 +1,7 @@
 <?php
 namespace Search\Model\Filter\EscapeDriver;
 
-class Sqlserver extends Base
+class SqlserverEscaper extends BaseEscaper
 {
     /**
      * Replace substitutions with original wildcards
