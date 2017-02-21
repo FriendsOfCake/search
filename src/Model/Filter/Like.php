@@ -13,7 +13,7 @@ class Like extends Base
      *
      * @var \Search\Model\Filter\EscapeDriver\Base
      */
-    protected $escapeDriver;
+    protected $_escapeDriver;
 
 
     /**
@@ -155,7 +155,7 @@ class Like extends Base
      */
     protected function _formatWildcards($value)
     {
-        $value = $this->escapeDriver->formatWildcards($value);
+        $value = $this->_escapeDriver->formatWildcards($value);
 
         return $value;
     }
@@ -183,6 +183,6 @@ class Like extends Base
             throw new InvalidArgumentException(sprintf('Escape driver "%s" in like filter was not found.', $class));
         }
 
-        $this->escapeDriver = new $className($this->config());
+        $this->_escapeDriver = new $className($this->config());
     }
 }
