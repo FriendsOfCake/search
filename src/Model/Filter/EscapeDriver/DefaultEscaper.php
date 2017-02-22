@@ -4,7 +4,7 @@ namespace Search\Model\Filter\EscapeDriver;
 use Cake\Core\InstanceConfigTrait;
 
 class DefaultEscaper
-{	
+{
     use InstanceConfigTrait;
 
     /**
@@ -13,11 +13,11 @@ class DefaultEscaper
      * @var array
      */
     protected $_defaultConfig = [
-		'fromWildCardAny' => '%',
-		'toWildCardAny' => '\%',
-		'fromWildCardOne' => '_',
-		'toWildCardOne' => '\_',
-	];
+        'fromWildCardAny' => '%',
+        'toWildCardAny' => '\%',
+        'fromWildCardOne' => '_',
+        'toWildCardOne' => '\_',
+    ];
 
     /**
      * {@inheritDoc}
@@ -28,7 +28,7 @@ class DefaultEscaper
     {
         $this->config($config);
     }
-	
+
     /**
      * Replace substitutions with original wildcards
      * but first, escape the original wildcards in the text to use them as normal search text
