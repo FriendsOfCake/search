@@ -1,8 +1,22 @@
 <?php
 namespace Search\Model\Filter\EscapeDriver;
 
-class DefaultEscaper extends BaseEscaper
-{
+class DefaultEscaper
+{	
+    use InstanceConfigTrait;
+
+    /**
+     * Default configuration.
+     *
+     * @var array
+     */
+    protected $_defaultConfig = [
+		'fromWildCardAny' => '%',
+		'toWildCardAny' => '\%',
+		'fromWildCardOne' => '_',
+		'toWildCardOne' => '\_',
+	];
+	
     /**
      * Replace substitutions with original wildcards
      * but first, escape the original wildcards in the text to use them as normal search text
@@ -14,14 +28,14 @@ class DefaultEscaper extends BaseEscaper
     {
         $from = $to = $substFrom = $substTo = [];
         if ($this->config('wildcardAny') !== '%') {
-            $from[] = '%';
-            $to[] = '\%';
+            $from[] = $this->config('fromWildCardAny');
+            $to[] = $this->config('toWildCardAny');
             $substFrom[] = $this->config('wildcardAny');
             $substTo[] = '%';
         }
         if ($this->config('wildcardOne') !== '_') {
-            $from[] = '_';
-            $to[] = '\_';
+            $from[] = $this->config('fromWildCardOne');
+            $to[] = $this->config('toWildCardOne');
             $substFrom[] = $this->config('wildcardOne');
             $substTo[] = '_';
         }

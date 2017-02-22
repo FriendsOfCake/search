@@ -1,37 +1,17 @@
 <?php
 namespace Search\Model\Filter\EscapeDriver;
 
-class SqlserverEscaper extends BaseEscaper
+class SqlserverEscaper extends DefaultEscaper
 {
     /**
-     * Replace substitutions with original wildcards
-     * but first, escape the original wildcards in the text to use them as normal search text
+     * Default configuration.
      *
-     * @param string $value Value.
-     * @return string Value
+     * @var array
      */
-    public function formatWildcards($value)
-    {
-        $from = $to = $substFrom = $substTo = [];
-        if ($this->config('wildcardAny') !== '%') {
-            $from[] = '%';
-            $to[] = '[%]';
-            $substFrom[] = $this->config('wildcardAny');
-            $substTo[] = '%';
-        }
-        if ($this->config('wildcardOne') !== '_') {
-            $from[] = '_';
-            $to[] = '[_]';
-            $substFrom[] = $this->config('wildcardOne');
-            $substTo[] = '_';
-        }
-        if ($from) {
-            // Escape first
-            $value = str_replace($from, $to, $value);
-            // Replace wildcards
-            $value = str_replace($substFrom, $substTo, $value);
-        }
-
-        return $value;
-    }
+    protected $_defaultConfig = [
+		'fromWildCardAny' => '%',
+		'toWildCardAny' => '[%]',
+		'fromWildCardOne' => '_',
+		'toWildCardOne' => '[_]',
+	];
 }
