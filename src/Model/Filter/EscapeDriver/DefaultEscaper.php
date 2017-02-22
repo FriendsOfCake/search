@@ -18,6 +18,16 @@ class DefaultEscaper
 		'fromWildCardOne' => '_',
 		'toWildCardOne' => '\_',
 	];
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param array $config Config.
+     */
+    public function __construct(array $config = [])
+    {
+        $this->config($config);
+    }
 	
     /**
      * Replace substitutions with original wildcards
