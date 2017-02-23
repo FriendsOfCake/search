@@ -370,7 +370,7 @@ class LikeTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
 
-        $filter = new Like('title', $manager, ['escapeDriver' => 'Search.Sqlserver']);
+        $filter = new Like('title', $manager, ['escaper' => 'Search.Sqlserver']);
         $filter->args(['title' => 'part_1 ? 100% *']);
         $filter->query($articles->find());
         $filter->process();
@@ -390,7 +390,7 @@ class LikeTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
 
-        $filter = new Like('title', $manager, ['before' => true, 'after' => true, 'escapeDriver' => 'Search.Sqlserver']);
+        $filter = new Like('title', $manager, ['before' => true, 'after' => true, 'escaper' => 'Search.Sqlserver']);
         $filter->args(['title' => '22% 44_']);
         $filter->query($articles->find());
         $filter->process();
@@ -457,7 +457,7 @@ class LikeTest extends TestCase
         $filter = new Like(
             'title',
             $manager,
-            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_', 'escapeDriver' => 'Search.Sqlserver']
+            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_', 'escaper' => 'Search.Sqlserver']
         );
         $filter->args(['title' => '22% 44_']);
         $filter->query($articles->find());
