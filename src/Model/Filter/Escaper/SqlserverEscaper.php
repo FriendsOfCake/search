@@ -1,5 +1,5 @@
 <?php
-namespace Search\Model\Filter\EscapeDriver;
+namespace Search\Model\Filter\Escaper;
 
 class SqlserverEscaper extends DefaultEscaper
 {

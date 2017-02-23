@@ -1,9 +1,9 @@
 <?php
-namespace Search\Model\Filter\EscapeDriver;
+namespace Search\Model\Filter\Escaper;
 
 use Cake\Core\InstanceConfigTrait;
 
-class DefaultEscaper
+class DefaultEscaper implements EscaperInterface
 {
     use InstanceConfigTrait;
 

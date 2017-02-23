@@ -305,12 +305,13 @@ The following options are supported by all filters except `Callback` and `Finder
   Behaves similar to `wildcardAny`, that is, the actual SQL compatible wildcard
   (`_`) is being escaped in case used the search term.
 
-- `escapeDriver` (`string`, default to `null`) Defines the escaper that should 
+- `escaper` (`string`, default to `null`) Defines the escaper that should 
   escape `%` and `_`. If no escaper is set (`escapeDriver => 'null'`) the escaper 
   is set by database driver. If the driver is `Sqlserver` the `SqlserverEscaper` 
   is used (escaping `%` to `[%]` and `_` to `[_]`). In all other cases the 
   `DefaultEscaper` is used (escaping `%` to `\%` and `_` to `\_`). You can add an 
-  own escaper by adding a escaper in `App\Model\Filter\EscapeDriver\YourEscaper`.
+  own escaper by adding a escaper in `App\Model\Filter\Escaper\OwnEscaper` and 
+  settings `'escaper' => 'App.Own'`.
 
 #### `Value`
 

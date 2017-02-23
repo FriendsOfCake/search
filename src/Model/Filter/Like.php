@@ -11,9 +11,9 @@ class Like extends Base
     /**
      * driver to do escaping
      *
-     * @var \Search\Model\Filter\EscapeDriver\Base
+     * @var \Search\Model\Filter\Escaper\EscaperInterface
      */
-    protected $_escapeDriver;
+    protected $_escaper;
 
 
     /**
@@ -30,7 +30,7 @@ class Like extends Base
         'comparison' => 'LIKE',
         'wildcardAny' => '*',
         'wildcardOne' => '?',
-        'escapeDriver' => null,
+        'escaper' => null,
         'colType' => [],
     ];
 
@@ -155,7 +155,7 @@ class Like extends Base
      */
     protected function _formatWildcards($value)
     {
-        $value = $this->_escapeDriver->formatWildcards($value);
+        $value = $this->_escaper->formatWildcards($value);
 
         return $value;
     }
@@ -167,22 +167,22 @@ class Like extends Base
      */
     protected function _setEscapeDriver()
     {
-        if ($this->config('escapeDriver') === null) {
+        if ($this->config('escaper') === null) {
             $driver = get_class($this->query()->connection()->driver());
             $driverName = 'Sqlserver';
             if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
-                $this->config('escapeDriver', 'Search.Sqlserver');
+                $this->config('escaper', 'Search.Sqlserver');
             } else {
-                $this->config('escapeDriver', 'Search.Default');
+                $this->config('escaper', 'Search.Default');
             }
         }
 
-        $class = $this->config('escapeDriver');
-        $className = App::className($class, 'Model/Filter/EscapeDriver', 'Escaper');
+        $class = $this->config('escaper');
+        $className = App::className($class, 'Model/Filter/Escaper', 'Escaper');
         if (!$className) {
             throw new InvalidArgumentException(sprintf('Escape driver "%s" in like filter was not found.', $class));
         }
 
-        $this->_escapeDriver = new $className($this->config());
+        $this->_escaper = new $className($this->config());
     }
 }
