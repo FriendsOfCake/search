@@ -9,7 +9,7 @@ class Like extends Base
 {
 
     /**
-     * driver to do escaping
+     * Escaper to be used.
      *
      * @var \Search\Model\Filter\Escaper\EscaperInterface
      */
@@ -62,7 +62,7 @@ class Like extends Base
             return;
         }
 
-        $this->_setEscapeDriver();
+        $this->_setEscaper();
         $comparison = $this->config('comparison');
         $valueMode = $this->config('valueMode');
         $value = $this->value();
@@ -165,7 +165,7 @@ class Like extends Base
      *
      * @return void
      */
-    protected function _setEscapeDriver()
+    protected function _setEscaper()
     {
         if ($this->config('escaper') === null) {
             $driver = get_class($this->query()->connection()->driver());
