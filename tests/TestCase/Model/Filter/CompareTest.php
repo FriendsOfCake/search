@@ -68,6 +68,50 @@ class CompareTest extends TestCase
     /**
      * @return void
      */
+    public function testProcessMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Compare('time', $manager, ['field' => ['created', 'modified']]);
+        $filter->args(['time' => '2012-01-01 00:00:00']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.created >= :c0 AND Articles\.modified >= :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['2012-01-01 00:00:00', '2012-01-01 00:00:00'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessModeOr()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Compare('time', $manager, ['mode' => 'OR', 'field' => ['created', 'modified']]);
+        $filter->args(['time' => '2012-01-01 00:00:00']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.created >= :c0 OR Articles\.modified >= :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['2012-01-01 00:00:00', '2012-01-01 00:00:00'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
     public function testProcessMultiValueSafe()
     {
         $articles = TableRegistry::get('Articles');
@@ -98,6 +142,7 @@ class CompareTest extends TestCase
             '/WHERE Articles\.created >= :c0$/',
             $filter->query()->sql()
         );
+
         $this->assertEquals(
             ['2012-01-01 00:00:00'],
             Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
