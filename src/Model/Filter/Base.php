@@ -2,7 +2,7 @@
 namespace Search\Model\Filter;
 
 use Cake\Core\InstanceConfigTrait;
-use Cake\ORM\Query;
+use Cake\Datasource\QueryInterface;
 use Search\Manager;
 
 /**
@@ -38,7 +38,7 @@ abstract class Base
     /**
      * Query object.
      *
-     * @var \Cake\ORM\Query
+     * @var \Cake\Datasource\QueryInterface
      */
     protected $_query;
 
@@ -233,10 +233,10 @@ abstract class Base
     /**
      * Get / Set the query object.
      *
-     * @param \Cake\ORM\Query|null $value Value.
-     * @return void|\Cake\ORM\Query
+     * @param \Cake\Datasource\QueryInterface|null $value Value.
+     * @return void|\Cake\Datasource\QueryInterface
      */
-    public function query(Query $value = null)
+    public function query(QueryInterface $value = null)
     {
         if ($value === null) {
             return $this->_query;
