@@ -1,6 +1,6 @@
 {
     "name": "friendsofcake/search",
-    "description": "CakePHP 3.0 easy search framework",
+    "description": "CakePHP Search plugin using PRG pattern",
     "type": "cakephp-plugin",
     "keywords": [
         "cakephp",
