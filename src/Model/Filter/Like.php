@@ -15,7 +15,6 @@ class Like extends Base
      */
     protected $_escaper;
 
-
     /**
      * Default configuration.
      *
