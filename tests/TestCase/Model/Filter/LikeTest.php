@@ -365,6 +365,46 @@ class LikeTest extends TestCase
     /**
      * @return void
      */
+    public function testWildcardsEscapingSqlserver()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Like('title', $manager, ['escaper' => 'Search.Sqlserver']);
+        $filter->args(['title' => 'part_1 ? 100% *']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $filter->query()->sql();
+        $this->assertEquals(
+            ['part[_]1 _ 100[%] %'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testWildcardsBeforeAfterSqlserver()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Like('title', $manager, ['before' => true, 'after' => true, 'escaper' => 'Search.Sqlserver']);
+        $filter->args(['title' => '22% 44_']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $filter->query()->sql();
+        $this->assertEquals(
+            ['%22[%] 44[_]%'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
     public function testWildcardsBeforeAfter()
     {
         $articles = TableRegistry::get('Articles');
@@ -394,6 +434,30 @@ class LikeTest extends TestCase
             'title',
             $manager,
             ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_']
+        );
+        $filter->args(['title' => '22% 44_']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $filter->query()->sql();
+        $this->assertEquals(
+            ['%22% 44_%'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testWildcardsAlternativesSqlserver()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Like(
+            'title',
+            $manager,
+            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_', 'escaper' => 'Search.Sqlserver']
         );
         $filter->args(['title' => '22% 44_']);
         $filter->query($articles->find());

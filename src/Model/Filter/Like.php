@@ -1,10 +1,20 @@
 <?php
 namespace Search\Model\Filter;
 
+use Cake\Core\App;
+use InvalidArgumentException;
 use Search\Manager;
 
 class Like extends Base
 {
+
+    /**
+     * Escaper to be used.
+     *
+     * @var \Search\Model\Filter\Escaper\EscaperInterface
+     */
+    protected $_escaper;
+
 
     /**
      * Default configuration.
@@ -20,6 +30,7 @@ class Like extends Base
         'comparison' => 'LIKE',
         'wildcardAny' => '*',
         'wildcardOne' => '?',
+        'escaper' => null,
         'colType' => [],
     ];
 
@@ -51,6 +62,7 @@ class Like extends Base
             return;
         }
 
+        $this->_setEscaper();
         $comparison = $this->config('comparison');
         $valueMode = $this->config('valueMode');
         $value = $this->value();
@@ -143,26 +155,34 @@ class Like extends Base
      */
     protected function _formatWildcards($value)
     {
-        $from = $to = $substFrom = $substTo = [];
-        if ($this->config('wildcardAny') !== '%') {
-            $from[] = '%';
-            $to[] = '\%';
-            $substFrom[] = $this->config('wildcardAny');
-            $substTo[] = '%';
-        }
-        if ($this->config('wildcardOne') !== '_') {
-            $from[] = '_';
-            $to[] = '\_';
-            $substFrom[] = $this->config('wildcardOne');
-            $substTo[] = '_';
-        }
-        if ($from) {
-            // Escape first
-            $value = str_replace($from, $to, $value);
-            // Replace wildcards
-            $value = str_replace($substFrom, $substTo, $value);
-        }
+        $value = $this->_escaper->formatWildcards($value);
 
         return $value;
+    }
+
+    /**
+     * set configuration for escape driver name
+     *
+     * @return void
+     */
+    protected function _setEscaper()
+    {
+        if ($this->config('escaper') === null) {
+            $driver = get_class($this->query()->connection()->driver());
+            $driverName = 'Sqlserver';
+            if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
+                $this->config('escaper', 'Search.Sqlserver');
+            } else {
+                $this->config('escaper', 'Search.Default');
+            }
+        }
+
+        $class = $this->config('escaper');
+        $className = App::className($class, 'Model/Filter/Escaper', 'Escaper');
+        if (!$className) {
+            throw new InvalidArgumentException(sprintf('Escape driver "%s" in like filter was not found.', $class));
+        }
+
+        $this->_escaper = new $className($this->config());
     }
 }

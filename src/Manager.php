@@ -253,7 +253,7 @@ class Manager
             unset($options['className']);
         }
         $className = App::className($class, 'Model\Filter');
-        if (!class_exists($className)) {
+        if (!$className) {
             throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
         }
 

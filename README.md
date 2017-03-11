@@ -297,12 +297,21 @@ The following options are supported by all filters except `Callback` and `Finder
   wildcard. This is useful if you want to pass wildcards inside of the search term,
   while still being able to use the actual wildcard character inside of the search
   term so that it is being treated as a part of the term. For example a search term
-  of `* has reached 100%` would be converted to `% has reached 100\%`.
+  of `* has reached 100%` would be converted to `% has reached 100\%`. 
+  Additionally see option `escapeDriver`.
 
 - `wildcardOne` (`string`, defaults to `?`) Defines the string that should be
   treated as a _one_ wildcard in case it is being encountered in the search term.
   Behaves similar to `wildcardAny`, that is, the actual SQL compatible wildcard
   (`_`) is being escaped in case used the search term.
+
+- `escaper` (`string`, default to `null`) Defines the escaper that should 
+  escape `%` and `_`. If no escaper is set (`escapeDriver => 'null'`) the escaper 
+  is set by database driver. If the driver is `Sqlserver` the `SqlserverEscaper` 
+  is used (escaping `%` to `[%]` and `_` to `[_]`). In all other cases the 
+  `DefaultEscaper` is used (escaping `%` to `\%` and `_` to `\_`). You can add an 
+  own escaper by adding a escaper in `App\Model\Filter\Escaper\OwnEscaper` and 
+  settings `'escaper' => 'App.Own'`.
 
 #### `Value`
 
