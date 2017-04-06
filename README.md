@@ -130,7 +130,7 @@ public function index()
     $query = $this->Articles
         // Use the plugins 'search' custom finder and pass in the
         // processed query params
-        ->find('search', ['search' => $this->request->query])
+        ->find('search', ['search' => $this->request->getQuery()])
         // You can add extra things to the query if you need to
         ->contain(['Comments'])
         ->where(['title IS NOT' => null]);
@@ -354,7 +354,7 @@ Let's use the *backend*'s filters by doing:
 ```php
 // ExampleController::action()
     $query = $this->Examples
-        ->find('search', ['search' => $this->request->query, 'collection' => 'backend']);
+        ->find('search', ['search' => $this->request->getQuery(), 'collection' => 'backend']);
     }
 ```
 
