@@ -121,6 +121,27 @@ class SearchComponentTest extends TestCase
     /**
      * @return void
      */
+    public function testInitializePostWithEmptyValues()
+    {
+        $this->Controller->request->params = [
+            'controller' => 'Posts',
+            'action' => 'index',
+            'pass' => ['pass']
+        ];
+        $this->Controller->request->here = '/Posts/index/pass';
+        $this->Controller->request->data = ['foo' => 'bar', 'checkbox' => '0'];
+        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+
+        $this->Prg->configShallow('emptyValues', [
+            'checkbox' => '0',
+        ]);
+        $response = $this->Prg->startup();
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+    }
+
+    /**
+     * @return void
+     */
     public function testInitializePostWithQueryStringWhitelist()
     {
         $this->Controller->request->query = [
