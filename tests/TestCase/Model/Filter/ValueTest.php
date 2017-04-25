@@ -22,20 +22,6 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testDeprecatedModeOption()
-    {
-        $articles = TableRegistry::get('Articles');
-        $manager = new Manager($articles);
-        $filter = new Value('title', $manager, ['mode' => 'modeValue']);
-
-        $this->assertEquals('modeValue', $filter->config('mode'));
-        $this->assertEquals('modeValue', $filter->config('valueMode'));
-        $this->assertEquals('OR', $filter->config('fieldMode'));
-    }
-
-    /**
-     * @return void
-     */
     public function testSkipProcess()
     {
         $articles = TableRegistry::get('Articles');
@@ -82,11 +68,11 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessSingleValueWithAndValueMode()
+    public function testProcessSingleValueWithAndMode()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
-        $filter = new Value('title', $manager, ['valueMode' => 'and']);
+        $filter = new Value('title', $manager, ['mode' => 'and']);
         $filter->args(['title' => 'foo']);
         $filter->query($articles->find());
         $filter->process();
@@ -104,13 +90,12 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessSingleValueAndMultiFieldWithAndValueMode()
+    public function testProcessSingleValueAndMultiField()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
-            'field' => ['title', 'other'],
-            'valueMode' => 'and'
+            'field' => ['title', 'other']
         ]);
         $filter->args(['title' => 'foo']);
         $filter->query($articles->find());
@@ -129,13 +114,13 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessSingleValueAndMultiFieldWithAndFieldMode()
+    public function testProcessSingleValueAndMultiFieldWithAndMode()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'field' => ['title', 'other'],
-            'fieldMode' => 'and'
+            'mode' => 'and'
         ]);
         $filter->args(['title' => 'foo']);
         $filter->query($articles->find());
@@ -176,20 +161,20 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessMultiValueWithAndValueMode()
+    public function testProcessMultiValueWithAndMode()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
-            'valueMode' => 'and'
+            'mode' => 'and'
         ]);
         $filter->args(['title' => ['foo', 'bar']]);
         $filter->query($articles->find());
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE \(Articles\.title = :c0 AND Articles\.title = :c1\)$/',
+            '/WHERE Articles\.title IN \(:c0,:c1\)$/',
             $filter->query()->sql()
         );
         $this->assertEquals(
@@ -227,14 +212,14 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessMultiValueAndMultiFieldWithAndFieldMode()
+    public function testProcessMultiValueAndMultiFieldWithAndMode()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
             'field' => ['title', 'other'],
-            'fieldMode' => 'and'
+            'mode' => 'and'
         ]);
         $filter->args(['title' => ['foo', 'bar']]);
         $filter->query($articles->find());
@@ -332,13 +317,13 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessCaseInsensitiveValueMode()
+    public function testProcessCaseInsensitiveMode()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
-            'valueMode' => 'Or'
+            'mode' => 'Or'
         ]);
         $filter->args(['title' => ['foo', 'bar']]);
         $filter->query($articles->find());
