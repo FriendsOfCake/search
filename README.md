@@ -375,6 +375,20 @@ Be sure to allow empty in your search form, if you're using one.
 echo $this->Form->input('author_id', ['empty' => 'Pick an author']);
 ```
 
+## Empty fields
+In some cases, e.g. when posting checkboxes, the empty value is not `''` but `'0'`.
+If you want to declare certain values as empty values and prevent the URL of getting the query string attached for this "disabled" search field, you can set `emptyValues` in the component:
+```php
+    $this->loadComponent('Search.Prg', [
+        ...
+        'emptyValues' => [
+            'my_checkbox' => '0',
+        ]
+    ]);
+```
+
+This is needed for the "isSearch" work as expected.
+
 ## Persisting the Query String
 
 Persisting the query string can be done with the `queryStringWhitelist` option.
