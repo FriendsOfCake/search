@@ -1,6 +1,9 @@
 <?php
 namespace Search\Model\Filter;
 
+use Cake\Database\Expression\QueryExpression;
+use Search\Manager;
+
 class Value extends Base
 {
 
@@ -10,8 +13,26 @@ class Value extends Base
      * @var array
      */
     protected $_defaultConfig = [
-        'mode' => 'OR',
+        'fieldMode' => 'OR',
+        'valueMode' => 'OR'
     ];
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param string $name Name.
+     * @param \Search\Manager $manager Manager.
+     * @param array $config Config.
+     */
+    public function __construct($name, Manager $manager, array $config = [])
+    {
+        parent::__construct($name, $manager, $config);
+
+        $mode = $this->config('mode');
+        if ($mode !== null) {
+            $this->config('valueMode', $mode);
+        }
+    }
 
     /**
      * Process a value condition ($x == $y).
@@ -36,21 +57,25 @@ class Value extends Base
             return;
         }
 
-        $this->query()->andWhere(function ($e) use ($value, $isMultiValue) {
-            /* @var $e \Cake\Database\Expression\QueryExpression */
-            $field = $this->field();
+        $expressions = [];
+        foreach ($this->fields() as $field) {
+            $expressions[] = function (QueryExpression $e) use ($field, $value, $isMultiValue) {
+                if (strtoupper($this->config('valueMode')) === 'OR' &&
+                    $isMultiValue
+                ) {
+                    return $e->in($field, $value);
+                }
 
-            if (strtoupper($this->config('mode')) === 'OR' &&
-                $isMultiValue
-            ) {
-                return $e->in($field, $value);
-            }
+                foreach ((array)$value as $val) {
+                    $e->eq($field, $val);
+                }
 
-            foreach ((array)$value as $val) {
-                $e->eq($field, $val);
-            }
+                return $e;
+            };
+        }
 
-            return $e;
-        });
+        if (!empty($expressions)) {
+            $this->query()->andWhere([$this->config('fieldMode') => $expressions]);
+        }
     }
 }
