@@ -18,7 +18,7 @@ class PrgComponent extends Component
      * - `queryStringToData` : Set query string as request data. Default `true`.
      * - `queryStringWhitelist` : An array of whitelisted query strings to be kept.
      *   Defaults to the Paginator `'sort'`, `'direction'` and `'limit'` ones.
-     * - `emptyValues` : A map of fields and their values to be considered empty 
+     * - `emptyValues` : A map of fields and their values to be considered empty
      *   (will not be passed along in the URL).
      *
      * @var array
