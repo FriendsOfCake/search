@@ -22,6 +22,20 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
+    public function testDeprecatedModeOption()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, ['mode' => 'modeValue']);
+
+        $this->assertEquals('modeValue', $filter->config('mode'));
+        $this->assertEquals('modeValue', $filter->config('valueMode'));
+        $this->assertEquals('OR', $filter->config('fieldMode'));
+    }
+
+    /**
+     * @return void
+     */
     public function testSkipProcess()
     {
         $articles = TableRegistry::get('Articles');
@@ -68,11 +82,11 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessSingleValueWithAndMode()
+    public function testProcessSingleValueWithAndValueMode()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
-        $filter = new Value('title', $manager, ['mode' => 'and']);
+        $filter = new Value('title', $manager, ['valueMode' => 'and']);
         $filter->args(['title' => 'foo']);
         $filter->query($articles->find());
         $filter->process();
@@ -83,6 +97,56 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessSingleValueAndMultiFieldWithAndValueMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, [
+            'field' => ['title', 'other'],
+            'valueMode' => 'and'
+        ]);
+        $filter->args(['title' => 'foo']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title = :c0 OR Articles\.other = :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'foo'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessSingleValueAndMultiFieldWithAndFieldMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, [
+            'field' => ['title', 'other'],
+            'fieldMode' => 'and'
+        ]);
+        $filter->args(['title' => 'foo']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title = :c0 AND Articles\.other = :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'foo'],
             Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
         );
     }
@@ -112,13 +176,13 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessMultiValueWithAndMode()
+    public function testProcessMultiValueWithAndValueMode()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
-            'mode' => 'and'
+            'valueMode' => 'and'
         ]);
         $filter->args(['title' => ['foo', 'bar']]);
         $filter->query($articles->find());
@@ -130,6 +194,59 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValueAndMultiField()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, [
+            'multiValue' => true,
+            'field' => ['title', 'other']
+        ]);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
+            'OR Articles\.other IN \(:c2,:c3\)\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'bar', 'foo', 'bar'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValueAndMultiFieldWithAndFieldMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, [
+            'multiValue' => true,
+            'field' => ['title', 'other'],
+            'fieldMode' => 'and'
+        ]);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
+            'AND Articles\.other IN \(:c2,:c3\)\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'bar', 'foo', 'bar'],
             Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
         );
     }
@@ -215,13 +332,13 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessCaseInsensitiveMode()
+    public function testProcessCaseInsensitiveValueMode()
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
-            'mode' => 'Or'
+            'valueMode' => 'Or'
         ]);
         $filter->args(['title' => ['foo', 'bar']]);
         $filter->query($articles->find());
