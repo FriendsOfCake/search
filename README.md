@@ -319,8 +319,8 @@ The following options are supported by all filters except `Callback` and `Finder
   multiple values. If disabled, and multiple values are being passed, the filter
   will fall back to using the default value defined by the `defaultValue` option.
 
-- `mode` (`string`, defaults to `OR`) The conditional mode to use when searching for
-  multiple values. Valid values are `OR` and `AND`.
+- `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
+  against multiple fields. Valid values are `OR` and `AND`.
 
 #### `Finder`
 

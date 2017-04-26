@@ -1,6 +1,8 @@
 <?php
 namespace Search\Model\Filter;
 
+use Cake\Database\Expression\QueryExpression;
+
 class Value extends Base
 {
 
@@ -10,7 +12,7 @@ class Value extends Base
      * @var array
      */
     protected $_defaultConfig = [
-        'mode' => 'OR',
+        'mode' => 'OR'
     ];
 
     /**
@@ -36,21 +38,19 @@ class Value extends Base
             return;
         }
 
-        $this->query()->andWhere(function ($e) use ($value, $isMultiValue) {
-            /* @var $e \Cake\Database\Expression\QueryExpression */
-            $field = $this->field();
+        $expressions = [];
+        foreach ($this->fields() as $field) {
+            $expressions[] = function (QueryExpression $e) use ($field, $value, $isMultiValue) {
+                if ($isMultiValue) {
+                    return $e->in($field, $value);
+                }
 
-            if (strtoupper($this->config('mode')) === 'OR' &&
-                $isMultiValue
-            ) {
-                return $e->in($field, $value);
-            }
+                return $e->eq($field, $value);
+            };
+        }
 
-            foreach ((array)$value as $val) {
-                $e->eq($field, $val);
-            }
-
-            return $e;
-        });
+        if (!empty($expressions)) {
+            $this->query()->andWhere([$this->config('mode') => $expressions]);
+        }
     }
 }

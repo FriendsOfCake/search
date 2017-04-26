@@ -90,6 +90,55 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
+    public function testProcessSingleValueAndMultiField()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, [
+            'field' => ['title', 'other']
+        ]);
+        $filter->args(['title' => 'foo']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title = :c0 OR Articles\.other = :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'foo'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessSingleValueAndMultiFieldWithAndMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, [
+            'field' => ['title', 'other'],
+            'mode' => 'and'
+        ]);
+        $filter->args(['title' => 'foo']);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title = :c0 AND Articles\.other = :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'foo'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
     public function testProcessMultiValue()
     {
         $articles = TableRegistry::get('Articles');
@@ -125,11 +174,64 @@ class ValueTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE \(Articles\.title = :c0 AND Articles\.title = :c1\)$/',
+            '/WHERE Articles\.title IN \(:c0,:c1\)$/',
             $filter->query()->sql()
         );
         $this->assertEquals(
             ['foo', 'bar'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValueAndMultiField()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, [
+            'multiValue' => true,
+            'field' => ['title', 'other']
+        ]);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
+            'OR Articles\.other IN \(:c2,:c3\)\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'bar', 'foo', 'bar'],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiValueAndMultiFieldWithAndMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('title', $manager, [
+            'multiValue' => true,
+            'field' => ['title', 'other'],
+            'mode' => 'and'
+        ]);
+        $filter->args(['title' => ['foo', 'bar']]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
+            'AND Articles\.other IN \(:c2,:c3\)\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            ['foo', 'bar', 'foo', 'bar'],
             Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
         );
     }
