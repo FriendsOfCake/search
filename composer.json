@@ -21,8 +21,7 @@
         "cakephp/cakephp": "~3.0"
     },
     "require-dev": {
-        "friendsofcake/cakephp-test-utilities": "dev-master",
-        "cakephp/cakephp-codesniffer": "dev-master"
+        "friendsofcake/cakephp-test-utilities": "dev-master"
     },
     "autoload": {
         "psr-4": {
