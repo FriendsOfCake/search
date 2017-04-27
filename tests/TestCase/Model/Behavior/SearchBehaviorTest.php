@@ -237,7 +237,7 @@ class SearchBehaviorTest extends TestCase
     /**
      * Test the custom "search" finder
      *
-     * @dataProvider testCollectionFinderProvider
+     * @dataProvider collectionFinderProvider
      * @param string $collection The collection name.
      * @param string $queryString The query string data.
      * @param integer $expected The expected record count.
@@ -254,7 +254,7 @@ class SearchBehaviorTest extends TestCase
      *
      * @return array
      */
-    public function testCollectionFinderProvider()
+    public function collectionFinderProvider()
     {
         return [
             ['frontend', ['title' => 'foo'], 1],
