@@ -263,6 +263,9 @@ The following options are supported by all filters except `Callback` and `Finder
 - `operator` (`string`, defaults to `>=`) The operator to use for comparison. Valid
   values are `>=`, `<=`, `>` and `<`.
 
+- `mode` (`string`, defaults to `AND`) The conditional mode to use when matching
+  against multiple fields. Valid values are `OR` and `AND`.
+
 #### `Like`
 
 - `multiValue` (`bool`, defaults to `false`) Defines whether the filter accepts
