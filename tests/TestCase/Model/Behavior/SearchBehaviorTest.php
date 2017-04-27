@@ -58,62 +58,6 @@ class SearchBehaviorTest extends TestCase
     }
 
     /**
-     * Tests that the query string parameters are being flattened and
-     * extracted as expected before being passed to the filters for
-     * processing.
-     *
-     * @return void
-     */
-    public function testFlattenAndExtractParameters()
-    {
-        $behavior = $this
-            ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
-            ->setConstructorArgs([$this->Comments])
-            ->setMethods(['_processFilters'])
-            ->getMock();
-        $this->Comments->behaviors()->reset();
-        $this->Comments->addBehavior('Search', [
-            'className' => '\\' . get_class($behavior)
-        ]);
-
-        $filters = $this->Comments->searchConfiguration()->all();
-        $expected = [
-            'Comments.foo' => 'a',
-            'Comments.search' => ['b', 'c'],
-            'Comments.group' => 'main',
-            'group' => [
-                'main',
-                'secondary'
-            ],
-            'published' => 'Y'
-        ];
-        $query = $this->Comments->find();
-
-        /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
-        $behavior = $this->Comments->behaviors()->get('Search');
-        $behavior
-            ->expects($this->once())
-            ->method('_processFilters')
-            ->with($filters, $expected, $query)
-            ->willReturn($query);
-
-        $queryString = [
-            'Comments' => [
-                'foo' => 'a',
-                'search' => ['b', 'c'],
-                'group' => 'main'
-            ],
-            'group' => [
-                '0' => 'main',
-                1 => 'secondary'
-            ],
-            'published' => 'Y',
-            'unknown' => 'foo'
-        ];
-         $behavior->findSearch($query, ['search' => $queryString]);
-    }
-
-    /**
      * Tests that the filters do receive the expected values, and that
      * they are being processed.
      *
