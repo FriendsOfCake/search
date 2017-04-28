@@ -27,6 +27,6 @@ class Finder extends Base
             return;
         }
 
-        $this->getQuery()->find($this->finder(), (array)$this->args());
+        $this->getQuery()->find($this->finder(), (array)$this->getArgs());
     }
 }
