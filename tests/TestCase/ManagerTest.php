@@ -259,5 +259,4 @@ class ManagerTest extends TestCase
         $result = $manager->collection('default');
         $this->assertInstanceOf('\Search\Manager', $result);
     }
-
 }
