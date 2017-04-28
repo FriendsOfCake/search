@@ -95,7 +95,7 @@ class Like extends Base
                 $colTypes = $this->_aliasColTypes($colTypes);
             }
 
-            $this->query()->andWhere([$this->config('fieldMode') => $conditions], $colTypes);
+            $this->getQuery()->andWhere([$this->config('fieldMode') => $conditions], $colTypes);
         }
     }
 
@@ -167,7 +167,7 @@ class Like extends Base
     protected function _setEscaper()
     {
         if ($this->config('escaper') === null) {
-            $driver = get_class($this->query()->connection()->driver());
+            $driver = get_class($this->getQuery()->connection()->driver());
             $driverName = 'Sqlserver';
             if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
                 $this->config('escaper', 'Search.Sqlserver');

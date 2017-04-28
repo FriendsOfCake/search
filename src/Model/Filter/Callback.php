@@ -15,6 +15,6 @@ class Callback extends Base
             return;
         }
 
-        call_user_func($this->config('callback'), $this->query(), $this->args(), $this);
+        call_user_func($this->config('callback'), $this->getQuery(), $this->args(), $this);
     }
 }

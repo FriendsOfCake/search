@@ -49,6 +49,6 @@ class Compare extends Base
             $conditions[] = [$left => $value];
         }
 
-        $this->query()->andWhere([$this->config('mode') => $conditions]);
+        $this->getQuery()->andWhere([$this->config('mode') => $conditions]);
     }
 }

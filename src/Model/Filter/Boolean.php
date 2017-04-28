@@ -42,7 +42,7 @@ class Boolean extends Base
         }
 
         if ($bool !== null) {
-            $this->query()->andWhere([$this->field() => $bool]);
+            $this->getQuery()->andWhere([$this->field() => $bool]);
         }
     }
 }
