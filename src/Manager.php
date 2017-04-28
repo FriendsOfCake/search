@@ -127,10 +127,10 @@ class Manager
     public function collection($name = null)
     {
         if ($name === null) {
-            return $this->useCollection();
+            return $this->getCollection();
         }
 
-        return $this->setCollection($name);
+        return $this->useCollection($name);
     }
 
     /**

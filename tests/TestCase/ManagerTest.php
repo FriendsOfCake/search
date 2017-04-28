@@ -243,4 +243,21 @@ class ManagerTest extends TestCase
         $this->assertArrayHasKey('test2', $result);
         $this->assertArrayHasKey('test3', $result);
     }
+
+    /**
+     * @deprecated Remove with next major.
+     * @return void
+     */
+    public function testCollectionCombined()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+
+        $result = $manager->collection();
+        $this->assertEquals('default', $result);
+
+        $result = $manager->collection('default');
+        $this->assertInstanceOf('\Search\Manager', $result);
+    }
+
 }
