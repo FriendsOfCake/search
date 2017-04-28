@@ -18,24 +18,20 @@ class Value extends Base
     /**
      * Process a value condition ($x == $y).
      *
-     * @return void
+     * @return bool
      */
     public function process()
     {
-        if ($this->skip()) {
-            return;
-        }
-
         $value = $this->value();
         if ($value === null) {
-            return;
+            return false;
         }
 
         $isMultiValue = is_array($value);
         if ($isMultiValue &&
             empty($value)
         ) {
-            return;
+            return false;
         }
 
         $expressions = [];
@@ -49,6 +45,10 @@ class Value extends Base
             };
         }
 
-        $this->getQuery()->andWhere([$this->config('mode') => $expressions]);
+        if (!empty($expressions)) {
+            $this->getQuery()->andWhere([$this->config('mode') => $expressions]);
+        }
+
+        return true;
     }
 }

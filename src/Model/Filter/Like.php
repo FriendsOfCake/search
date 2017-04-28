@@ -53,14 +53,10 @@ class Like extends Base
     /**
      * Process a LIKE condition ($x LIKE $y).
      *
-     * @return void
+     * @return bool
      */
     public function process()
     {
-        if ($this->skip()) {
-            return;
-        }
-
         $this->_setEscaper();
         $comparison = $this->config('comparison');
         $valueMode = $this->config('valueMode');
@@ -97,6 +93,8 @@ class Like extends Base
 
             $this->getQuery()->andWhere([$this->config('fieldMode') => $conditions], $colTypes);
         }
+
+        return true;
     }
 
     /**

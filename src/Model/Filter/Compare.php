@@ -26,14 +26,10 @@ class Compare extends Base
     /**
      * Process a comparison-based condition (e.g. $field <= $value).
      *
-     * @return void
+     * @return bool
      */
     public function process()
     {
-        if ($this->skip()) {
-            return;
-        }
-
         $conditions = [];
         if (!in_array($this->config('operator'), $this->_operators, true)) {
             throw new \InvalidArgumentException(sprintf('The operator %s is invalid!', $this->config('operator')));
@@ -41,7 +37,7 @@ class Compare extends Base
 
         $value = $this->value();
         if (!is_scalar($value)) {
-            return;
+            return false;
         }
 
         foreach ($this->fields() as $field) {
@@ -50,5 +46,7 @@ class Compare extends Base
         }
 
         $this->getQuery()->andWhere([$this->config('mode') => $conditions]);
+
+        return true;
     }
 }

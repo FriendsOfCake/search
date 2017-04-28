@@ -22,30 +22,6 @@ class CompareTest extends TestCase
     /**
      * @return void
      */
-    public function testSkipProcess()
-    {
-        $articles = TableRegistry::get('Articles');
-        $manager = new Manager($articles);
-        /* @var $filter \Search\Model\Filter\Compare|\PHPUnit_Framework_MockObject_MockObject */
-        $filter = $this
-            ->getMockBuilder('Search\Model\Filter\Compare')
-            ->setConstructorArgs(['created', $manager])
-            ->setMethods(['skip'])
-            ->getMock();
-        $filter
-            ->expects($this->once())
-            ->method('skip')
-            ->willReturn(true);
-        $filter->args(['created' => '2012-01-01 00:00:00']);
-        $filter->query($articles->find());
-        $filter->process();
-
-        $this->assertEmpty($filter->query()->clause('where'));
-    }
-
-    /**
-     * @return void
-     */
     public function testProcess()
     {
         $articles = TableRegistry::get('Articles');
