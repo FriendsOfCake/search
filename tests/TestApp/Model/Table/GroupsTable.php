@@ -15,9 +15,9 @@ class GroupsTable extends Table
         $manager = new Manager($this);
 
         return $manager
-            ->collection('frontend')
+            ->useCollection('frontend')
             ->value('title')
-            ->collection('backend')
+            ->useCollection('backend')
             ->like('title', ['before' => true, 'after' => true]);
     }
 }
