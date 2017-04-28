@@ -195,9 +195,9 @@ class BaseTest extends TestCase
         $this->assertEquals('field', $filter->field());
 
         $filter = new TestFilter(
-            ['field1', 'field2'],
+            'name',
             $this->Manager,
-            []
+            ['field' => ['field1', 'field2']]
         );
 
         $expected = ['Articles.field1', 'Articles.field2'];
