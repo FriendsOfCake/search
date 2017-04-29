@@ -23,7 +23,6 @@ class Like extends Base
     protected $_defaultConfig = [
         'before' => false,
         'after' => false,
-        'mode' => null,
         'fieldMode' => 'OR',
         'valueMode' => 'OR',
         'comparison' => 'LIKE',
@@ -32,23 +31,6 @@ class Like extends Base
         'escaper' => null,
         'colType' => [],
     ];
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param string $name Name.
-     * @param \Search\Manager $manager Manager.
-     * @param array $config Config.
-     */
-    public function __construct($name, Manager $manager, array $config = [])
-    {
-        parent::__construct($name, $manager, $config);
-
-        $mode = $this->config('mode');
-        if ($mode !== null) {
-            $this->config('fieldMode', $mode);
-        }
-    }
 
     /**
      * Process a LIKE condition ($x LIKE $y).
