@@ -22,20 +22,6 @@ class LikeTest extends TestCase
     /**
      * @return void
      */
-    public function testDeprecatedModeOption()
-    {
-        $articles = TableRegistry::get('Articles');
-        $manager = new Manager($articles);
-        $filter = new Like('title', $manager, ['mode' => 'modeValue']);
-
-        $this->assertEquals('modeValue', $filter->config('mode'));
-        $this->assertEquals('modeValue', $filter->config('fieldMode'));
-        $this->assertEquals('OR', $filter->config('valueMode'));
-    }
-
-    /**
-     * @return void
-     */
     public function testSkipProcess()
     {
         $articles = TableRegistry::get('Articles');

@@ -288,9 +288,6 @@ The following options are supported by all filters except `Callback` and `Finder
 - `after` (`bool`, defaults to `false`) Whether to automatically add a wildcard
   *after* the search term.
 
-- ~~`mode`~~ (`string`, defaults to `OR`) **This option is deprecated**, please use
-  `fieldMode` instead.
-
 - `fieldMode` (`string`, defaults to `OR`) The conditional mode to use when
   matching against multiple fields. Valid values are `OR` and `AND`.
 
