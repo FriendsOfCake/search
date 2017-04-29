@@ -35,6 +35,101 @@ class BaseTest extends TestCase
     }
 
     /**
+     * @return array
+     */
+    public function emptyDataProvider()
+    {
+        return [
+            [''],
+            [null],
+            [[]],
+            [['']]
+        ];
+    }
+
+    /**
+     * @dataProvider emptyDataProvider
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The `field` option is invalid. Expected a non-empty string or array.
+     * @param mixed $emptyValue Empty value.
+     * @return void
+     */
+    public function testConstructEmptyFieldOption($emptyValue)
+    {
+        new TestFilter(
+            'name',
+            $this->Manager,
+            ['field' => $emptyValue]
+        );
+    }
+
+    /**
+     * @dataProvider emptyDataProvider
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The `$name` argument is invalid. Expected a non-empty string.
+     * @param mixed $emptyValue Empty value.
+     * @return void
+     */
+    public function testConstructEmptyNameArgument($emptyValue)
+    {
+        new TestFilter(
+            $emptyValue,
+            $this->Manager,
+            ['field' => 'field']
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function nonEmptyFieldDataProvider()
+    {
+        return [
+            ['0'], ['value'], [['value']]
+        ];
+    }
+
+    /**
+     * @dataProvider nonEmptyFieldDataProvider
+     * @param mixed $nonEmptyValue Non empty value.
+     * @return void
+     */
+    public function testConstructNonEmptyFieldOption($nonEmptyValue)
+    {
+        $filter = new TestFilter(
+            'name',
+            $this->Manager,
+            ['field' => $nonEmptyValue, 'aliasField' => false]
+        );
+        $this->assertEquals($filter->field(), $nonEmptyValue);
+    }
+
+    /**
+     * @return array
+     */
+    public function nonEmptyNameDataProvider()
+    {
+        return [
+            ['0'], ['value']
+        ];
+    }
+
+    /**
+     * @dataProvider nonEmptyNameDataProvider
+     * @param mixed $nonEmptyValue Non empty value.
+     * @return void
+     */
+    public function testConstructNonEmptyNameArgument($nonEmptyValue)
+    {
+        $filter = new TestFilter(
+            $nonEmptyValue,
+            $this->Manager,
+            ['field' => 'field']
+        );
+        $this->assertEquals($filter->name(), $nonEmptyValue);
+    }
+
+    /**
      * @return void
      */
     public function testSkip()
@@ -100,9 +195,9 @@ class BaseTest extends TestCase
         $this->assertEquals('field', $filter->field());
 
         $filter = new TestFilter(
-            ['field1', 'field2'],
+            'name',
             $this->Manager,
-            []
+            ['field' => ['field1', 'field2']]
         );
 
         $expected = ['Articles.field1', 'Articles.field2'];

@@ -253,10 +253,18 @@ The following options are supported by all filters except `Callback` and `Finder
 - `defaultValue` (`mixed`, defaults to `null`) The default value that is being
   used in case the value passed for the corresponding field is invalid or missing.
 
+### `Boolean`
+
+- `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
+  against multiple fields. Valid values are `OR` and `AND`.
+
 #### `Compare`
 
 - `operator` (`string`, defaults to `>=`) The operator to use for comparison. Valid
   values are `>=`, `<=`, `>` and `<`.
+
+- `mode` (`string`, defaults to `AND`) The conditional mode to use when matching
+  against multiple fields. Valid values are `OR` and `AND`.
 
 #### `Like`
 

@@ -49,8 +49,6 @@ class Value extends Base
             };
         }
 
-        if (!empty($expressions)) {
-            $this->query()->andWhere([$this->config('mode') => $expressions]);
-        }
+        $this->query()->andWhere([$this->config('mode') => $expressions]);
     }
 }
