@@ -211,8 +211,8 @@ class SearchBehavior extends Behavior
     {
         $this->_isSearch = false;
         foreach ($filters as $filter) {
-            $filter->args($params);
-            $filter->query($query);
+            $filter->setArgs($params);
+            $filter->setQuery($query);
 
             if (!$filter->skip()) {
                 $this->_isSearch = true;

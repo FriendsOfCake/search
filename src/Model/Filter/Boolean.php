@@ -48,7 +48,7 @@ class Boolean extends Base
                 $conditions[] = [$field => $bool];
             }
 
-            $this->query()->andWhere([$this->config('mode') => $conditions]);
+            $this->getQuery()->andWhere([$this->config('mode') => $conditions]);
         }
     }
 }

@@ -38,7 +38,7 @@ abstract class Base
     /**
      * Query object.
      *
-     * @var \Cake\Datasource\QueryInterface
+     * @var \Cake\Datasource\QueryInterface|null
      */
     protected $_query;
 
@@ -200,18 +200,41 @@ abstract class Base
     }
 
     /**
+     * Sets the args.
+     *
+     * @param array $args Value.
+     *
+     * @return void
+     */
+    public function setArgs(array $args)
+    {
+        $this->_args = $args;
+    }
+
+    /**
+     * Gets the args.
+     *
+     * @return array
+     */
+    public function getArgs()
+    {
+        return $this->_args;
+    }
+
+    /**
      * Get / Set the args.
      *
+     * @deprecated 3.0.0 Use setArgs()/getArgs() instead.
      * @param array|null $value Value.
      * @return array|null
      */
     public function args(array $value = null)
     {
         if ($value === null) {
-            return $this->_args;
+            return $this->getArgs();
         }
 
-        $this->_args = $value;
+        $this->setArgs($value);
     }
 
     /**
@@ -244,21 +267,45 @@ abstract class Base
         if (empty($rules)) {
             return true;
         }
+
+        return false;
+    }
+
+    /**
+     * Sets the query object.
+     *
+     * @param \Cake\Datasource\QueryInterface $value Value.
+     * @return void
+     */
+    public function setQuery(QueryInterface $value)
+    {
+        $this->_query = $value;
+    }
+
+    /**
+     * Gets the query object.
+     *
+     * @return \Cake\Datasource\QueryInterface|null
+     */
+    public function getQuery()
+    {
+        return $this->_query;
     }
 
     /**
      * Get / Set the query object.
      *
+     * @deprecated 3.0.0 Use setQuery()/getQuery() instead.
      * @param \Cake\Datasource\QueryInterface|null $value Value.
-     * @return void|\Cake\Datasource\QueryInterface
+     * @return \Cake\Datasource\QueryInterface|null
      */
     public function query(QueryInterface $value = null)
     {
         if ($value === null) {
-            return $this->_query;
+            return $this->getQuery();
         }
 
-        $this->_query = $value;
+        $this->setQuery($value);
     }
 
     /**

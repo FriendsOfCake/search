@@ -83,15 +83,15 @@ class SearchBehaviorTest extends TestCase
         $filter = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
             ->setConstructorArgs(['name', new Manager($this->Comments)])
-            ->setMethods(['args', 'process', 'query'])
+            ->setMethods(['setArgs', 'process', 'setQuery'])
             ->getMock();
         $filter
             ->expects($this->at(0))
-            ->method('args')
+            ->method('setArgs')
             ->with($params);
         $filter
             ->expects($this->at(1))
-            ->method('query')
+            ->method('setQuery')
             ->with($query);
         $filter
             ->expects($this->at(2))
