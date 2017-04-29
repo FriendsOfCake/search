@@ -10,6 +10,7 @@ class Boolean extends Base
      * @var array
      */
     protected $_defaultConfig = [
+        'mode' => 'OR',
         'truthy' => [1, true, '1', 'true', 'yes', 'on'],
         'falsy' => [0, false, '0', 'false', 'no', 'off']
     ];
@@ -42,7 +43,12 @@ class Boolean extends Base
         }
 
         if ($bool !== null) {
-            $this->getQuery()->andWhere([$this->field() => $bool]);
+            $conditions = [];
+            foreach ($this->fields() as $field) {
+                $conditions[] = [$field => $bool];
+            }
+
+            $this->getQuery()->andWhere([$this->config('mode') => $conditions]);
         }
     }
 }

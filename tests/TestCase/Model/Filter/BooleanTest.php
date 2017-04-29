@@ -297,6 +297,55 @@ class BooleanTest extends TestCase
     /**
      * @return void
      */
+    public function testProcessMultiField()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Boolean('boolean', $manager, [
+            'field' => ['is_active', 'other']
+        ]);
+        $filter->args(['boolean' => true]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.is_active = :c0 OR Articles\.other = :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            [true, true],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessMultiFieldWithAndMode()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Boolean('boolean', $manager, [
+            'field' => ['is_active', 'other'],
+            'mode' => 'AND'
+        ]);
+        $filter->args(['boolean' => true]);
+        $filter->query($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE \(Articles\.is_active = :c0 AND Articles\.other = :c1\)$/',
+            $filter->query()->sql()
+        );
+        $this->assertEquals(
+            [true, true],
+            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * @return void
+     */
     public function testProcessDefaultFallbackForDisallowedMultiValue()
     {
         $articles = TableRegistry::get('Articles');
