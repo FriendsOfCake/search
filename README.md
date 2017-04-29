@@ -343,7 +343,7 @@ All you need to do is:
 ```php
 // ExampleTable::initialize()
     $this->searchManager()
-        ->collection('backend')
+        ->useCollection('backend')
         ->add('q', 'Search.Like', [
             'before' => true,
             'after' => true,
@@ -353,7 +353,7 @@ All you need to do is:
             'wildcardOne' => '?',
             'field' => ['body']
         ])
-        ->collection('frontend')
+        ->useCollection('frontend')
         ->value('name');
 ```
 

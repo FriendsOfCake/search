@@ -65,12 +65,12 @@ class Manager
     /**
      * Return Table
      *
-     * @return \Cake\ORM\Table Table Instance
+     * @return \Cake\Datasource\RepositoryInterface Repository Instance
      * @deprecated Use repository() instead.
      */
     public function table()
     {
-        return $this->_repository;
+        return $this->repository();
     }
 
     /**
@@ -92,23 +92,45 @@ class Manager
     }
 
     /**
-     * Sets or gets the filter collection name.
+     * Sets the filter collection name to use.
      *
-     * @param string|null $name Name of the active filter collection to set.
-     * @return mixed Returns $this or the name of the active collection if no $name was provided.
+     * @param string $name Name of the active filter collection to set.
+     * @return $this
      */
-    public function collection($name = null)
+    public function useCollection($name)
     {
-        if ($name === null) {
-            return $this->_collection;
-        }
-
         if (!isset($this->_filters[$name])) {
             $this->_filters[$name] = [];
         }
         $this->_collection = $name;
 
         return $this;
+    }
+
+    /**
+     * Sets or gets the filter collection name.
+     *
+     * @return string The name of the active collection.
+     */
+    public function getCollection()
+    {
+        return $this->_collection;
+    }
+
+    /**
+     * Sets or gets the filter collection name.
+     *
+     * @deprecated 3.0.0 Use addCollection()/getCollection() instead.
+     * @param string|null $name Name of the active filter collection to set.
+     * @return string|$this Returns $this or the name of the active collection if no $name was provided.
+     */
+    public function collection($name = null)
+    {
+        if ($name === null) {
+            return $this->getCollection();
+        }
+
+        return $this->useCollection($name);
     }
 
     /**

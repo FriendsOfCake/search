@@ -89,11 +89,11 @@ class ManagerTest extends TestCase
 
         $this->assertEmpty($manager->all());
 
-        $manager->collection('other');
+        $manager->useCollection('other');
         $manager->add('field', 'Search.Value');
         $this->assertEmpty($manager->all());
 
-        $manager->collection('default');
+        $manager->useCollection('default');
         $manager->add('field', 'Search.Value');
         $all = $manager->all();
         $this->assertCount(1, $all);
@@ -222,14 +222,14 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
 
-        $result = $manager->collection();
+        $result = $manager->getCollection();
         $this->assertEquals('default', $result);
 
-        $result = $manager->collection('default');
+        $result = $manager->useCollection('default');
         $this->assertInstanceOf('\Search\Manager', $result);
 
         $manager->add('test', 'Search.Value');
-        $result = $manager->collection('otherFilters');
+        $result = $manager->useCollection('otherFilters');
         $this->assertInstanceOf('\Search\Manager', $result);
 
         $manager->add('test2', 'Search.Value');
@@ -242,5 +242,21 @@ class ManagerTest extends TestCase
         $this->assertCount(2, $result);
         $this->assertArrayHasKey('test2', $result);
         $this->assertArrayHasKey('test3', $result);
+    }
+
+    /**
+     * @deprecated Remove with next major.
+     * @return void
+     */
+    public function testCollectionCombined()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table);
+
+        $result = $manager->collection();
+        $this->assertEquals('default', $result);
+
+        $result = $manager->collection('default');
+        $this->assertInstanceOf('\Search\Manager', $result);
     }
 }
