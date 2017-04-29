@@ -18,17 +18,13 @@ class Boolean extends Base
     /**
      * Check if a value is truthy/falsy and pass as condition.
      *
-     * @return void
+     * @return bool
      */
     public function process()
     {
-        if ($this->skip()) {
-            return;
-        }
-
         $value = $this->value();
         if (!is_scalar($value)) {
-            return;
+            return false;
         }
 
         if (is_string($value)) {
@@ -50,5 +46,7 @@ class Boolean extends Base
 
             $this->getQuery()->andWhere([$this->config('mode') => $conditions]);
         }
+
+        return true;
     }
 }

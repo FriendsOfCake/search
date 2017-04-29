@@ -19,14 +19,12 @@ class Finder extends Base
     /**
      * Add a condition based on a custom finder.
      *
-     * @return void
+     * @return bool
      */
     public function process()
     {
-        if ($this->skip()) {
-            return;
-        }
-
         $this->getQuery()->find($this->finder(), (array)$this->getArgs());
+
+        return true;
     }
 }

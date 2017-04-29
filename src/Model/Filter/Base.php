@@ -312,7 +312,7 @@ abstract class Base
      * Modify the actual query object and append conditions based on the
      * subclass business rules and type.
      *
-     * @return void
+     * @return bool True if processed, false if skipped
      */
     abstract public function process();
 }

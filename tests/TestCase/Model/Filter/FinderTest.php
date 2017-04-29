@@ -22,30 +22,6 @@ class FinderTest extends TestCase
     /**
      * @return void
      */
-    public function testSkipProcess()
-    {
-        $articles = TableRegistry::get('Articles');
-        $manager = new Manager($articles);
-        /* @var $filter \Search\Model\Filter\Finder|\PHPUnit_Framework_MockObject_MockObject */
-        $filter = $this
-            ->getMockBuilder('Search\Model\Filter\Finder')
-            ->setConstructorArgs(['title', $manager])
-            ->setMethods(['skip'])
-            ->getMock();
-        $filter
-            ->expects($this->once())
-            ->method('skip')
-            ->willReturn(true);
-        $filter->args(['title' => 'test']);
-        $filter->query($articles->find());
-        $filter->process();
-
-        $this->assertEmpty($filter->query()->clause('where'));
-    }
-
-    /**
-     * @return void
-     */
     public function testProcess()
     {
         $articles = TableRegistry::get('FinderArticles', [

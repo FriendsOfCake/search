@@ -214,10 +214,13 @@ class SearchBehavior extends Behavior
             $filter->setArgs($params);
             $filter->setQuery($query);
 
-            if (!$filter->skip()) {
+            if ($filter->skip()) {
+                continue;
+            }
+            $result = $filter->process();
+            if ($result !== false) {
                 $this->_isSearch = true;
             }
-            $filter->process();
         }
 
         return $query;
