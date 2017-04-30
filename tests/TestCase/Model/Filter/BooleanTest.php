@@ -357,4 +357,34 @@ class BooleanTest extends TestCase
         $filter->query()->sql();
         $this->assertEmpty($filter->query()->valueBinder()->bindings());
     }
+    
+    public function testProcessWithRealTrueBoolean()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $boolean = new Boolean('is_active', $manager);
+        $boolean->args(['is_active' => true]);
+        $boolean->query($articles->find());
+
+        $query = $boolean->query();
+        $this->assertEmpty($query->clause('where'));
+
+        $boolean->process();
+        $this->assertNotEmpty($query->clause('where'));
+    }
+
+    public function testProcessWithRealFalseBoolean()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+        $boolean = new Boolean('is_active', $manager);
+        $boolean->args(['is_active' => false]);
+        $boolean->query($articles->find());
+
+        $query = $boolean->query();
+        $this->assertEmpty($query->clause('where'));
+
+        $boolean->process();
+        $this->assertNotEmpty($query->clause('where'));
+    }
 }
