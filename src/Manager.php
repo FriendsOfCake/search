@@ -201,6 +201,21 @@ class Manager
         return $this;
     }
 
+
+    /**
+     * Date between method
+     *
+     * @param string $name   Name
+     * @param array  $config Config
+     *
+     * @return $this
+     */
+    public function dateBetween($name, array $config = [])
+    {
+        $this->add($name, 'Search.DateBetween', $config);
+        return $this;
+    }
+
     /**
      * finder method
      *
