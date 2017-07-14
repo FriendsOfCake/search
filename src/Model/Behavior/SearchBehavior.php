@@ -65,13 +65,11 @@ class SearchBehavior extends Behavior
         
         $filters = $this->_getAllFilters(Hash::get($options, 'collection', 'default'));
 
-        $flattenWhitelist = []; //TODO FIXME should this actually be an array?
+        $flattenWhitelist = [];
         foreach($filters as $filter) {
             $config = $filter->getConfig();
-            if (!empty($config['flattenWhitelist'])) {
-                foreach ($config['flattenWhitelist'] as $entry) {
-                    array_push($flattenWhitelist, $entry);
-                }
+            if (isset($config['flatten']) && $config['flatten'] === false) {             
+                array_push($flattenWhitelist, $config['name']);
             }
         }
         
@@ -169,7 +167,7 @@ class SearchBehavior extends Behavior
      * ```
      *
      * @param array $params The parameters array to flatten.
-     * @param array $flattenWhitelist array keys to avoid flattening.
+     * @param array $flattenWhitelist Keys to avoid flattening.
      * @return array The flattened parameters array.
      */
     protected function _flattenParams($params, $flattenWhitelist)
