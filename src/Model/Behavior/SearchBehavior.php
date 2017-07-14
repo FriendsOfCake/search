@@ -62,10 +62,20 @@ class SearchBehavior extends Behavior
                 'to be nested under key "search" in find() options.'
             );
         }
-
+        
         $filters = $this->_getAllFilters(Hash::get($options, 'collection', 'default'));
 
-        $params = $this->_flattenParams((array)$options['search']);
+        $flattenWhitelist = []; //TODO FIXME should this actually be an array?
+        foreach($filters as $filter) {
+            $config = $filter->getConfig();
+            if (!empty($config['flattenWhitelist'])) {
+                foreach ($config['flattenWhitelist'] as $entry) {
+                    array_push($flattenWhitelist, $entry);
+                }
+            }
+        }
+        
+        $params = $this->_flattenParams((array)$options['search'], $flattenWhitelist);
         $params = $this->_extractParams($params, $filters);
 
         return $this->_processFilters($filters, $params, $query);
@@ -159,13 +169,14 @@ class SearchBehavior extends Behavior
      * ```
      *
      * @param array $params The parameters array to flatten.
+     * @param array $flattenWhitelist array keys to avoid flattening.
      * @return array The flattened parameters array.
      */
-    protected function _flattenParams($params)
+    protected function _flattenParams($params, $flattenWhitelist)
     {
         $flattened = [];
         foreach ($params as $key => $value) {
-            if (is_array($value)) {
+            if (is_array($value) && !in_array($key, $flattenWhitelist)) {
                 foreach ($value as $childKey => $childValue) {
                     if (!is_numeric($childKey)) {
                         $flattened[$key . '.' . $childKey] = $childValue;
