@@ -120,7 +120,7 @@ class Manager
     /**
      * Sets or gets the filter collection name.
      *
-     * @deprecated 3.0.0 Use addCollection()/getCollection() instead.
+     * @deprecated 3.0.0 Use useCollection()/getCollection() instead.
      * @param string|null $name Name of the active filter collection to set.
      * @return string|$this Returns $this or the name of the active collection if no $name was provided.
      */
