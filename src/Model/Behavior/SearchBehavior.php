@@ -166,21 +166,23 @@ class SearchBehavior extends Behavior
     {  
         $flattened = [];
         foreach ($params as $key => $value) {
+            if (is_array($value) && !empty($filters[$key]) && $filters[$key]->getConfig()['flatten'] == false) {
+                $flattened[$key] = $value;
+                continue;
+            }
+            
             if (is_array($value)) {
-                if (!empty($filters[$key]) && $filters[$key]->getConfig()['flatten'] == false) {
-                    $flattened[$key] = $value;
-                } else {
-                    foreach ($value as $childKey => $childValue) {
-                        if (!is_numeric($childKey)) {
-                            $flattened[$key . '.' . $childKey] = $childValue;
-                        } else {
-                            $flattened[$key][$childKey] = $childValue;
-                        }
+                foreach ($value as $childKey => $childValue) {
+                    if (!is_numeric($childKey)) {
+                        $flattened[$key . '.' . $childKey] = $childValue;
+                    } else {
+                        $flattened[$key][$childKey] = $childValue;
                     }
                 }
-            } else {
-                $flattened[$key] = $value;
+                continue;
             }
+            
+            $flattened[$key] = $value;
         }
 
         return $flattened;
