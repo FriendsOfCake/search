@@ -64,16 +64,8 @@ class SearchBehavior extends Behavior
         }
         
         $filters = $this->_getAllFilters(Hash::get($options, 'collection', 'default'));
-
-        $flattenWhitelist = [];
-        foreach($filters as $filter) {
-            $config = $filter->getConfig();
-            if (isset($config['flatten']) && $config['flatten'] === false) {             
-                array_push($flattenWhitelist, $config['name']);
-            }
-        }
-        
-        $params = $this->_flattenParams((array)$options['search'], $flattenWhitelist);
+  
+        $params = $this->_flattenParams((array)$options['search'], $filters);
         $params = $this->_extractParams($params, $filters);
 
         return $this->_processFilters($filters, $params, $query);
@@ -167,14 +159,14 @@ class SearchBehavior extends Behavior
      * ```
      *
      * @param array $params The parameters array to flatten.
-     * @param array $flattenWhitelist Keys to avoid flattening.
+     * @param array $filters The array of filters with configuration
      * @return array The flattened parameters array.
      */
-    protected function _flattenParams($params, $flattenWhitelist)
-    {
+    protected function _flattenParams($params, $filters)
+    {  
         $flattened = [];
         foreach ($params as $key => $value) {
-            if (is_array($value) && !in_array($key, $flattenWhitelist)) {
+            if (is_array($value) && !empty($filters[$key]) && $filters[$key]->getConfig()['flatten'] == true) {
                 foreach ($value as $childKey => $childValue) {
                     if (!is_numeric($childKey)) {
                         $flattened[$key . '.' . $childKey] = $childValue;
