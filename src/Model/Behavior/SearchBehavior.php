@@ -62,9 +62,9 @@ class SearchBehavior extends Behavior
                 'to be nested under key "search" in find() options.'
             );
         }
-        
+
         $filters = $this->_getAllFilters(Hash::get($options, 'collection', 'default'));
-  
+
         $params = $this->_flattenParams((array)$options['search'], $filters);
         $params = $this->_extractParams($params, $filters);
 
@@ -163,26 +163,26 @@ class SearchBehavior extends Behavior
      * @return array The flattened parameters array.
      */
     protected function _flattenParams($params, $filters)
-    {  
+    {
         $flattened = [];
         foreach ($params as $key => $value) {
             if (is_array($value) && !empty($filters[$key]) && $filters[$key]->getConfig()['flatten'] == false) {
                 $flattened[$key] = $value;
                 continue;
             }
-            
-            if (is_array($value)) {
-                foreach ($value as $childKey => $childValue) {
-                    if (!is_numeric($childKey)) {
-                        $flattened[$key . '.' . $childKey] = $childValue;
-                    } else {
-                        $flattened[$key][$childKey] = $childValue;
-                    }
-                }
+
+            if (!is_array($value)) {
+                $flattened[$key] = $value;
                 continue;
             }
-            
-            $flattened[$key] = $value;
+
+            foreach ($value as $childKey => $childValue) {
+                if (!is_numeric($childKey)) {
+                    $flattened[$key . '.' . $childKey] = $childValue;
+                } else {
+                    $flattened[$key][$childKey] = $childValue;
+                }
+            }
         }
 
         return $flattened;
