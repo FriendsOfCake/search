@@ -75,16 +75,21 @@ class SearchBehaviorTest extends TestCase
             'className' => '\\' . get_class($behavior)
         ]);
 
-        $params = [
-            'name' => 'value'
-        ];
         $query = $this->Comments->find();
 
         $filter = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
-            ->setConstructorArgs(['name', new Manager($this->Comments)])
+            ->setConstructorArgs(['name', new Manager($this->Comments), ['flatten' => false]])
             ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
+
+        $params = [
+            'name' => [
+                'one' => 'foo',
+                'two' => 'bar'
+            ]
+        ];
+
         $filter
             ->expects($this->at(0))
             ->method('setArgs')
@@ -112,14 +117,33 @@ class SearchBehaviorTest extends TestCase
             ->with('default')
             ->willReturn($filters);
 
+        $queryString = [
+            'name' => [
+                'one' => 'foo',
+                'two' => 'bar'
+            ],
+            'key' => [
+                'one' => 'foo',
+                'two' => 'bar'
+            ],
+            'string' => 'text'
+        ];
+
+        $flattenedQueryString = [
+            'name' => [
+                'one' => 'foo',
+                'two' => 'bar'
+            ],
+            'key.one' => 'foo',
+            'key.two' => 'bar',
+            'string' => 'text'
+        ];
+
         $behavior
             ->expects($this->once())
             ->method('_flattenParams')
-            ->willReturn($params);
+            ->willReturn($flattenedQueryString);
 
-        $queryString = [
-            'name' => 'value'
-        ];
         $behavior->findSearch($query, ['search' => $queryString]);
     }
 
