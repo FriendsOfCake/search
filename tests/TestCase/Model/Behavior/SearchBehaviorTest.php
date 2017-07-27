@@ -68,7 +68,7 @@ class SearchBehaviorTest extends TestCase
         $behavior = $this
             ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
             ->setConstructorArgs([$this->Comments])
-            ->setMethods(['_getAllFilters'])
+            ->setMethods(['_getAllFilters', '_flattenParams'])
             ->getMock();
         $this->Comments->behaviors()->reset();
         $this->Comments->addBehavior('Search', [
@@ -111,6 +111,11 @@ class SearchBehaviorTest extends TestCase
             ->method('_getAllFilters')
             ->with('default')
             ->willReturn($filters);
+
+        $behavior
+            ->expects($this->once())
+            ->method('_flattenParams')
+            ->willReturn($params);
 
         $queryString = [
             'name' => 'value'
