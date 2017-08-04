@@ -223,22 +223,6 @@ abstract class Base
     }
 
     /**
-     * Get / Set the args.
-     *
-     * @deprecated 3.0.0 Use setArgs()/getArgs() instead.
-     * @param array|null $value Value.
-     * @return array|null
-     */
-    public function args(array $value = null)
-    {
-        if ($value === null) {
-            return $this->getArgs();
-        }
-
-        $this->setArgs($value);
-    }
-
-    /**
      * Get / Set the validation rules.
      *
      * @param array|null $value Value.
@@ -291,22 +275,6 @@ abstract class Base
     public function getQuery()
     {
         return $this->_query;
-    }
-
-    /**
-     * Get / Set the query object.
-     *
-     * @deprecated 3.0.0 Use setQuery()/getQuery() instead.
-     * @param \Cake\Datasource\QueryInterface|null $value Value.
-     * @return \Cake\Datasource\QueryInterface|null
-     */
-    public function query(QueryInterface $value = null)
-    {
-        if ($value === null) {
-            return $this->getQuery();
-        }
-
-        $this->setQuery($value);
     }
 
     /**

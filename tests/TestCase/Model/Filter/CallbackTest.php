@@ -33,17 +33,17 @@ class CallbackTest extends TestCase
                 $query->where(['title' => 'test']);
             }
         ]);
-        $filter->args(['title' => ['test']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => ['test']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE title = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['test'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 }

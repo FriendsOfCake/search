@@ -150,7 +150,7 @@ class Like extends Base
             $driver = get_class($this->getQuery()->connection()->driver());
             $driverName = 'Sqlserver';
             if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
-                $this->stConfig('escaper', 'Search.Sqlserver');
+                $this->setConfig('escaper', 'Search.Sqlserver');
             } else {
                 $this->setConfig('escaper', 'Search.Default');
             }

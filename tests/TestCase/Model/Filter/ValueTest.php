@@ -27,17 +27,17 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager);
-        $filter->args(['title' => 'test']);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => 'test']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.title = :c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['test'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -49,17 +49,17 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['mode' => 'and']);
-        $filter->args(['title' => 'foo']);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => 'foo']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.title = :c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['foo'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -73,17 +73,17 @@ class ValueTest extends TestCase
         $filter = new Value('title', $manager, [
             'field' => ['title', 'other']
         ]);
-        $filter->args(['title' => 'foo']);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => 'foo']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE \(Articles\.title = :c0 OR Articles\.other = :c1\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['foo', 'foo'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -98,17 +98,17 @@ class ValueTest extends TestCase
             'field' => ['title', 'other'],
             'mode' => 'and'
         ]);
-        $filter->args(['title' => 'foo']);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => 'foo']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE \(Articles\.title = :c0 AND Articles\.other = :c1\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['foo', 'foo'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -120,17 +120,17 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['multiValue' => true]);
-        $filter->args(['title' => ['foo', 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => ['foo', 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.title IN \(:c0,:c1\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -145,17 +145,17 @@ class ValueTest extends TestCase
             'multiValue' => true,
             'mode' => 'and'
         ]);
-        $filter->args(['title' => ['foo', 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => ['foo', 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.title IN \(:c0,:c1\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -170,18 +170,18 @@ class ValueTest extends TestCase
             'multiValue' => true,
             'field' => ['title', 'other']
         ]);
-        $filter->args(['title' => ['foo', 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => ['foo', 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
             'OR Articles\.other IN \(:c2,:c3\)\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -197,18 +197,18 @@ class ValueTest extends TestCase
             'field' => ['title', 'other'],
             'mode' => 'and'
         ]);
-        $filter->args(['title' => ['foo', 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => ['foo', 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
             'AND Articles\.other IN \(:c2,:c3\)\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -220,17 +220,17 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['multiValue' => true]);
-        $filter->args(['title' => ['foo' => ['bar']]]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => ['foo' => ['bar']]]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.title IN \(:c0\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [['bar']],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -242,13 +242,12 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['multiValue' => true]);
-        $filter->args(['title' => []]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => []]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertEmpty($filter->query()->clause('where'));
-        $filter->query()->sql();
-        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->clause('where'));
+        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
     }
 
     /**
@@ -259,17 +258,17 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['defaultValue' => 'default']);
-        $filter->args(['title' => ['foo', 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => ['foo', 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.title = :c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['default'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -281,13 +280,12 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager);
-        $filter->args(['title' => ['foo', 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => ['foo', 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertEmpty($filter->query()->clause('where'));
-        $filter->query()->sql();
-        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->clause('where'));
+        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
     }
 
     /**
@@ -301,17 +299,17 @@ class ValueTest extends TestCase
             'multiValue' => true,
             'mode' => 'Or'
         ]);
-        $filter->args(['title' => ['foo', 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['title' => ['foo', 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.title IN \(:c0,:c1\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 }

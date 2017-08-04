@@ -140,16 +140,16 @@ class BaseTest extends TestCase
             ['alwaysRun' => true, 'filterEmpty' => true]
         );
 
-        $filter->args(['field' => '1']);
+        $filter->setArgs(['field' => '1']);
         $this->assertFalse($filter->skip());
 
-        $filter->args(['field' => '0']);
+        $filter->setArgs(['field' => '0']);
         $this->assertFalse($filter->skip());
 
-        $filter->args(['field' => '']);
+        $filter->setArgs(['field' => '']);
         $this->assertTrue($filter->skip());
 
-        $filter->args(['field' => []]);
+        $filter->setArgs(['field' => []]);
         $this->assertTrue($filter->skip());
     }
 
@@ -164,17 +164,17 @@ class BaseTest extends TestCase
             ['defaultValue' => 'default']
         );
 
-        $filter->args(['field' => 'value']);
+        $filter->setArgs(['field' => 'value']);
         $this->assertEquals('value', $filter->value());
 
-        $filter->args(['other_field' => 'value']);
+        $filter->setArgs(['other_field' => 'value']);
         $this->assertEquals('default', $filter->value());
 
-        $filter->args(['field' => ['value1', 'value2']]);
+        $filter->setArgs(['field' => ['value1', 'value2']]);
         $this->assertEquals('default', $filter->value());
 
         $filter->config('multiValue', true);
-        $filter->args(['field' => ['value1', 'value2']]);
+        $filter->setArgs(['field' => ['value1', 'value2']]);
         $this->assertEquals(['value1', 'value2'], $filter->value());
     }
 
