@@ -2,6 +2,7 @@
 namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
+use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
@@ -49,19 +50,19 @@ class SearchComponentTest extends TestCase
     /**
      * @return void
      */
-    public function testInitializeGet()
+    public function testBeforeRenderGet()
     {
         $expected = ['foo' => 'bar'];
         $this->Controller->request->query = $expected;
         $this->Controller->request->action = 'index';
 
-        $this->Prg->startup();
+        $this->Prg->beforeRender(new Event('Controller.initialize'));
         $this->assertEquals($expected, $this->Controller->request->data);
 
         $this->Controller->request->data = [];
         $this->Prg->config('queryStringToData', false);
 
-        $this->Prg->startup();
+        $this->Prg->beforeRender(new Event('Controller.initialize'));
         $this->assertEquals([], $this->Controller->request->data);
     }
 
