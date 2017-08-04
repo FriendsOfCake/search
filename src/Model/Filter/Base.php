@@ -65,6 +65,7 @@ abstract class Base
             'filterEmpty' => false,
             'defaultValue' => null,
             'multiValue' => false,
+            'flatten' => true,
         ];
         $config += $defaults;
         $this->config($config);

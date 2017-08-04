@@ -244,6 +244,11 @@ The following options are supported by all filters.
   run in case the corresponding field in the request is empty. Refer to
   [the Optional fields section](#optional-fields) for additional details.
 
+- `flatten` (`bool`, defaults to `true`) Defines whether values passed from the
+  the input form as arrays should be flattened. If the structure of the value array
+  should be maintained to ease parsing the passed data with your chosen filter,
+  set this to `false`.
+
 The following options are supported by all filters except `Callback` and `Finder`.
 
 - `aliasField` (`bool`, defaults to `true`) Defines whether the field name should

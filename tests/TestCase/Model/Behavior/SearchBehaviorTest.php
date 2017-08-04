@@ -76,7 +76,12 @@ class SearchBehaviorTest extends TestCase
         ]);
 
         $params = [
-            'name' => 'value'
+            'name' => 'value',
+            'date' => [
+                'd' => '01',
+                'm' => '01',
+                'y' => '2017'
+            ]
         ];
         $query = $this->Comments->find();
 
@@ -100,8 +105,29 @@ class SearchBehaviorTest extends TestCase
             ->expects($this->at(2))
             ->method('process');
 
+        $filter2 = $this
+            ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
+            ->setConstructorArgs(['name', new Manager($this->Comments), ['flatten' => false]])
+            ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
+            ->getMock();
+        $filter2
+            ->expects($this->at(0))
+            ->method('setArgs')
+            ->with($params);
+        $filter2
+            ->expects($this->at(1))
+            ->method('setQuery')
+            ->with($query);
+        $filter2
+            ->expects($this->at(2))
+            ->method('skip');
+        $filter2
+            ->expects($this->at(2))
+            ->method('process');
+
         $filters = [
-            'name' => $filter
+            'name' => $filter,
+            'date' => $filter2
         ];
 
         /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
@@ -113,7 +139,12 @@ class SearchBehaviorTest extends TestCase
             ->willReturn($filters);
 
         $queryString = [
-            'name' => 'value'
+            'name' => 'value',
+            'date' => [
+                'd' => '01',
+                'm' => '01',
+                'y' => '2017'
+            ]
         ];
         $behavior->findSearch($query, ['search' => $queryString]);
     }
