@@ -15,7 +15,7 @@ class SearchBehavior extends Behavior
      *
      * @var \Search\Manager
      */
-    public $_manager = null;
+    protected $_manager = null;
 
     /**
      * Default config for the behavior.

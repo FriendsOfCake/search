@@ -47,7 +47,10 @@ class PrgComponent extends Component
     }
 
     /**
-     * @param Event $event Controller.beforeRender event
+     * Handle Controller.beforeRender event.
+     *
+     * @param \Cake\Event\Event $event Controller.beforeRender event
+     * @return void
      */
     public function beforeRender(Event $event)
     {
@@ -79,6 +82,8 @@ class PrgComponent extends Component
 
     /**
      * Converts query string to post data if `queryStringToData` config is true
+     *
+     * @return void
      */
     protected function _queryStringToData()
     {
