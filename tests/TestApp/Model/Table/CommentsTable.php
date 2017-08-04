@@ -10,14 +10,11 @@ use Search\Manager;
 class CommentsTable extends Table
 {
 
-    /**
-     * @return \Search\Manager
-     */
-    public function searchConfiguration()
+    public function initialize(array $config)
     {
-        $manager = new Manager($this);
+        $this->addBehavior('Search.Search');
 
-        return $manager
+        $this->searchManager()
             ->value('Comments.foo')
             ->like('Comments.search', ['filterEmpty' => true, 'multiValue' => true])
             ->value('Comments.baz')

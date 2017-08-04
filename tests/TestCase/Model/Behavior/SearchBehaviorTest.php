@@ -68,7 +68,7 @@ class SearchBehaviorTest extends TestCase
         $behavior = $this
             ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
             ->setConstructorArgs([$this->Comments])
-            ->setMethods(['_getAllFilters'])
+            ->setMethods(['_getFilters'])
             ->getMock();
         $this->Comments->behaviors()->reset();
         $this->Comments->addBehavior('Search', [
@@ -134,7 +134,7 @@ class SearchBehaviorTest extends TestCase
         $behavior = $this->Comments->behaviors()->get('Search');
         $behavior
             ->expects($this->once())
-            ->method('_getAllFilters')
+            ->method('_getFilters')
             ->with('default')
             ->willReturn($filters);
 
@@ -277,32 +277,5 @@ class SearchBehaviorTest extends TestCase
     {
         $manager = $this->Articles->searchManager();
         $this->assertInstanceOf('\Search\Manager', $manager);
-    }
-
-    /**
-     * @return void
-     */
-    public function testNoSearchManager()
-    {
-        $behavior = $this
-            ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
-            ->setConstructorArgs([$this->Articles])
-            ->setMethods(['searchManager'])
-            ->getMock();
-        $this->Articles->behaviors()->reset();
-        $this->Articles->addBehavior('Search', [
-            'className' => '\\' . get_class($behavior),
-            'searchConfigMethod' => 'nonExistent'
-        ]);
-
-        /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
-        $behavior = $this->Articles->behaviors()->get('Search');
-        $behavior
-            ->expects($this->once())
-            ->method('searchManager')
-            ->willReturn(new Manager($this->Articles));
-
-        $query = $this->Articles->find('search', ['search' => []]);
-        $this->assertEmpty($query->clause('where'));
     }
 }

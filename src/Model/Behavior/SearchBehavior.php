@@ -20,13 +20,9 @@ class SearchBehavior extends Behavior
     /**
      * Default config for the behavior.
      *
-     * ### Options
-     * - `searchConfigMethod` Method name of the method that returns the filters.
-     *
      * @var array
      */
     protected $_defaultConfig = [
-        'searchConfigMethod' => 'searchConfiguration',
         'implementedFinders' => [
             'search' => 'findSearch'
         ],
@@ -63,7 +59,7 @@ class SearchBehavior extends Behavior
             );
         }
 
-        $filters = $this->_getAllFilters(Hash::get($options, 'collection', 'default'));
+        $filters = $this->_getFilters(Hash::get($options, 'collection', 'default'));
 
         $params = $this->_flattenParams((array)$options['search'], $filters);
         $params = $this->_extractParams($params, $filters);
@@ -191,16 +187,9 @@ class SearchBehavior extends Behavior
      * @param string|null $collection name of collection
      * @return \Search\Model\Filter\Base[] An array of filters for the defined fields.
      */
-    protected function _getAllFilters($collection = 'default')
+    protected function _getFilters($collection = 'default')
     {
-        $method = $this->config('searchConfigMethod');
-        if (method_exists($this->_table, $method)) {
-            $manager = $this->_table->{$method}();
-        } else {
-            $manager = $this->searchManager();
-        }
-
-        return $manager->getFilters($collection);
+        return $this->searchManager()->getFilters($collection);
     }
 
     /**
