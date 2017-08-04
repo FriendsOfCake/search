@@ -68,28 +68,28 @@ class SearchBehaviorTest extends TestCase
         $behavior = $this
             ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
             ->setConstructorArgs([$this->Comments])
-            ->setMethods(['_getAllFilters', '_flattenParams'])
+            ->setMethods(['_getAllFilters'])
             ->getMock();
         $this->Comments->behaviors()->reset();
         $this->Comments->addBehavior('Search', [
             'className' => '\\' . get_class($behavior)
         ]);
 
+        $params = [
+            'name' => 'value',
+            'date' => [
+                'd' => '01',
+                'm' => '01',
+                'y' => '2017'
+            ]
+        ];
         $query = $this->Comments->find();
 
         $filter = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
-            ->setConstructorArgs(['name', new Manager($this->Comments), ['flatten' => false]])
+            ->setConstructorArgs(['name', new Manager($this->Comments)])
             ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
-
-        $params = [
-            'name' => [
-                'one' => 'foo',
-                'two' => 'bar'
-            ]
-        ];
-
         $filter
             ->expects($this->at(0))
             ->method('setArgs')
@@ -105,8 +105,29 @@ class SearchBehaviorTest extends TestCase
             ->expects($this->at(2))
             ->method('process');
 
+        $filter2 = $this
+            ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
+            ->setConstructorArgs(['name', new Manager($this->Comments), ['flatten' => false]])
+            ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
+            ->getMock();
+        $filter2
+            ->expects($this->at(0))
+            ->method('setArgs')
+            ->with($params);
+        $filter2
+            ->expects($this->at(1))
+            ->method('setQuery')
+            ->with($query);
+        $filter2
+            ->expects($this->at(2))
+            ->method('skip');
+        $filter2
+            ->expects($this->at(2))
+            ->method('process');
+
         $filters = [
-            'name' => $filter
+            'name' => $filter,
+            'date' => $filter2
         ];
 
         /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
@@ -118,32 +139,13 @@ class SearchBehaviorTest extends TestCase
             ->willReturn($filters);
 
         $queryString = [
-            'name' => [
-                'one' => 'foo',
-                'two' => 'bar'
-            ],
-            'key' => [
-                'one' => 'foo',
-                'two' => 'bar'
-            ],
-            'string' => 'text'
+            'name' => 'value',
+            'date' => [
+                'd' => '01',
+                'm' => '01',
+                'y' => '2017'
+            ]
         ];
-
-        $flattenedQueryString = [
-            'name' => [
-                'one' => 'foo',
-                'two' => 'bar'
-            ],
-            'key.one' => 'foo',
-            'key.two' => 'bar',
-            'string' => 'text'
-        ];
-
-        $behavior
-            ->expects($this->once())
-            ->method('_flattenParams')
-            ->willReturn($flattenedQueryString);
-
         $behavior->findSearch($query, ['search' => $queryString]);
     }
 
