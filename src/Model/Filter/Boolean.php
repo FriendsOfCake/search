@@ -32,9 +32,9 @@ class Boolean extends Base
         }
 
         $bool = null;
-        if (in_array($value, $this->config('truthy'), true)) {
+        if (in_array($value, $this->getConfig('truthy'), true)) {
             $bool = true;
-        } elseif (in_array($value, $this->config('falsy'), true)) {
+        } elseif (in_array($value, $this->getConfig('falsy'), true)) {
             $bool = false;
         }
 
@@ -44,7 +44,7 @@ class Boolean extends Base
                 $conditions[] = [$field => $bool];
             }
 
-            $this->getQuery()->andWhere([$this->config('mode') => $conditions]);
+            $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);
         }
 
         return true;

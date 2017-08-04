@@ -26,7 +26,7 @@ class DefaultEscaper implements EscaperInterface
      */
     public function __construct(array $config = [])
     {
-        $this->config($config);
+        $this->setConfig($config);
     }
 
     /**
@@ -39,16 +39,16 @@ class DefaultEscaper implements EscaperInterface
     public function formatWildcards($value)
     {
         $from = $to = $substFrom = $substTo = [];
-        if ($this->config('wildcardAny') !== '%') {
-            $from[] = $this->config('fromWildCardAny');
-            $to[] = $this->config('toWildCardAny');
-            $substFrom[] = $this->config('wildcardAny');
+        if ($this->getConfig('wildcardAny') !== '%') {
+            $from[] = $this->getConfig('fromWildCardAny');
+            $to[] = $this->getConfig('toWildCardAny');
+            $substFrom[] = $this->getConfig('wildcardAny');
             $substTo[] = '%';
         }
-        if ($this->config('wildcardOne') !== '_') {
-            $from[] = $this->config('fromWildCardOne');
-            $to[] = $this->config('toWildCardOne');
-            $substFrom[] = $this->config('wildcardOne');
+        if ($this->getConfig('wildcardOne') !== '_') {
+            $from[] = $this->getConfig('fromWildCardOne');
+            $to[] = $this->getConfig('toWildCardOne');
+            $substFrom[] = $this->getConfig('wildcardOne');
             $substTo[] = '_';
         }
         if ($from) {

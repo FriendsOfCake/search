@@ -68,7 +68,7 @@ abstract class Base
             'flatten' => true,
         ];
         $config += $defaults;
-        $this->config($config);
+        $this->setConfig($config);
 
         if ((empty($config['field']) && $config['field'] !== '0') ||
             (is_array($config['field']) && !array_filter($config['field'], 'strlen'))
@@ -143,7 +143,7 @@ abstract class Base
      */
     public function name()
     {
-        return $this->config('name');
+        return $this->getConfig('name');
     }
 
     /**
@@ -153,7 +153,7 @@ abstract class Base
      */
     public function present()
     {
-        return $this->config('alwaysRun') || array_key_exists($this->name(), $this->_args);
+        return $this->getConfig('alwaysRun') || array_key_exists($this->name(), $this->_args);
     }
 
     /**
@@ -163,7 +163,7 @@ abstract class Base
      */
     public function filterEmpty()
     {
-        return $this->config('filterEmpty');
+        return $this->getConfig('filterEmpty');
     }
 
     /**
@@ -191,7 +191,7 @@ abstract class Base
         if (isset($this->_args[$this->name()])) {
             $passedValue = $this->_args[$this->name()];
             if (!is_array($passedValue) ||
-                $this->config('multiValue')
+                $this->getConfig('multiValue')
             ) {
                 return $passedValue;
             }
@@ -249,10 +249,10 @@ abstract class Base
     public function validate(array $value = null)
     {
         if ($value === null) {
-            return $this->config('validate');
+            return $this->getConfig('validate');
         }
 
-        $this->config('validate', $value);
+        $this->setConfig('validate', $value);
     }
 
     /**

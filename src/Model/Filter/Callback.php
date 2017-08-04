@@ -11,7 +11,7 @@ class Callback extends Base
      */
     public function process()
     {
-        call_user_func($this->config('callback'), $this->getQuery(), $this->getArgs(), $this);
+        call_user_func($this->getConfig('callback'), $this->getQuery(), $this->getArgs(), $this);
 
         return true;
     }

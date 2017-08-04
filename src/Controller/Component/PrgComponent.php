@@ -60,7 +60,7 @@ class PrgComponent extends Component
      */
     protected function _actionCheck()
     {
-        $actions = $this->config('actions');
+        $actions = $this->getConfig('actions');
         if (is_bool($actions)) {
             return $actions;
         }
@@ -75,12 +75,12 @@ class PrgComponent extends Component
      */
     protected function _filterParams()
     {
-        $params = Hash::filter($this->request->data);
-        foreach ((array)$this->config('queryStringBlacklist') as $field) {
+        $params = Hash::filter($this->request->getData());
+        foreach ((array)$this->getConfig('queryStringBlacklist') as $field) {
             unset($params[$field]);
         }
 
-        foreach ((array)$this->config('emptyValues') as $field => $value) {
+        foreach ((array)$this->getConfig('emptyValues') as $field => $value) {
             if (!isset($params[$field])) {
                 continue;
             }
@@ -90,13 +90,13 @@ class PrgComponent extends Component
             }
         }
 
-        if (!$this->config('queryStringWhitelist')) {
+        if (!$this->getConfig('queryStringWhitelist')) {
             return $params;
         }
 
-        foreach ($this->config('queryStringWhitelist') as $field) {
-            if (!isset($params[$field]) && $this->request->query($field) !== null) {
-                $params[$field] = $this->request->query($field);
+        foreach ($this->getConfig('queryStringWhitelist') as $field) {
+            if (!isset($params[$field]) && $this->request->getQuery($field) !== null) {
+                $params[$field] = $this->request->getQuery($field);
             }
         }
 

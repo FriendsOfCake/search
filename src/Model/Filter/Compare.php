@@ -31,8 +31,11 @@ class Compare extends Base
     public function process()
     {
         $conditions = [];
-        if (!in_array($this->config('operator'), $this->_operators, true)) {
-            throw new \InvalidArgumentException(sprintf('The operator %s is invalid!', $this->config('operator')));
+        if (!in_array($this->getConfig('operator'), $this->_operators, true)) {
+            throw new \InvalidArgumentException(sprintf(
+                'The operator %s is invalid!',
+                $this->getConfig('operator')
+            ));
         }
 
         $value = $this->value();
@@ -41,11 +44,11 @@ class Compare extends Base
         }
 
         foreach ($this->fields() as $field) {
-            $left = $field . ' ' . $this->config('operator');
+            $left = $field . ' ' . $this->getConfig('operator');
             $conditions[] = [$left => $value];
         }
 
-        $this->getQuery()->andWhere([$this->config('mode') => $conditions]);
+        $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);
 
         return true;
     }
