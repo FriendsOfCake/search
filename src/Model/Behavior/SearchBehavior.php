@@ -166,15 +166,9 @@ class SearchBehavior extends Behavior
     {
         $flattened = [];
         foreach ($params as $key => $value) {
-            if (is_array($value)
-                && !empty($filters[$key])
-                && $filters[$key]->config()['flatten'] === false
+            if (!is_array($value) ||
+                (!empty($filters[$key]) && $filters[$key]->config()['flatten'] === false)
             ) {
-                $flattened[$key] = $value;
-                continue;
-            }
-
-            if (!is_array($value)) {
                 $flattened[$key] = $value;
                 continue;
             }
