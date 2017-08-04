@@ -35,7 +35,7 @@ class PrgComponent extends Component
      * Checks if the current request has posted data and redirects the users
      * to the same action after converting the post data into GET params
      *
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Network\Response|null
      */
     public function startup()
     {
@@ -63,7 +63,7 @@ class PrgComponent extends Component
      * POST to GET / GET to POST conversion
      *
      * @param bool $redirect Redirect on post, default true.
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Network\Response|null
      */
     public function conversion($redirect = true)
     {
@@ -97,7 +97,7 @@ class PrgComponent extends Component
     /**
      * Redirects the users to the same action after converting the post data into GET params
      *
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Network\Response|null
      */
     protected function _prg()
     {
