@@ -47,7 +47,7 @@ class Manager
      *
      * @return \Cake\Datasource\RepositoryInterface Repository Instance
      */
-    public function repository()
+    public function getRepository()
     {
         return $this->_repository;
     }

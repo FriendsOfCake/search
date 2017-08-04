@@ -109,7 +109,7 @@ abstract class Base
             return $field;
         }
 
-        $repository = $this->manager()->repository();
+        $repository = $this->manager()->getRepository();
         if (!method_exists($repository, 'aliasField')) {
             return $field;
         }

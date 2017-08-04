@@ -105,7 +105,7 @@ class Like extends Base
      */
     protected function _aliasColTypes($colTypes)
     {
-        $repository = $this->manager()->repository();
+        $repository = $this->manager()->getRepository();
         if (!method_exists($repository, 'aliasField')) {
             return $colTypes;
         }

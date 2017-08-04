@@ -199,7 +199,7 @@ class ManagerTest extends TestCase
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $result = $manager->repository();
+        $result = $manager->getRepository();
         $this->assertInstanceOf('\Cake\Datasource\RepositoryInterface', $result);
     }
 
@@ -210,7 +210,7 @@ class ManagerTest extends TestCase
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $result = $manager->repository();
+        $result = $manager->getRepository();
         $this->assertInstanceOf('\Cake\Datasource\RepositoryInterface', $result);
     }
 
