@@ -282,7 +282,7 @@ The following options are supported by all filters except `Callback` and `Finder
   `field` option but also accepts multiple field names as an array. When defining
   multiple fields, the search term is going to be looked up in all the given fields,
   using the conditional operator defined by the `fieldMode` option.
-  
+
 - `colType` (`array`), Use to set a custom type for any column that needs to be treated as
   string column despite its actual type. This is important for integer fields, for example, if they
   are part of the fields to be searched.
@@ -310,7 +310,7 @@ The following options are supported by all filters except `Callback` and `Finder
   wildcard. This is useful if you want to pass wildcards inside of the search term,
   while still being able to use the actual wildcard character inside of the search
   term so that it is being treated as a part of the term. For example a search term
-  of `* has reached 100%` would be converted to `% has reached 100\%`. 
+  of `* has reached 100%` would be converted to `% has reached 100\%`.
   Additionally see option `escapeDriver`.
 
 - `wildcardOne` (`string`, defaults to `?`) Defines the string that should be
@@ -318,12 +318,12 @@ The following options are supported by all filters except `Callback` and `Finder
   Behaves similar to `wildcardAny`, that is, the actual SQL compatible wildcard
   (`_`) is being escaped in case used the search term.
 
-- `escaper` (`string`, default to `null`) Defines the escaper that should 
-  escape `%` and `_`. If no escaper is set (`escapeDriver => 'null'`) the escaper 
-  is set by database driver. If the driver is `Sqlserver` the `SqlserverEscaper` 
-  is used (escaping `%` to `[%]` and `_` to `[_]`). In all other cases the 
-  `DefaultEscaper` is used (escaping `%` to `\%` and `_` to `\_`). You can add an 
-  own escaper by adding a escaper in `App\Model\Filter\Escaper\OwnEscaper` and 
+- `escaper` (`string`, default to `null`) Defines the escaper that should
+  escape `%` and `_`. If no escaper is set (`escapeDriver => 'null'`) the escaper
+  is set by database driver. If the driver is `Sqlserver` the `SqlserverEscaper`
+  is used (escaping `%` to `[%]` and `_` to `[_]`). In all other cases the
+  `DefaultEscaper` is used (escaping `%` to `\%` and `_` to `\_`). You can add an
+  own escaper by adding a escaper in `App\Model\Filter\Escaper\OwnEscaper` and
   settings `'escaper' => 'App.Own'`.
 
 #### `Value`
@@ -407,3 +407,9 @@ This is needed for the "isSearch" work as expected.
 Persisting the query string can be done with the `queryStringWhitelist` option.
 The CakePHP's Paginator params `sort` and `direction` when filtering are kept by default.
 Simply add all query strings that should be whitelisted.
+
+## Blacklist Query String
+
+You can use `queryStringWhitelist` option of `PrgComponent` to set an array of
+form fields that should not end up in the query when extracting params from POST
+request and redirecting.
