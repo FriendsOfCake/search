@@ -19,6 +19,7 @@ class PrgComponent extends Component
      * - `queryStringToData` : Set query string as request data. Default `true`.
      * - `queryStringWhitelist` : An array of whitelisted query strings to be kept.
      *   Defaults to the Paginator `'sort'`, `'direction'` and `'limit'` ones.
+     * - `queryStringBlacklist` : An array of form fields that should not end up in the query.
      * - `emptyValues` : A map of fields and their values to be considered empty
      *   (will not be passed along in the URL).
      *
@@ -28,6 +29,7 @@ class PrgComponent extends Component
         'actions' => ['index', 'lookup'],
         'queryStringToData' => true,
         'queryStringWhitelist' => ['sort', 'direction', 'limit'],
+        'queryStringBlacklist' => ['_csrfToken', '_Token'],
         'emptyValues' => [],
     ];
 
@@ -134,6 +136,9 @@ class PrgComponent extends Component
     protected function _filterParams()
     {
         $params = Hash::filter($this->request->data);
+        foreach ((array)$this->config('queryStringBlacklist') as $field) {
+            unset($params[$field]);
+        }
 
         foreach ((array)$this->config('emptyValues') as $field => $value) {
             if (!isset($params[$field])) {
