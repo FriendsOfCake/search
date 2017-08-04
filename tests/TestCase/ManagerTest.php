@@ -87,15 +87,15 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
 
-        $this->assertEmpty($manager->all());
+        $this->assertEmpty($manager->getFilters());
 
         $manager->useCollection('other');
         $manager->add('field', 'Search.Value');
-        $this->assertEmpty($manager->all());
+        $this->assertEmpty($manager->getFilters());
 
         $manager->useCollection('default');
         $manager->add('field', 'Search.Value');
-        $all = $manager->all();
+        $all = $manager->getFilters();
         $this->assertCount(1, $all);
         $this->assertInstanceOf('\Search\Model\Filter\Value', $all['field']);
     }
@@ -210,7 +210,7 @@ class ManagerTest extends TestCase
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $result = $manager->table();
+        $result = $manager->repository();
         $this->assertInstanceOf('\Cake\Datasource\RepositoryInterface', $result);
     }
 
@@ -253,10 +253,10 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
 
-        $result = $manager->collection();
+        $result = $manager->getCollection();
         $this->assertEquals('default', $result);
 
-        $result = $manager->collection('default');
+        $result = $manager->useCollection('default');
         $this->assertInstanceOf('\Search\Manager', $result);
     }
 }

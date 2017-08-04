@@ -43,16 +43,6 @@ class Manager
     }
 
     /**
-     * Return all configured types.
-     *
-     * @return array Config
-     */
-    public function all()
-    {
-        return $this->_filters['default'];
-    }
-
-    /**
      * Return repository instance.
      *
      * @return \Cake\Datasource\RepositoryInterface Repository Instance
@@ -60,17 +50,6 @@ class Manager
     public function repository()
     {
         return $this->_repository;
-    }
-
-    /**
-     * Return Table
-     *
-     * @return \Cake\Datasource\RepositoryInterface Repository Instance
-     * @deprecated Use repository() instead.
-     */
-    public function table()
-    {
-        return $this->repository();
     }
 
     /**
@@ -108,29 +87,13 @@ class Manager
     }
 
     /**
-     * Sets or gets the filter collection name.
+     * Gets the filter collection name in use currently.
      *
      * @return string The name of the active collection.
      */
     public function getCollection()
     {
         return $this->_collection;
-    }
-
-    /**
-     * Sets or gets the filter collection name.
-     *
-     * @deprecated 3.0.0 Use useCollection()/getCollection() instead.
-     * @param string|null $name Name of the active filter collection to set.
-     * @return string|$this Returns $this or the name of the active collection if no $name was provided.
-     */
-    public function collection($name = null)
-    {
-        if ($name === null) {
-            return $this->getCollection();
-        }
-
-        return $this->useCollection($name);
     }
 
     /**
