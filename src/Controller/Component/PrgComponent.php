@@ -16,7 +16,6 @@ class PrgComponent extends Component
      * - `actions` : Action name(s) to use PRG for. You can pass a single action
      *   as string or multiple as array. If boolean `true` all actions will be
      *   processed if `false` none. Default is ['index', 'lookup'].
-     * - `queryStringToData` : Set query string as request data. Default `true`.
      * - `queryStringWhitelist` : An array of whitelisted query strings to be kept.
      *   Defaults to the Paginator `'sort'`, `'direction'` and `'limit'` ones.
      * - `queryStringBlacklist` : An array of form fields that should not end up in the query.
@@ -27,7 +26,6 @@ class PrgComponent extends Component
      */
     protected $_defaultConfig = [
         'actions' => ['index', 'lookup'],
-        'queryStringToData' => true,
         'queryStringWhitelist' => ['sort', 'direction', 'limit'],
         'queryStringBlacklist' => ['_csrfToken', '_Token'],
         'emptyValues' => [],
@@ -41,68 +39,10 @@ class PrgComponent extends Component
      */
     public function startup()
     {
-        if (!$this->_actionCheck() || !$this->request->is('post')) {
+        if (!$this->request->is('post') || !$this->_actionCheck()) {
             return null;
         }
 
-        return $this->_prg();
-    }
-
-    /**
-     * Handle Controller.beforeRender event.
-     *
-     * @param \Cake\Event\Event $event Controller.beforeRender event
-     * @return void
-     */
-    public function beforeRender(Event $event)
-    {
-        if (!$this->request->is('post')) {
-            $this->_queryStringToData();
-        }
-    }
-
-    /**
-     * POST to GET / GET to POST conversion
-     *
-     * @param bool $redirect Redirect on post, default true.
-     * @return \Cake\Network\Response|null
-     */
-    public function conversion($redirect = true)
-    {
-        if (!$this->request->is('post')) {
-            $this->_queryStringToData();
-
-            return null;
-        }
-
-        if (!$redirect) {
-            return null;
-        }
-
-        return $this->_prg();
-    }
-
-    /**
-     * Converts query string to post data if `queryStringToData` config is true
-     *
-     * @return void
-     */
-    protected function _queryStringToData()
-    {
-        if (!$this->config('queryStringToData')) {
-            return;
-        }
-
-        $this->request->data = $this->request->query;
-    }
-
-    /**
-     * Redirects the users to the same action after converting the post data into GET params
-     *
-     * @return \Cake\Network\Response|null
-     */
-    protected function _prg()
-    {
         list($url) = explode('?', $this->request->here(false));
 
         $params = $this->_filterParams();
@@ -125,7 +65,7 @@ class PrgComponent extends Component
             return $actions;
         }
 
-        return in_array($this->request->action, (array)$actions, true);
+        return in_array($this->request->getParam('action'), (array)$actions, true);
     }
 
     /**
