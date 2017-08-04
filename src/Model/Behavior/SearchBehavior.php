@@ -27,7 +27,6 @@ class SearchBehavior extends Behavior
             'search' => 'findSearch'
         ],
         'implementedMethods' => [
-            'filterParams' => 'filterParams',
             'searchManager' => 'searchManager',
             'isSearch' => 'isSearch'
         ],
@@ -76,20 +75,6 @@ class SearchBehavior extends Behavior
     public function isSearch()
     {
         return $this->_isSearch;
-    }
-
-    /**
-     * Returns search params nested in array with key `_search` for passing as
-     * options to find method.
-     *
-     * @param array $params A key value list of search parameters to use for a search.
-     * @return array
-     * @deprecated 2.0.0 You can directly call find like
-     *   `find('search', ['search' => $this->request->query])`
-     */
-    public function filterParams($params)
-    {
-        return ['search' => $params];
     }
 
     /**
