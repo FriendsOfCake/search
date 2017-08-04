@@ -3,6 +3,7 @@ namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
+use Cake\Event\Event;
 use Cake\Utility\Hash;
 
 class PrgComponent extends Component
@@ -34,29 +35,37 @@ class PrgComponent extends Component
      * Checks if the current request has posted data and redirects the users
      * to the same action after converting the post data into GET params
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|null
      */
     public function startup()
     {
-        if (!$this->_actionCheck()) {
+        if (!$this->_actionCheck() || !$this->request->is('post')) {
             return null;
         }
 
-        return $this->conversion();
+        return $this->_prg();
+    }
+
+    /**
+     * @param Event $event Controller.beforeRender event
+     */
+    public function beforeRender(Event $event)
+    {
+        if (!$this->request->is('post')) {
+            $this->_queryStringToData();
+        }
     }
 
     /**
      * POST to GET / GET to POST conversion
      *
      * @param bool $redirect Redirect on post, default true.
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|null
      */
     public function conversion($redirect = true)
     {
         if (!$this->request->is('post')) {
-            if ($this->config('queryStringToData')) {
-                $this->request->data = $this->request->query;
-            }
+            $this->_queryStringToData();
 
             return null;
         }
@@ -65,6 +74,28 @@ class PrgComponent extends Component
             return null;
         }
 
+        return $this->_prg();
+    }
+
+    /**
+     * Converts query string to post data if `queryStringToData` config is true
+     */
+    protected function _queryStringToData()
+    {
+        if (!$this->config('queryStringToData')) {
+            return;
+        }
+
+        $this->request->data = $this->request->query;
+    }
+
+    /**
+     * Redirects the users to the same action after converting the post data into GET params
+     *
+     * @return \Cake\Http\Response|null
+     */
+    protected function _prg()
+    {
         list($url) = explode('?', $this->request->here(false));
 
         $params = $this->_filterParams();
