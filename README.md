@@ -39,7 +39,7 @@ your application.
 
 ### Table class
 
-Attach the `Search` behaviour to your table class. In your table classes
+Attach the `Search` behaviour to your table class. In your table class'
 `initialize()` method call the `searchManager()` method, it will return a search
 manager instance. You can now add filters to the manager by chaining them.
 The first arg of the `add()` method is the field, the second the filter using
