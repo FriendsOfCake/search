@@ -76,6 +76,7 @@ class PrgComponent extends Component
     protected function _filterParams()
     {
         $params = Hash::filter($this->request->getData());
+
         foreach ((array)$this->getConfig('queryStringBlacklist') as $field) {
             unset($params[$field]);
         }
@@ -90,13 +91,10 @@ class PrgComponent extends Component
             }
         }
 
-        if (!$this->getConfig('queryStringWhitelist')) {
-            return $params;
-        }
-
-        foreach ($this->getConfig('queryStringWhitelist') as $field) {
-            if (!isset($params[$field]) && $this->request->getQuery($field) !== null) {
-                $params[$field] = $this->request->getQuery($field);
+        foreach ((array)$this->getConfig('queryStringWhitelist') as $field) {
+            $value = $this->request->getQuery($field);
+            if ($value !== null && !isset($params[$field])) {
+                $params[$field] = $value;
             }
         }
 
