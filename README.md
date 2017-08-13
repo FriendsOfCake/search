@@ -9,7 +9,7 @@ Search provides a simple interface to create paginate-able filters for your Cake
 
 ## Requirements
 
-* CakePHP 3.0.0 or greater.
+* CakePHP 3.4.0 or greater.
 
 ## Installation
 
@@ -39,23 +39,15 @@ your application.
 
 ### Table class
 
-There are three tasks during setup in your table class. Firstly you must add a
-`use` statement for the `Search\Manager`. Next you need to attach the `Search`
-behaviour to your table class. Then you have two options to work with the search
-filters:
-
-The first way is the prefered way as it works the same as many core classes as
-well. In your table classes `initialize()` method call the `searchManager()`
-method, it will return a search manager instance. You can now add filters to the
-manager by chaining them. The first arg of the `add()` method is the field, the
-second the filter using the dot notation of cake to load filters from plugins.
-The third one is an array of filter specific options. Please refer to
-[the Options section](#options) for an explanation of the available options
-supported by the different filters.
+Attach the `Search` behaviour to your table class. In your table class'
+`initialize()` method call the `searchManager()` method, it will return a search
+manager instance. You can now add filters to the manager by chaining them.
+The first arg of the `add()` method is the field, the second the filter using
+the dot notation of cake to load filters from plugins. The third one is an array
+of filter specific options. Please refer to [the Options section](#options) for
+an explanation of the available options supported by the different filters.
 
 ```php
-use Search\Manager;
-
 /**
  * @mixin \Search\Model\Behavior\SearchBehavior
  */
@@ -95,26 +87,26 @@ You can use `SearchManager::add()` method to add filter or use specific methods
 like `value()`, `like()` etc. for in built filters.
 
 If you do not want to clutter your `initialize()` method with search config you
-can instead add a `searchConfiguration()` method to the table class. The behavior
-will look if such a method exists and if present use it to get the search manager
-instance from it. This method **must** return a search manager instance.
-
-If you want to change the name of the method, or have multiple methods and
-switch between them, you can configure the name of the method by setting the
-behaviors option `searchConfigMethod` to the name of the method you want.
+can instead add a `searchManager()` method to the table class and reutrn a search
+manager instance.
 
 ```php
-use Search\Manager;
-
 class ExampleTable extends Table {
-
-    public function searchConfiguration()
+    public function initialize(array $config)
     {
-        $search = new Manager($this);
+        parent::initialize($config);
 
-        $search->like('title');
+        // Add the behaviour to your table
+        $this->addBehavior('Search.Search');
+    }
 
-        return $search;
+    public function searchManager()
+    {
+        $searchManager = $this->behaviors()->Search->searchManager();
+
+        $searchManager->like('title');
+
+        return $searchManager;
     }
 }
 ```
@@ -152,6 +144,7 @@ Then add the Search Prg component to the necessary methods in your controller.
 public function initialize()
 {
     parent::initialize();
+
     $this->loadComponent('Search.Prg', [
         // This is default config. You can modify "actions" as needed to make
         // the PRG component work only for specified methods.
@@ -180,7 +173,7 @@ In most cases you'll want to add a form to your index view which will search
 your data.
 
 ```php
-    echo $this->Form->create();
+    echo $this->Form->create(null, ['valuesSource' => 'query']);
     // You'll need to populate $authors in the template from your controller
     echo $this->Form->input('author_id');
     // Match the search param in your table configuration
@@ -190,11 +183,14 @@ your data.
     echo $this->Form->end();
 ```
 
-If you are using the `Search.Prg` component the forms current values will be
-populated from the query params.
+The array passed to `FormHelper::create()` will cause the helper to create an
+`ArrayContext` internally and populate the respective search fields from the
+query params.
 
 #### Adding a reset button dynamically
-If you pass down the information on whether the query was modified by your search query strings, you can also include a reset button only if necessary:
+If you pass down the information on whether the query was modified by your
+search query strings, you can also include a reset button only if necessary:
+
 ```php
 // in your controller action
 $this->set('isSearch', $this->Articles->isSearch());
@@ -204,7 +200,7 @@ Then one can switch based on that in the template:
 ```php
 // in your form
 if ($isSearch) {
-	echo $this->Html->link('Reset', ['action' => 'index']);
+    echo $this->Html->link('Reset', ['action' => 'index']);
 }
 ```
 
@@ -293,9 +289,6 @@ The following options are supported by all filters except `Callback` and `Finder
 - `after` (`bool`, defaults to `false`) Whether to automatically add a wildcard
   *after* the search term.
 
-- ~~`mode`~~ (`string`, defaults to `OR`) **This option is deprecated**, please use
-  `fieldMode` instead.
-
 - `fieldMode` (`string`, defaults to `OR`) The conditional mode to use when
   matching against multiple fields. Valid values are `OR` and `AND`.
 
@@ -341,7 +334,8 @@ The following options are supported by all filters except `Callback` and `Finder
 
 ## Filter collections
 
-The SearchManager has the ability to maintain multiple filter collections. For e.g. you can have separate collections for *backend* and *frontend*.
+The SearchManager has the ability to maintain multiple filter collections.
+For e.g. you can have separate collections for *backend* and *frontend*.
 
 All you need to do is:
 

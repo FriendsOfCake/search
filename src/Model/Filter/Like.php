@@ -23,7 +23,6 @@ class Like extends Base
     protected $_defaultConfig = [
         'before' => false,
         'after' => false,
-        'mode' => null,
         'fieldMode' => 'OR',
         'valueMode' => 'OR',
         'comparison' => 'LIKE',
@@ -34,23 +33,6 @@ class Like extends Base
     ];
 
     /**
-     * {@inheritDoc}
-     *
-     * @param string $name Name.
-     * @param \Search\Manager $manager Manager.
-     * @param array $config Config.
-     */
-    public function __construct($name, Manager $manager, array $config = [])
-    {
-        parent::__construct($name, $manager, $config);
-
-        $mode = $this->config('mode');
-        if ($mode !== null) {
-            $this->config('fieldMode', $mode);
-        }
-    }
-
-    /**
      * Process a LIKE condition ($x LIKE $y).
      *
      * @return bool
@@ -58,8 +40,8 @@ class Like extends Base
     public function process()
     {
         $this->_setEscaper();
-        $comparison = $this->config('comparison');
-        $valueMode = $this->config('valueMode');
+        $comparison = $this->getConfig('comparison');
+        $valueMode = $this->getConfig('valueMode');
         $value = $this->value();
         $isMultiValue = is_array($value);
 
@@ -86,12 +68,12 @@ class Like extends Base
         }
 
         if (!empty($conditions)) {
-            $colTypes = $this->config('colType');
+            $colTypes = $this->getConfig('colType');
             if ($colTypes) {
                 $colTypes = $this->_aliasColTypes($colTypes);
             }
 
-            $this->getQuery()->andWhere([$this->config('fieldMode') => $conditions], $colTypes);
+            $this->getQuery()->andWhere([$this->getConfig('fieldMode') => $conditions], $colTypes);
         }
 
         return true;
@@ -105,7 +87,7 @@ class Like extends Base
      */
     protected function _aliasColTypes($colTypes)
     {
-        $repository = $this->manager()->repository();
+        $repository = $this->manager()->getRepository();
         if (!method_exists($repository, 'aliasField')) {
             return $colTypes;
         }
@@ -132,12 +114,12 @@ class Like extends Base
         }
 
         $value = $this->_formatWildcards($value);
-        if ($this->config('before')) {
-            $value = $this->_formatWildcards($this->config('wildcardAny')) . $value;
+        if ($this->getConfig('before')) {
+            $value = $this->_formatWildcards($this->getConfig('wildcardAny')) . $value;
         }
 
-        if ($this->config('after')) {
-            $value = $value . $this->_formatWildcards($this->config('wildcardAny'));
+        if ($this->getConfig('after')) {
+            $value = $value . $this->_formatWildcards($this->getConfig('wildcardAny'));
         }
 
         return $value;
@@ -164,22 +146,25 @@ class Like extends Base
      */
     protected function _setEscaper()
     {
-        if ($this->config('escaper') === null) {
+        if ($this->getConfig('escaper') === null) {
             $driver = get_class($this->getQuery()->connection()->driver());
             $driverName = 'Sqlserver';
             if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
-                $this->config('escaper', 'Search.Sqlserver');
+                $this->setConfig('escaper', 'Search.Sqlserver');
             } else {
-                $this->config('escaper', 'Search.Default');
+                $this->setConfig('escaper', 'Search.Default');
             }
         }
 
-        $class = $this->config('escaper');
+        $class = $this->getConfig('escaper');
         $className = App::className($class, 'Model/Filter/Escaper', 'Escaper');
         if (!$className) {
-            throw new InvalidArgumentException(sprintf('Escape driver "%s" in like filter was not found.', $class));
+            throw new InvalidArgumentException(sprintf(
+                'Escape driver "%s" in like filter was not found.',
+                $class
+            ));
         }
 
-        $this->_escaper = new $className($this->config());
+        $this->_escaper = new $className($this->getConfig());
     }
 }

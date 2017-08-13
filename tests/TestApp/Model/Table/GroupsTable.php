@@ -10,11 +10,11 @@ use Search\Manager;
 class GroupsTable extends Table
 {
 
-    public function searchConfiguration()
+    public function initialize(array $config)
     {
-        $manager = new Manager($this);
+        $this->addBehavior('Search.Search');
 
-        return $manager
+        $this->searchManager()
             ->useCollection('frontend')
             ->value('title')
             ->useCollection('backend')

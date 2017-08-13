@@ -27,17 +27,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => 'on']);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => 'on']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -49,17 +49,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => 'off']);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => 'off']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -71,17 +71,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => 'true']);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => 'true']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -93,17 +93,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => 'false']);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => 'false']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -115,17 +115,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => true]);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => true]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -137,17 +137,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => false]);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => false]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -159,17 +159,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => '1']);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => '1']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -181,17 +181,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => '0']);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => '0']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -203,17 +203,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => 1]);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => 1]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -222,17 +222,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => 0]);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => 0]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -244,13 +244,13 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => 'neitherTruthyNorFalsy']);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => 'neitherTruthyNorFalsy']);
+        $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertEmpty($filter->query()->clause('where'));
-        $filter->query()->sql();
-        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->clause('where'));
+        $filter->getQuery()->sql();
+        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
     }
 
     /**
@@ -261,13 +261,13 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager, ['multiValue' => true]);
-        $filter->args(['is_active' => [0, 1]]);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => [0, 1]]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertEmpty($filter->query()->clause('where'));
-        $filter->query()->sql();
-        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->clause('where'));
+        $filter->getQuery()->sql();
+        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
     }
 
     /**
@@ -280,17 +280,17 @@ class BooleanTest extends TestCase
         $filter = new Boolean('boolean', $manager, [
             'field' => ['is_active', 'other']
         ]);
-        $filter->args(['boolean' => true]);
-        $filter->query($articles->find());
+        $filter->setArgs(['boolean' => true]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE \(Articles\.is_active = :c0 OR Articles\.other = :c1\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [true, true],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -305,17 +305,17 @@ class BooleanTest extends TestCase
             'field' => ['is_active', 'other'],
             'mode' => 'AND'
         ]);
-        $filter->args(['boolean' => true]);
-        $filter->query($articles->find());
+        $filter->setArgs(['boolean' => true]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE \(Articles\.is_active = :c0 AND Articles\.other = :c1\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [true, true],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -327,17 +327,17 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager, ['defaultValue' => true]);
-        $filter->args(['is_active' => ['foo', 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => ['foo', 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE Articles\.is_active = :c0$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -349,12 +349,12 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->args(['is_active' => ['foo', 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['is_active' => ['foo', 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertEmpty($filter->query()->clause('where'));
-        $filter->query()->sql();
-        $this->assertEmpty($filter->query()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->clause('where'));
+        $filter->getQuery()->sql();
+        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
     }
 }

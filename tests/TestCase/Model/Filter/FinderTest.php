@@ -29,17 +29,17 @@ class FinderTest extends TestCase
         ]);
         $manager = new Manager($articles);
         $filter = new Finder('active', $manager);
-        $filter->args(['active' => ['foo' => 'bar']]);
-        $filter->query($articles->find());
+        $filter->setArgs(['active' => ['foo' => 'bar']]);
+        $filter->setQuery($articles->find());
         $filter->process();
 
         $this->assertRegExp(
             '/WHERE \(Articles\.is_active = \:c0 AND foo = \:c1\)$/',
-            $filter->query()->sql()
+            $filter->getQuery()->sql()
         );
         $this->assertEquals(
             [true, 'bar'],
-            Hash::extract($filter->query()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -55,8 +55,8 @@ class FinderTest extends TestCase
         ]);
         $manager = new Manager($articles);
         $filter = new Finder('nonExistent', $manager);
-        $filter->args(['nonExistent' => true]);
-        $filter->query($articles->find());
+        $filter->setArgs(['nonExistent' => true]);
+        $filter->setQuery($articles->find());
         $filter->process();
     }
 }

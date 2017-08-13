@@ -68,7 +68,7 @@ abstract class Base
             'flatten' => true,
         ];
         $config += $defaults;
-        $this->config($config);
+        $this->setConfig($config);
 
         if ((empty($config['field']) && $config['field'] !== '0') ||
             (is_array($config['field']) && !array_filter($config['field'], 'strlen'))
@@ -109,7 +109,7 @@ abstract class Base
             return $field;
         }
 
-        $repository = $this->manager()->repository();
+        $repository = $this->manager()->getRepository();
         if (!method_exists($repository, 'aliasField')) {
             return $field;
         }
@@ -143,7 +143,7 @@ abstract class Base
      */
     public function name()
     {
-        return $this->config('name');
+        return $this->getConfig('name');
     }
 
     /**
@@ -153,7 +153,7 @@ abstract class Base
      */
     public function present()
     {
-        return $this->config('alwaysRun') || array_key_exists($this->name(), $this->_args);
+        return $this->getConfig('alwaysRun') || array_key_exists($this->name(), $this->_args);
     }
 
     /**
@@ -163,7 +163,7 @@ abstract class Base
      */
     public function filterEmpty()
     {
-        return $this->config('filterEmpty');
+        return $this->getConfig('filterEmpty');
     }
 
     /**
@@ -191,7 +191,7 @@ abstract class Base
         if (isset($this->_args[$this->name()])) {
             $passedValue = $this->_args[$this->name()];
             if (!is_array($passedValue) ||
-                $this->config('multiValue')
+                $this->getConfig('multiValue')
             ) {
                 return $passedValue;
             }
@@ -223,22 +223,6 @@ abstract class Base
     }
 
     /**
-     * Get / Set the args.
-     *
-     * @deprecated 3.0.0 Use setArgs()/getArgs() instead.
-     * @param array|null $value Value.
-     * @return array|null
-     */
-    public function args(array $value = null)
-    {
-        if ($value === null) {
-            return $this->getArgs();
-        }
-
-        $this->setArgs($value);
-    }
-
-    /**
      * Get / Set the validation rules.
      *
      * @param array|null $value Value.
@@ -249,10 +233,10 @@ abstract class Base
     public function validate(array $value = null)
     {
         if ($value === null) {
-            return $this->config('validate');
+            return $this->getConfig('validate');
         }
 
-        $this->config('validate', $value);
+        $this->setConfig('validate', $value);
     }
 
     /**
@@ -291,22 +275,6 @@ abstract class Base
     public function getQuery()
     {
         return $this->_query;
-    }
-
-    /**
-     * Get / Set the query object.
-     *
-     * @deprecated 3.0.0 Use setQuery()/getQuery() instead.
-     * @param \Cake\Datasource\QueryInterface|null $value Value.
-     * @return \Cake\Datasource\QueryInterface|null
-     */
-    public function query(QueryInterface $value = null)
-    {
-        if ($value === null) {
-            return $this->getQuery();
-        }
-
-        $this->setQuery($value);
     }
 
     /**

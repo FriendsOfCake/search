@@ -10,11 +10,11 @@ use Search\Manager;
 class ArticlesTable extends Table
 {
 
-    public function searchConfiguration()
+    public function initialize(array $config)
     {
-        $manager = new Manager($this);
+        $this->addBehavior('Search.Search');
 
-        return $manager
+        $this->searchManager()
             ->value('foo')
             ->like('search', ['filterEmpty' => true])
             ->value('baz')
