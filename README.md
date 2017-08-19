@@ -174,7 +174,7 @@ In most cases you'll want to add a form to your index view which will search
 your data.
 
 ```php
-    echo $this->Form->create(null, ['valuesSource' => 'query']);
+    echo $this->Form->create(null, ['valueSources' => 'query']);
     // You'll need to populate $authors in the template from your controller
     echo $this->Form->input('author_id');
     // Match the search param in your table configuration
