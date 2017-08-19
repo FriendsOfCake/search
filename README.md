@@ -92,7 +92,13 @@ can instead add a `searchManager()` method to the table class and reutrn a searc
 manager instance.
 
 ```php
-class ExampleTable extends Table {
+class ExampleTable extends Table 
+{
+    /**
+     * @param array $config
+     *
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -100,12 +106,17 @@ class ExampleTable extends Table {
         // Add the behaviour to your table
         $this->addBehavior('Search.Search');
     }
-
+    
+    /**
+     * @return \Search\Manager
+     */
     public function searchManager()
     {
+        /** @var \Search\Manager $searchManager */
         $searchManager = $this->behaviors()->Search->searchManager();
-
-        $searchManager->like('title');
+        $searchManager
+            ->like('title')
+            ->value('status');
 
         return $searchManager;
     }
