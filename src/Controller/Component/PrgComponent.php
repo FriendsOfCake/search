@@ -35,7 +35,7 @@ class PrgComponent extends Component
      * Checks if the current request has posted data and redirects the users
      * to the same action after converting the post data into GET params
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|null
      */
     public function startup()
     {
