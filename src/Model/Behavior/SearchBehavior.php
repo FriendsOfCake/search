@@ -174,7 +174,7 @@ class SearchBehavior extends Behavior
      */
     protected function _getFilters($collection = 'default')
     {
-        return $this->searchManager()->getFilters($collection);
+        return $this->_table->searchManager()->getFilters($collection);
     }
 
     /**
