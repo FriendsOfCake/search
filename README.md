@@ -52,8 +52,13 @@ an explanation of the available options supported by the different filters.
 /**
  * @mixin \Search\Model\Behavior\SearchBehavior
  */
-class ExampleTable extends Table {
-
+class ExampleTable extends Table
+{
+    /**
+     * @param array $config
+     *
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
