@@ -118,7 +118,7 @@ class ExampleTable extends Table
     public function searchManager()
     {
         /** @var \Search\Manager $searchManager */
-        $searchManager = $this->behaviors()->Search->searchManager();
+        $searchManager = $this->behaviors()->get('Search')->searchManager();
         $searchManager
             ->like('title')
             ->value('status');
