@@ -421,6 +421,6 @@ Simply add all query strings that should be whitelisted.
 
 ## Blacklist Query String
 
-You can use `queryStringWhitelist` option of `PrgComponent` to set an array of
+You can use `queryStringBlacklist` option of `PrgComponent` to set an array of
 form fields that should not end up in the query when extracting params from POST
 request and redirecting.
