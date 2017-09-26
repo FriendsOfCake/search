@@ -93,7 +93,7 @@ You can use `SearchManager::add()` method to add filter or use specific methods
 like `value()`, `like()` etc. for in built filters.
 
 If you do not want to clutter your `initialize()` method with search config you
-can instead add a `searchManager()` method to the table class and reutrn a search
+can instead add a `searchManager()` method to the table class and return a search
 manager instance.
 
 ```php
