@@ -11,7 +11,8 @@ class Callback extends Base
      */
     public function process()
     {
-        $ret = call_user_func($this->getConfig('callback'),
+        $ret = call_user_func(
+            $this->getConfig('callback'),
             $this->getQuery(),
             $this->getArgs(),
             $this
@@ -19,6 +20,7 @@ class Callback extends Base
         if ($ret === null) {
             return true;
         }
+
         return $ret;
     }
 }
