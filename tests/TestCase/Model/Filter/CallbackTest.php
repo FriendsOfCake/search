@@ -35,7 +35,7 @@ class CallbackTest extends TestCase
         ]);
         $filter->setArgs(['title' => ['test']]);
         $filter->setQuery($articles->find());
-        $filter->process();
+        $this->assertTrue($filter->process());
 
         $this->assertRegExp(
             '/WHERE title = \:c0$/',
@@ -45,5 +45,23 @@ class CallbackTest extends TestCase
             ['test'],
             Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
+    }
+
+    /**
+     * @return void
+     */
+    public function testProcessFalse()
+    {
+        $articles = TableRegistry::get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Callback('title', $manager, [
+            'callback' => function (Query $query, array $args, Callback $filter) {
+                return false;
+            }
+        ]);
+        $filter->setArgs(['title' => ['test']]);
+        $filter->setQuery($articles->find());
+        $this->assertFalse($filter->process());
     }
 }

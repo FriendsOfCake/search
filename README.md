@@ -97,7 +97,7 @@ can instead add a `searchManager()` method to the table class and return a searc
 manager instance.
 
 ```php
-class ExampleTable extends Table 
+class ExampleTable extends Table
 {
     /**
      * @param array $config
@@ -111,7 +111,7 @@ class ExampleTable extends Table
         // Add the behaviour to your table
         $this->addBehavior('Search.Search');
     }
-    
+
     /**
      * @return \Search\Manager
      */
@@ -231,7 +231,7 @@ easily create the search results you need. Use:
 - `Finder` to produce results using a [(custom)](http://book.cakephp.org/3.0/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
 - `Compare` to produce results requiring operator comparison (
     `>`, `<`, `>=` and `<=`)
-- `Callback` to produce results using your own custom callable function
+- `Callback` to produce results using your own custom callable function, it should return bool to specify `isSearch()` (useful when using with `alwaysRun` enabled)
 
 ### Options
 
