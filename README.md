@@ -423,3 +423,8 @@ Simply add all query strings that should be whitelisted.
 You can use `queryStringBlacklist` option of `PrgComponent` to set an array of
 form fields that should not end up in the query when extracting params from POST
 request and redirecting.
+
+## Tips
+
+### IDE compatibility
+For auto-complete and type-hinting on the Search behavior method, using/running the [IdeHelper code completion](https://github.com/dereuromark/cakephp-ide-helper/blob/master/docs/CodeCompletion.md) is recommended.
