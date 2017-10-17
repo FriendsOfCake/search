@@ -1,4 +1,5 @@
 <?php
+
 namespace Search\Model\Behavior;
 
 use Cake\ORM\Behavior;
@@ -92,7 +93,7 @@ class SearchBehavior extends Behavior
     }
 
     /**
-     * Extracts all parameters for wich a filter with a matching field
+     * Extracts all parameters for which a filter with a matching field
      * name exists.
      *
      * @param array $params The parameters array to extract from.
@@ -101,7 +102,9 @@ class SearchBehavior extends Behavior
      */
     protected function _extractParams($params, $filters)
     {
-        return array_intersect_key(Hash::filter($params), $filters);
+        return array_intersect_key(Hash::filter($params, function ($val) {
+            return $val !== '' && $val !== null;
+        }), $filters);
     }
 
     /**

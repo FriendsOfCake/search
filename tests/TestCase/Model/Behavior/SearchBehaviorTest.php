@@ -1,4 +1,5 @@
 <?php
+
 namespace Search\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
@@ -174,13 +175,22 @@ class SearchBehaviorTest extends TestCase
         $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertEquals(1, $query->clause('where')->count());
 
-        $query = $this->Articles->find('search', [
-            'search' => [
-                'foo' => 0,
-                'search' => 'b',
-                'page' => 1
-            ]
-        ]);
+        $queryString = [
+            'foo' => 0,
+            'search' => 'b',
+            'group' => 'main'
+        ];
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertEquals(3, $query->clause('where')->count());
+        $this->assertTrue($this->Articles->isSearch());
+
+        $queryString['foo'] = false;
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertEquals(3, $query->clause('where')->count());
+        $this->assertTrue($this->Articles->isSearch());
+
+        $queryString['foo'] = null;
+        $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertEquals(2, $query->clause('where')->count());
         $this->assertTrue($this->Articles->isSearch());
     }
