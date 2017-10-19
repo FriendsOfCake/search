@@ -31,6 +31,7 @@ class SearchBehavior extends Behavior
             'searchManager' => 'searchManager',
             'isSearch' => 'isSearch'
         ],
+        'emptyValues' => ['']
     ];
 
     /**
@@ -103,7 +104,12 @@ class SearchBehavior extends Behavior
     protected function _extractParams($params, $filters)
     {
         return array_intersect_key(Hash::filter($params, function ($val) {
-            return $val !== '' && $val !== null;
+            foreach ($this->getConfig('emptyValues') as $emptyValue) {
+                if ($val === $emptyValue) {
+                    return false;
+                }
+            }
+            return true;
         }), $filters);
     }
 

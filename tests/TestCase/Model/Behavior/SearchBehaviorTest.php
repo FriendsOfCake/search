@@ -175,24 +175,41 @@ class SearchBehaviorTest extends TestCase
         $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertEquals(1, $query->clause('where')->count());
 
-        $queryString = [
-            'foo' => 0,
-            'search' => 'b',
-            'group' => 'main'
-        ];
-        $query = $this->Articles->find('search', ['search' => $queryString]);
-        $this->assertEquals(3, $query->clause('where')->count());
-        $this->assertTrue($this->Articles->isSearch());
-
-        $queryString['foo'] = false;
-        $query = $this->Articles->find('search', ['search' => $queryString]);
-        $this->assertEquals(3, $query->clause('where')->count());
-        $this->assertTrue($this->Articles->isSearch());
-
-        $queryString['foo'] = null;
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', [
+            'search' => [
+                'foo' => 0,
+                'search' => 'b',
+                'page' => 1
+            ]
+        ]);
         $this->assertEquals(2, $query->clause('where')->count());
         $this->assertTrue($this->Articles->isSearch());
+    }
+
+    /**
+     * Test the custom "emptyValues" configuration
+     *
+     * @return void
+     */
+    public function testEmptyValues()
+    {
+        $queryString = [
+            'foo' => 'a',
+            'search' => 'b',
+            'group' => false
+        ];
+
+        $this->Articles->behaviors()->get('Search')->config([
+            'emptyValues' => ['a']
+        ]);
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertEquals(2, $query->clause('where')->count());
+
+        $this->Articles->behaviors()->get('Search')->config([
+            'emptyValues' => ['a', false]
+        ]);
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertEquals(1, $query->clause('where')->count());
     }
 
     /**
