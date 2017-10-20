@@ -35,19 +35,6 @@ class SearchBehavior extends Behavior
         'emptyValues' => ['', false, null]
     ];
 
-
-    /**
-     * Constructor.
-     *
-     * @param \Cake\ORM\Table $table The table this behavior is attached to.
-     * @param array $config The config for this behavior.
-     */
-    public function __construct(Table $table, array $config = [])
-    {
-        parent::__construct($table, $config);
-    }
-
-
     /**
      * Internal flag to check whether the behavior modified the query.
      *
@@ -221,11 +208,5 @@ class SearchBehavior extends Behavior
 
         return $query;
     }
-
-    public function config($key = null, $value = null, $merge = true)
-    {
-
-    }
-
 
 }
