@@ -4,6 +4,7 @@ namespace Search\Model\Behavior;
 
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
+use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Exception;
 use Search\Manager;
@@ -31,8 +32,21 @@ class SearchBehavior extends Behavior
             'searchManager' => 'searchManager',
             'isSearch' => 'isSearch'
         ],
-        'emptyValues' => ['']
+        'emptyValues' => ['', false, null]
     ];
+
+
+    /**
+     * Constructor.
+     *
+     * @param \Cake\ORM\Table $table The table this behavior is attached to.
+     * @param array $config The config for this behavior.
+     */
+    public function __construct(Table $table, array $config = [])
+    {
+        parent::__construct($table, $config);
+    }
+
 
     /**
      * Internal flag to check whether the behavior modified the query.
@@ -104,12 +118,7 @@ class SearchBehavior extends Behavior
     protected function _extractParams($params, $filters)
     {
         return array_intersect_key(Hash::filter($params, function ($val) {
-            foreach ($this->getConfig('emptyValues') as $emptyValue) {
-                if ($val === $emptyValue) {
-                    return false;
-                }
-            }
-            return true;
+            return !in_array($val, $this->getConfig('emptyValues'), true);
         }), $filters);
     }
 
@@ -212,4 +221,11 @@ class SearchBehavior extends Behavior
 
         return $query;
     }
+
+    public function config($key = null, $value = null, $merge = true)
+    {
+
+    }
+
+
 }

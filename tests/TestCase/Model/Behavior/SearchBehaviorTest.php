@@ -199,17 +199,20 @@ class SearchBehaviorTest extends TestCase
             'group' => false
         ];
 
-        $this->Articles->behaviors()->get('Search')->config([
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertSame(2, $query->clause('where')->count());
+
+        $this->Articles->behaviors()->get('Search')->configShallow([
             'emptyValues' => ['a']
         ]);
         $query = $this->Articles->find('search', ['search' => $queryString]);
-        $this->assertEquals(2, $query->clause('where')->count());
+        $this->assertSame(2, $query->clause('where')->count());
 
-        $this->Articles->behaviors()->get('Search')->config([
+        $this->Articles->behaviors()->get('Search')->configShallow([
             'emptyValues' => ['a', false]
         ]);
         $query = $this->Articles->find('search', ['search' => $queryString]);
-        $this->assertEquals(1, $query->clause('where')->count());
+        $this->assertSame(1, $query->clause('where')->count());
     }
 
     /**
