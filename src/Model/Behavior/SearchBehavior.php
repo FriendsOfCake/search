@@ -208,5 +208,4 @@ class SearchBehavior extends Behavior
 
         return $query;
     }
-
 }
