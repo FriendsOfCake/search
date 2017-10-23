@@ -45,7 +45,8 @@ class SearchBehavior extends Behavior
     /**
      * Overwrite emptyValues config value
      *
-     * @param array $config
+     * @param array $config Config
+     * @return void
      */
     public function initialize(array $config)
     {
