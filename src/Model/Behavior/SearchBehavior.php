@@ -42,6 +42,11 @@ class SearchBehavior extends Behavior
      */
     protected $_isSearch = false;
 
+    /**
+     * Overwrite emptyValues config value
+     *
+     * @param array $config
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
