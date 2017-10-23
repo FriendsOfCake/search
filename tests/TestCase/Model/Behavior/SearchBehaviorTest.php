@@ -202,15 +202,27 @@ class SearchBehaviorTest extends TestCase
         $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertSame(2, $query->clause('where')->count());
 
-        $this->Articles->behaviors()->get('Search')->configShallow([
+        $this->Articles->removeBehavior('Search');
+        $this->Articles->addBehavior('Search.Search', [
             'emptyValues' => ['a']
         ]);
+        $this->Articles->searchManager()
+            ->value('foo')
+            ->like('search')
+            ->value('baz')
+            ->boolean('group');
         $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertSame(2, $query->clause('where')->count());
 
-        $this->Articles->behaviors()->get('Search')->configShallow([
+        $this->Articles->removeBehavior('Search');
+        $this->Articles->addBehavior('Search.Search', [
             'emptyValues' => ['a', false]
         ]);
+        $this->Articles->searchManager()
+            ->value('foo')
+            ->like('search')
+            ->value('baz')
+            ->boolean('group');
         $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertSame(1, $query->clause('where')->count());
     }

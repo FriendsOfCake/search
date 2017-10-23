@@ -42,6 +42,15 @@ class SearchBehavior extends Behavior
      */
     protected $_isSearch = false;
 
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+
+        if (isset($config['emptyValues'])) {
+            $this->_defaultConfig['emptyValues'] = $config['emptyValues'];
+        }
+    }
+
     /**
      * Callback fired from the controller.
      *
@@ -105,7 +114,7 @@ class SearchBehavior extends Behavior
     protected function _extractParams($params, $filters)
     {
         return array_intersect_key(Hash::filter($params, function ($val) {
-            return !in_array($val, $this->getConfig('emptyValues'), true);
+            return !in_array($val, $this->_defaultConfig['emptyValues'], true);
         }), $filters);
     }
 
