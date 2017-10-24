@@ -121,6 +121,7 @@ class SearchBehavior extends Behavior
     {
         return array_intersect_key(Hash::filter($params, function ($val) {
             $emptyValues = (array)$this->getConfig('emptyValues');
+
             return !in_array($val, $emptyValues, true);
         }), $filters);
     }
