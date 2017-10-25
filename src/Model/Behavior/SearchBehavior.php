@@ -123,9 +123,9 @@ class SearchBehavior extends Behavior
      */
     protected function _extractParams($params, $filters)
     {
-        return array_intersect_key(Hash::filter($params, function ($val) {
-            $emptyValues = (array)$this->getConfig('emptyValues');
+        $emptyValues = (array)$this->getConfig('emptyValues');
 
+        return array_intersect_key(Hash::filter($params, function ($val) use ($emptyValues) {
             return !in_array($val, $emptyValues, true);
         }), $filters);
     }
