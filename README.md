@@ -127,6 +127,16 @@ class ExampleTable extends Table
 }
 ```
 
+#### Empty Values
+By default, `['', false, null]` are treated as empty values and will be filtered out. If you wish to
+alter this behavior, you can overwrite the values using `emptyValues` key.
+
+```php
+$this->addBehavior('Search.Search', [
+    'emptyValues' => ['']
+]);
+```
+
 ### Controller class
 In order for the Search plugin to work it will need to process the query params
 which are passed in your URL. So you will need to edit your `index` method to

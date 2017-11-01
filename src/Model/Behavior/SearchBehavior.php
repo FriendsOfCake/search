@@ -1,8 +1,10 @@
 <?php
+
 namespace Search\Model\Behavior;
 
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
+use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Exception;
 use Search\Manager;
@@ -20,7 +22,11 @@ class SearchBehavior extends Behavior
     /**
      * Default config for the behavior.
      *
+     * You can overwrite default empty values using emptyValues key
+     * when initializing the behavior
+     *
      * @var array
+     *
      */
     protected $_defaultConfig = [
         'implementedFinders' => [
@@ -30,6 +36,7 @@ class SearchBehavior extends Behavior
             'searchManager' => 'searchManager',
             'isSearch' => 'isSearch'
         ],
+        'emptyValues' => ['', false, null]
     ];
 
     /**
@@ -38,6 +45,21 @@ class SearchBehavior extends Behavior
      * @var bool
      */
     protected $_isSearch = false;
+
+    /**
+     * Overwrite emptyValues config value
+     *
+     * @param array $config Config
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+
+        if (isset($config['emptyValues'])) {
+            $this->setConfig('emptyValues', $config['emptyValues'], false);
+        }
+    }
 
     /**
      * Callback fired from the controller.
@@ -92,7 +114,7 @@ class SearchBehavior extends Behavior
     }
 
     /**
-     * Extracts all parameters for wich a filter with a matching field
+     * Extracts all parameters for which a filter with a matching field
      * name exists.
      *
      * @param array $params The parameters array to extract from.
@@ -101,7 +123,11 @@ class SearchBehavior extends Behavior
      */
     protected function _extractParams($params, $filters)
     {
-        return array_intersect_key(Hash::filter($params), $filters);
+        $emptyValues = (array)$this->getConfig('emptyValues');
+
+        return array_intersect_key(Hash::filter($params, function ($val) use ($emptyValues) {
+            return !in_array($val, $emptyValues, true);
+        }), $filters);
     }
 
     /**

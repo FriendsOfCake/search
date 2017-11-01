@@ -1,4 +1,5 @@
 <?php
+
 namespace Search\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
@@ -183,6 +184,47 @@ class SearchBehaviorTest extends TestCase
         ]);
         $this->assertEquals(2, $query->clause('where')->count());
         $this->assertTrue($this->Articles->isSearch());
+    }
+
+    /**
+     * Test the custom "emptyValues" configuration
+     *
+     * @return void
+     */
+    public function testEmptyValues()
+    {
+        $queryString = [
+            'foo' => 'a',
+            'search' => 'b',
+            'group' => false
+        ];
+
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertSame(2, $query->clause('where')->count());
+
+        $this->Articles->removeBehavior('Search');
+        $this->Articles->addBehavior('Search.Search', [
+            'emptyValues' => ['a']
+        ]);
+        $this->Articles->searchManager()
+            ->value('foo')
+            ->like('search')
+            ->value('baz')
+            ->boolean('group');
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertSame(2, $query->clause('where')->count());
+
+        $this->Articles->removeBehavior('Search');
+        $this->Articles->addBehavior('Search.Search', [
+            'emptyValues' => ['a', false]
+        ]);
+        $this->Articles->searchManager()
+            ->value('foo')
+            ->like('search')
+            ->value('baz')
+            ->boolean('group');
+        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $this->assertSame(1, $query->clause('where')->count());
     }
 
     /**
