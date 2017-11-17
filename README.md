@@ -214,18 +214,11 @@ The array passed to `FormHelper::create()` will cause the helper to create an
 query params.
 
 #### Adding a reset button dynamically
-If you pass down the information on whether the query was modified by your
+Since the Prg component can pass down the information on whether the query was modified by your
 search query strings, you can also include a reset button only if necessary:
-
-```php
-// in your controller action
-$this->set('isSearch', $this->Articles->isSearch());
-```
-
-Then one can switch based on that in the template:
 ```php
 // in your form
-if ($isSearch) {
+if (!empty($_isSearch)) {
     echo $this->Html->link('Reset', ['action' => 'index']);
 }
 ```
