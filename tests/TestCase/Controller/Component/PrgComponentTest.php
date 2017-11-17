@@ -224,7 +224,7 @@ class SearchComponentTest extends TestCase
             'controller' => 'Articles',
             'action' => 'index',
         ];
-        $this->Controller->modelClass = 'Articles';
+        $this->Controller->modelClass = 'SomePlugin.Articles';
         $this->Controller->Articles = $this->getMockBuilder(Table::class)->setMethods(['isSearch'])->getMock();
         $this->Controller->Articles->addBehavior('Search.Search');
         $this->Controller->Articles->expects($this->once())->method('isSearch')->willReturn(true);
