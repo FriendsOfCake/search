@@ -2,13 +2,10 @@
 namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\Controller\ComponentRegistry;
-use Cake\Event\Event;
 use Cake\Utility\Hash;
 
 class PrgComponent extends Component
 {
-
     /**
      * Default config
      *
@@ -21,6 +18,8 @@ class PrgComponent extends Component
      * - `queryStringBlacklist` : An array of form fields that should not end up in the query.
      * - `emptyValues` : A map of fields and their values to be considered empty
      *   (will not be passed along in the URL).
+     * - `modelClass` : Configure the controller's modelClass to be used for the query, used to
+     *   populate the _isSearch view variable to allow for a reset button, for example.
      *
      * @var array
      */
@@ -29,6 +28,7 @@ class PrgComponent extends Component
         'queryStringWhitelist' => ['sort', 'direction', 'limit'],
         'queryStringBlacklist' => ['_csrfToken', '_Token'],
         'emptyValues' => [],
+        'modelClass' => null,
     ];
 
     /**
@@ -51,6 +51,35 @@ class PrgComponent extends Component
         }
 
         return $this->_registry->getController()->redirect($url);
+    }
+
+    /**
+     * Populates the $_isSearch view variable based on the current request.
+     *
+     * You need to configure the modelClass config if you are not using the controller's
+     * default modelClass property.
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function beforeRender()
+    {
+        $controller = $this->_registry->getController();
+        $modelClass = $this->getConfig('modelClass', $controller->modelClass);
+        if (!$modelClass) {
+            return null;
+        }
+
+        if (!isset($controller->{$modelClass})) {
+            return null;
+        }
+
+        /** @var \Cake\ORM\Table|\Search\Model\Behavior\SearchBehavior $model */
+        $model = $controller->{$modelClass};
+        if (!$model->behaviors()->has('Search')) {
+            return null;
+        }
+
+        $controller->set('_isSearch', $model->isSearch());
     }
 
     /**
