@@ -4,6 +4,7 @@ namespace Search\Test\TestCase\Controller\Component;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Network\Request;
+use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
@@ -11,6 +12,13 @@ use Search\Controller\Component\PrgComponent;
 
 class SearchComponentTest extends TestCase
 {
+    /**
+     * @var array
+     */
+    public $fixtures = [
+        'plugin.Search.Articles',
+    ];
+
     /**
      * @var \Cake\Controller\Controller
      */
@@ -185,5 +193,45 @@ class SearchComponentTest extends TestCase
 
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsSearchFalse()
+    {
+        $this->Controller->request->params = [
+            'controller' => 'Articles',
+            'action' => 'index',
+        ];
+        $this->Controller->modelClass = 'Articles';
+        $this->Controller->loadModel('Articles');
+        $this->Controller->Articles->addBehavior('Search.Search');
+        $this->Controller->Articles->find('search', ['search' => []]);
+
+        $this->Prg->beforeRender();
+
+        $viewVars = $this->Controller->viewVars;
+        $this->assertSame(false, $viewVars['_isSearch']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsSearchTrue()
+    {
+        $this->Controller->request->params = [
+            'controller' => 'Articles',
+            'action' => 'index',
+        ];
+        $this->Controller->modelClass = 'Articles';
+        $this->Controller->Articles = $this->getMockBuilder(Table::class)->setMethods(['isSearch'])->getMock();
+        $this->Controller->Articles->addBehavior('Search.Search');
+        $this->Controller->Articles->expects($this->once())->method('isSearch')->willReturn(true);
+
+        $this->Prg->beforeRender();
+
+        $viewVars = $this->Controller->viewVars;
+        $this->assertSame(true, $viewVars['_isSearch']);
     }
 }

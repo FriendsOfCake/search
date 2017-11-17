@@ -63,18 +63,23 @@ class PrgComponent extends Component
      */
     public function beforeRender()
     {
+        if (!$this->_actionCheck()) {
+            return null;
+        }
+
         $controller = $this->_registry->getController();
         $modelClass = $this->getConfig('modelClass', $controller->modelClass);
         if (!$modelClass) {
             return null;
         }
 
-        if (!isset($controller->{$modelClass})) {
+        list (, $modelName) = pluginSplit($modelClass);
+        if (!isset($controller->{$modelName})) {
             return null;
         }
 
         /* @var \Cake\ORM\Table|\Search\Model\Behavior\SearchBehavior $model */
-        $model = $controller->{$modelClass};
+        $model = $controller->{$modelName};
         if (!$model->behaviors()->has('Search')) {
             return null;
         }
