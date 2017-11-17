@@ -73,7 +73,7 @@ class PrgComponent extends Component
             return null;
         }
 
-        /** @var \Cake\ORM\Table|\Search\Model\Behavior\SearchBehavior $model */
+        /* @var \Cake\ORM\Table|\Search\Model\Behavior\SearchBehavior $model */
         $model = $controller->{$modelClass};
         if (!$model->behaviors()->has('Search')) {
             return null;
