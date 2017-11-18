@@ -214,8 +214,9 @@ The array passed to `FormHelper::create()` will cause the helper to create an
 query params.
 
 #### Adding a reset button dynamically
-Since the Prg component will pass down the information on whether the query was modified by your
-search query string, you can also include a reset button only if necessary:
+The Prg component will pass down the information on whether the query was modified by your
+search query string by setting `$_isSearch` view variable to true here in this case.
+This way you can include a reset button only if necessary:
 ```php
 // in your form
 if (!empty($_isSearch)) {

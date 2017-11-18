@@ -20,6 +20,7 @@ class PrgComponent extends Component
      *   (will not be passed along in the URL).
      * - `modelClass` : Configure the controller's modelClass to be used for the query, used to
      *   populate the _isSearch view variable to allow for a reset button, for example.
+     *   Set to false to disable the auto-setting of the view variable.
      *
      * @var array
      */
