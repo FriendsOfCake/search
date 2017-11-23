@@ -2,7 +2,6 @@
 namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
-use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
@@ -233,5 +232,28 @@ class SearchComponentTest extends TestCase
 
         $viewVars = $this->Controller->viewVars;
         $this->assertSame(true, $viewVars['_isSearch']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEventsConfig()
+    {
+        $expected = [
+            'Controller.startup' => 'startup',
+            'Controller.beforeRender' => 'beforeRender',
+        ];
+
+        $result = $this->Prg->implementedEvents();
+        $this->assertSame($expected, $result);
+
+        $events = [
+            'Controller.startup' => 'startup',
+            'Controller.beforeRender' => false,
+        ];
+        $this->Prg->setConfig(['events' => $events]);
+
+        $result = $this->Prg->implementedEvents();
+        $this->assertSame(['Controller.startup' => 'startup'], $result);
     }
 }
