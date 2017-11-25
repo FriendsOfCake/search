@@ -21,6 +21,9 @@ class PrgComponent extends Component
      * - `modelClass` : Configure the controller's modelClass to be used for the query, used to
      *   populate the _isSearch view variable to allow for a reset button, for example.
      *   Set to false to disable the auto-setting of the view variable.
+     * - `events`: List of events this component listens to. You can disable an
+     *   event by setting it to false.
+     *   E.g. `'events' => ['Controller.beforeRender' => false]`
      *
      * @var array
      */
@@ -30,7 +33,21 @@ class PrgComponent extends Component
         'queryStringBlacklist' => ['_csrfToken', '_Token'],
         'emptyValues' => [],
         'modelClass' => null,
+        'events' => [
+            'Controller.startup' => 'startup',
+            'Controller.beforeRender' => 'beforeRender',
+        ],
     ];
+
+    /**
+     * Get the Controller callbacks this Component is interested in.
+     *
+     * @return array
+     */
+    public function implementedEvents()
+    {
+        return Hash::filter($this->getConfig('events'));
+    }
 
     /**
      * Checks if the current request has posted data and redirects the users
