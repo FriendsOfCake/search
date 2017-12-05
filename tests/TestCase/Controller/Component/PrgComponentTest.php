@@ -73,11 +73,11 @@ class SearchComponentTest extends TestCase
 
         $this->Prg->config('actions', false);
         $response = $this->Prg->startup();
-        $this->assertEquals(null, $response);
+        $this->assertNull($response);
 
         $this->Prg->config('actions', 'does-not-exist', false);
         $response = $this->Prg->startup();
-        $this->assertEquals(null, $response);
+        $this->assertNull($response);
 
         $this->Prg->config('actions', 'index', false);
         $this->Controller->response->header('Location', '');
@@ -211,7 +211,7 @@ class SearchComponentTest extends TestCase
         $this->Prg->beforeRender();
 
         $viewVars = $this->Controller->viewVars;
-        $this->assertSame(false, $viewVars['_isSearch']);
+        $this->assertFalse($viewVars['_isSearch']);
     }
 
     /**
@@ -231,7 +231,7 @@ class SearchComponentTest extends TestCase
         $this->Prg->beforeRender();
 
         $viewVars = $this->Controller->viewVars;
-        $this->assertSame(true, $viewVars['_isSearch']);
+        $this->assertTrue($viewVars['_isSearch']);
     }
 
     /**
