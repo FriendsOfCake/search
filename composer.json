@@ -28,7 +28,8 @@
     "require-dev": {
         "friendsofcake/cakephp-test-utilities": "dev-master",
         "phpunit/phpunit": "<6.0",
-        "cakephp/cakephp-codesniffer": "^3.0"
+        "cakephp/cakephp-codesniffer": "^3.0",
+        "muffin/webservice": "^1.2"
     },
     "autoload": {
         "psr-4": {
