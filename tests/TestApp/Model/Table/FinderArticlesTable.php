@@ -34,7 +34,7 @@ class FinderArticlesTable extends Table
     }
 
     /**
-     * Requires slug key to be present
+     * Requires slug key to be present in $options array.
      *
      * @param \Cake\ORM\Query $query
      * @param array $options

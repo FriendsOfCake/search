@@ -31,7 +31,7 @@ class Finder extends Base
     {
         $args = (array)$this->getArgs();
         $map = $this->getConfig('map');
-        foreach ($map as $from => $to) {
+        foreach ($map as $to => $from) {
             $args[$to] = isset($args[$from]) ? $args[$from] : null;
         }
 

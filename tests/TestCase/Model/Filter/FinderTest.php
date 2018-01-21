@@ -45,6 +45,7 @@ class FinderTest extends TestCase
 
     /**
      * Tests that a custom finder that requires certain keys can be used through map functionality.
+     * Here we map the posted field key "form_slug" to "slug" key of the finder.
      *
      * @return void
      */
@@ -54,8 +55,8 @@ class FinderTest extends TestCase
             'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable'
         ]);
         $manager = new Manager($articles);
-        $filter = new Finder('slugged', $manager, ['map' => ['title' => 'slug']]);
-        $filter->setArgs(['title' => 'foo']);
+        $filter = new Finder('slugged', $manager, ['map' => ['slug' => 'form_slug']]);
+        $filter->setArgs(['form_slug' => 'foo']);
         $filter->setQuery($articles->find());
         $filter->process();
 
