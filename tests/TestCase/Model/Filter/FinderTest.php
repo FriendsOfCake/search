@@ -44,6 +44,33 @@ class FinderTest extends TestCase
     }
 
     /**
+     * Tests that a custom finder that requires certain keys can be used through map functionality.
+     * Here we map the posted field key "form_slug" to "slug" key of the finder.
+     *
+     * @return void
+     */
+    public function testProcessMap()
+    {
+        $articles = TableRegistry::get('FinderArticles', [
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable'
+        ]);
+        $manager = new Manager($articles);
+        $filter = new Finder('slugged', $manager, ['map' => ['slug' => 'form_slug']]);
+        $filter->setArgs(['form_slug' => 'foo']);
+        $filter->setQuery($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE title = :c0$/',
+            $filter->getQuery()->sql()
+        );
+        $this->assertEquals(
+            ['foo'],
+            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
      * @expectedException \BadMethodCallException
      * @expectedExceptionMessage Unknown finder method "nonExistent"
      * @return void

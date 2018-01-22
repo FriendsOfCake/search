@@ -351,6 +351,7 @@ The following options are supported by all filters except `Callback` and `Finder
 #### `Finder`
 
 - `finder` (`string`) The [find type](https://book.cakephp.org/3.0/en/orm/retrieving-data-and-resultsets.html#custom-finder-methods) to use.
+  Use the `map` config array if you need to map your field to a finder key (`'to_field' => 'from_field'`).
 
 ## Filter collections
 

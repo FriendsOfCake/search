@@ -3,6 +3,12 @@ namespace Search\Model\Filter;
 
 class Finder extends Base
 {
+    /**
+     * @var array
+     */
+    protected $_defaultConfig = [
+        'map' => [],
+    ];
 
     /**
      * Returns the finder method to use.
@@ -23,7 +29,13 @@ class Finder extends Base
      */
     public function process()
     {
-        $this->getQuery()->find($this->finder(), (array)$this->getArgs());
+        $args = (array)$this->getArgs();
+        $map = $this->getConfig('map');
+        foreach ($map as $to => $from) {
+            $args[$to] = isset($args[$from]) ? $args[$from] : null;
+        }
+
+        $this->getQuery()->find($this->finder(), $args);
 
         return true;
     }
