@@ -1,6 +1,8 @@
 <?php
 namespace Search\Model\Filter;
 
+use Cake\ORM\Table;
+
 class Boolean extends Base
 {
 
@@ -39,6 +41,16 @@ class Boolean extends Base
         }
 
         if ($bool !== null) {
+            if (!$this->manager()->getRepository() instanceof Table) {
+                foreach ($this->fields() as $field) {
+                    $this->getQuery()->where([
+                        $field => $bool,
+                    ]);
+                }
+
+                return true;
+            }
+
             $conditions = [];
             foreach ($this->fields() as $field) {
                 $conditions[] = [$field => $bool];

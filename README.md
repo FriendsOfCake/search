@@ -182,6 +182,36 @@ public function initialize()
 The `Search.Prg` component will allow your filtering forms to be populated using
 the data in the query params. It uses the [Post, redirect, get pattern](https://en.wikipedia.org/wiki/Post/Redirect/Get).
 
+### Custom repository
+
+It is also possible to use the search plugin on custom repositories which
+implement `Cake\Datasource\RepositoryInterface` like endpoint classes used
+in the Webservice plugin.
+
+```php
+<?php
+
+namespace App\Model\Endpoint;
+
+use Muffin\Webservice\Model\Endpoint;
+use Search\Model\SearchTrait;
+
+class ProductsEndpoint extends Endpoint
+{
+    use SearchTrait;
+
+    public function initialize()
+    {
+        $this->searchManager()
+            ->value('category_id');
+    }
+}
+
+```
+
+After including the trait you can use the searchManager by calling the
+`searchManager()` method from your `initialize()` method.
+
 ## Filtering your data
 Once you have completed all the setup you can now filter your data by passing
 query params in your index method. Using the `Article` example given above, you

@@ -2,6 +2,7 @@
 namespace Search\Model\Filter;
 
 use Cake\Database\Expression\QueryExpression;
+use Cake\ORM\Table;
 
 class Value extends Base
 {
@@ -32,6 +33,16 @@ class Value extends Base
             empty($value)
         ) {
             return false;
+        }
+
+        if (!$this->manager()->getRepository() instanceof Table) {
+            foreach ($this->fields() as $field) {
+                $this->getQuery()->where([
+                    $field => $value,
+                ]);
+            }
+
+            return true;
         }
 
         $expressions = [];
