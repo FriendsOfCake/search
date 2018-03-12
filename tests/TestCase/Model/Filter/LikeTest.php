@@ -38,7 +38,7 @@ class LikeTest extends TestCase
         );
         $this->assertEquals(
             ['test'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
 
         $filter->setConfig('comparison', 'ILIKE');
@@ -51,7 +51,7 @@ class LikeTest extends TestCase
         );
         $this->assertEquals(
             ['test'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -73,7 +73,7 @@ class LikeTest extends TestCase
         );
         $this->assertEquals(
             ['foo'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -98,7 +98,7 @@ class LikeTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'foo'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -120,7 +120,7 @@ class LikeTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -145,7 +145,7 @@ class LikeTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -171,7 +171,7 @@ class LikeTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -198,7 +198,7 @@ class LikeTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -216,7 +216,7 @@ class LikeTest extends TestCase
 
         $this->assertEmpty($filter->getQuery()->clause('where'));
         $filter->getQuery()->sql();
-        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->getValueBinder()->bindings());
     }
 
     /**
@@ -232,7 +232,7 @@ class LikeTest extends TestCase
         $filter->process();
 
         $filter->getQuery()->sql();
-        $bindings = $filter->getQuery()->valueBinder()->bindings();
+        $bindings = $filter->getQuery()->getValueBinder()->bindings();
         $expected = [
             ':c0' => [
                 'value' => '234',
@@ -262,7 +262,7 @@ class LikeTest extends TestCase
 
         $this->assertEmpty($filter->getQuery()->clause('where'));
         $filter->getQuery()->sql();
-        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->getValueBinder()->bindings());
     }
 
     /**
@@ -283,7 +283,7 @@ class LikeTest extends TestCase
         );
         $this->assertEquals(
             ['default'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -301,7 +301,7 @@ class LikeTest extends TestCase
 
         $this->assertEmpty($filter->getQuery()->clause('where'));
         $filter->getQuery()->sql();
-        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->getValueBinder()->bindings());
     }
 
     /**
@@ -320,7 +320,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['part\_1 _ 100\% %'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -340,7 +340,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['part[_]1 _ 100[%] %'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -360,7 +360,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['%22[%] 44[_]%'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -380,7 +380,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['%22\% 44\_%'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -404,7 +404,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['%22% 44_%'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -428,7 +428,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['%22% 44_%'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 }

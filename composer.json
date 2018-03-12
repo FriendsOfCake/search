@@ -17,13 +17,13 @@
             "homepage": "http://cakephp.nu/"
         },
         {
-            "name":"ADmad",
-            "role":"Contributor",
-            "homepage":"https://github.com/admad"
+            "name": "ADmad",
+            "role": "Contributor",
+            "homepage": "https://github.com/admad"
         }
     ],
     "require": {
-        "cakephp/cakephp": "^3.4"
+        "cakephp/cakephp": "3.6.0-beta2"
     },
     "require-dev": {
         "friendsofcake/cakephp-test-utilities": "dev-master",

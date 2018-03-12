@@ -37,7 +37,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -59,7 +59,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -81,7 +81,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -103,7 +103,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -125,7 +125,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -147,7 +147,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -169,7 +169,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -191,7 +191,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -213,7 +213,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -232,7 +232,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [false],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -250,7 +250,7 @@ class BooleanTest extends TestCase
 
         $this->assertEmpty($filter->getQuery()->clause('where'));
         $filter->getQuery()->sql();
-        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->getValueBinder()->bindings());
     }
 
     /**
@@ -267,7 +267,7 @@ class BooleanTest extends TestCase
 
         $this->assertEmpty($filter->getQuery()->clause('where'));
         $filter->getQuery()->sql();
-        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->getValueBinder()->bindings());
     }
 
     /**
@@ -290,7 +290,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [true, true],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -315,7 +315,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [true, true],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -337,7 +337,7 @@ class BooleanTest extends TestCase
         );
         $this->assertEquals(
             [true],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -355,6 +355,6 @@ class BooleanTest extends TestCase
 
         $this->assertEmpty($filter->getQuery()->clause('where'));
         $filter->getQuery()->sql();
-        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->getValueBinder()->bindings());
     }
 }
