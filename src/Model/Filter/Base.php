@@ -104,8 +104,8 @@ abstract class Base
      */
     public function field()
     {
-        $field = $this->config('field');
-        if (!$this->config('aliasField')) {
+        $field = $this->getConfig('field');
+        if (!$this->getConfig('aliasField')) {
             return $field;
         }
 

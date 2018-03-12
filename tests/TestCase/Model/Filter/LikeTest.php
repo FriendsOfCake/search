@@ -41,7 +41,7 @@ class LikeTest extends TestCase
             Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
         );
 
-        $filter->config('comparison', 'ILIKE');
+        $filter->setConfig('comparison', 'ILIKE');
         $filter->setQuery($articles->find());
         $filter->process();
 

@@ -47,13 +47,13 @@ class ManagerTest extends TestCase
         $this->assertInstanceOf('\Search\Model\Filter\Like', $result['like']);
         $this->assertInstanceOf('\Search\Model\Filter\Value', $result['value']);
 
-        $this->assertEquals('bar', $result['boolean']->config('foo'));
-        $this->assertEquals('bar', $result['callback']->config('foo'));
-        $this->assertEquals('bar', $result['compare']->config('foo'));
-        $this->assertEquals('bar', $result['custom']->config('foo'));
-        $this->assertEquals('bar', $result['finder']->config('foo'));
-        $this->assertEquals('bar', $result['like']->config('foo'));
-        $this->assertEquals('bar', $result['value']->config('foo'));
+        $this->assertEquals('bar', $result['boolean']->getConfig('foo'));
+        $this->assertEquals('bar', $result['callback']->getConfig('foo'));
+        $this->assertEquals('bar', $result['compare']->getConfig('foo'));
+        $this->assertEquals('bar', $result['custom']->getConfig('foo'));
+        $this->assertEquals('bar', $result['finder']->getConfig('foo'));
+        $this->assertEquals('bar', $result['like']->getConfig('foo'));
+        $this->assertEquals('bar', $result['value']->getConfig('foo'));
     }
 
     /**
@@ -76,7 +76,7 @@ class ManagerTest extends TestCase
         $this->assertCount(2, $result);
         $this->assertInstanceOf('\Search\Test\TestApp\Model\Filter\TestFilter', $result['test1']);
         $this->assertInstanceOf('\Search\Test\TestApp\Model\Filter\TestFilter', $result['test2']);
-        $this->assertEquals('bar', $result['test2']->config('foo'));
+        $this->assertEquals('bar', $result['test2']->getConfig('foo'));
     }
 
     /**

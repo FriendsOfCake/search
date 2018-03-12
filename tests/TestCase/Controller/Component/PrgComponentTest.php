@@ -71,25 +71,25 @@ class SearchComponentTest extends TestCase
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
 
-        $this->Prg->config('actions', false);
+        $this->Prg->setConfig('actions', false);
         $response = $this->Prg->startup();
         $this->assertNull($response);
 
-        $this->Prg->config('actions', 'does-not-exist', false);
+        $this->Prg->setConfig('actions', 'does-not-exist', false);
         $response = $this->Prg->startup();
         $this->assertNull($response);
 
-        $this->Prg->config('actions', 'index', false);
+        $this->Prg->setConfig('actions', 'index', false);
         $this->Controller->response->header('Location', '');
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
 
-        $this->Prg->config('actions', ['index', 'does-not-exist'], false);
+        $this->Prg->setConfig('actions', ['index', 'does-not-exist'], false);
         $this->Controller->response->header('Location', '');
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
 
-        $this->Prg->config('actions', true);
+        $this->Prg->setConfig('actions', true);
         $this->Controller->request->params = [
             'controller' => 'UserAnswers',
             'action' => 'index',
