@@ -80,12 +80,12 @@ class SearchComponentTest extends TestCase
         $this->assertNull($response);
 
         $this->Prg->setConfig('actions', 'index', false);
-        $this->Controller->response->withHeader('Location', '');
+        $this->Controller->response = $this->Controller->response->withHeader('Location', '');
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
         $this->Prg->setConfig('actions', ['index', 'does-not-exist'], false);
-        $this->Controller->response->withHeader('Location', '');
+        $this->Controller->response = $this->Controller->response->withHeader('Location', '');
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
@@ -97,12 +97,12 @@ class SearchComponentTest extends TestCase
             'pass' => ['open']
         ]);
         $this->Controller->request = $this->Controller->request->withRequestTarget('/users/my-predictions');
-        $this->Controller->response->withHeader('Location', '');
+        $this->Controller->response = $this->Controller->response->withHeader('Location', '');
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/users/my-predictions?foo=bar', $response->getHeaderLine('Location'));
 
         $this->Controller->request = $this->Controller->request->withData('foo', '');
-        $this->Controller->response->withHeader('Location', '');
+        $this->Controller->response = $this->Controller->response->withHeader('Location', '');
         $response = $this->Prg->startup();
         $this->assertEquals('http://localhost/users/my-predictions', $response->getHeaderLine('Location'));
     }

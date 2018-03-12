@@ -5,3 +5,7 @@
 phpunit.xml.dist export-ignore
 .travis.yml export-ignore
 tests export-ignore
+
+# Git will always convert line endings to LF on checkout.
+# You should use this for files that must keep LF endings, even on Windows.
+* text eol=lf
