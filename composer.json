@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "cakephp/cakephp": "3.6.0-beta2"
+        "cakephp/cakephp": "^3.4"
     },
     "require-dev": {
         "friendsofcake/cakephp-test-utilities": "dev-master",
