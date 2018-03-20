@@ -23,13 +23,13 @@
         }
     ],
     "require": {
-        "cakephp/cakephp": "^3.5"
+        "cakephp/cakephp": "dev-3.next"
     },
     "require-dev": {
         "friendsofcake/cakephp-test-utilities": "dev-master",
         "phpunit/phpunit": "^5.7.14",
         "cakephp/cakephp-codesniffer": "^3.0",
-        "muffin/webservice": "^1.2"
+        "muffin/webservice": "dev-dev"
     },
     "autoload": {
         "psr-4": {
