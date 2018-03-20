@@ -17,29 +17,29 @@
             "homepage": "http://cakephp.nu/"
         },
         {
-            "name":"ADmad",
-            "role":"Contributor",
-            "homepage":"https://github.com/admad"
+            "name": "ADmad",
+            "role": "Contributor",
+            "homepage": "https://github.com/admad"
         }
     ],
     "require": {
-        "cakephp/cakephp": "^3.4"
+        "cakephp/cakephp": "^3.5"
     },
     "require-dev": {
         "friendsofcake/cakephp-test-utilities": "dev-master",
-        "phpunit/phpunit": "<6.0",
+        "phpunit/phpunit": "^5.7.14",
         "cakephp/cakephp-codesniffer": "^3.0",
         "muffin/webservice": "^1.2"
     },
     "autoload": {
         "psr-4": {
-            "Search\\": "src"
+            "Search\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Search\\Test\\": "tests",
-            "Cake\\Test\\Fixture\\": "./vendor/cakephp/cakephp/tests/Fixture"
+            "Search\\Test\\": "tests/",
+            "Cake\\Test\\Fixture\\": "vendor/cakephp/cakephp/tests/Fixture/"
         }
     },
     "support": {
@@ -48,6 +48,8 @@
         "irc": "irc://irc.freenode.org/friendsofcake"
     },
     "scripts": {
-        "cs-check": "vendor/bin/phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests"
+        "cs-check": "phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "test": "phpunit"
     }
 }

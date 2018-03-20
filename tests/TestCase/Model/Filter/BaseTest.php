@@ -173,7 +173,7 @@ class BaseTest extends TestCase
         $filter->setArgs(['field' => ['value1', 'value2']]);
         $this->assertEquals('default', $filter->value());
 
-        $filter->config('multiValue', true);
+        $filter->setConfig('multiValue', true);
         $filter->setArgs(['field' => ['value1', 'value2']]);
         $this->assertEquals(['value1', 'value2'], $filter->value());
     }
@@ -191,7 +191,7 @@ class BaseTest extends TestCase
 
         $this->assertEquals('Articles.field', $filter->field());
 
-        $filter->config('aliasField', false);
+        $filter->setConfig('aliasField', false);
         $this->assertEquals('field', $filter->field());
 
         $filter = new TestFilter(
