@@ -39,7 +39,7 @@ class FinderTest extends TestCase
         );
         $this->assertEquals(
             [true, 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -66,7 +66,7 @@ class FinderTest extends TestCase
         );
         $this->assertEquals(
             ['foo'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 

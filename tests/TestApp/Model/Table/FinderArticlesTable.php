@@ -17,7 +17,7 @@ class FinderArticlesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('articles');
+        $this->setTable('articles');
     }
 
     /**

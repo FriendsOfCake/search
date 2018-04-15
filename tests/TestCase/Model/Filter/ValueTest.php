@@ -37,7 +37,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['test'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -59,7 +59,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -83,7 +83,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'foo'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -108,7 +108,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'foo'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -130,7 +130,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -155,7 +155,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -181,7 +181,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -208,7 +208,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -230,7 +230,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             [['bar']],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -247,7 +247,7 @@ class ValueTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->getQuery()->clause('where'));
-        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->getValueBinder()->bindings());
     }
 
     /**
@@ -268,7 +268,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['default'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
@@ -285,7 +285,7 @@ class ValueTest extends TestCase
         $filter->process();
 
         $this->assertEmpty($filter->getQuery()->clause('where'));
-        $this->assertEmpty($filter->getQuery()->valueBinder()->bindings());
+        $this->assertEmpty($filter->getQuery()->getValueBinder()->bindings());
     }
 
     /**
@@ -309,7 +309,7 @@ class ValueTest extends TestCase
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 }

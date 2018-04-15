@@ -147,7 +147,7 @@ class Like extends Base
     protected function _setEscaper()
     {
         if ($this->getConfig('escaper') === null) {
-            $driver = get_class($this->getQuery()->connection()->driver());
+            $driver = get_class($this->getQuery()->getConnection()->getDriver());
             $driverName = 'Sqlserver';
             if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
                 $this->setConfig('escaper', 'Search.Sqlserver');

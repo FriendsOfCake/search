@@ -2,7 +2,7 @@
 namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
@@ -44,9 +44,9 @@ class SearchComponentTest extends TestCase
             );
             $routes->fallbacks();
         });
-        $request = new Request();
+        $request = new ServerRequest();
         $response = $this
-            ->getMockBuilder('Cake\Network\Response')
+            ->getMockBuilder('Cake\Http\Response')
             ->setMethods(['stop'])
             ->getMock();
 
@@ -59,52 +59,52 @@ class SearchComponentTest extends TestCase
      */
     public function testInitializePost()
     {
-        $this->Controller->request->params = [
+        $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
             'pass' => ['pass']
-        ];
-        $this->Controller->request->here = '/Posts/index/pass';
-        $this->Controller->request->data = ['foo' => 'bar'];
-        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+        ]);
+        $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
+        $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
+        $this->Controller->request = $this->Controller->request->withEnv('REQUEST_METHOD', 'POST');
 
         $response = $this->Prg->startup();
-        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
-        $this->Prg->config('actions', false);
-        $response = $this->Prg->startup();
-        $this->assertNull($response);
-
-        $this->Prg->config('actions', 'does-not-exist', false);
+        $this->Prg->setConfig('actions', false);
         $response = $this->Prg->startup();
         $this->assertNull($response);
 
-        $this->Prg->config('actions', 'index', false);
-        $this->Controller->response->header('Location', '');
+        $this->Prg->setConfig('actions', 'does-not-exist', false);
         $response = $this->Prg->startup();
-        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+        $this->assertNull($response);
 
-        $this->Prg->config('actions', ['index', 'does-not-exist'], false);
-        $this->Controller->response->header('Location', '');
+        $this->Prg->setConfig('actions', 'index', false);
+        $this->Controller->response = $this->Controller->response->withHeader('Location', '');
         $response = $this->Prg->startup();
-        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
-        $this->Prg->config('actions', true);
-        $this->Controller->request->params = [
+        $this->Prg->setConfig('actions', ['index', 'does-not-exist'], false);
+        $this->Controller->response = $this->Controller->response->withHeader('Location', '');
+        $response = $this->Prg->startup();
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
+
+        $this->Prg->setConfig('actions', true);
+        $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'UserAnswers',
             'action' => 'index',
             'type' => 'open',
             'pass' => ['open']
-        ];
-        $this->Controller->request->here = '/users/my-predictions';
-        $this->Controller->response->header('Location', '');
+        ]);
+        $this->Controller->request = $this->Controller->request->withRequestTarget('/users/my-predictions');
+        $this->Controller->response = $this->Controller->response->withHeader('Location', '');
         $response = $this->Prg->startup();
-        $this->assertEquals('http://localhost/users/my-predictions?foo=bar', $response->header()['Location']);
+        $this->assertEquals('http://localhost/users/my-predictions?foo=bar', $response->getHeaderLine('Location'));
 
-        $this->Controller->request->data = ['foo' => ''];
-        $this->Controller->response->header('Location', '');
+        $this->Controller->request = $this->Controller->request->withData('foo', '');
+        $this->Controller->response = $this->Controller->response->withHeader('Location', '');
         $response = $this->Prg->startup();
-        $this->assertEquals('http://localhost/users/my-predictions', $response->header()['Location']);
+        $this->assertEquals('http://localhost/users/my-predictions', $response->getHeaderLine('Location'));
     }
 
     /**
@@ -112,20 +112,21 @@ class SearchComponentTest extends TestCase
      */
     public function testInitializePostWithEmptyValues()
     {
-        $this->Controller->request->params = [
+        $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
             'pass' => ['pass']
-        ];
-        $this->Controller->request->here = '/Posts/index/pass';
-        $this->Controller->request->data = ['foo' => 'bar', 'checkbox' => '0'];
-        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+        ]);
+        $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
+        $this->Controller->request = $this->Controller->request = $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
+        $this->Controller->request = $this->Controller->request = $this->Controller->request = $this->Controller->request->withData('checkbox', '0');
+        $this->Controller->request = $this->Controller->request->withEnv('REQUEST_METHOD', 'POST');
 
         $this->Prg->configShallow('emptyValues', [
             'checkbox' => '0',
         ]);
         $response = $this->Prg->startup();
-        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
     /**
@@ -133,22 +134,22 @@ class SearchComponentTest extends TestCase
      */
     public function testInitializePostWithQueryStringWhitelist()
     {
-        $this->Controller->request->query = [
+        $this->Controller->request = $this->Controller->request->withQueryParams([
             'sort' => 'created',
             'direction' => 'desc',
             'page' => 9,
-        ];
-        $this->Controller->request->params = [
+        ]);
+        $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
             'pass' => ['pass']
-        ];
-        $this->Controller->request->here = '/Posts/index/pass';
-        $this->Controller->request->data = ['foo' => 'bar'];
-        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+        ]);
+        $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
+        $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
+        $this->Controller->request = $this->Controller->request->withEnv('REQUEST_METHOD', 'POST');
 
         $response = $this->Prg->startup();
-        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar&sort=created&direction=desc', $response->header()['Location']);
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar&sort=created&direction=desc', $response->getHeaderLine('Location'));
     }
 
     /**
@@ -156,24 +157,24 @@ class SearchComponentTest extends TestCase
      */
     public function testInitializePostWithQueryStringWhitelistEmpty()
     {
-        $this->Controller->request->query = [
+        $this->Controller->request = $this->Controller->request->withQueryParams([
             'sort' => 'created',
             'direction' => 'desc',
             'page' => 9,
-        ];
-        $this->Controller->request->params = [
+        ]);
+        $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
             'pass' => ['pass']
-        ];
-        $this->Controller->request->here = '/Posts/index/pass';
-        $this->Controller->request->data = ['foo' => 'bar'];
-        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+        ]);
+        $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
+        $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
+        $this->Controller->request = $this->Controller->request->withEnv('REQUEST_METHOD', 'POST');
 
         // Needed as config() would not do anything here due to internal default behavior of merging here
         $this->Prg->configShallow('queryStringWhitelist', []);
         $response = $this->Prg->startup();
-        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
     /**
@@ -181,17 +182,17 @@ class SearchComponentTest extends TestCase
      */
     public function testConversionWithRedirect()
     {
-        $this->Controller->request->params = [
+        $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
             'pass' => ['pass']
-        ];
-        $this->Controller->request->here = '/Posts/index/pass';
-        $this->Controller->request->data = ['foo' => 'bar'];
-        $this->Controller->request->env('REQUEST_METHOD', 'POST');
+        ]);
+        $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
+        $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
+        $this->Controller->request = $this->Controller->request->withEnv('REQUEST_METHOD', 'POST');
 
         $response = $this->Prg->startup();
-        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->header()['Location']);
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
     /**
@@ -199,10 +200,10 @@ class SearchComponentTest extends TestCase
      */
     public function testIsSearchFalse()
     {
-        $this->Controller->request->params = [
+        $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Articles',
             'action' => 'index',
-        ];
+        ]);
         $this->Controller->modelClass = 'Articles';
         $this->Controller->loadModel('Articles');
         $this->Controller->Articles->addBehavior('Search.Search');
@@ -219,10 +220,10 @@ class SearchComponentTest extends TestCase
      */
     public function testIsSearchTrue()
     {
-        $this->Controller->request->params = [
+        $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Articles',
             'action' => 'index',
-        ];
+        ]);
         $this->Controller->modelClass = 'SomePlugin.Articles';
         $this->Controller->Articles = $this->getMockBuilder(Table::class)->setMethods(['isSearch'])->getMock();
         $this->Controller->Articles->addBehavior('Search.Search');

@@ -1,3 +1,7 @@
+# Git will always convert line endings to LF on checkout.
+# You should use this for files that must keep LF endings, even on Windows.
+* text eol=lf
+
 # Remove files for archives generated using `git archive`
 .editorconfig export-ignore
 .gitattributes export-ignore

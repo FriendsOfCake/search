@@ -43,7 +43,7 @@ class CallbackTest extends TestCase
         );
         $this->assertEquals(
             ['test'],
-            Hash::extract($filter->getQuery()->valueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
 
