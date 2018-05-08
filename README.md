@@ -329,9 +329,10 @@ The following options are supported by all filters except `Callback` and `Finder
   multiple fields, the search term is going to be looked up in all the given fields,
   using the conditional operator defined by the `fieldMode` option.
 
-- `colType` (`array`), Use to set a custom type for any column that needs to be treated as
+- `colType` (`array`), An associative array, use to set a custom type for any column that needs to be treated as
   string column despite its actual type. This is important for integer fields, for example, if they
-  are part of the fields to be searched.
+  are part of the fields to be searched. Usage example:
+   `'colType' => ['id' => 'string']`
 
 - `before` (`bool`, defaults to `false`) Whether to automatically add a wildcard
   *before* the search term.
