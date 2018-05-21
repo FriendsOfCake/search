@@ -234,6 +234,7 @@ your data.
     echo $this->Form->control('author_id');
     // Match the search param in your table configuration
     echo $this->Form->control('q');
+    echo $this->Form->control('limit', ['options' => [2=>2, 5=>5, 10=>10, 20=>20], 'empty' => false, 'default' => $this->Paginator->param('perPage'), 'label' => 'Records per page', 'onChange' => 'this.form.submit()']); //replace $this->Paginator->limitControl(...) for cake 3.6
     echo $this->Form->button('Filter', ['type' => 'submit']);
     echo $this->Html->link('Reset', ['action' => 'index']);
     echo $this->Form->end();
