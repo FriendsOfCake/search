@@ -9,7 +9,7 @@ use Search\Manager;
  * Base class for search type classes.
  *
  */
-abstract class Base
+abstract class Base implements FilterInterface
 {
 
     use InstanceConfigTrait;
@@ -90,9 +90,19 @@ abstract class Base
     /**
      * Get the manager.
      *
-     * @return \Search\Manager
+     * @deprecated Use getManager()
      */
     public function manager()
+    {
+        return $this->getManager();
+    }
+
+    /**
+     * Get the manager.
+     *
+     * @return \Search\Manager
+     */
+    public function getManager()
     {
         return $this->_manager;
     }
