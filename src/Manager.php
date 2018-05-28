@@ -1,11 +1,13 @@
 <?php
 namespace Search;
 
-use Cake\Core\App;
 use Cake\Datasource\RepositoryInterface;
-use Cake\Utility\Inflector;
 use InvalidArgumentException;
+use Search\Model\Filter\FilterLocator;
 
+/**
+ * Search Manager Service Class
+ */
 class Manager
 {
 
@@ -231,18 +233,7 @@ class Manager
      */
     public function loadFilter($name, $filter, array $options = [])
     {
-        if (empty($options['className'])) {
-            $class = Inflector::classify($filter);
-        } else {
-            $class = $options['className'];
-            unset($options['className']);
-        }
-        $className = App::className($class, 'Model\Filter');
-        if (!$className) {
-            throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
-        }
-
-        return new $className($name, $this, $options);
+        return (new FilterLocator($this))->locate($name, $filter, $options);
     }
 
     /**
