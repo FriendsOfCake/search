@@ -84,15 +84,6 @@ interface FilterInterface
     public function validate(array $value = null);
 
     /**
-     * Valid method.
-     *
-     * @return bool
-     * @codeCoverageIgnore
-     * @internal
-     */
-    public function valid();
-
-    /**
      * Sets the query object.
      *
      * @param \Cake\Datasource\QueryInterface $value Value.

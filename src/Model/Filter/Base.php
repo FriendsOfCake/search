@@ -90,19 +90,9 @@ abstract class Base implements FilterInterface
     /**
      * Get the manager.
      *
-     * @deprecated Use getManager()
-     */
-    public function manager()
-    {
-        return $this->getManager();
-    }
-
-    /**
-     * Get the manager.
-     *
      * @return \Search\Manager
      */
-    public function getManager()
+    public function manager()
     {
         return $this->_manager;
     }
