@@ -56,6 +56,7 @@ class Manager
     /**
      * Sets the filter locator
      *
+     * @param \Search\Model\Filter\FilterLocatorInterface
      * @return $this
      */
     public function setFilterLocator(FilterLocatorInterface $filterLocator)
