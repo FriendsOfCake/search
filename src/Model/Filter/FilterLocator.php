@@ -9,7 +9,7 @@ use Search\Manager;
 /**
  * Filter Locator
  */
-class FilterLocator
+class FilterLocator implements FilterLocatorInterface
 {
     /**
      * Manager
