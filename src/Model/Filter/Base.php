@@ -100,6 +100,7 @@ abstract class Base implements FilterInterface
     /**
      * Get the database field name.
      *
+     * @deprecated Use fields() instead.
      * @return string|array
      */
     public function field()

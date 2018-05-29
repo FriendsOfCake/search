@@ -9,13 +9,6 @@ use Cake\Datasource\QueryInterface;
 interface FilterInterface
 {
     /**
-     * Get the database field name.
-     *
-     * @return string|array
-     */
-    public function field();
-
-    /**
      * Get the database field name(s) as an array.
      *
      * @return array
