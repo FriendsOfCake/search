@@ -127,7 +127,7 @@ class PrgComponent extends Component
      */
     protected function _filterParams()
     {
-        $params = Hash::filter($this->request->getData());
+        $params = Hash::filter((array)$this->request->getData());
 
         foreach ((array)$this->getConfig('queryStringBlacklist') as $field) {
             unset($params[$field]);

@@ -1,0 +1,6 @@
+parameters:
+    autoload_files:
+        - tests/bootstrap.php
+    ignoreErrors:
+        - '#Call to an undefined method Cake\\Datasource\\RepositoryInterface::aliasField\(\)#'
+        - '#Call to an undefined method Cake\\ORM\\Table::searchManager\(\)#'

@@ -29,7 +29,7 @@ class Finder extends Base
      */
     public function process()
     {
-        $args = (array)$this->getArgs();
+        $args = $this->getArgs();
         $map = $this->getConfig('map');
         foreach ($map as $to => $from) {
             $args[$to] = isset($args[$from]) ? $args[$from] : null;
