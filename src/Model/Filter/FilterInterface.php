@@ -74,16 +74,6 @@ interface FilterInterface
     public function getArgs();
 
     /**
-     * Get / Set the validation rules.
-     *
-     * @param array|null $value Value.
-     * @return array|null
-     * @codeCoverageIgnore
-     * @internal
-     */
-    public function validate(array $value = null);
-
-    /**
      * Sets the query object.
      *
      * @param \Cake\Datasource\QueryInterface $value Value.
