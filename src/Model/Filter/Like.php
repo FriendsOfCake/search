@@ -2,7 +2,10 @@
 namespace Search\Model\Filter;
 
 use Cake\Core\App;
+use Cake\ORM\Query;
+use Cake\ORM\Table;
 use InvalidArgumentException;
+use RuntimeException;
 use Search\Manager;
 
 class Like extends Base
@@ -88,7 +91,7 @@ class Like extends Base
     protected function _aliasColTypes($colTypes)
     {
         $repository = $this->manager()->getRepository();
-        if (!method_exists($repository, 'aliasField')) {
+        if (!$repository instanceof Table) {
             return $colTypes;
         }
 
@@ -147,8 +150,10 @@ class Like extends Base
     protected function _setEscaper()
     {
         if ($this->getConfig('escaper') === null) {
-            /** @var \Cake\Database\Query $query */
             $query = $this->getQuery();
+            if (!$query instanceof Query) {
+                throw new RuntimeException('$query must be instance of Cake\ORM\Query to be able to check driver name.');
+            }
             $driver = get_class($query->getConnection()->getDriver());
             $driverName = 'Sqlserver';
             if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {

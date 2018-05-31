@@ -3,6 +3,7 @@ namespace Search\Model\Filter;
 
 use Cake\Core\InstanceConfigTrait;
 use Cake\Datasource\QueryInterface;
+use Cake\ORM\Table;
 use Search\Manager;
 
 /**
@@ -111,7 +112,7 @@ abstract class Base implements FilterInterface
         }
 
         $repository = $this->manager()->getRepository();
-        if (!method_exists($repository, 'aliasField')) {
+        if (!$repository instanceof Table) {
             return $field;
         }
 
