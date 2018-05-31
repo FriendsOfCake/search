@@ -3,10 +3,8 @@ namespace Search\Model\Filter;
 
 use Cake\Core\App;
 use Cake\ORM\Query;
-use Cake\ORM\Table;
 use InvalidArgumentException;
 use RuntimeException;
-use Search\Manager;
 
 class Like extends Base
 {
@@ -91,7 +89,7 @@ class Like extends Base
     protected function _aliasColTypes($colTypes)
     {
         $repository = $this->manager()->getRepository();
-        if (!$repository instanceof Table) {
+        if (!method_exists($repository, 'aliasField')) {
             return $colTypes;
         }
 

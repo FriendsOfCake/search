@@ -65,8 +65,8 @@ class SearchTraitTest extends TestCase
 
         $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertSame([
-            'foo' => 'a',
-            'public' => false,
+            'Articles.foo' => 'a',
+            'Articles.public' => false,
         ], $query->where());
         $this->assertTrue($this->Articles->isSearch());
     }
