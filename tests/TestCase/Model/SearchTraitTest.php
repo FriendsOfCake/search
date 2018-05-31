@@ -3,16 +3,18 @@
 namespace Search\Test\TestCase\Model;
 
 use Cake\TestSuite\TestCase;
+use Muffin\Webservice\AbstractDriver;
 use Muffin\Webservice\Connection;
+use Muffin\Webservice\Webservice\Webservice;
 use Search\Manager;
 use Search\Test\TestApp\Model\Endpoint\ArticlesEndpoint;
 
 class SearchTraitTest extends TestCase
 {
     /**
-     * @var \Search\Test\TestApp\Model\Table\ArticlesTable
+     * @var \Search\Test\TestApp\Model\Endpoint\ArticlesEndpoint
      */
-    public $Articles;
+    protected $Articles;
 
     /**
      * setup
@@ -23,13 +25,13 @@ class SearchTraitTest extends TestCase
     {
         parent::setUp();
 
-        $webserviceMock = $this->getMockBuilder('\Muffin\Webservice\Webservice\Webservice')
+        $webserviceMock = $this->getMockBuilder(Webservice::class)
             ->getMock();
 
-        $driverMock = $this->getMockBuilder('\Muffin\Webservice\AbstractDriver')
+        $driverMock = $this->getMockBuilder(AbstractDriver::class)
             ->getMockForAbstractClass();
 
-        $connectionMock = $this->getMockBuilder('\Muffin\Webservice\Connection')
+        $connectionMock = $this->getMockBuilder(Connection::class)
             ->setConstructorArgs([
                 [
                     'name' => 'test',
@@ -63,8 +65,8 @@ class SearchTraitTest extends TestCase
 
         $query = $this->Articles->find('search', ['search' => $queryString]);
         $this->assertSame([
-            'Articles.foo' => 'a',
-            'Articles.public' => false,
+            'foo' => 'a',
+            'public' => false,
         ], $query->where());
         $this->assertTrue($this->Articles->isSearch());
     }
@@ -89,6 +91,6 @@ class SearchTraitTest extends TestCase
     public function testSearchManager()
     {
         $manager = $this->Articles->searchManager();
-        $this->assertInstanceOf('\Search\Manager', $manager);
+        $this->assertInstanceOf(Manager::class, $manager);
     }
 }
