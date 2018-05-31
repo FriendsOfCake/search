@@ -260,12 +260,12 @@ abstract class Base implements FilterInterface
     /**
      * Sets the query object.
      *
-     * @param \Cake\Datasource\QueryInterface $value Value.
+     * @param \Cake\Datasource\QueryInterface $query Query instance.
      * @return void
      */
-    public function setQuery(QueryInterface $value)
+    public function setQuery(QueryInterface $query)
     {
-        $this->_query = $value;
+        $this->_query = $query;
     }
 
     /**
