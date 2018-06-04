@@ -20,10 +20,10 @@ class FilterLocatorTest extends TestCase
         $manager = new Manager($articles);
         $locator = new FilterLocator($manager);
 
-        $result = $locator->locate('test', 'Search.Value');
+        $result = $locator->get('test', 'Search.Value');
         $this->assertInstanceOf('\Search\Model\Filter\Value', $result);
 
-        $result = $locator->locate('test', 'Search.Compare');
+        $result = $locator->get('test', 'Search.Compare');
         $this->assertInstanceOf('\Search\Model\Filter\Compare', $result);
     }
 }

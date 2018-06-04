@@ -38,7 +38,7 @@ class Manager
     /**
      * Filter Locator
      *
-     * @var \Search\Model\Filter\FilterLocator
+     * @var \Search\Model\Filter\FilterLocatorInterface
      */
     protected $_filterLocator;
 

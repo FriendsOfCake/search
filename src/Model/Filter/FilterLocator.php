@@ -37,7 +37,7 @@ class FilterLocator implements FilterLocatorInterface
      * @return \Search\Model\Filter\Base
      * @throws \InvalidArgumentException When no filter was found.
      */
-    public function locate($name, $filter, array $options = [])
+    public function get($name, $filter, array $options = [])
     {
         if (empty($options['className'])) {
             $class = Inflector::classify($filter);
