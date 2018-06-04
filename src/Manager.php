@@ -255,7 +255,7 @@ class Manager
      */
     public function loadFilter($name, $filter, array $options = [])
     {
-        return $this->_filterLocator->locate($name, $filter, $options);
+        return $this->_filterLocator->get($name, $filter, $options);
     }
 
     /**
