@@ -4,7 +4,9 @@ namespace Search\Test\TestCase\Model\Filter;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
+use Search\Model\Filter\Compare;
 use Search\Model\Filter\FilterLocator;
+use Search\Model\Filter\Value;
 
 /**
  * Filter Locator Test
@@ -21,9 +23,10 @@ class FilterLocatorTest extends TestCase
         $locator = new FilterLocator($manager);
 
         $result = $locator->get('test', 'Search.Value');
-        $this->assertInstanceOf('\Search\Model\Filter\Value', $result);
+
+        $this->assertInstanceOf(Value::class, $result);
 
         $result = $locator->get('test', 'Search.Compare');
-        $this->assertInstanceOf('\Search\Model\Filter\Compare', $result);
+        $this->assertInstanceOf(Compare::class, $result);
     }
 }

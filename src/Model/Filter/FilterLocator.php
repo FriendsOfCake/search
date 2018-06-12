@@ -46,7 +46,7 @@ class FilterLocator implements FilterLocatorInterface
             unset($options['className']);
         }
 
-        $className = App::className($class, 'Model\Filter');
+        $className = App::className($class, 'Model/Filter');
         if (!$className) {
             throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
         }
