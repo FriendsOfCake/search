@@ -1,11 +1,14 @@
 <?php
 namespace Search;
 
-use Cake\Core\App;
 use Cake\Datasource\RepositoryInterface;
-use Cake\Utility\Inflector;
 use InvalidArgumentException;
+use Search\Model\Filter\FilterLocator;
+use Search\Model\Filter\FilterLocatorInterface;
 
+/**
+ * Search Manager Service Class
+ */
 class Manager
 {
 
@@ -33,6 +36,13 @@ class Manager
     protected $_collection = 'default';
 
     /**
+     * Filter Locator
+     *
+     * @var \Search\Model\Filter\FilterLocatorInterface
+     */
+    protected $_filterLocator;
+
+    /**
      * Constructor
      *
      * @param \Cake\Datasource\RepositoryInterface $repository Repository
@@ -40,6 +50,20 @@ class Manager
     public function __construct(RepositoryInterface $repository)
     {
         $this->_repository = $repository;
+        $this->_filterLocator = new FilterLocator($this);
+    }
+
+    /**
+     * Sets the filter locator
+     *
+     * @param \Search\Model\Filter\FilterLocatorInterface $filterLocator Filter Locator
+     * @return $this
+     */
+    public function setFilterLocator(FilterLocatorInterface $filterLocator)
+    {
+        $this->_filterLocator = $filterLocator;
+
+        return $this;
     }
 
     /**
@@ -231,18 +255,7 @@ class Manager
      */
     public function loadFilter($name, $filter, array $options = [])
     {
-        if (empty($options['className'])) {
-            $class = Inflector::classify($filter);
-        } else {
-            $class = $options['className'];
-            unset($options['className']);
-        }
-        $className = App::className($class, 'Model\Filter');
-        if (!$className) {
-            throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
-        }
-
-        return new $className($name, $this, $options);
+        return $this->_filterLocator->get($name, $filter, $options);
     }
 
     /**
