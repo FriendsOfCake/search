@@ -32,5 +32,4 @@ interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
      * @return bool
      */
     public function has($name);
-
 }
