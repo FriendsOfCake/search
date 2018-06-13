@@ -28,7 +28,7 @@ interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
     /**
      * Checks if a filter is in the collection
      *
-     * @param  string|\Search\Model\Filter\FilterInterface
+     * @param  string|\Search\Model\Filter\FilterInterface $name Name of the filter
      * @return bool
      */
     public function has($name);

@@ -29,7 +29,7 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * Checks if a filter is in the collection
      *
-     * @param string|\Search\Model\Filter\FilterInterface
+     * @param string|\Search\Model\Filter\FilterInterface $name Name of the filter
      * @return bool
      */
     public function has($name)
@@ -50,6 +50,8 @@ class FilterCollection implements FilterCollectionInterface
     public function remove($name)
     {
         unset($this->filters[$name]);
+
+        return $this;
     }
 
     /**
@@ -67,7 +69,7 @@ class FilterCollection implements FilterCollectionInterface
      *
      * @link http://php.net/manual/en/arrayaccess.offsetexists.php
      * @param mixed $offset Offset
-     * @return boolean true on success or false on failure. The return value will be casted to boolean if non-boolean was returned.
+     * @return bool true on success or false on failure. The return value will be casted to boolean if non-boolean was returned.
      */
     public function offsetExists($offset)
     {
@@ -107,11 +109,8 @@ class FilterCollection implements FilterCollectionInterface
      * Offset to unset
      *
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     * @param mixed $offset <p>
-     * The offset to unset.
-     * </p>
+     * @param mixed $offset Offset
      * @return void
-     * @since 5.0.0
      */
     public function offsetUnset($offset)
     {
