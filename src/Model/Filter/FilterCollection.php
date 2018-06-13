@@ -107,8 +107,11 @@ class FilterCollection implements FilterCollectionInterface
      * Offset to unset
      *
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     * @param mixed $offset
+     * @param mixed $offset <p>
+     * The offset to unset.
+     * </p>
      * @return void
+     * @since 5.0.0
      */
     public function offsetUnset($offset)
     {
