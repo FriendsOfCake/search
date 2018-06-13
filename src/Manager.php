@@ -3,6 +3,8 @@ namespace Search;
 
 use Cake\Datasource\RepositoryInterface;
 use InvalidArgumentException;
+use Search\Model\Filter\FilterCollection;
+use Search\Model\Filter\FilterCollectionInterface;
 use Search\Model\Filter\FilterLocator;
 use Search\Model\Filter\FilterLocatorInterface;
 
@@ -51,6 +53,7 @@ class Manager
     {
         $this->_repository = $repository;
         $this->_filterLocator = new FilterLocator($this);
+        $this->_filters['default'] = new FilterCollection();
     }
 
     /**
@@ -91,6 +94,9 @@ class Manager
             );
         }
 
+        if ($this->_filters[$collection] instanceof FilterCollectionInterface) {
+            return $this->_filters[$collection]->toArray();
+        }
         return $this->_filters[$collection];
     }
 
