@@ -12,7 +12,7 @@ interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
     /**
      * Adds a filter
      *
-     * @param \Search\Model\Filter\FilterInterface $filter Filter
+     * @param  \Search\Model\Filter\FilterInterface $filter Filter
      * @return $this
      */
     public function add(FilterInterface $filter);
@@ -20,7 +20,7 @@ interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
     /**
      * Removes a filter by name
      *
-     * @param string $name Name of the filter
+     * @param  string $name Name of the filter
      * @return $this
      */
     public function remove($name);
@@ -28,7 +28,7 @@ interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
     /**
      * Checks if a filter is in the collection
      *
-     * @param string|\Search\Model\Filter\FilterInterface
+     * @param  string|\Search\Model\Filter\FilterInterface
      * @return bool
      */
     public function has($name);
