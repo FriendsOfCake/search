@@ -97,6 +97,7 @@ class Manager
         if ($this->_filters[$collection] instanceof FilterCollectionInterface) {
             return $this->_filters[$collection]->toArray();
         }
+
         return $this->_filters[$collection];
     }
 
