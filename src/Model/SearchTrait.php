@@ -6,6 +6,7 @@ use Cake\Datasource\QueryInterface;
 use Cake\Utility\Hash;
 use Exception;
 use Search\Manager;
+use Search\Model\Filter\FilterCollectionInterface;
 
 trait SearchTrait
 {
@@ -87,6 +88,10 @@ trait SearchTrait
     protected function _extractParams($params, $filters)
     {
         $emptyValues = $this->_emptyValues();
+
+        if ($filters instanceof FilterCollectionInterface) {
+            $filters = $filters->toArray();
+        }
 
         return array_intersect_key(Hash::filter($params, function ($val) use ($emptyValues) {
             return !in_array($val, $emptyValues, true);
