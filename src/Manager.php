@@ -26,7 +26,7 @@ class Manager
     /**
      * Filter collections
      *
-     * @var Search\Model\Filter\FilterCollectionInterface[] Filter collections list.
+     * @var \Search\Model\Filter\FilterCollectionInterface[] Filter collections list.
      */
     protected $_collections = [];
 
