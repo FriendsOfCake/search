@@ -2,6 +2,7 @@
 namespace Search\Model\Filter;
 
 use ArrayIterator;
+use Search\Model\Filter\FilterLocatorInterface;
 
 /**
  * FilterCollection
@@ -14,16 +15,49 @@ class FilterCollection implements FilterCollectionInterface
     protected $filters = [];
 
     /**
-     * Adds a filter
+     * Filter Locator
      *
-     * @param \Search\Model\Filter\FilterInterface $filter Filter
+     * @var \Search\Model\Filter\FilterLocatorInterface
+     */
+    protected $_filterLocator;
+
+    /**
+     * Constructor
+     *
+     * @param \Search\Model\Filter\FilterLocatorInterface $locator Filter locator
+     */
+    public function __construct(FilterLocatorInterface $locator)
+    {
+        $this->_filterLocator = $locator;
+    }
+
+    /**
+     * Adds filter to the collection.
+     *
+     * @param string $name Filter name.
+     * @param string $filter Filter class name in short form like "Search.Value" or FQCN.
+     * @param array $options Filter options.
      * @return $this
      */
-    public function add(FilterInterface $filter)
+    public function add($name, $filter, array $options = [])
     {
-        $this->filters[$filter->name()] = $filter;
+        $this->filters[$name] = $this->getFilter($name, $filter, $options);
 
         return $this;
+    }
+
+    /**
+     * Loads a search filter.
+     *
+     * @param string $name Filter name.
+     * @param string $filter Filter class name in short form like "Search.Value" or FQCN.
+     * @param array $options Filter options.
+     * @return \Search\Model\Filter\FilterInterface
+     * @throws \InvalidArgumentException When no filter was found.
+     */
+    public function getFilter($name, $filter, array $options = [])
+    {
+        return $this->_filterLocator->get($name, $filter, $options);
     }
 
     /**

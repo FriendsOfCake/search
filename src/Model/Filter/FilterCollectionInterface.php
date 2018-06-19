@@ -10,12 +10,14 @@ use IteratorAggregate;
 interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
 {
     /**
-     * Adds a filter
+     * Adds filter to the collection.
      *
-     * @param  \Search\Model\Filter\FilterInterface $filter Filter
+     * @param string $name Filter name.
+     * @param string $filter Filter class name in short form like "Search.Value" or FQCN.
+     * @param array $options Filter options.
      * @return $this
      */
-    public function add(FilterInterface $filter);
+    public function add($name, $filter, array $options = []);
 
     /**
      * Removes a filter by name

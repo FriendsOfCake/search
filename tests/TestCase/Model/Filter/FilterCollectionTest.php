@@ -7,6 +7,7 @@ use Search\Manager;
 use Search\Model\Filter\Callback;
 use Search\Model\Filter\FilterCollection;
 use Search\Model\Filter\FilterCollectionInterface;
+use Search\Model\Filter\FilterLocator;
 
 /**
  * Filter Collection Test
@@ -17,13 +18,11 @@ class FilterCollectionTest extends TestCase
     {
         $repository = TableRegistry::get('Articles');
         $manager = new Manager($repository);
-        $filter = new Callback('test', $manager);
 
-        $collection = new FilterCollection();
-        $result = $collection->add($filter);
+        $collection = new FilterCollection(new FilterLocator($manager));
+        $result = $collection->add('test', 'Search.Callback');
         $this->assertInstanceOf(FilterCollectionInterface::class, $result);
 
-        $this->assertTrue($collection->has($filter));
         $this->assertTrue($collection->has('test'));
         $this->assertFalse($collection->has('doesNotExist'));
 

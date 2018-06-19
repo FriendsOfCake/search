@@ -53,7 +53,7 @@ class Manager
     {
         $this->_repository = $repository;
         $this->_filterLocator = new FilterLocator($this);
-        $this->_filters['default'] = new FilterCollection();
+        $this->_filters['default'] = new FilterCollection($this->_filterLocator);
     }
 
     /**
@@ -110,7 +110,7 @@ class Manager
     public function useCollection($name)
     {
         if (!isset($this->_filters[$name])) {
-            $this->_filters[$name] = [];
+            $this->_filters[$name] = new FilterCollection($this->_filterLocator);
         }
         $this->_collection = $name;
 
