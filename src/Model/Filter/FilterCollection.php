@@ -29,6 +29,17 @@ class FilterCollection implements FilterCollectionInterface
     public function __construct(FilterLocatorInterface $locator)
     {
         $this->_filterLocator = $locator;
+
+        $this->initialize();
+    }
+
+    /**
+     * Initialize method.
+     *
+     * @return void
+     */
+    public function initialize()
+    {
     }
 
     /**

@@ -1,7 +1,9 @@
 <?php
 namespace Search;
 
+use Cake\Core\App;
 use Cake\Datasource\RepositoryInterface;
+use Cake\Utility\Inflector;
 use InvalidArgumentException;
 use Search\Model\Filter\FilterCollection;
 use Search\Model\Filter\FilterCollectionInterface;
@@ -87,9 +89,7 @@ class Manager
     public function getFilters($collection = 'default')
     {
         if (!isset($this->_collections[$collection])) {
-            throw new InvalidArgumentException(
-                sprintf('The collection "%s" does not exist.', $collection)
-            );
+            $this->_collections[$collection] = $this->_loadCollection($collection);
         }
 
         if ($this->_collections[$collection] instanceof FilterCollectionInterface) {
@@ -97,6 +97,28 @@ class Manager
         }
 
         return $this->_collections[$collection];
+    }
+
+    /**
+     * Loads a filter collection.
+     *
+     * @param string $name Collection name.
+     * @return \Search\Model\Filter\FilterCollectionInterface
+     * @throws \InvalidArgumentException When no filter was found.
+     */
+    protected function _loadCollection($name)
+    {
+        $class = Inflector::camelize($name);
+
+        $className = App::className($class, 'Model/Filter', 'Collection');
+        if (!$className) {
+            throw new InvalidArgumentException(sprintf(
+                'The collection class "%sCollection" does not exist',
+                $class
+            ));
+        }
+
+        return new $className($this->_filterLocator);
     }
 
     /**

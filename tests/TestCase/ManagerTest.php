@@ -130,18 +130,23 @@ class ManagerTest extends TestCase
         $this->assertCount(2, $result);
         $this->assertInstanceOf('\Search\Model\Filter\Value', $result['test']);
         $this->assertInstanceOf('\Search\Model\Filter\Compare', $result['test2']);
+
+        Configure::write('App.namespace', 'Search\Test\TestApp');
+        $result = $manager->getFilters('my_test');
+        $this->assertCount(1, $result);
+        $this->assertInstanceOf('\Search\Model\Filter\Callback', $result['first']);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The collection "nonExistentCollection" does not exist.
+     * @expectedExceptionMessage The collection class "NonExistentCollection" does not exist
      * @return void
      */
     public function testGetFiltersNonExistentCollection()
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $manager->getFilters('nonExistentCollection');
+        $manager->getFilters('non_existent');
     }
 
     /**
