@@ -5,29 +5,59 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Model\Filter\Callback;
+use Search\Model\Filter\Compare;
 use Search\Model\Filter\FilterCollection;
 use Search\Model\Filter\FilterCollectionInterface;
 use Search\Model\Filter\FilterLocator;
+use Search\Model\Filter\Value;
 
 /**
  * Filter Collection Test
  */
 class FilterCollectionTest extends TestCase
 {
-    public function testCollection()
+    public function setUp()
     {
         $repository = TableRegistry::get('Articles');
         $manager = new Manager($repository);
 
-        $collection = new FilterCollection(new FilterLocator($manager));
-        $result = $collection->add('test', 'Search.Callback');
+        $this->collection = new FilterCollection(new FilterLocator($manager));
+    }
+
+    public function testCollection()
+    {
+        $result = $this->collection->add('test', 'Search.Callback');
         $this->assertInstanceOf(FilterCollectionInterface::class, $result);
 
-        $this->assertTrue($collection->has('test'));
-        $this->assertFalse($collection->has('doesNotExist'));
+        $this->assertTrue($this->collection->has('test'));
+        $this->assertFalse($this->collection->has('doesNotExist'));
 
-        $result = $collection->remove('test');
+        $result = $this->collection->remove('test');
         $this->assertInstanceOf(FilterCollectionInterface::class, $result);
-        $this->assertFalse($collection->has('test'));
+        $this->assertFalse($this->collection->has('test'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetFilter()
+    {
+        $result = $this->collection->loadFilter('test', 'Search.Value');
+        $this->assertInstanceOf(Value::class, $result);
+
+        $result = $this->collection->loadFilter('test', 'Search.Compare');
+        $this->assertInstanceOf(Compare::class, $result);
+    }
+
+    /**
+     * testLoadFilterInvalidArgumentException()
+     *
+     * @return void
+     */
+    public function testLoadFilterInvalidArgumentException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->collection->loadFilter('test', 'DOES-NOT-EXIST');
     }
 }

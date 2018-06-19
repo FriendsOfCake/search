@@ -41,7 +41,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function add($name, $filter, array $options = [])
     {
-        $this->_filters[$name] = $this->getFilter($name, $filter, $options);
+        $this->_filters[$name] = $this->loadFilter($name, $filter, $options);
 
         return $this;
     }
@@ -55,7 +55,7 @@ class FilterCollection implements FilterCollectionInterface
      * @return \Search\Model\Filter\FilterInterface
      * @throws \InvalidArgumentException When no filter was found.
      */
-    public function getFilter($name, $filter, array $options = [])
+    public function loadFilter($name, $filter, array $options = [])
     {
         return $this->_filterLocator->get($name, $filter, $options);
     }
