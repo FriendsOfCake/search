@@ -12,7 +12,7 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * @var array List of filter objects
      */
-    protected $filters = [];
+    protected $_filters = [];
 
     /**
      * Filter Locator
@@ -41,7 +41,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function add($name, $filter, array $options = [])
     {
-        $this->filters[$name] = $this->getFilter($name, $filter, $options);
+        $this->_filters[$name] = $this->getFilter($name, $filter, $options);
 
         return $this;
     }
@@ -72,7 +72,7 @@ class FilterCollection implements FilterCollectionInterface
             $name = $name->name();
         }
 
-        return isset($this->filters[$name]);
+        return isset($this->_filters[$name]);
     }
 
     /**
@@ -83,7 +83,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function remove($name)
     {
-        unset($this->filters[$name]);
+        unset($this->_filters[$name]);
 
         return $this;
     }
@@ -95,7 +95,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->filters);
+        return new ArrayIterator($this->_filters);
     }
 
     /**
@@ -120,7 +120,7 @@ class FilterCollection implements FilterCollectionInterface
     public function offsetGet($offset)
     {
         if ($this->has($offset)) {
-            return $this->filters[$offset];
+            return $this->_filters[$offset];
         }
 
         return null;
@@ -136,7 +136,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function offsetSet($offset, $value)
     {
-        $this->filters[$offset] = $value;
+        $this->_filters[$offset] = $value;
     }
 
     /**
@@ -159,6 +159,6 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function toArray()
     {
-        return $this->filters;
+        return $this->_filters;
     }
 }
