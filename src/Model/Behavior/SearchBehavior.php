@@ -3,11 +3,6 @@
 namespace Search\Model\Behavior;
 
 use Cake\ORM\Behavior;
-use Cake\ORM\Query;
-use Cake\ORM\Table;
-use Cake\Utility\Hash;
-use Exception;
-use Search\Manager;
 use Search\Model\SearchTrait;
 
 class SearchBehavior extends Behavior
