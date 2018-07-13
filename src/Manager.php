@@ -7,12 +7,14 @@ use Cake\Utility\Inflector;
 use InvalidArgumentException;
 use Search\Model\Filter\FilterCollection;
 use Search\Model\Filter\FilterCollectionInterface;
+use Search\Model\Filter\FilterMethodsTrait;
 
 /**
  * Search Manager Service Class
  */
 class Manager
 {
+    use FilterMethodsTrait;
 
     /**
      * Repository
@@ -148,119 +150,5 @@ class Manager
     public function remove($name)
     {
         unset($this->_collections[$this->_collection][$name]);
-    }
-
-    /**
-     * boolean method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function boolean($name, array $config = [])
-    {
-        $this->add($name, 'Search.Boolean', $config);
-
-        return $this;
-    }
-
-    /**
-     * like method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function like($name, array $config = [])
-    {
-        $this->add($name, 'Search.Like', $config);
-
-        return $this;
-    }
-
-    /**
-     * value method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function value($name, array $config = [])
-    {
-        $this->add($name, 'Search.Value', $config);
-
-        return $this;
-    }
-
-    /**
-     * finder method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function finder($name, array $config = [])
-    {
-        $this->add($name, 'Search.Finder', $config);
-
-        return $this;
-    }
-
-    /**
-     * callback method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function callback($name, array $config = [])
-    {
-        $this->add($name, 'Search.Callback', $config);
-
-        return $this;
-    }
-
-    /**
-     * compare method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function compare($name, array $config = [])
-    {
-        $this->add($name, 'Search.Compare', $config);
-
-        return $this;
-    }
-
-    /**
-     * custom method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function custom($name, array $config = [])
-    {
-        $this->add($name, $config['className'], $config);
-
-        return $this;
-    }
-
-    /**
-     * Magic method to add filters using custom types.
-     *
-     * @param string $method Method name.
-     * @param array $args Arguments.
-     * @return $this
-     */
-    public function __call($method, $args)
-    {
-        if (!isset($args[1])) {
-            $args[1] = [];
-        }
-
-        return $this->add($args[0], $method, $args[1]);
     }
 }

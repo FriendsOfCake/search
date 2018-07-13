@@ -35,6 +35,9 @@ class FilterCollectionTest extends TestCase
         $result = $this->collection->remove('test');
         $this->assertInstanceOf(FilterCollectionInterface::class, $result);
         $this->assertFalse($this->collection->has('test'));
+
+        $result = $this->collection->callback('test2');
+        $this->assertInstanceOf(Callback::class, $result['test2']);
     }
 
     /**

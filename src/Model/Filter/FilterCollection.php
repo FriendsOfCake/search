@@ -12,6 +12,8 @@ use Search\Manager;
  */
 class FilterCollection implements FilterCollectionInterface
 {
+    use FilterMethodsTrait;
+
     /**
      * @var array List of filter objects
      */
