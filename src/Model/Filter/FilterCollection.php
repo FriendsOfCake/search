@@ -26,6 +26,8 @@ class FilterCollection implements FilterCollectionInterface
 
     /**
      * Constructor
+     *
+     * @param \Search\Manager $manager Search Manager instance.
      */
     public function __construct(Manager $manager)
     {
