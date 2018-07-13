@@ -417,6 +417,39 @@ Let's use the *backend*'s filters by doing:
     }
 ```
 
+Apart from creating filter collections through search mananger in your table
+class, you can also create them as separate collection classes.
+
+```php
+// src/Model/Filter/MyPostsCollection.php
+namespace App\Model\Files\MyPostsCollection;
+
+use Search\Model\Filter\FilterCollection;
+
+class MyPostsCollection extends FilterCollection
+{
+    public function initialize()
+    {
+        $this->add('foo', 'Search.Callback', [
+            'callback' => function ($query, $args, $filter) {
+                // Modify $query as required
+            }
+        ]);
+        // More $this->add() calls here. The argument for FilterCollection::add()
+        // are same as those of searchManager()->add() shown above.
+    }
+}
+```
+
+To use this `MyPosts` collection just specify the collection name in underscored
+form in `find()` call.
+
+```php
+$query = $this->Examples->find('search', [
+    'search' => $this->request->getQuery(), 'collection' => 'my_posts'
+]);
+```
+
 ## Optional fields
 
 Sometimes you might want to search your data based on two of three inputs in

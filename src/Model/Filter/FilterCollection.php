@@ -2,6 +2,7 @@
 namespace Search\Model\Filter;
 
 use ArrayIterator;
+use Search\Model\Filter\FilterLocatorInterface;
 
 /**
  * FilterCollection
@@ -11,19 +12,63 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * @var array List of filter objects
      */
-    protected $filters = [];
+    protected $_filters = [];
 
     /**
-     * Adds a filter
+     * Filter Locator
      *
-     * @param \Search\Model\Filter\FilterInterface $filter Filter
+     * @var \Search\Model\Filter\FilterLocatorInterface
+     */
+    protected $_filterLocator;
+
+    /**
+     * Constructor
+     *
+     * @param \Search\Model\Filter\FilterLocatorInterface $locator Filter locator
+     */
+    public function __construct(FilterLocatorInterface $locator)
+    {
+        $this->_filterLocator = $locator;
+
+        $this->initialize();
+    }
+
+    /**
+     * Initialize method.
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+    }
+
+    /**
+     * Adds filter to the collection.
+     *
+     * @param string $name Filter name.
+     * @param string $filter Filter class name in short form like "Search.Value" or FQCN.
+     * @param array $options Filter options.
      * @return $this
      */
-    public function add(FilterInterface $filter)
+    public function add($name, $filter, array $options = [])
     {
-        $this->filters[$filter->name()] = $filter;
+        $this->_filters[$name] = $this->loadFilter($name, $filter, $options);
 
         return $this;
+    }
+
+    /**
+     * Loads a search filter.
+     *
+     * @param string $name Filter name.
+     * @param string $filter Filter class name in short form like "Search.Value" or FQCN.
+     * @param array $options Filter options.
+     * @return \Search\Model\Filter\FilterInterface
+     * @throws \InvalidArgumentException When no filter was found.
+     */
+    public function loadFilter($name, $filter, array $options = [])
+    {
+        return $this->_filterLocator->get($name, $filter, $options);
     }
 
     /**
@@ -38,7 +83,7 @@ class FilterCollection implements FilterCollectionInterface
             $name = $name->name();
         }
 
-        return isset($this->filters[$name]);
+        return isset($this->_filters[$name]);
     }
 
     /**
@@ -49,7 +94,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function remove($name)
     {
-        unset($this->filters[$name]);
+        unset($this->_filters[$name]);
 
         return $this;
     }
@@ -61,7 +106,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->filters);
+        return new ArrayIterator($this->_filters);
     }
 
     /**
@@ -86,7 +131,7 @@ class FilterCollection implements FilterCollectionInterface
     public function offsetGet($offset)
     {
         if ($this->has($offset)) {
-            return $this->filters[$offset];
+            return $this->_filters[$offset];
         }
 
         return null;
@@ -102,7 +147,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function offsetSet($offset, $value)
     {
-        $this->filters[$offset] = $value;
+        $this->_filters[$offset] = $value;
     }
 
     /**
@@ -125,6 +170,6 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function toArray()
     {
-        return $this->filters;
+        return $this->_filters;
     }
 }

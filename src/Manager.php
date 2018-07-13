@@ -1,7 +1,9 @@
 <?php
 namespace Search;
 
+use Cake\Core\App;
 use Cake\Datasource\RepositoryInterface;
+use Cake\Utility\Inflector;
 use InvalidArgumentException;
 use Search\Model\Filter\FilterCollection;
 use Search\Model\Filter\FilterCollectionInterface;
@@ -22,13 +24,11 @@ class Manager
     protected $_repository;
 
     /**
-     * Filter collection and their filters
+     * Filter collections
      *
-     * @var array
+     * @var \Search\Model\Filter\FilterCollectionInterface[] Filter collections list.
      */
-    protected $_filters = [
-        'default' => []
-    ];
+    protected $_collections = [];
 
     /**
      * Active filter collection.
@@ -53,7 +53,7 @@ class Manager
     {
         $this->_repository = $repository;
         $this->_filterLocator = new FilterLocator($this);
-        $this->_filters['default'] = new FilterCollection();
+        $this->_collections['default'] = new FilterCollection($this->_filterLocator);
     }
 
     /**
@@ -88,17 +88,37 @@ class Manager
      */
     public function getFilters($collection = 'default')
     {
-        if (!isset($this->_filters[$collection])) {
-            throw new InvalidArgumentException(
-                sprintf('The collection "%s" does not exist.', $collection)
-            );
+        if (!isset($this->_collections[$collection])) {
+            $this->_collections[$collection] = $this->_loadCollection($collection);
         }
 
-        if ($this->_filters[$collection] instanceof FilterCollectionInterface) {
-            return $this->_filters[$collection]->toArray();
+        if ($this->_collections[$collection] instanceof FilterCollectionInterface) {
+            return $this->_collections[$collection]->toArray();
         }
 
-        return $this->_filters[$collection];
+        return $this->_collections[$collection];
+    }
+
+    /**
+     * Loads a filter collection.
+     *
+     * @param string $name Collection name.
+     * @return \Search\Model\Filter\FilterCollectionInterface
+     * @throws \InvalidArgumentException When no filter was found.
+     */
+    protected function _loadCollection($name)
+    {
+        $class = Inflector::camelize($name);
+
+        $className = App::className($class, 'Model/Filter', 'Collection');
+        if (!$className) {
+            throw new InvalidArgumentException(sprintf(
+                'The collection class "%sCollection" does not exist',
+                $class
+            ));
+        }
+
+        return new $className($this->_filterLocator);
     }
 
     /**
@@ -109,8 +129,8 @@ class Manager
      */
     public function useCollection($name)
     {
-        if (!isset($this->_filters[$name])) {
-            $this->_filters[$name] = [];
+        if (!isset($this->_collections[$name])) {
+            $this->_collections[$name] = new FilterCollection($this->_filterLocator);
         }
         $this->_collection = $name;
 
@@ -137,7 +157,7 @@ class Manager
      */
     public function add($name, $filter, array $options = [])
     {
-        $this->_filters[$this->_collection][$name] = $this->loadFilter($name, $filter, $options);
+        $this->_collections[$this->_collection]->add($name, $filter, $options);
 
         return $this;
     }
@@ -150,7 +170,7 @@ class Manager
      */
     public function remove($name)
     {
-        unset($this->_filters[$this->_collection][$name]);
+        unset($this->_collections[$this->_collection][$name]);
     }
 
     /**
@@ -249,20 +269,6 @@ class Manager
         $this->add($name, $config['className'], $config);
 
         return $this;
-    }
-
-    /**
-     * Loads a search filter.
-     *
-     * @param string $name Name of the field
-     * @param string $filter Filter name
-     * @param array $options Filter options.
-     * @return \Search\Model\Filter\Base
-     * @throws \InvalidArgumentException When no filter was found.
-     */
-    public function loadFilter($name, $filter, array $options = [])
-    {
-        return $this->_filterLocator->get($name, $filter, $options);
     }
 
     /**
