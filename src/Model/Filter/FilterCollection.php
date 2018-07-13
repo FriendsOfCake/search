@@ -2,6 +2,10 @@
 namespace Search\Model\Filter;
 
 use ArrayIterator;
+use Cake\Core\App;
+use Cake\Utility\Inflector;
+use InvalidArgumentException;
+use Search\Manager;
 
 /**
  * FilterCollection
@@ -16,20 +20,20 @@ class FilterCollection implements FilterCollectionInterface
     protected $_filters = [];
 
     /**
-     * Filter Locator
+     * Search Manager
      *
-     * @var \Search\Model\Filter\FilterLocatorInterface
+     * @var \Search\Manager
      */
-    protected $_filterLocator;
+    protected $_manager;
 
     /**
      * Constructor
      *
-     * @param \Search\Model\Filter\FilterLocatorInterface $locator Filter locator
+     * @param \Search\Manager $manager Search Manager instance.
      */
-    public function __construct(FilterLocatorInterface $locator)
+    public function __construct(Manager $manager)
     {
-        $this->_filterLocator = $locator;
+        $this->_manager = $manager;
 
         $this->initialize();
     }
@@ -69,7 +73,19 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function loadFilter($name, $filter, array $options = [])
     {
-        return $this->_filterLocator->get($name, $filter, $options);
+        if (empty($options['className'])) {
+            $class = Inflector::classify($filter);
+        } else {
+            $class = $options['className'];
+            unset($options['className']);
+        }
+
+        $className = App::className($class, 'Model/Filter');
+        if (!$className) {
+            throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
+        }
+
+        return new $className($name, $this->_manager, $options);
     }
 
     /**

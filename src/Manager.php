@@ -7,8 +7,6 @@ use Cake\Utility\Inflector;
 use InvalidArgumentException;
 use Search\Model\Filter\FilterCollection;
 use Search\Model\Filter\FilterCollectionInterface;
-use Search\Model\Filter\FilterLocator;
-use Search\Model\Filter\FilterLocatorInterface;
 use Search\Model\Filter\FilterMethodsTrait;
 
 /**
@@ -40,13 +38,6 @@ class Manager
     protected $_collection = 'default';
 
     /**
-     * Filter Locator
-     *
-     * @var \Search\Model\Filter\FilterLocatorInterface
-     */
-    protected $_filterLocator;
-
-    /**
      * Constructor
      *
      * @param \Cake\Datasource\RepositoryInterface $repository Repository
@@ -54,21 +45,7 @@ class Manager
     public function __construct(RepositoryInterface $repository)
     {
         $this->_repository = $repository;
-        $this->_filterLocator = new FilterLocator($this);
-        $this->_collections['default'] = new FilterCollection($this->_filterLocator);
-    }
-
-    /**
-     * Sets the filter locator
-     *
-     * @param \Search\Model\Filter\FilterLocatorInterface $filterLocator Filter Locator
-     * @return $this
-     */
-    public function setFilterLocator(FilterLocatorInterface $filterLocator)
-    {
-        $this->_filterLocator = $filterLocator;
-
-        return $this;
+        $this->_collections['default'] = new FilterCollection($this);
     }
 
     /**
@@ -120,7 +97,7 @@ class Manager
             ));
         }
 
-        return new $className($this->_filterLocator);
+        return new $className($this);
     }
 
     /**
@@ -132,7 +109,7 @@ class Manager
     public function useCollection($name)
     {
         if (!isset($this->_collections[$name])) {
-            $this->_collections[$name] = new FilterCollection($this->_filterLocator);
+            $this->_collections[$name] = new FilterCollection($this);
         }
         $this->_collection = $name;
 
