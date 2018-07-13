@@ -413,9 +413,11 @@ Let's use the *backend*'s filters by doing:
 ```php
 // ExampleController::action()
     $query = $this->Examples
-        ->find('search', ['search' => $this->request->query, 'collection' => 'backend']);
+        ->find('search', ['search' => $this->request->getQuery(), 'collection' => 'backend']);
     }
 ```
+
+### Lazy loaded filters
 
 Apart from creating filter collections through search mananger in your table
 class, you can also create them as separate collection classes.
@@ -449,6 +451,8 @@ $query = $this->Examples->find('search', [
     'search' => $this->request->getQuery(), 'collection' => 'my_posts'
 ]);
 ```
+
+This way the collection and it's filters will be instantiated only when needed.
 
 ## Optional fields
 
