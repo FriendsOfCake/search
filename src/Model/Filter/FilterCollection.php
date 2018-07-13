@@ -2,13 +2,14 @@
 namespace Search\Model\Filter;
 
 use ArrayIterator;
-use Search\Model\Filter\FilterLocatorInterface;
 
 /**
  * FilterCollection
  */
 class FilterCollection implements FilterCollectionInterface
 {
+    use FilterMethodsTrait;
+
     /**
      * @var array List of filter objects
      */
