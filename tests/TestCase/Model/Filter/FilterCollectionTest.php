@@ -21,7 +21,7 @@ class FilterCollectionTest extends TestCase
         $repository = TableRegistry::get('Articles');
         $manager = new Manager($repository);
 
-        $this->collection = new FilterCollection(new FilterLocator($manager));
+        $this->collection = new FilterCollection($manager);
     }
 
     public function testCollection()
