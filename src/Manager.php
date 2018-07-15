@@ -38,14 +38,25 @@ class Manager
     protected $_collection = 'default';
 
     /**
+     * Default collection class.
+     *
+     * @var string
+     */
+    protected $_collectionClass = FilterCollection::class;
+
+    /**
      * Constructor
      *
      * @param \Cake\Datasource\RepositoryInterface $repository Repository
+     * @param string|null $collectionClass
      */
-    public function __construct(RepositoryInterface $repository)
+    public function __construct(RepositoryInterface $repository, $collectionClass = null)
     {
         $this->_repository = $repository;
-        $this->_collections['default'] = new FilterCollection($this);
+        $this->_collections['default'] = new $this->_collectionClass($this);
+        if ($collectionClass) {
+            $this->_collectionClass = $collectionClass;
+        }
     }
 
     /**
@@ -109,7 +120,7 @@ class Manager
     public function useCollection($name)
     {
         if (!isset($this->_collections[$name])) {
-            $this->_collections[$name] = new FilterCollection($this);
+            $this->_collections[$name] = new $this->_collectionClass($this);
         }
         $this->_collection = $name;
 

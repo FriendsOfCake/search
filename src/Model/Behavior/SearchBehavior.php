@@ -26,7 +26,8 @@ class SearchBehavior extends Behavior
             'searchManager' => 'searchManager',
             'isSearch' => 'isSearch'
         ],
-        'emptyValues' => ['', false, null]
+        'emptyValues' => ['', false, null],
+        'collectionClass' => null,
     ];
 
     /**
@@ -42,6 +43,8 @@ class SearchBehavior extends Behavior
         if (isset($config['emptyValues'])) {
             $this->setConfig('emptyValues', $config['emptyValues'], false);
         }
+
+        $this->_collectionClass = $this->getConfig('collectionClass');
     }
 
     /**

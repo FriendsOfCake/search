@@ -6,6 +6,7 @@ use Cake\Datasource\QueryInterface;
 use Cake\Utility\Hash;
 use Exception;
 use Search\Manager;
+use Search\Model\Filter\FilterCollection;
 use Search\Model\Filter\FilterCollectionInterface;
 
 trait SearchTrait
@@ -24,6 +25,13 @@ trait SearchTrait
      * @var bool
      */
     protected $_isSearch = false;
+
+    /**
+     * Default collection class.
+     *
+     * @var string
+     */
+    protected $_collectionClass = FilterCollection::class;
 
     /**
      * Callback fired from the controller.
@@ -71,7 +79,10 @@ trait SearchTrait
     public function searchManager()
     {
         if ($this->_manager === null) {
-            $this->_manager = new Manager($this->_repository());
+            $this->_manager = new Manager(
+                $this->_repository(),
+                $this->_collectionClass
+            );
         }
 
         return $this->_manager;
