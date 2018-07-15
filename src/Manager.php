@@ -48,7 +48,7 @@ class Manager
      * Constructor
      *
      * @param \Cake\Datasource\RepositoryInterface $repository Repository
-     * @param string|null $collectionClass
+     * @param string|null $collectionClass Default collection class.
      */
     public function __construct(RepositoryInterface $repository, $collectionClass = null)
     {
