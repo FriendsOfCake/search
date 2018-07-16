@@ -35,9 +35,9 @@ Plugin::load('Search');
 
 ## Contents
 * [Usage](#usage)
-** [Table behaviour configuration](#table-class)
-** [Controller method configuration](#controller-class)
-** [Component](#component)
+ * [Table behaviour configuration](#table-class)
+ * [Controller method configuration](#controller-class)
+ * [Component](#component)
 * [Filtering your data](#filtering-your-data)
 * [Filter types](#filters)
 * [Filter scopes](#filter-collections)
