@@ -9,7 +9,7 @@ Search provides a simple interface to create paginate-able filters for your Cake
 
 ## Requirements
 
-* CakePHP 3.4.0 or greater. For older versions of CakePHP use 3.x releases of
+* CakePHP 3.5.0 or greater. For older versions of CakePHP use 3.x releases of
 the plugin.
 
 ## Installation
