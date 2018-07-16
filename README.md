@@ -33,6 +33,20 @@ or adding following to your `config/bootstrap.php`
 Plugin::load('Search');
 ```
 
+## Contents
+* [Usage](#usage)
+ * [Table behaviour configuration](#table-class)
+ * [Controller method configuration](#controller-class)
+ * [Component](#component)
+* [Filtering your data](#filtering-your-data)
+* [Filter types](#filters)
+* [Filter scopes](#filter-collections)
+* [Optional filters](#optional-fields)
+* [Allowing empty filters](#empty-fields)
+* [Persisting the query string](#persisting-the-query-string)
+* [Blacklist query string](#blacklist-query-string)
+
+
 ## Usage
 
 The plugin has three main parts which you will need to configure and include in
