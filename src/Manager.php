@@ -81,7 +81,7 @@ class Manager
             $this->_collections[$collection] = $this->_loadCollection($collection);
         }
 
-        return $this->_collections[$collection]->toArray();
+        return iterator_to_array($this->_collections[$collection]);
     }
 
     /**
