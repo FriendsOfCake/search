@@ -178,15 +178,4 @@ class FilterCollection implements FilterCollectionInterface
     {
         $this->remove($offset);
     }
-
-    /**
-     * Returns the collection as array, mostly to be backward compatible
-     *
-     * @internal Don't use it it's for backward compatibility here
-     * @return array
-     */
-    public function toArray()
-    {
-        return $this->_filters;
-    }
 }

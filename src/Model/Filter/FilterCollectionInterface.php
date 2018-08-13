@@ -36,16 +36,6 @@ interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
     public function has($name);
 
     /**
-     * Returns the collection as array, mostly to be backward compatible
-     *
-     * This will be removed in a future release, don't use!
-     *
-     * @internal Don't use it it's for backward compatibility here
-     * @return array
-     */
-    public function toArray();
-
-    /**
      * Loads a search filter.
      *
      * @param string $name Filter name.
