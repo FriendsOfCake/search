@@ -7,7 +7,6 @@ use Cake\Utility\Hash;
 use Exception;
 use Search\Manager;
 use Search\Model\Filter\FilterCollection;
-use Search\Model\Filter\FilterCollectionInterface;
 
 trait SearchTrait
 {
@@ -93,20 +92,18 @@ trait SearchTrait
      * name exists.
      *
      * @param array $params The parameters array to extract from.
-     * @param \Search\Model\Filter\FilterInterface[]|\Search\Model\Filter\FilterCollectionInterface $filters The filters to match against.
+     * @param \Search\Model\Filter\FilterInterface[] $filters The filters to match against.
      * @return array The extracted parameters.
      */
     protected function _extractParams($params, $filters)
     {
         $emptyValues = $this->_emptyValues();
 
-        if ($filters instanceof FilterCollectionInterface) {
-            $filters = $filters->toArray();
-        }
-
-        return array_intersect_key(Hash::filter($params, function ($val) use ($emptyValues) {
+        $nonEmptyParams = Hash::filter($params, function ($val) use ($emptyValues) {
             return !in_array($val, $emptyValues, true);
-        }), $filters);
+        });
+
+        return array_intersect_key($nonEmptyParams, $filters);
     }
 
     /**
@@ -145,7 +142,7 @@ trait SearchTrait
      * ```
      *
      * @param array $params The parameters array to flatten.
-     * @param \Search\Model\Filter\FilterInterface[]|\Search\Model\Filter\FilterCollectionInterface $filters The array of filters with configuration
+     * @param \Search\Model\Filter\FilterInterface[] $filters The array of filters with configuration
      * @return array The flattened parameters array.
      */
     protected function _flattenParams($params, $filters)
@@ -185,7 +182,7 @@ trait SearchTrait
     /**
      * Processes the given filters.
      *
-     * @param \Search\Model\Filter\FilterInterface[]|\Search\Model\Filter\FilterCollectionInterface $filters The filters to process.
+     * @param \Search\Model\Filter\FilterInterface[] $filters The filters to process.
      * @param array $params The parameters to pass to the filters.
      * @param \Cake\Datasource\QueryInterface $query The query to pass to the filters.
      * @return \Cake\Datasource\QueryInterface The query processed by the filters.
