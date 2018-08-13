@@ -6,7 +6,6 @@ use Cake\Datasource\RepositoryInterface;
 use Cake\Utility\Inflector;
 use InvalidArgumentException;
 use Search\Model\Filter\FilterCollection;
-use Search\Model\Filter\FilterCollectionInterface;
 use Search\Model\Filter\FilterMethodsTrait;
 
 /**
