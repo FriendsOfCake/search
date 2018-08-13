@@ -82,11 +82,7 @@ class Manager
             $this->_collections[$collection] = $this->_loadCollection($collection);
         }
 
-        if ($this->_collections[$collection] instanceof FilterCollectionInterface) {
-            return $this->_collections[$collection]->toArray();
-        }
-
-        return $this->_collections[$collection];
+        return $this->_collections[$collection]->toArray();
     }
 
     /**
