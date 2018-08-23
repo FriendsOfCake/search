@@ -6,6 +6,7 @@ use Cake\Datasource\RepositoryInterface;
 use Cake\Utility\Inflector;
 use InvalidArgumentException;
 use Search\Model\Filter\FilterCollection;
+use Search\Model\Filter\FilterCollectionInterface;
 use Search\Model\Filter\FilterMethodsTrait;
 
 /**
@@ -52,10 +53,10 @@ class Manager
     public function __construct(RepositoryInterface $repository, $collectionClass = null)
     {
         $this->_repository = $repository;
+
         if ($collectionClass) {
             $this->_collectionClass = $collectionClass;
         }
-        $this->_collections['default'] = $this->_loadCollection($this->_collectionClass);
     }
 
     /**
@@ -93,10 +94,10 @@ class Manager
      */
     protected function _loadCollection($name)
     {
-        if (strpos($name, '\\') === false) {
-            $class = Inflector::camelize(str_replace('-', '_', $name));
+        if ($name === 'default') {
+            $class = $this->_collectionClass;
         } else {
-            $class = $name;
+            $class = Inflector::camelize(str_replace('-', '_', $name));
         }
 
         $className = App::className($class, 'Model/Filter', 'Collection');
@@ -107,7 +108,16 @@ class Manager
             ));
         }
 
-        return new $className($this);
+        $instance = new $className($this);
+        if (!$instance instanceof FilterCollectionInterface) {
+            throw new InvalidArgumentException(sprintf(
+                'The collection must be instance of FilterCollectionInterface. ' .
+                'Got instanceof "%s" instead',
+                get_class($instance)
+            ));
+        }
+
+        return $instance;
     }
 
     /**
@@ -118,12 +128,23 @@ class Manager
      */
     public function useCollection($name)
     {
-        if (!isset($this->_collections[$name])) {
-            $this->_collections[$name] = new $this->_collectionClass($this);
-        }
         $this->_collection = $name;
 
         return $this;
+    }
+
+    /**
+     * Get instance for current collection.
+     *
+     * @return \Search\Model\Filter\FilterCollectionInterface
+     */
+    protected function _collection()
+    {
+        if (!isset($this->_collections[$this->_collection])) {
+            $this->_collections[$this->_collection] = new $this->_collectionClass($this);
+        }
+
+        return $this->_collections[$this->_collection];
     }
 
     /**
@@ -146,7 +167,7 @@ class Manager
      */
     public function add($name, $filter, array $options = [])
     {
-        $this->_collections[$this->_collection]->add($name, $filter, $options);
+        $this->_collection()->add($name, $filter, $options);
 
         return $this;
     }
@@ -155,10 +176,12 @@ class Manager
      * Removes filter from the active collection.
      *
      * @param string $name Name of the filter to be removed.
-     * @return void
+     * @return $this
      */
     public function remove($name)
     {
-        unset($this->_collections[$this->_collection][$name]);
+        $this->_collection()->remove($name);
+
+        return $this;
     }
 }

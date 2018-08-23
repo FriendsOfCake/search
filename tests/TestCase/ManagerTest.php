@@ -4,6 +4,7 @@ namespace Search\Test\TestCase;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use InvalidArgumentException;
 use Search\Manager;
 
 class ManagerTest extends TestCase
@@ -237,5 +238,21 @@ class ManagerTest extends TestCase
 
         $result = $manager->useCollection('default');
         $this->assertInstanceOf('\Search\Manager', $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testInvalidCollectionClass()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table, self::class);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The collection must be instance of FilterCollectionInterface. Got instanceof "%s" instead',
+            self::class
+        ));
+        $manager->getFilters();
     }
 }
