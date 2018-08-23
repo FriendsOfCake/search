@@ -52,10 +52,10 @@ class Manager
     public function __construct(RepositoryInterface $repository, $collectionClass = null)
     {
         $this->_repository = $repository;
-        $this->_collections['default'] = new $this->_collectionClass($this);
         if ($collectionClass) {
             $this->_collectionClass = $collectionClass;
         }
+        $this->_collections['default'] = $this->_loadCollection($this->_collectionClass);
     }
 
     /**
@@ -87,13 +87,17 @@ class Manager
     /**
      * Loads a filter collection.
      *
-     * @param string $name Collection name.
+     * @param string $name Collection name or FQCN.
      * @return \Search\Model\Filter\FilterCollectionInterface
      * @throws \InvalidArgumentException When no filter was found.
      */
     protected function _loadCollection($name)
     {
-        $class = Inflector::camelize($name);
+        if (strpos($name, '\\') === false) {
+            $class = Inflector::camelize(str_replace('-', '_', $name));
+        } else {
+            $class = $name;
+        }
 
         $className = App::className($class, 'Model/Filter', 'Collection');
         if (!$className) {
