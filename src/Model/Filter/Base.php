@@ -9,7 +9,7 @@ use Search\Manager;
  * Base class for search type classes.
  *
  */
-abstract class Base implements FilterInterface
+abstract class Base
 {
 
     use InstanceConfigTrait;

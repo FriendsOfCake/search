@@ -30,7 +30,7 @@ interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
     /**
      * Checks if a filter is in the collection
      *
-     * @param  string|\Search\Model\Filter\FilterInterface $name Name of the filter
+     * @param  string|\Search\Model\Filter\Base $name Name of the filter
      * @return bool
      */
     public function has($name);
@@ -41,7 +41,7 @@ interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
      * @param string $name Filter name.
      * @param string $filter Filter class name in short form like "Search.Value" or FQCN.
      * @param array $options Filter options.
-     * @return \Search\Model\Filter\FilterInterface
+     * @return \Search\Model\Filter\Base
      * @throws \InvalidArgumentException When no filter was found.
      */
     public function loadFilter($name, $filter, array $options = []);
