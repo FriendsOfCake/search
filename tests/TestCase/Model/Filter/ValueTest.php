@@ -16,7 +16,7 @@ class ValueTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Search.Articles',
     ];
 
     /**
@@ -71,7 +71,7 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
-            'field' => ['title', 'other']
+            'field' => ['title', 'other'],
         ]);
         $filter->setArgs(['title' => 'foo']);
         $filter->setQuery($articles->find());
@@ -96,7 +96,7 @@ class ValueTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'field' => ['title', 'other'],
-            'mode' => 'and'
+            'mode' => 'and',
         ]);
         $filter->setArgs(['title' => 'foo']);
         $filter->setQuery($articles->find());
@@ -143,7 +143,7 @@ class ValueTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
-            'mode' => 'and'
+            'mode' => 'and',
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
         $filter->setQuery($articles->find());
@@ -168,7 +168,7 @@ class ValueTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
-            'field' => ['title', 'other']
+            'field' => ['title', 'other'],
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
         $filter->setQuery($articles->find());
@@ -195,7 +195,7 @@ class ValueTest extends TestCase
         $filter = new Value('title', $manager, [
             'multiValue' => true,
             'field' => ['title', 'other'],
-            'mode' => 'and'
+            'mode' => 'and',
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
         $filter->setQuery($articles->find());
@@ -297,7 +297,7 @@ class ValueTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
-            'mode' => 'Or'
+            'mode' => 'Or',
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
         $filter->setQuery($articles->find());

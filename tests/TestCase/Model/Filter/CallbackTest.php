@@ -17,7 +17,7 @@ class CallbackTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Search.Articles',
     ];
 
     /**
@@ -31,7 +31,7 @@ class CallbackTest extends TestCase
         $filter = new Callback('title', $manager, [
             'callback' => function (Query $query, array $args, Callback $filter) {
                 $query->where(['title' => 'test']);
-            }
+            },
         ]);
         $filter->setArgs(['title' => ['test']]);
         $filter->setQuery($articles->find());
@@ -58,7 +58,7 @@ class CallbackTest extends TestCase
         $filter = new Callback('title', $manager, [
             'callback' => function (Query $query, array $args, Callback $filter) {
                 return false;
-            }
+            },
         ]);
         $filter->setArgs(['title' => ['test']]);
         $filter->setQuery($articles->find());

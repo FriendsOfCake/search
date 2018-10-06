@@ -20,11 +20,11 @@ class SearchBehavior extends Behavior
      */
     protected $_defaultConfig = [
         'implementedFinders' => [
-            'search' => 'findSearch'
+            'search' => 'findSearch',
         ],
         'implementedMethods' => [
             'searchManager' => 'searchManager',
-            'isSearch' => 'isSearch'
+            'isSearch' => 'isSearch',
         ],
         'emptyValues' => ['', false, null],
         'collectionClass' => null,

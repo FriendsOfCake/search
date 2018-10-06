@@ -13,7 +13,7 @@ class Value extends Base
      * @var array
      */
     protected $_defaultConfig = [
-        'mode' => 'OR'
+        'mode' => 'OR',
     ];
 
     /**

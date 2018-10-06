@@ -5,7 +5,6 @@ use ArrayIterator;
 use Cake\Core\App;
 use Cake\Utility\Inflector;
 use InvalidArgumentException;
-use RuntimeException;
 use Search\Manager;
 
 /**

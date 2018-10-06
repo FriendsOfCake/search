@@ -14,7 +14,7 @@ class Boolean extends Base
     protected $_defaultConfig = [
         'mode' => 'OR',
         'truthy' => [1, true, '1', 'true', 'yes', 'on'],
-        'falsy' => [0, false, '0', 'false', 'no', 'off']
+        'falsy' => [0, false, '0', 'false', 'no', 'off'],
     ];
 
     /**

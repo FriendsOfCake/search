@@ -8,7 +8,6 @@ use Search\Model\Filter\Callback;
 use Search\Model\Filter\Compare;
 use Search\Model\Filter\FilterCollection;
 use Search\Model\Filter\FilterCollectionInterface;
-use Search\Model\Filter\FilterLocator;
 use Search\Model\Filter\Value;
 
 /**

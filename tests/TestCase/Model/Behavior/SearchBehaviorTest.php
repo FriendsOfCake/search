@@ -45,15 +45,15 @@ class SearchBehaviorTest extends TestCase
 
         TableRegistry::clear();
         $this->Articles = TableRegistry::get('Articles', [
-            'className' => 'Search\Test\TestApp\Model\Table\ArticlesTable'
+            'className' => 'Search\Test\TestApp\Model\Table\ArticlesTable',
         ]);
         $this->Articles->addBehavior('Search.Search');
         $this->Comments = TableRegistry::get('Comments', [
-            'className' => 'Search\Test\TestApp\Model\Table\CommentsTable'
+            'className' => 'Search\Test\TestApp\Model\Table\CommentsTable',
         ]);
         $this->Comments->addBehavior('Search.Search');
         $this->Groups = TableRegistry::get('Groups', [
-            'className' => 'Search\Test\TestApp\Model\Table\GroupsTable'
+            'className' => 'Search\Test\TestApp\Model\Table\GroupsTable',
         ]);
         $this->Groups->addBehavior('Search.Search');
     }
@@ -73,7 +73,7 @@ class SearchBehaviorTest extends TestCase
             ->getMock();
         $this->Comments->behaviors()->reset();
         $this->Comments->addBehavior('Search', [
-            'className' => '\\' . get_class($behavior)
+            'className' => '\\' . get_class($behavior),
         ]);
 
         $params = [
@@ -81,8 +81,8 @@ class SearchBehaviorTest extends TestCase
             'date' => [
                 'd' => '01',
                 'm' => '01',
-                'y' => '2017'
-            ]
+                'y' => '2017',
+            ],
         ];
         $query = $this->Comments->find();
 
@@ -128,7 +128,7 @@ class SearchBehaviorTest extends TestCase
 
         $filters = [
             'name' => $filter,
-            'date' => $filter2
+            'date' => $filter2,
         ];
 
         /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
@@ -144,8 +144,8 @@ class SearchBehaviorTest extends TestCase
             'date' => [
                 'd' => '01',
                 'm' => '01',
-                'y' => '2017'
-            ]
+                'y' => '2017',
+            ],
         ];
         $behavior->findSearch($query, ['search' => $queryString]);
     }
@@ -160,7 +160,7 @@ class SearchBehaviorTest extends TestCase
         $queryString = [
             'foo' => 'a',
             'search' => 'b',
-            'group' => 'main'
+            'group' => 'main',
         ];
         $this->assertFalse($this->Articles->isSearch());
 
@@ -179,8 +179,8 @@ class SearchBehaviorTest extends TestCase
             'search' => [
                 'foo' => 0,
                 'search' => 'b',
-                'page' => 1
-            ]
+                'page' => 1,
+            ],
         ]);
         $this->assertEquals(2, $query->clause('where')->count());
         $this->assertTrue($this->Articles->isSearch());
@@ -196,7 +196,7 @@ class SearchBehaviorTest extends TestCase
         $queryString = [
             'foo' => 'a',
             'search' => 'b',
-            'group' => false
+            'group' => false,
         ];
 
         $query = $this->Articles->find('search', ['search' => $queryString]);
@@ -204,7 +204,7 @@ class SearchBehaviorTest extends TestCase
 
         $this->Articles->removeBehavior('Search');
         $this->Articles->addBehavior('Search.Search', [
-            'emptyValues' => ['a']
+            'emptyValues' => ['a'],
         ]);
         $this->Articles->searchManager()
             ->value('foo')
@@ -216,7 +216,7 @@ class SearchBehaviorTest extends TestCase
 
         $this->Articles->removeBehavior('Search');
         $this->Articles->addBehavior('Search.Search', [
-            'emptyValues' => ['a', false]
+            'emptyValues' => ['a', false],
         ]);
         $this->Articles->searchManager()
             ->value('foo')
@@ -238,8 +238,8 @@ class SearchBehaviorTest extends TestCase
             'Comments' => [
                 'foo' => 'a',
                 'search' => 'b',
-                'group' => 'main'
-            ]
+                'group' => 'main',
+            ],
         ];
 
         $query = $this->Comments->find('search', ['search' => $queryString]);

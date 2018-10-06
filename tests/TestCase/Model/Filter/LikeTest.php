@@ -16,7 +16,7 @@ class LikeTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Search.Articles',
     ];
 
     /**
@@ -86,7 +86,7 @@ class LikeTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
             'field' => ['title', 'other'],
-            'valueMode' => 'and'
+            'valueMode' => 'and',
         ]);
         $filter->setArgs(['title' => 'foo']);
         $filter->setQuery($articles->find());
@@ -133,7 +133,7 @@ class LikeTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
             'multiValue' => true,
-            'valueMode' => 'and'
+            'valueMode' => 'and',
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
         $filter->setQuery($articles->find());
@@ -158,7 +158,7 @@ class LikeTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
             'multiValue' => true,
-            'field' => ['title', 'other']
+            'field' => ['title', 'other'],
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
         $filter->setQuery($articles->find());
@@ -185,7 +185,7 @@ class LikeTest extends TestCase
         $filter = new Like('title', $manager, [
             'multiValue' => true,
             'field' => ['title', 'other'],
-            'fieldMode' => 'and'
+            'fieldMode' => 'and',
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
         $filter->setQuery($articles->find());
@@ -237,12 +237,12 @@ class LikeTest extends TestCase
             ':c0' => [
                 'value' => '234',
                 'type' => 'string',
-                'placeholder' => 'c0'
+                'placeholder' => 'c0',
             ],
             ':c1' => [
                 'value' => '234',
                 'type' => 'string',
-                'placeholder' => 'c1'
+                'placeholder' => 'c1',
             ],
         ];
         $this->assertSame($expected, $bindings);

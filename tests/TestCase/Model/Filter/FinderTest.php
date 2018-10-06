@@ -16,7 +16,7 @@ class FinderTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Search.Articles',
     ];
 
     /**
@@ -25,7 +25,7 @@ class FinderTest extends TestCase
     public function testProcess()
     {
         $articles = TableRegistry::get('FinderArticles', [
-            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable'
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
         ]);
         $manager = new Manager($articles);
         $filter = new Finder('active', $manager);
@@ -52,7 +52,7 @@ class FinderTest extends TestCase
     public function testProcessMap()
     {
         $articles = TableRegistry::get('FinderArticles', [
-            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable'
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
         ]);
         $manager = new Manager($articles);
         $filter = new Finder('slugged', $manager, ['map' => ['slug' => 'form_slug']]);
@@ -78,7 +78,7 @@ class FinderTest extends TestCase
     public function testProcessNonExistentFinderMethod()
     {
         $articles = TableRegistry::get('FinderArticles', [
-            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable'
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
         ]);
         $manager = new Manager($articles);
         $filter = new Finder('nonExistent', $manager);
