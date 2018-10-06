@@ -92,30 +92,22 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * Checks if a filter is in the collection
      *
-     * @param string|\Search\Model\Filter\Base $name Name of the filter
+     * @param string $name Name of the filter
      * @return bool
      */
     public function has($name)
     {
-        if ($name instanceof Base) {
-            $name = $name->name();
-        }
-
         return isset($this->_filters[$name]);
     }
 
     /**
      * Returns filter from the collection
      *
-     * @param string|\Search\Model\Filter\Base $name Name of the filter
+     * @param string $name Name of the filter
      * @return \Search\Model\Filter\Base|null
      */
     public function get($name)
     {
-        if ($name instanceof Base) {
-            $name = $name->name();
-        }
-
         if (!isset($this->_filters[$name])) {
             return null;
         }

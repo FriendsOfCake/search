@@ -21,7 +21,7 @@ interface FilterCollectionInterface extends IteratorAggregate
     /**
      * Removes a filter by name
      *
-     * @param  string $name Name of the filter
+     * @param string $name Name of the filter
      * @return $this
      */
     public function remove($name);
@@ -29,7 +29,7 @@ interface FilterCollectionInterface extends IteratorAggregate
     /**
      * Checks if a filter is in the collection
      *
-     * @param  string|\Search\Model\Filter\Base $name Name of the filter
+     * @param string $name Name of the filter
      * @return bool
      */
     public function has($name);
@@ -37,7 +37,7 @@ interface FilterCollectionInterface extends IteratorAggregate
     /**
      * Returns filter from the collection
      *
-     * @param string|\Search\Model\Filter\Base $name Name of the filter
+     * @param string $name Name of the filter
      * @return \Search\Model\Filter\Base|null
      */
     public function get($name);
