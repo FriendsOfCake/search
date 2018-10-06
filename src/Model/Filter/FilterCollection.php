@@ -5,6 +5,7 @@ use ArrayIterator;
 use Cake\Core\App;
 use Cake\Utility\Inflector;
 use InvalidArgumentException;
+use RuntimeException;
 use Search\Manager;
 
 /**
@@ -104,6 +105,25 @@ class FilterCollection implements FilterCollectionInterface
     }
 
     /**
+     * Returns filter from the collection
+     *
+     * @param string|\Search\Model\Filter\Base $name Name of the filter
+     * @return \Search\Model\Filter\Base|null
+     */
+    public function get($name)
+    {
+        if ($name instanceof Base) {
+            $name = $name->name();
+        }
+
+        if (!isset($this->_filters[$name])) {
+            return null;
+        }
+
+        return $this->_filters[$name];
+    }
+
+    /**
      * Removes a filter by name
      *
      * @param string $name Name of the filter
@@ -124,58 +144,5 @@ class FilterCollection implements FilterCollectionInterface
     public function getIterator()
     {
         return new ArrayIterator($this->_filters);
-    }
-
-    /**
-     * Whether a offset exists
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
-     * @param mixed $offset Offset
-     * @return bool true on success or false on failure. The return value will be casted to boolean if non-boolean was returned.
-     */
-    public function offsetExists($offset)
-    {
-        return $this->has($offset);
-    }
-
-    /**
-     * Offset to retrieve
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
-     * @param mixed $offset Offset
-     * @return mixed Can return all value types.
-     */
-    public function offsetGet($offset)
-    {
-        if ($this->has($offset)) {
-            return $this->_filters[$offset];
-        }
-
-        return null;
-    }
-
-    /**
-     * Offset to set
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
-     * @param mixed $offset Offset
-     * @param mixed $value Value
-     * @return void
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->_filters[$offset] = $value;
-    }
-
-    /**
-     * Offset to unset
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     * @param mixed $offset Offset
-     * @return void
-     */
-    public function offsetUnset($offset)
-    {
-        $this->remove($offset);
     }
 }

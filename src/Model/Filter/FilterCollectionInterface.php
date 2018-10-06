@@ -1,13 +1,12 @@
 <?php
 namespace Search\Model\Filter;
 
-use ArrayAccess;
 use IteratorAggregate;
 
 /**
  * Filter Collection Interface
  */
-interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
+interface FilterCollectionInterface extends IteratorAggregate
 {
     /**
      * Adds filter to the collection.
@@ -34,6 +33,14 @@ interface FilterCollectionInterface extends IteratorAggregate, ArrayAccess
      * @return bool
      */
     public function has($name);
+
+    /**
+     * Returns filter from the collection
+     *
+     * @param string|\Search\Model\Filter\Base $name Name of the filter
+     * @return \Search\Model\Filter\Base|null
+     */
+    public function get($name);
 
     /**
      * Loads a search filter.

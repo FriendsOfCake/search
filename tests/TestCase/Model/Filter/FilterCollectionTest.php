@@ -37,18 +37,20 @@ class FilterCollectionTest extends TestCase
         $this->assertFalse($this->collection->has('test'));
 
         $result = $this->collection->callback('test2');
-        $this->assertInstanceOf(Callback::class, $result['test2']);
+        $this->assertInstanceOf(Callback::class, $result->get('test2'));
+
+        $this->assertNull($this->collection->get('doesNotExist'));
     }
 
     /**
      * @return void
      */
-    public function testGetFilter()
+    public function loadFilter()
     {
         $result = $this->collection->loadFilter('test', 'Search.Value');
         $this->assertInstanceOf(Value::class, $result);
 
-        $result = $this->collection->loadFilter('test', 'Search.Compare');
+        $this->collection->loadFilter('test', 'Search.Compare');
         $this->assertInstanceOf(Compare::class, $result);
     }
 
