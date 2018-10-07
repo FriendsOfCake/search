@@ -116,7 +116,7 @@ Let's use the *backend*'s filters by doing:
 
 ### Filter collection classes
 
-Apart from configuring filter through search mananger in your table class,
+Apart from configuring filters through search mananger in your table class,
 you can also create them as separate collection classes. This helps in
 keeping your table's `initialize()` method uncluttered and the filters are lazy
 loaded only when actually used.
@@ -142,26 +142,34 @@ class PostsCollection extends FilterCollection
 }
 ```
 
-To use this `Posts` collection just specify the collection name in underscored
-form in `find()` call.
+Conventionally if `PostsCollection` exists then it will be used as default filter
+collection for `PostsTable`.
+
+You can also configure the `Search` behavior to use another collection class
+as default using the `collectionClass` config:
 
 ```php
-$query = $this->Posts->find('search', [
-    'search' => $this->request->getQuery(), 'collection' => 'posts'
-]);
-```
-
-You can avoid specifying `collection` key in find option by specifying the
-default collection class to use in `Search` behavior config:
-
-```php
-use App\Model\Filter\PostsCollection;
+use App\Model\Filter\MyPostsCollection;
 
 // In PostsTable::initialize()
 $this->addBehavior('Search.Search', [
-    'collectionClass' => PostsCollection::class
+    'collectionClass' => MyPostsCollection::class
 ]);
 ```
+
+You can also specify alternate collection class to use when making find call:
+
+```php
+// PostsController::action()
+    $query = $this->Posts
+        ->find('search', [
+            'search' => $this->request->getQueryParams(),
+            'collection' => 'posts_backend'
+        ]);
+    }
+```
+
+The above will use `App\Model\Filter\PostsBackendCollection`.
 
 #### Empty Values
 By default, `['', false, null]` are treated as empty values and will be filtered

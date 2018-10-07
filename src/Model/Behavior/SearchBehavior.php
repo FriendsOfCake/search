@@ -2,6 +2,7 @@
 
 namespace Search\Model\Behavior;
 
+use Cake\Core\Configure;
 use Cake\ORM\Behavior;
 use Search\Model\SearchTrait;
 
@@ -44,7 +45,21 @@ class SearchBehavior extends Behavior
             $this->setConfig('emptyValues', $config['emptyValues'], false);
         }
 
-        $this->_collectionClass = $this->getConfig('collectionClass');
+        $collectionClass = $this->getConfig('collectionClass');
+        if ($collectionClass) {
+            $this->_collectionClass = $collectionClass;
+
+            return;
+        }
+
+        $defaultCollectionClass = sprintf(
+            '%s\Model\Filter\%sCollection',
+            Configure::read('App.namespace'),
+            $this->getTable()->getAlias()
+        );
+        if (class_exists($defaultCollectionClass)) {
+            $this->_collectionClass = $defaultCollectionClass;
+        }
     }
 
     /**

@@ -1,4 +1,6 @@
 <?php
+
+use Cake\Core\Configure;
 /**
  * Test suite bootstrap.
  *
@@ -30,3 +32,5 @@ if (file_exists($root . '/config/bootstrap.php')) {
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
 \Cake\Core\Plugin::load('Search', ['path' => dirname(dirname(__FILE__)) . DS]);
+
+Configure::write('App.namespace', 'Search\Test\TestApp');
