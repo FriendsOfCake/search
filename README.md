@@ -114,7 +114,7 @@ Let's use the *backend*'s filters by doing:
     }
 ```
 
-### Filter collection classes
+## Filter collection classes
 
 Apart from configuring filters through search mananger in your table class,
 you can also create them as separate collection classes. This helps in
@@ -170,17 +170,6 @@ You can also specify alternate collection class to use when making find call:
 ```
 
 The above will use `App\Model\Filter\PostsBackendCollection`.
-
-#### Empty Values
-By default, `['', false, null]` are treated as empty values and will be filtered
-out. If you wish to alter this behavior, you can overwrite the values using
-`emptyValues` key.
-
-```php
-$this->addBehavior('Search.Search', [
-    'emptyValues' => ['']
-]);
-```
 
 ### Prg Component
 Add the Search Prg component to the necessary methods in your controller.
