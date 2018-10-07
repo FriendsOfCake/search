@@ -6,7 +6,6 @@ use Cake\Datasource\QueryInterface;
 use Cake\Utility\Hash;
 use Exception;
 use Search\Manager;
-use Search\Model\Filter\FilterCollection;
 
 trait SearchTrait
 {
@@ -28,9 +27,9 @@ trait SearchTrait
     /**
      * Default collection class.
      *
-     * @var string
+     * @var string|null
      */
-    protected $_collectionClass = FilterCollection::class;
+    protected $_collectionClass;
 
     /**
      * Callback fired from the controller.
