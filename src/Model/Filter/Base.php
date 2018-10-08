@@ -196,7 +196,7 @@ abstract class Base
             return $value;
         }
 
-        return $value;
+        return $passedValue;
     }
 
     /**
@@ -214,7 +214,7 @@ abstract class Base
             return $this->getConfig('multiValue') ? $value : null;
         }
 
-        if ($this->getConfig('multiValueSeparator')) {
+        if ($this->getConfig('multiValue') && $this->getConfig('multiValueSeparator')) {
             return explode($this->getConfig('multiValueSeparator'), $value);
         }
 
