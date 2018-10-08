@@ -208,7 +208,7 @@ abstract class Base
     /**
      * @return string|array|null
      */
-    public function passedValue()
+    protected function passedValue()
     {
         if (!isset($this->_args[$this->name()])) {
             return null;
