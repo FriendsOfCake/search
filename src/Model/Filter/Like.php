@@ -143,6 +143,7 @@ class Like extends Base
      * set configuration for escape driver name
      *
      * @return void
+     * @throws \InvalidArgumentException
      */
     protected function _setEscaper()
     {
