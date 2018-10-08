@@ -196,12 +196,6 @@ abstract class Base
             return $value;
         }
 
-        if (!is_array($passedValue) ||
-            $this->getConfig('multiValue')
-        ) {
-            return $passedValue;
-        }
-
         return $value;
     }
 
@@ -215,6 +209,10 @@ abstract class Base
         }
 
         $value = $this->_args[$this->name()];
+
+        if (is_array($value)) {
+            return $this->getConfig('multiValue') ? $value : null;
+        }
 
         if ($this->getConfig('multiValueSeparator')) {
             return explode($this->getConfig('multiValueSeparator'), $value);
