@@ -201,14 +201,27 @@ class BaseTest extends TestCase
             ['defaultValue' => 'default']
         );
 
-        $filter->setConfig('multiValue', true);
         $filter->setConfig('multiValueSeparator', '|');
 
         $filter->setArgs(['field' => 'value1|value2']);
         $this->assertEquals(['value1', 'value2'], $filter->value());
+    }
 
-        $filter->setArgs(['field' => ['value1', 'value2']]);
-        $this->assertEquals(['value1', 'value2'], $filter->value());
+    /**
+     * @return void
+     */
+    public function testValueMultiValueSeparatorInvalid()
+    {
+        $filter = new TestFilter(
+            'field',
+            $this->Manager,
+            ['defaultValue' => 'default']
+        );
+
+        $filter->setConfig('multiValue', true);
+
+        $filter->setArgs(['field' => 'value1|value2']);
+        $this->assertEquals('value1|value2', $filter->value());
     }
 
     /**
