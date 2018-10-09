@@ -51,6 +51,7 @@ abstract class Base
      * @param string $name Name.
      * @param \Search\Manager $manager Manager.
      * @param array $config Config.
+     * @throws \InvalidArgumentException
      */
     public function __construct($name, Manager $manager, array $config = [])
     {
@@ -65,6 +66,7 @@ abstract class Base
             'filterEmpty' => false,
             'defaultValue' => null,
             'multiValue' => false,
+            'multiValueSeparator' => null,
             'flatten' => true,
         ];
         $config += $defaults;
@@ -188,13 +190,32 @@ abstract class Base
     public function value()
     {
         $value = $this->_config['defaultValue'];
-        if (isset($this->_args[$this->name()])) {
-            $passedValue = $this->_args[$this->name()];
-            if (!is_array($passedValue) ||
-                $this->getConfig('multiValue')
-            ) {
-                return $passedValue;
-            }
+
+        $passedValue = $this->passedValue();
+        if ($passedValue === null) {
+            return $value;
+        }
+
+        return $passedValue;
+    }
+
+    /**
+     * @return string|array|null
+     */
+    protected function passedValue()
+    {
+        if (!isset($this->_args[$this->name()])) {
+            return null;
+        }
+
+        $value = $this->_args[$this->name()];
+
+        if (is_array($value)) {
+            return $this->getConfig('multiValue') ? $value : null;
+        }
+
+        if ($this->getConfig('multiValueSeparator')) {
+            return explode($this->getConfig('multiValueSeparator'), $value);
         }
 
         return $value;
