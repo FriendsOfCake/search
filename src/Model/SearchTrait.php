@@ -144,7 +144,7 @@ trait SearchTrait
      * @param \Search\Model\Filter\Base[] $filters The array of filters with configuration
      * @return array The flattened parameters array.
      */
-    protected function _flattenParams($params, $filters)
+    protected function _flattenParams(array $params, array $filters)
     {
         $flattened = [];
         foreach ($params as $key => $value) {
