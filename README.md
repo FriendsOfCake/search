@@ -122,7 +122,7 @@ keeping your table's `initialize()` method uncluttered and the filters are lazy
 loaded only when actually used.
 
 ```php
-// src/Model/Filter/Filter/PostsCollection.php
+// src/Model/Filter/PostsCollection.php
 namespace App\Model\Filter\PostsCollection;
 
 use Search\Model\Filter\FilterCollection;
@@ -248,8 +248,8 @@ After including the trait you can use the searchManager by calling the
 
 ## Filtering your data
 Once you have completed all the setup you can now filter your data by passing
-query params in your index method. Using theexample given above, you
-could filter your posts using the following.
+query params in your index method. Using the example given above, you could
+filter your posts using the following.
 
 `example.com/posts?q=cakephp`
 
