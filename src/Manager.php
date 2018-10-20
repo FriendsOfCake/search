@@ -17,6 +17,11 @@ class Manager
     use FilterMethodsTrait;
 
     /**
+     * Default collection name.
+     */
+    const DEFAULT_COLLECTION = 'default';
+
+    /**
      * Repository
      *
      * @var \Cake\Datasource\RepositoryInterface Repository instance
@@ -35,7 +40,7 @@ class Manager
      *
      * @var string
      */
-    protected $_collection = 'default';
+    protected $_collection = self::DEFAULT_COLLECTION;
 
     /**
      * Default collection class.
@@ -76,7 +81,7 @@ class Manager
      * @return array Array of filter instances.
      * @throws \InvalidArgumentException If requested collection is not set.
      */
-    public function getFilters($collection = 'default')
+    public function getFilters($collection = self::DEFAULT_COLLECTION)
     {
         if (!isset($this->_collections[$collection])) {
             $this->_collections[$collection] = $this->_loadCollection($collection);
@@ -94,7 +99,7 @@ class Manager
      */
     protected function _loadCollection($name)
     {
-        if ($name === 'default') {
+        if ($name === self::DEFAULT_COLLECTION) {
             $class = $this->_collectionClass;
         } else {
             $class = Inflector::camelize(str_replace('-', '_', $name));

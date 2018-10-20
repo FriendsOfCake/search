@@ -50,7 +50,7 @@ trait SearchTrait
             );
         }
 
-        $filters = $this->_getFilters(Hash::get($options, 'collection', 'default'));
+        $filters = $this->_getFilters(Hash::get($options, 'collection', Manager::DEFAULT_COLLECTION));
 
         $params = $this->_flattenParams((array)$options['search'], $filters);
         $params = $this->_extractParams($params, $filters);
@@ -173,7 +173,7 @@ trait SearchTrait
      * @param string|null $collection name of collection
      * @return \Search\Model\Filter\Base[] An array of filters for the defined fields.
      */
-    protected function _getFilters($collection = 'default')
+    protected function _getFilters($collection = Manager::DEFAULT_COLLECTION)
     {
         return $this->_repository()->searchManager()->getFilters($collection);
     }
