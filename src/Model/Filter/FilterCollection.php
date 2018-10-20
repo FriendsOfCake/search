@@ -15,7 +15,7 @@ class FilterCollection implements FilterCollectionInterface
     use FilterMethodsTrait;
 
     /**
-     * @var array List of filter objects
+     * @var \Search\Model\Filter\Base[] List of filter objects
      */
     protected $_filters = [];
 
