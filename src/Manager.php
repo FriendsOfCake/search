@@ -112,7 +112,7 @@ class Manager
         if (!$instance instanceof FilterCollectionInterface) {
             throw new InvalidArgumentException(sprintf(
                 'The collection must be instance of FilterCollectionInterface. ' .
-                'Got instanceof "%s" instead',
+                'Got instance of "%s" instead',
                 get_class($instance)
             ));
         }
