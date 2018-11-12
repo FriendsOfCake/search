@@ -57,7 +57,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function add($name, $filter, array $options = [])
     {
-        $this->_filters[$name] = $this->loadFilter($name, $filter, $options);
+        $this->_filters[$name] = $this->_loadFilter($name, $filter, $options);
 
         return $this;
     }
@@ -71,7 +71,7 @@ class FilterCollection implements FilterCollectionInterface
      * @return \Search\Model\Filter\Base
      * @throws \InvalidArgumentException When no filter was found.
      */
-    protected function loadFilter($name, $filter, array $options = [])
+    protected function _loadFilter($name, $filter, array $options = [])
     {
         if (empty($options['className'])) {
             $class = Inflector::classify($filter);
