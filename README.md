@@ -463,6 +463,36 @@ getting the query string attached for this "disabled" search field, you can set
 
 This is needed for the "isSearch" work as expected.
 
+## Custom filter
+
+You can create your own filter by by creating a filter class under `src/Model/Filter`.
+
+```php
+<?php
+namespace App\Model\Filter;
+
+class MyCustomFilter extends \Search\Model\Filter\Base
+{
+    /**
+     * @return bool
+     */
+    public function process()
+    {
+        // return false if you want to skip modifying the query based on some condition.
+        
+        // Use $this->query() to get query instance and modify it as needed.
+        
+        return true;
+    }
+}
+```
+
+After that you can use your filter as:
+
+```php
+$this->searchManager()->add('field', 'MyCustom');
+```
+
 ## Persisting the Query String
 
 Persisting the query string can be done with the `queryStringWhitelist` option.
