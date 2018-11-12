@@ -2,7 +2,6 @@
 namespace Search\Test\TestApp\Model\Endpoint;
 
 use Muffin\Webservice\Model\Endpoint;
-use Search\Manager;
 use Search\Model\SearchTrait;
 
 class ArticlesEndpoint extends Endpoint

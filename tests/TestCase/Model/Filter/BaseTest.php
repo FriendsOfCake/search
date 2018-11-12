@@ -20,7 +20,7 @@ class BaseTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Search.Articles',
     ];
 
     /**
@@ -43,7 +43,7 @@ class BaseTest extends TestCase
             [''],
             [null],
             [[]],
-            [['']]
+            [['']],
         ];
     }
 
@@ -85,7 +85,7 @@ class BaseTest extends TestCase
     public function nonEmptyFieldDataProvider()
     {
         return [
-            ['0'], ['value'], [['value']]
+            ['0'], ['value'], [['value']],
         ];
     }
 
@@ -110,7 +110,7 @@ class BaseTest extends TestCase
     public function nonEmptyNameDataProvider()
     {
         return [
-            ['0'], ['value']
+            ['0'], ['value'],
         ];
     }
 

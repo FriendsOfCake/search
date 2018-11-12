@@ -4,6 +4,7 @@ namespace Search\Test\TestCase;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use InvalidArgumentException;
 use Search\Manager;
 
 class ManagerTest extends TestCase
@@ -15,7 +16,7 @@ class ManagerTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Search.Articles',
     ];
 
     /**
@@ -87,32 +88,17 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
 
-        $this->assertEmpty($manager->getFilters());
+        $this->assertEmpty(iterator_to_array($manager->getFilters()));
 
         $manager->useCollection('other');
         $manager->add('field', 'Search.Value');
-        $this->assertEmpty($manager->getFilters());
+        $this->assertEmpty(iterator_to_array($manager->getFilters()));
 
         $manager->useCollection('default');
         $manager->add('field', 'Search.Value');
         $all = $manager->getFilters();
         $this->assertCount(1, $all);
         $this->assertInstanceOf('\Search\Model\Filter\Value', $all['field']);
-    }
-
-    /**
-     * @return void
-     */
-    public function testLoadFilter()
-    {
-        $table = TableRegistry::get('Articles');
-        $manager = new Manager($table);
-
-        $result = $manager->loadFilter('test', 'Search.Value');
-        $this->assertInstanceOf('\Search\Model\Filter\Value', $result);
-
-        $result = $manager->loadFilter('test', 'Search.Compare');
-        $this->assertInstanceOf('\Search\Model\Filter\Compare', $result);
     }
 
     /**
@@ -132,17 +118,6 @@ class ManagerTest extends TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @return void
-     */
-    public function testLoadFilterInvalidArgumentException()
-    {
-        $table = TableRegistry::get('Articles');
-        $manager = new Manager($table);
-        $manager->loadFilter('test', 'DOES-NOT-EXIST');
-    }
-
-    /**
      * @return void
      */
     public function testGetFilters()
@@ -156,18 +131,23 @@ class ManagerTest extends TestCase
         $this->assertCount(2, $result);
         $this->assertInstanceOf('\Search\Model\Filter\Value', $result['test']);
         $this->assertInstanceOf('\Search\Model\Filter\Compare', $result['test2']);
+
+        Configure::write('App.namespace', 'Search\Test\TestApp');
+        $result = $manager->getFilters('my_test');
+        $this->assertCount(1, $result);
+        $this->assertInstanceOf('\Search\Model\Filter\Callback', $result['first']);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The collection "nonExistentCollection" does not exist.
+     * @expectedExceptionMessage The collection class "NonExistentCollection" does not exist
      * @return void
      */
     public function testGetFiltersNonExistentCollection()
     {
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
-        $manager->getFilters('nonExistentCollection');
+        $manager->getFilters('non_existent');
     }
 
     /**
@@ -258,5 +238,21 @@ class ManagerTest extends TestCase
 
         $result = $manager->useCollection('default');
         $this->assertInstanceOf('\Search\Manager', $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testInvalidCollectionClass()
+    {
+        $table = TableRegistry::get('Articles');
+        $manager = new Manager($table, self::class);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The collection must be instance of FilterCollectionInterface. Got instance of "%s" instead',
+            self::class
+        ));
+        $manager->getFilters();
     }
 }

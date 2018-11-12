@@ -102,6 +102,7 @@ abstract class Base
     /**
      * Get the database field name.
      *
+     * @deprecated Use fields() instead.
      * @return string|array
      */
     public function field()
@@ -280,12 +281,12 @@ abstract class Base
     /**
      * Sets the query object.
      *
-     * @param \Cake\Datasource\QueryInterface $value Value.
+     * @param \Cake\Datasource\QueryInterface $query Query instance.
      * @return void
      */
-    public function setQuery(QueryInterface $value)
+    public function setQuery(QueryInterface $query)
     {
-        $this->_query = $value;
+        $this->_query = $query;
     }
 
     /**

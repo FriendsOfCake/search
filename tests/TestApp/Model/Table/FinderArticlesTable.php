@@ -29,7 +29,7 @@ class FinderArticlesTable extends Table
     public function findActive(Query $query, array $options)
     {
         return $query->where([
-                'Articles.is_active' => true
+                'Articles.is_active' => true,
             ] + $options['active']);
     }
 

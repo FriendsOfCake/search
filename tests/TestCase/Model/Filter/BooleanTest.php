@@ -16,7 +16,7 @@ class BooleanTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Search.Articles'
+        'plugin.Search.Articles',
     ];
 
     /**
@@ -278,7 +278,7 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('boolean', $manager, [
-            'field' => ['is_active', 'other']
+            'field' => ['is_active', 'other'],
         ]);
         $filter->setArgs(['boolean' => true]);
         $filter->setQuery($articles->find());
@@ -303,7 +303,7 @@ class BooleanTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Boolean('boolean', $manager, [
             'field' => ['is_active', 'other'],
-            'mode' => 'AND'
+            'mode' => 'AND',
         ]);
         $filter->setArgs(['boolean' => true]);
         $filter->setQuery($articles->find());

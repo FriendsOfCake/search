@@ -5,9 +5,21 @@ use Cake\Core\App;
 use Cake\Datasource\RepositoryInterface;
 use Cake\Utility\Inflector;
 use InvalidArgumentException;
+use Search\Model\Filter\FilterCollection;
+use Search\Model\Filter\FilterCollectionInterface;
+use Search\Model\Filter\FilterMethodsTrait;
 
+/**
+ * Search Manager Service Class
+ */
 class Manager
 {
+    use FilterMethodsTrait;
+
+    /**
+     * Default collection name.
+     */
+    const DEFAULT_COLLECTION = 'default';
 
     /**
      * Repository
@@ -17,29 +29,39 @@ class Manager
     protected $_repository;
 
     /**
-     * Filter collection and their filters
+     * Filter collections
      *
-     * @var array
+     * @var \Search\Model\Filter\FilterCollectionInterface[] Filter collections list.
      */
-    protected $_filters = [
-        'default' => []
-    ];
+    protected $_collections = [];
 
     /**
      * Active filter collection.
      *
      * @var string
      */
-    protected $_collection = 'default';
+    protected $_collection = self::DEFAULT_COLLECTION;
+
+    /**
+     * Default collection class.
+     *
+     * @var string
+     */
+    protected $_collectionClass = FilterCollection::class;
 
     /**
      * Constructor
      *
      * @param \Cake\Datasource\RepositoryInterface $repository Repository
+     * @param string|null $collectionClass Default collection class.
      */
-    public function __construct(RepositoryInterface $repository)
+    public function __construct(RepositoryInterface $repository, $collectionClass = null)
     {
         $this->_repository = $repository;
+
+        if ($collectionClass) {
+            $this->_collectionClass = $collectionClass;
+        }
     }
 
     /**
@@ -56,18 +78,51 @@ class Manager
      * Gets all filters in a given collection.
      *
      * @param string $collection Name of the filter collection.
-     * @return array Array of filter instances.
+     * @return \Search\Model\Filter\FilterCollectionInterface Filter collection instance.
      * @throws \InvalidArgumentException If requested collection is not set.
      */
-    public function getFilters($collection = 'default')
+    public function getFilters($collection = self::DEFAULT_COLLECTION)
     {
-        if (!isset($this->_filters[$collection])) {
-            throw new InvalidArgumentException(
-                sprintf('The collection "%s" does not exist.', $collection)
-            );
+        if (!isset($this->_collections[$collection])) {
+            $this->_collections[$collection] = $this->_loadCollection($collection);
         }
 
-        return $this->_filters[$collection];
+        return $this->_collections[$collection];
+    }
+
+    /**
+     * Loads a filter collection.
+     *
+     * @param string $name Collection name or FQCN.
+     * @return \Search\Model\Filter\FilterCollectionInterface
+     * @throws \InvalidArgumentException When no filter was found.
+     */
+    protected function _loadCollection($name)
+    {
+        if ($name === self::DEFAULT_COLLECTION) {
+            $class = $this->_collectionClass;
+        } else {
+            $class = Inflector::camelize(str_replace('-', '_', $name));
+        }
+
+        $className = App::className($class, 'Model/Filter', 'Collection');
+        if (!$className) {
+            throw new InvalidArgumentException(sprintf(
+                'The collection class "%sCollection" does not exist',
+                $class
+            ));
+        }
+
+        $instance = new $className($this);
+        if (!$instance instanceof FilterCollectionInterface) {
+            throw new InvalidArgumentException(sprintf(
+                'The collection must be instance of FilterCollectionInterface. ' .
+                'Got instance of "%s" instead',
+                get_class($instance)
+            ));
+        }
+
+        return $instance;
     }
 
     /**
@@ -78,12 +133,23 @@ class Manager
      */
     public function useCollection($name)
     {
-        if (!isset($this->_filters[$name])) {
-            $this->_filters[$name] = [];
-        }
         $this->_collection = $name;
 
         return $this;
+    }
+
+    /**
+     * Get instance for current collection.
+     *
+     * @return \Search\Model\Filter\FilterCollectionInterface
+     */
+    protected function _collection()
+    {
+        if (!isset($this->_collections[$this->_collection])) {
+            $this->_collections[$this->_collection] = new $this->_collectionClass($this);
+        }
+
+        return $this->_collections[$this->_collection];
     }
 
     /**
@@ -106,7 +172,7 @@ class Manager
      */
     public function add($name, $filter, array $options = [])
     {
-        $this->_filters[$this->_collection][$name] = $this->loadFilter($name, $filter, $options);
+        $this->_collection()->add($name, $filter, $options);
 
         return $this;
     }
@@ -115,149 +181,12 @@ class Manager
      * Removes filter from the active collection.
      *
      * @param string $name Name of the filter to be removed.
-     * @return void
+     * @return $this
      */
     public function remove($name)
     {
-        unset($this->_filters[$this->_collection][$name]);
-    }
-
-    /**
-     * boolean method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function boolean($name, array $config = [])
-    {
-        $this->add($name, 'Search.Boolean', $config);
+        $this->_collection()->remove($name);
 
         return $this;
-    }
-
-    /**
-     * like method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function like($name, array $config = [])
-    {
-        $this->add($name, 'Search.Like', $config);
-
-        return $this;
-    }
-
-    /**
-     * value method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function value($name, array $config = [])
-    {
-        $this->add($name, 'Search.Value', $config);
-
-        return $this;
-    }
-
-    /**
-     * finder method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function finder($name, array $config = [])
-    {
-        $this->add($name, 'Search.Finder', $config);
-
-        return $this;
-    }
-
-    /**
-     * callback method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function callback($name, array $config = [])
-    {
-        $this->add($name, 'Search.Callback', $config);
-
-        return $this;
-    }
-
-    /**
-     * compare method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function compare($name, array $config = [])
-    {
-        $this->add($name, 'Search.Compare', $config);
-
-        return $this;
-    }
-
-    /**
-     * custom method
-     *
-     * @param string $name Name
-     * @param array $config Config
-     * @return $this
-     */
-    public function custom($name, array $config = [])
-    {
-        $this->add($name, $config['className'], $config);
-
-        return $this;
-    }
-
-    /**
-     * Loads a search filter.
-     *
-     * @param string $name Name of the field
-     * @param string $filter Filter name
-     * @param array $options Filter options.
-     * @return \Search\Model\Filter\Base
-     * @throws \InvalidArgumentException When no filter was found.
-     */
-    public function loadFilter($name, $filter, array $options = [])
-    {
-        if (empty($options['className'])) {
-            $class = Inflector::classify($filter);
-        } else {
-            $class = $options['className'];
-            unset($options['className']);
-        }
-        $className = App::className($class, 'Model\Filter');
-        if (!$className) {
-            throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
-        }
-
-        return new $className($name, $this, $options);
-    }
-
-    /**
-     * Magic method to add filters using custom types.
-     *
-     * @param string $method Method name.
-     * @param array $args Arguments.
-     * @return $this
-     */
-    public function __call($method, $args)
-    {
-        if (!isset($args[1])) {
-            $args[1] = [];
-        }
-
-        return $this->add($args[0], $method, $args[1]);
     }
 }

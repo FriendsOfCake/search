@@ -2,12 +2,8 @@
 
 namespace Search\Model\Behavior;
 
+use Cake\Core\Configure;
 use Cake\ORM\Behavior;
-use Cake\ORM\Query;
-use Cake\ORM\Table;
-use Cake\Utility\Hash;
-use Exception;
-use Search\Manager;
 use Search\Model\SearchTrait;
 
 class SearchBehavior extends Behavior
@@ -25,13 +21,14 @@ class SearchBehavior extends Behavior
      */
     protected $_defaultConfig = [
         'implementedFinders' => [
-            'search' => 'findSearch'
+            'search' => 'findSearch',
         ],
         'implementedMethods' => [
             'searchManager' => 'searchManager',
-            'isSearch' => 'isSearch'
+            'isSearch' => 'isSearch',
         ],
-        'emptyValues' => ['', false, null]
+        'emptyValues' => ['', false, null],
+        'collectionClass' => null,
     ];
 
     /**
@@ -46,6 +43,22 @@ class SearchBehavior extends Behavior
 
         if (isset($config['emptyValues'])) {
             $this->setConfig('emptyValues', $config['emptyValues'], false);
+        }
+
+        $collectionClass = $this->getConfig('collectionClass');
+        if ($collectionClass) {
+            $this->_collectionClass = $collectionClass;
+
+            return;
+        }
+
+        $defaultCollectionClass = sprintf(
+            '%s\Model\Filter\%sCollection',
+            Configure::read('App.namespace'),
+            $this->getTable()->getAlias()
+        );
+        if (class_exists($defaultCollectionClass)) {
+            $this->_collectionClass = $defaultCollectionClass;
         }
     }
 

@@ -2,8 +2,9 @@
 namespace Search\Model\Filter;
 
 use Cake\Core\App;
+use Cake\ORM\Query;
 use InvalidArgumentException;
-use Search\Manager;
+use RuntimeException;
 
 class Like extends Base
 {
@@ -148,8 +149,10 @@ class Like extends Base
     protected function _setEscaper()
     {
         if ($this->getConfig('escaper') === null) {
-            /** @var \Cake\Database\Query $query */
             $query = $this->getQuery();
+            if (!$query instanceof Query) {
+                throw new RuntimeException('$query must be instance of Cake\ORM\Query to be able to check driver name.');
+            }
             $driver = get_class($query->getConnection()->getDriver());
             $driverName = 'Sqlserver';
             if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {

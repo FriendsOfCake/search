@@ -62,7 +62,7 @@ class SearchComponentTest extends TestCase
         $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
-            'pass' => ['pass']
+            'pass' => ['pass'],
         ]);
         $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
         $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
@@ -94,7 +94,7 @@ class SearchComponentTest extends TestCase
             'controller' => 'UserAnswers',
             'action' => 'index',
             'type' => 'open',
-            'pass' => ['open']
+            'pass' => ['open'],
         ]);
         $this->Controller->request = $this->Controller->request->withRequestTarget('/users/my-predictions');
         $this->Controller->response = $this->Controller->response->withHeader('Location', '');
@@ -115,7 +115,7 @@ class SearchComponentTest extends TestCase
         $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
-            'pass' => ['pass']
+            'pass' => ['pass'],
         ]);
         $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
         $this->Controller->request = $this->Controller->request = $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
@@ -142,7 +142,7 @@ class SearchComponentTest extends TestCase
         $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
-            'pass' => ['pass']
+            'pass' => ['pass'],
         ]);
         $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
         $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
@@ -165,7 +165,7 @@ class SearchComponentTest extends TestCase
         $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
-            'pass' => ['pass']
+            'pass' => ['pass'],
         ]);
         $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
         $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
@@ -185,7 +185,7 @@ class SearchComponentTest extends TestCase
         $this->Controller->request = $this->Controller->request->withAttribute('params', [
             'controller' => 'Posts',
             'action' => 'index',
-            'pass' => ['pass']
+            'pass' => ['pass'],
         ]);
         $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
         $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
