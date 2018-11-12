@@ -8,6 +8,7 @@ class Finder extends Base
      */
     protected $_defaultConfig = [
         'map' => [],
+        'options' => [],
     ];
 
     /**
@@ -34,6 +35,9 @@ class Finder extends Base
         foreach ($map as $to => $from) {
             $args[$to] = isset($args[$from]) ? $args[$from] : null;
         }
+
+        $options = $this->getConfig('options');
+        $args += $options;
 
         $this->getQuery()->find($this->finder(), $args);
 
