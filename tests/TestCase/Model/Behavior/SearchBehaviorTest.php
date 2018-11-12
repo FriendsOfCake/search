@@ -5,6 +5,7 @@ namespace Search\Test\TestCase\Model\Behavior;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
+use Search\Model\Filter\FilterCollection;
 
 class SearchBehaviorTest extends TestCase
 {
@@ -76,6 +77,8 @@ class SearchBehaviorTest extends TestCase
             'className' => '\\' . get_class($behavior),
         ]);
 
+        $manager = new Manager($this->Comments);
+
         $params = [
             'name' => 'value',
             'date' => [
@@ -88,7 +91,7 @@ class SearchBehaviorTest extends TestCase
 
         $filter = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
-            ->setConstructorArgs(['name', new Manager($this->Comments)])
+            ->setConstructorArgs(['name', $manager])
             ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter
@@ -108,7 +111,7 @@ class SearchBehaviorTest extends TestCase
 
         $filter2 = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
-            ->setConstructorArgs(['name', new Manager($this->Comments), ['flatten' => false]])
+            ->setConstructorArgs(['name', $manager, ['flatten' => false]])
             ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter2
@@ -126,10 +129,9 @@ class SearchBehaviorTest extends TestCase
             ->expects($this->at(2))
             ->method('process');
 
-        $filters = [
-            'name' => $filter,
-            'date' => $filter2,
-        ];
+        $filters = new FilterCollection($manager);
+        $filters['name'] = $filter;
+        $filters['date'] = $filter2;
 
         /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
         $behavior = $this->Comments->behaviors()->get('Search');

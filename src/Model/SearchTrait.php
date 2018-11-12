@@ -6,6 +6,7 @@ use Cake\Datasource\QueryInterface;
 use Cake\Utility\Hash;
 use Exception;
 use Search\Manager;
+use Search\Model\Filter\FilterCollectionInterface;
 
 trait SearchTrait
 {
@@ -91,10 +92,10 @@ trait SearchTrait
      * name exists.
      *
      * @param array $params The parameters array to extract from.
-     * @param \Search\Model\Filter\Base[] $filters The filters to match against.
+     * @param \Search\Model\Filter\FilterCollectionInterface $filters Filter collection.
      * @return array The extracted parameters.
      */
-    protected function _extractParams($params, $filters)
+    protected function _extractParams($params, FilterCollectionInterface $filters)
     {
         $emptyValues = $this->_emptyValues();
 
@@ -102,7 +103,7 @@ trait SearchTrait
             return !in_array($val, $emptyValues, true);
         });
 
-        return array_intersect_key($nonEmptyParams, $filters);
+        return array_intersect_key($nonEmptyParams, iterator_to_array($filters));
     }
 
     /**
@@ -141,10 +142,10 @@ trait SearchTrait
      * ```
      *
      * @param array $params The parameters array to flatten.
-     * @param \Search\Model\Filter\Base[] $filters The array of filters with configuration
+     * @param \Search\Model\Filter\FilterCollectionInterface $filters Filter collection instance.
      * @return array The flattened parameters array.
      */
-    protected function _flattenParams(array $params, array $filters)
+    protected function _flattenParams(array $params, FilterCollectionInterface $filters)
     {
         $flattened = [];
         foreach ($params as $key => $value) {
@@ -171,7 +172,7 @@ trait SearchTrait
      * Gets all filters by the default or given collection from the search manager
      *
      * @param string|null $collection name of collection
-     * @return \Search\Model\Filter\Base[] An array of filters for the defined fields.
+     * @return \Search\Model\Filter\FilterCollectionInterface Filter collection instance.
      */
     protected function _getFilters($collection = Manager::DEFAULT_COLLECTION)
     {
@@ -181,12 +182,12 @@ trait SearchTrait
     /**
      * Processes the given filters.
      *
-     * @param \Search\Model\Filter\Base[] $filters The filters to process.
+     * @param \Search\Model\Filter\FilterCollectionInterface $filters The filters to process.
      * @param array $params The parameters to pass to the filters.
      * @param \Cake\Datasource\QueryInterface $query The query to pass to the filters.
      * @return \Cake\Datasource\QueryInterface The query processed by the filters.
      */
-    protected function _processFilters($filters, $params, $query)
+    protected function _processFilters(FilterCollectionInterface $filters, $params, $query)
     {
         $this->_isSearch = false;
         foreach ($filters as $filter) {

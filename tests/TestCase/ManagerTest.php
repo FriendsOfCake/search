@@ -88,11 +88,11 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
 
-        $this->assertEmpty($manager->getFilters());
+        $this->assertEmpty(iterator_to_array($manager->getFilters()));
 
         $manager->useCollection('other');
         $manager->add('field', 'Search.Value');
-        $this->assertEmpty($manager->getFilters());
+        $this->assertEmpty(iterator_to_array($manager->getFilters()));
 
         $manager->useCollection('default');
         $manager->add('field', 'Search.Value');

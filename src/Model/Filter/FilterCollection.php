@@ -96,7 +96,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function has($name)
     {
-        return isset($this->_filters[$name]);
+        return $this->offsetExists($name);
     }
 
     /**
@@ -107,11 +107,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function get($name)
     {
-        if (!isset($this->_filters[$name])) {
-            return null;
-        }
-
-        return $this->_filters[$name];
+        return $this->offsetGet($name);
     }
 
     /**
@@ -122,7 +118,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function remove($name)
     {
-        unset($this->_filters[$name]);
+        $this->offsetUnset($name);
 
         return $this;
     }
@@ -135,5 +131,54 @@ class FilterCollection implements FilterCollectionInterface
     public function getIterator()
     {
         return new ArrayIterator($this->_filters);
+    }
+
+    /**
+     * Check whether filter with given name exists.
+     *
+     * @param string $name The name to check for.
+     * @return bool True on success or false on failure.
+     */
+    public function offsetExists($name)
+    {
+        return isset($this->_filters[$name]);
+    }
+
+    /**
+     * Name of filter to retrieve.
+     *
+     * @param string $name Name of filter to retrieve.
+     * @return \Search\Model\Filter\Base|null Filter instance or null.
+     */
+    public function offsetGet($name)
+    {
+        if ($this->offsetExists($name)) {
+            return $this->_filters[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Set filter.
+     *
+     * @param mixed $name Filter name.
+     * @param \Search\Model\Filter\Base $value Filter instance to set.
+     * @return void
+     */
+    public function offsetSet($name, $value)
+    {
+        $this->_filters[$name] = $value;
+    }
+
+    /**
+     * Name of filter to unset.
+     *
+     * @param string $name Name of filter to unset.
+     * @return void
+     */
+    public function offsetUnset($name)
+    {
+        unset($this->_filters[$name]);
     }
 }

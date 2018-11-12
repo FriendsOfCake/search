@@ -78,7 +78,7 @@ class Manager
      * Gets all filters in a given collection.
      *
      * @param string $collection Name of the filter collection.
-     * @return array Array of filter instances.
+     * @return \Search\Model\Filter\FilterCollectionInterface Filter collection instance.
      * @throws \InvalidArgumentException If requested collection is not set.
      */
     public function getFilters($collection = self::DEFAULT_COLLECTION)
@@ -87,7 +87,7 @@ class Manager
             $this->_collections[$collection] = $this->_loadCollection($collection);
         }
 
-        return iterator_to_array($this->_collections[$collection]);
+        return $this->_collections[$collection];
     }
 
     /**
