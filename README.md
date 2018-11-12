@@ -123,7 +123,7 @@ loaded only when actually used.
 
 ```php
 // src/Model/Filter/PostsCollection.php
-namespace App\Model\Filter\PostsCollection;
+namespace App\Model\Filter;
 
 use Search\Model\Filter\FilterCollection;
 
