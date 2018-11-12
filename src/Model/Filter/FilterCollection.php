@@ -71,7 +71,7 @@ class FilterCollection implements FilterCollectionInterface
      * @return \Search\Model\Filter\Base
      * @throws \InvalidArgumentException When no filter was found.
      */
-    public function loadFilter($name, $filter, array $options = [])
+    protected function loadFilter($name, $filter, array $options = [])
     {
         if (empty($options['className'])) {
             $class = Inflector::classify($filter);

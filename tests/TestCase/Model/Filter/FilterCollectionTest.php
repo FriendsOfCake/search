@@ -62,6 +62,6 @@ class FilterCollectionTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->collection->loadFilter('test', 'DOES-NOT-EXIST');
+        $this->collection->add('test', 'DOES-NOT-EXIST');
     }
 }

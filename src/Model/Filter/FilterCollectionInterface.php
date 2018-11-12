@@ -41,15 +41,4 @@ interface FilterCollectionInterface extends IteratorAggregate
      * @return \Search\Model\Filter\Base|null
      */
     public function get($name);
-
-    /**
-     * Loads a search filter.
-     *
-     * @param string $name Filter name.
-     * @param string $filter Filter class name in short form like "Search.Value" or FQCN.
-     * @param array $options Filter options.
-     * @return \Search\Model\Filter\Base
-     * @throws \InvalidArgumentException When no filter was found.
-     */
-    public function loadFilter($name, $filter, array $options = []);
 }
