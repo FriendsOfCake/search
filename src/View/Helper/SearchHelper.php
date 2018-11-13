@@ -2,6 +2,7 @@
 namespace Search\View\Helper;
 
 use Cake\View\Helper;
+use Cake\View\View;
 
 /**
  * @property \Cake\View\Helper\UrlHelper $Url
@@ -18,13 +19,41 @@ class SearchHelper extends Helper
     ];
 
     /**
+     * Default config for this class
+     *
+     * - 'additionalBlacklist': Additional params that also should be filtered out.
+     *   For pagination views that usually is also limit and page, as the offset would be wrong.
+     *
+     * @var array
+     */
+    protected $_defaultConfig = [
+        'additionalBlacklist' => [],
+    ];
+
+    /**
+     * Checks for pagination and if so, blacklist limit and page params.
+     *
+     * @param \Cake\View\View $View
+     * @param array $config
+     */
+    public function __construct(View $View, array $config)
+    {
+        $this->request = $View->request;
+        if ($this->request->getParam('paging')) {
+            $this->_defaultConfig['additionalBlacklist'] = ['page'];
+        }
+
+        parent::__construct($View, $config);
+    }
+
+    /**
      * Returns true if the current request has at least one search filter applied.
      *
      * @return bool
      */
     public function isSearch()
     {
-        return $this->_View->get('_isSearch');
+        return (bool)$this->_View->get('_isSearch');
     }
 
     /**
@@ -36,7 +65,7 @@ class SearchHelper extends Helper
      */
     public function resetLink($label, array $options = [])
     {
-        return $this->Html->link($label, $this->resetUrlArray(), $options);
+        return $this->Html->link($label, $this->resetUrl(), $options);
     }
 
     /**
@@ -44,13 +73,16 @@ class SearchHelper extends Helper
      *
      * @return array URL with cleaned Query string.
      */
-    public function resetUrlArray()
+    public function resetUrl()
     {
         $query = $this->request->getQuery();
 
-        $searchParams = $this->_View->get('_searchParams');
-        foreach ($searchParams as $searchParam => $value) {
-            unset($query[$searchParam]);
+        $searchParams = (array)$this->_View->get('_searchParams');
+        $query = array_diff_key($query, $searchParams);
+
+        $additionalBlacklist = (array)$this->getConfig('additionalBlacklist');
+        foreach ($additionalBlacklist as $param) {
+            unset($query[$param]);
         }
 
         return [
