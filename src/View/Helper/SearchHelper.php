@@ -3,6 +3,10 @@ namespace Search\View\Helper;
 
 use Cake\View\Helper;
 
+/**
+ * @property \Cake\View\Helper\UrlHelper $Url
+ * @property \Cake\View\Helper\HtmlHelper $Html
+ */
 class SearchHelper extends Helper
 {
     /**
@@ -14,24 +18,31 @@ class SearchHelper extends Helper
     ];
 
     /**
+     * Returns true if the current request has at least one search filter applied.
+     *
      * @return bool
      */
-    public function isSearch() {
+    public function isSearch()
+    {
         return $this->_View->get('_isSearch');
     }
 
     /**
-     * @param string $label
-     * @param array $attributes
-     * @return string HTML
+     * Returns a reset link for the search form.
+     *
+     * @param string $label Label text.
+     * @param array $options Array of options and HTML attributes.
+     * @return string HTML.
      */
-    public function resetLink($label, array $attributes = [])
+    public function resetLink($label, array $options = [])
     {
-        return $this->Html->link($label, $this->resetUrlArray(), $attributes);
+        return $this->Html->link($label, $this->resetUrlArray(), $options);
     }
 
     /**
-     * @return array
+     * Returns the cleaned URL.
+     *
+     * @return array URL with cleaned Query string.
      */
     public function resetUrlArray()
     {
