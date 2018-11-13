@@ -103,6 +103,7 @@ class PrgComponent extends Component
         }
 
         $controller->set('_isSearch', $model->isSearch());
+        $controller->set('_searchParams', $model->searchParams());
     }
 
     /**

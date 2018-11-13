@@ -10,7 +10,6 @@ use Search\Model\Filter\FilterCollectionInterface;
 
 trait SearchTrait
 {
-
     /**
      * Search Manager instance.
      *
@@ -24,6 +23,13 @@ trait SearchTrait
      * @var bool
      */
     protected $_isSearch = false;
+
+    /**
+     * Params from query string to be used for filtering.
+     *
+     * @var array
+     */
+    protected $_searchParams = [];
 
     /**
      * Default collection class.
@@ -68,6 +74,16 @@ trait SearchTrait
     public function isSearch()
     {
         return $this->_isSearch;
+    }
+
+    /**
+     * Get params from query string to be used for filtering.
+     *
+     * @return array
+     */
+    public function searchParams()
+    {
+        return $this->_searchParams;
     }
 
     /**
@@ -171,7 +187,7 @@ trait SearchTrait
     /**
      * Gets all filters by the default or given collection from the search manager
      *
-     * @param string|null $collection name of collection
+     * @param string $collection name of collection
      * @return \Search\Model\Filter\FilterCollectionInterface Filter collection instance.
      */
     protected function _getFilters($collection = Manager::DEFAULT_COLLECTION)
@@ -189,6 +205,7 @@ trait SearchTrait
      */
     protected function _processFilters(FilterCollectionInterface $filters, $params, $query)
     {
+        $this->_searchParams = $params;
         $this->_isSearch = false;
         foreach ($filters as $filter) {
             $filter->setArgs($params);
