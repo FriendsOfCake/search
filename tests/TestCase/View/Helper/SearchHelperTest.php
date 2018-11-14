@@ -2,6 +2,7 @@
 namespace Search\Test\View\Helper;
 
 use Cake\Http\ServerRequest;
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
@@ -28,11 +29,18 @@ class SearchHelperTest extends TestCase
     {
         parent::setUp();
 
-        Router::reload();
-
         $this->view = new View();
         $config = [];
         $this->searchHelper = new SearchHelper($this->view, $config);
+
+        Router::$initialized = true;
+        Router::scope('/', function (RouteBuilder $routes) {
+            $routes->connect(
+                '/controller/action',
+                ['controller' => 'Controller', 'action' => 'action']
+            );
+            $routes->fallbacks();
+        });
     }
 
     /**
@@ -139,9 +147,22 @@ class SearchHelperTest extends TestCase
     /**
      * @return void
      */
-    public function _testResetLink()
+    public function testResetLink()
     {
+        $request = new ServerRequest('/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar');
+
+        $this->view = new View($request);
+        $config = [];
+        $this->searchHelper = new SearchHelper($this->view, $config);
+
+        $params = [
+            'foo' => 'bar',
+        ];
+        $this->view->set('_searchParams', $params);
+
         $result = $this->searchHelper->resetLink('Reset search filter', ['class' => 'button']);
-        dd($result);
+
+        $expected = '<a href="/?page=2&amp;limit=5&amp;sort=x&amp;direction=asc" class="button">Reset search filter</a>';
+        $this->assertSame($expected, $result);
     }
 }

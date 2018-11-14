@@ -33,8 +33,8 @@ class SearchHelper extends Helper
     /**
      * Checks for pagination and if so, blacklist limit and page params.
      *
-     * @param \Cake\View\View $View
-     * @param array $config
+     * @param \Cake\View\View $View View
+     * @param array $config Config
      */
     public function __construct(View $View, array $config)
     {
