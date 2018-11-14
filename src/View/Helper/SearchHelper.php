@@ -40,7 +40,7 @@ class SearchHelper extends Helper
     {
         $this->request = $View->request;
         if ($this->request->getParam('paging')) {
-            $this->_defaultConfig['additionalBlacklist'] = ['page'];
+            $this->_defaultConfig['additionalBlacklist'][] = 'page';
         }
 
         parent::__construct($View, $config);
