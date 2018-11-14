@@ -325,7 +325,7 @@ The following options are supported by all filters except `Callback` and `Finder
 - `defaultValue` (`mixed`, defaults to `null`) The default value that is being
   used in case the value passed for the corresponding field is invalid or missing.
 
-### `Boolean`
+#### `Boolean`
 
 - `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
   against multiple fields. Valid values are `OR` and `AND`.
@@ -489,6 +489,12 @@ by default. Simply add all query strings that should be whitelisted.
 You can use `queryStringBlacklist` option of `PrgComponent` to set an array of
 form fields that should not end up in the query when extracting params from POST
 request and redirecting.
+
+## Filtering and Security component
+When the Security component is activated for the whole controller, it should be disabled for the paginated actions:
+```php
+$this->Security->setConfig('unlockedActions', ['index']);
+```
 
 ## Tips
 
