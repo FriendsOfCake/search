@@ -26,6 +26,7 @@ class SearchBehavior extends Behavior
         'implementedMethods' => [
             'searchManager' => 'searchManager',
             'isSearch' => 'isSearch',
+            'searchParams' => 'searchParams',
         ],
         'emptyValues' => ['', false, null],
         'collectionClass' => null,
