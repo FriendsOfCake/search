@@ -19,6 +19,13 @@ class SearchHelper extends Helper
     ];
 
     /**
+     * Request instance.
+     *
+     * @var \Cake\Http\ServerRequest;
+     */
+    public $request;
+
+    /**
      * Default config for this class
      *
      * - 'additionalBlacklist': Additional params that also should be filtered out.
@@ -38,7 +45,11 @@ class SearchHelper extends Helper
      */
     public function __construct(View $View, array $config)
     {
-        $this->request = $View->request;
+        if (method_exists($View, 'getRequest')) {
+            $this->request = $View->getRequest();
+        } else {
+            $this->request = $View->request;
+        }
         if ($this->request->getParam('paging')) {
             $this->_defaultConfig['additionalBlacklist'][] = 'page';
         }
