@@ -1,5 +1,7 @@
 parameters:
+    level: 5
     autoload_files:
         - tests/bootstrap.php
     ignoreErrors:
         - '#Call to an undefined method Cake\\ORM\\Table::searchManager\(\)#'
+        - '#Access to protected property Cake\\View\\View::\$request#'
