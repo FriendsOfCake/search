@@ -33,6 +33,4 @@ if (file_exists($root . '/config/bootstrap.php')) {
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
-Plugin::load('Search', ['path' => dirname(dirname(__FILE__)) . DS]);
-
 Configure::write('App.namespace', 'Search\Test\TestApp');
