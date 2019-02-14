@@ -21,11 +21,8 @@ matrix:
   fast_finish: true
 
   include:
-    - php: 7.1
-      env: PHPCS=1 DEFAULT=0
-
     - php: 7.2
-      env: PHPSTAN=1 DEFAULT=0
+      env: CHECKS=1 DEFAULT=0
 
     - php: 5.6
       env: PREFER_LOWEST=1
@@ -36,7 +33,7 @@ before_script:
   - if [[ $PREFER_LOWEST != 1 ]]; then composer install --prefer-source --no-interaction ; fi
   - if [[ $PREFER_LOWEST == 1 ]]; then composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction ; fi
 
-  - if [[ $PHPSTAN = 1 ]]; then composer require phpstan/phpstan:^0.11; fi
+  - if [[ $CHECKS = 1 ]]; then composer require phpstan/phpstan:^0.11; fi
 
   - if [[ $DB = 'mysql' ]]; then mysql -e 'CREATE DATABASE cakephp_test;'; fi
   - if [[ $DB = 'pgsql' ]]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi
@@ -45,8 +42,8 @@ script:
   - if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION != 7.0 ]]; then vendor/bin/phpunit; fi
   - if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION = 7.0 ]]; then vendor/bin/phpunit --coverage-clover=clover.xml; fi
 
-  - if [[ $PHPCS = 1 ]]; then composer cs-check; fi
-  - if [[ $PHPSTAN = 1 ]]; then composer phpstan; fi
+  - if [[ $CHECKS = 1 ]]; then composer cs-check; fi
+  - if [[ $CHECKS = 1 ]]; then composer phpstan; fi
 
 after_success:
   - if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION = 7.0 ]]; then bash <(curl -s https://codecov.io/bash); fi
