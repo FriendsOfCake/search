@@ -30,7 +30,8 @@
         "friendsofcake/cakephp-test-utilities": "^1.0",
         "phpunit/phpunit": "^5.7.14|^6.0",
         "cakephp/cakephp-codesniffer": "^3.0",
-        "muffin/webservice": "^1.3"
+        "muffin/webservice": "^1.3",
+        "phpstan/phpstan": "^0.11.2"
     },
     "autoload": {
         "psr-4": {
@@ -45,12 +46,12 @@
     },
     "support": {
         "source": "https://github.com/FriendsOfCake/search",
-        "issues": "https://github.com/FriendsOfCake/search/issues",
-        "irc": "irc://irc.freenode.org/friendsofcake"
+        "issues": "https://github.com/FriendsOfCake/search/issues"
     },
     "scripts": {
         "cs-check": "phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
         "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "phpstan": "phpstan analyse src/",
         "test": "phpunit"
     }
 }

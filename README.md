@@ -9,7 +9,7 @@ Search provides a simple interface to create paginate-able filters for your Cake
 
 ## Installation
 
-* Install the plugin with composer from your CakePHP Project's ROOT directory
+* Install the plugin with composer from your CakePHP project's ROOT directory
 (where composer.json file is located)
 
 ```sh

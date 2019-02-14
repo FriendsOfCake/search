@@ -4,7 +4,7 @@ php:
   - 5.6
   - 7.0
   - 7.1
-  - 7.2
+  - 7.3
 
 sudo: false
 
@@ -24,7 +24,7 @@ matrix:
     - php: 7.1
       env: PHPCS=1 DEFAULT=0
 
-    - php: 7.1
+    - php: 7.2
       env: PHPSTAN=1 DEFAULT=0
 
     - php: 5.6
@@ -33,10 +33,8 @@ matrix:
 before_script:
   - if [[ $TRAVIS_PHP_VERSION != 7.0 ]]; then phpenv config-rm xdebug.ini; fi
 
-  - if [[ $PREFER_LOWEST != 1 ]]; then composer update --no-interaction ; fi
-  - if [[ $PREFER_LOWEST == 1 ]]; then composer update --no-interaction --prefer-lowest ; fi
-
-  - if [[ $PHPSTAN = 1 ]]; then composer require phpstan/phpstan:^0.10; fi
+  - if [[ $PREFER_LOWEST != 1 ]]; then composer install --prefer-source --no-interaction ; fi
+  - if [[ $PREFER_LOWEST == 1 ]]; then composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction ; fi
 
   - if [[ $DB = 'mysql' ]]; then mysql -e 'CREATE DATABASE cakephp_test;'; fi
   - if [[ $DB = 'pgsql' ]]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi
@@ -46,7 +44,7 @@ script:
   - if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION = 7.0 ]]; then vendor/bin/phpunit --coverage-clover=clover.xml; fi
 
   - if [[ $PHPCS = 1 ]]; then composer cs-check; fi
-  - if [[ $PHPSTAN = 1 ]]; then vendor/bin/phpstan analyse src; fi
+  - if [[ $PHPSTAN = 1 ]]; then composer phpstan; fi
 
 after_success:
   - if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION = 7.0 ]]; then bash <(curl -s https://codecov.io/bash); fi
