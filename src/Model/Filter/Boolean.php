@@ -59,6 +59,6 @@ class Boolean extends Base
             $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);
         }
 
-        return true;
+        return false;
     }
 }

@@ -283,6 +283,7 @@ easily create the search results you need. Use:
 - `Boolean` to limit results by truthy (by default: 1, true, '1', 'true', 'yes', 'on')
   and falsy (by default: 0, false, '0', 'false', 'no', 'off') values which are
   passed down to the ORM as true/1 or false/0 or ignored when being neither truthy or falsy.
+- `Exists` to produce results for existing (non-empty) column content.
 - `Finder` to produce results using a [(custom)](http://book.cakephp.org/3.0/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
 - `Compare` to produce results requiring operator comparison (`>`, `<`, `>=` and `<=`)
 - `Callback` to produce results using your own custom callable function, it
@@ -329,6 +330,13 @@ The following options are supported by all filters except `Callback` and `Finder
 
 - `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
   against multiple fields. Valid values are `OR` and `AND`.
+  
+#### `Exists`
+
+- `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
+  against multiple fields. Valid values are `OR` and `AND`.
+- `nullValue` (`string` or `null`, defaults to `null`). Can be used for non-nullable columns.
+Set it to an empty string there to check via `=`/`!=` instead of `IS NULL`/`IS NOT NULL`.
 
 #### `Compare`
 
