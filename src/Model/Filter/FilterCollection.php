@@ -74,7 +74,7 @@ class FilterCollection implements FilterCollectionInterface
     protected function _loadFilter($name, $filter, array $options = [])
     {
         if (empty($options['className'])) {
-            $class = Inflector::classify($filter);
+            $class = $filter;
         } else {
             $class = $options['className'];
             unset($options['className']);

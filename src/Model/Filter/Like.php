@@ -75,9 +75,11 @@ class Like extends Base
             }
 
             $this->getQuery()->andWhere([$this->getConfig('fieldMode') => $conditions], $colTypes);
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**

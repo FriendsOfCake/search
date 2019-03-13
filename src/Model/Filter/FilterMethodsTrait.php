@@ -18,6 +18,20 @@ trait FilterMethodsTrait
     }
 
     /**
+     * Exists method
+     *
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function exists($name, array $config = [])
+    {
+        $this->add($name, 'Search.Exists', $config);
+
+        return $this;
+    }
+
+    /**
      * Like method
      *
      * @param string $name Name
