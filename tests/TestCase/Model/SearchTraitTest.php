@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Search\Test\TestCase\Model;
 
 use Cake\TestSuite\TestCase;

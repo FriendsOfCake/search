@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Model\Filter\Escaper;
 
 class SqlserverEscaper extends DefaultEscaper

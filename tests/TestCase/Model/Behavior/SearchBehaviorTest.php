@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
@@ -262,7 +262,7 @@ class SearchBehaviorTest extends TestCase
      * @dataProvider collectionFinderProvider
      * @param string $collection The collection name.
      * @param string $queryString The query string data.
-     * @param integer $expected The expected record count.
+     * @param int $expected The expected record count.
      * @return void
      */
     public function testCollectionFinder($collection, $queryString, $expected)

@@ -1,8 +1,5 @@
 <?php
-
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-
+declare(strict_types=1);
 /**
  * Test suite bootstrap.
  *
@@ -33,4 +30,4 @@ if (file_exists($root . '/config/bootstrap.php')) {
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
-Configure::write('App.namespace', 'Search\Test\TestApp');
+\Cake\Core\Configure::write('App.namespace', 'Search\Test\TestApp');

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\Datasource\RepositoryInterface;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Core\App;
@@ -8,7 +9,6 @@ use RuntimeException;
 
 class Like extends Base
 {
-
     /**
      * Escaper to be used.
      *
@@ -153,7 +153,9 @@ class Like extends Base
         if ($this->getConfig('escaper') === null) {
             $query = $this->getQuery();
             if (!$query instanceof Query) {
-                throw new RuntimeException('$query must be instance of Cake\ORM\Query to be able to check driver name.');
+                throw new RuntimeException(
+                    '$query must be instance of Cake\ORM\Query to be able to check driver name.'
+                );
             }
             $driver = get_class($query->getConnection()->getDriver());
             $driverName = 'Sqlserver';

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
@@ -9,7 +10,7 @@ use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Search\Controller\Component\PrgComponent;
 
-class SearchComponentTest extends TestCase
+class PrgComponentTest extends TestCase
 {
     /**
      * @var array

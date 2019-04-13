@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Model\Filter;
 
 class Finder extends Base
@@ -33,7 +34,7 @@ class Finder extends Base
         $args = $this->getArgs();
         $map = $this->getConfig('map');
         foreach ($map as $to => $from) {
-            $args[$to] = isset($args[$from]) ? $args[$from] : null;
+            $args[$to] = $args[$from] ?? null;
         }
 
         $options = $this->getConfig('options');

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Test\TestCase;
 
 use Cake\Core\Configure;
@@ -9,7 +10,6 @@ use Search\Manager;
 
 class ManagerTest extends TestCase
 {
-
     /**
      * Fixtures
      *

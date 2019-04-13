@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\ORM\TableRegistry;
@@ -9,7 +10,6 @@ use Search\Model\Filter\Like;
 
 class LikeTest extends TestCase
 {
-
     /**
      * Fixtures
      *

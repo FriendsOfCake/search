@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Core\InstanceConfigTrait;
@@ -11,7 +12,6 @@ use Search\Manager;
  */
 abstract class Base
 {
-
     use InstanceConfigTrait;
 
     /**
@@ -252,7 +252,7 @@ abstract class Base
      * @codeCoverageIgnore
      * @internal
      */
-    public function validate(array $value = null)
+    public function validate(?array $value = null)
     {
         if ($value === null) {
             return $this->getConfig('validate');

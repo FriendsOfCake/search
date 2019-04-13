@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Database\Expression\QueryExpression;
@@ -6,7 +7,6 @@ use Cake\ORM\Table;
 
 class Value extends Base
 {
-
     /**
      * Default configuration.
      *

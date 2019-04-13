@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search;
 
 use Cake\Core\App;
@@ -19,7 +20,7 @@ class Manager
     /**
      * Default collection name.
      */
-    const DEFAULT_COLLECTION = 'default';
+    public const DEFAULT_COLLECTION = 'default';
 
     /**
      * Repository

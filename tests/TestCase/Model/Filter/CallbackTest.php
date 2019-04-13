@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\ORM\Query;
@@ -10,7 +11,6 @@ use Search\Model\Filter\Callback;
 
 class CallbackTest extends TestCase
 {
-
     /**
      * Fixtures
      *

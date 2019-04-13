@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Model\Filter\Escaper;
 
 use Cake\Core\InstanceConfigTrait;

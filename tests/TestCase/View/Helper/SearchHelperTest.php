@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Test\View\Helper;
 
 use Cake\Http\ServerRequest;

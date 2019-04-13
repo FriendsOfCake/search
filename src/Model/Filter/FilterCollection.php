@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use ArrayIterator;
 use Cake\Core\App;
-use Cake\Utility\Inflector;
 use InvalidArgumentException;
 use Search\Manager;
 

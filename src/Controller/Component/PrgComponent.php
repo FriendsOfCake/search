@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
@@ -61,7 +62,7 @@ class PrgComponent extends Component
             return null;
         }
 
-        list($url) = explode('?', $this->getController()->getRequest()->getRequestTarget());
+        [$url] = explode('?', $this->getController()->getRequest()->getRequestTarget());
 
         $params = $this->_filterParams();
         if ($params) {
@@ -91,7 +92,7 @@ class PrgComponent extends Component
             return null;
         }
 
-        list (, $modelName) = pluginSplit($modelClass);
+        [, $modelName] = pluginSplit($modelClass);
         if (!isset($controller->{$modelName})) {
             return null;
         }

@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use InvalidArgumentException;
 
 class Compare extends Base
 {
-
     /**
      * Default configuration.
      *
