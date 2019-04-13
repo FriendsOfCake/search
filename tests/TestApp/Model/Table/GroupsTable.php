@@ -9,7 +9,7 @@ use Cake\ORM\Table;
 class GroupsTable extends Table
 {
 
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $this->addBehavior('Search.Search');
 

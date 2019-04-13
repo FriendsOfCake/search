@@ -44,7 +44,7 @@ class PrgComponent extends Component
      *
      * @return array
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return Hash::filter($this->getConfig('events'));
     }
@@ -57,11 +57,11 @@ class PrgComponent extends Component
      */
     public function startup()
     {
-        if (!$this->request->is('post') || !$this->_actionCheck()) {
+        if (!$this->getController()->getRequest()->is('post') || !$this->_actionCheck()) {
             return null;
         }
 
-        list($url) = explode('?', $this->request->getRequestTarget());
+        list($url) = explode('?', $this->getController()->getRequest()->getRequestTarget());
 
         $params = $this->_filterParams();
         if ($params) {
@@ -118,7 +118,7 @@ class PrgComponent extends Component
             return $actions;
         }
 
-        return in_array($this->request->getParam('action'), (array)$actions, true);
+        return in_array($this->getController()->getRequest()->getParam('action'), (array)$actions, true);
     }
 
     /**
@@ -128,7 +128,7 @@ class PrgComponent extends Component
      */
     protected function _filterParams()
     {
-        $params = Hash::filter((array)$this->request->getData());
+        $params = Hash::filter((array)$this->getController()->getRequest()->getData());
 
         foreach ((array)$this->getConfig('queryStringBlacklist') as $field) {
             unset($params[$field]);
@@ -145,7 +145,7 @@ class PrgComponent extends Component
         }
 
         foreach ((array)$this->getConfig('queryStringWhitelist') as $field) {
-            $value = $this->request->getQuery($field);
+            $value = $this->getController()->getRequest()->getQuery($field);
             if ($value !== null && !isset($params[$field])) {
                 $params[$field] = $value;
             }

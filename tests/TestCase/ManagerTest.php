@@ -246,12 +246,12 @@ class ManagerTest extends TestCase
     public function testInvalidCollectionClass()
     {
         $table = TableRegistry::get('Articles');
-        $manager = new Manager($table, self::class);
+        $manager = new Manager($table, Configure::class);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
             'The collection must be instance of FilterCollectionInterface. Got instance of "%s" instead',
-            self::class
+            Configure::class
         ));
         $manager->getFilters();
     }

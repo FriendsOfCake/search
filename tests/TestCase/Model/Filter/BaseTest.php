@@ -1,11 +1,11 @@
 <?php
 namespace Search\Test\TestCase\Model\Filter;
 
+use Cake\Datasource\RepositoryInterface;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Test\TestApp\Model\Filter\TestFilter;
-use Search\Test\TestApp\Model\TestRepository;
 
 class BaseTest extends TestCase
 {
@@ -255,9 +255,12 @@ class BaseTest extends TestCase
      */
     public function testFieldAliasingWithNonSupportingRepository()
     {
+        $repo = $this->getMockBuilder(RepositoryInterface::class)
+            ->getMock();
+
         $filter = new TestFilter(
             'field',
-            new Manager(new TestRepository()),
+            new Manager($repo),
             ['aliasField' => true]
         );
 
