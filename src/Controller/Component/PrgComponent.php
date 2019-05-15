@@ -4,6 +4,7 @@ namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Utility\Hash;
+use UnexpectedValueException;
 
 class PrgComponent extends Component
 {
@@ -86,19 +87,14 @@ class PrgComponent extends Component
             return null;
         }
 
-        $controller = $this->_registry->getController();
-        $modelClass = $this->getConfig('modelClass', $controller->modelClass);
-        if (!$modelClass) {
+        $controller = $this->getController();
+        try {
+            /** @var \Cake\ORM\Table&\Search\Model\Behavior\SearchBehavior $model */
+            $model = $controller->loadModel($this->getConfig('modelClass'));
+        } catch (UnexpectedValueException $e) {
             return null;
         }
 
-        [, $modelName] = pluginSplit($modelClass);
-        if (!isset($controller->{$modelName})) {
-            return null;
-        }
-
-        /* @var \Cake\ORM\Table|\Search\Model\Behavior\SearchBehavior $model */
-        $model = $controller->{$modelName};
         if (!$model->behaviors()->has('Search')) {
             return null;
         }
