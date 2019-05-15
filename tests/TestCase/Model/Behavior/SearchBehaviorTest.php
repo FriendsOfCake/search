@@ -95,11 +95,11 @@ class SearchBehaviorTest extends TestCase
             ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('setArgs')
             ->with($params);
         $filter
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('setQuery')
             ->with($query);
         $filter
@@ -115,11 +115,11 @@ class SearchBehaviorTest extends TestCase
             ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter2
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('setArgs')
             ->with($params);
         $filter2
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('setQuery')
             ->with($query);
         $filter2

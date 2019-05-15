@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Search\Model\Behavior;
 
@@ -38,7 +39,7 @@ class SearchBehavior extends Behavior
      * @param array $config Config
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -76,10 +77,10 @@ class SearchBehavior extends Behavior
     /**
      * Return the empty values.
      *
-     * @return array
+     * @return array|null
      */
     protected function _emptyValues()
     {
-        return (array)$this->getConfig('emptyValues');
+        return $this->getConfig('emptyValues');
     }
 }
