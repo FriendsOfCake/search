@@ -139,12 +139,13 @@ class ManagerTest extends TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The collection class "NonExistentCollection" does not exist
      * @return void
      */
     public function testGetFiltersNonExistentCollection()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The collection class "NonExistentCollection" does not exist');
+
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
         $manager->getFilters('non_existent');

@@ -71,12 +71,13 @@ class FinderTest extends TestCase
     }
 
     /**
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage Unknown finder method "nonExistent"
      * @return void
      */
     public function testProcessNonExistentFinderMethod()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Unknown finder method "nonExistent"');
+
         $articles = TableRegistry::get('FinderArticles', [
             'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
         ]);

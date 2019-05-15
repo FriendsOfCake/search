@@ -16,7 +16,7 @@ use Search\Model\Filter\Value;
  */
 class FilterCollectionTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $repository = TableRegistry::get('Articles');
         $manager = new Manager($repository);

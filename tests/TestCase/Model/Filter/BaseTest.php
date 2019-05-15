@@ -29,7 +29,7 @@ class BaseTest extends TestCase
      *
      * @return void
      */
-    public function setup()
+    public function setUp(): void
     {
         $table = TableRegistry::get('Articles');
         $this->Manager = new Manager($table);
@@ -50,13 +50,14 @@ class BaseTest extends TestCase
 
     /**
      * @dataProvider emptyDataProvider
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `field` option is invalid. Expected a non-empty string or array.
      * @param mixed $emptyValue Empty value.
      * @return void
      */
     public function testConstructEmptyFieldOption($emptyValue)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The `field` option is invalid. Expected a non-empty string or array.');
+
         new TestFilter(
             'name',
             $this->Manager,
@@ -66,13 +67,14 @@ class BaseTest extends TestCase
 
     /**
      * @dataProvider emptyDataProvider
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `$name` argument is invalid. Expected a non-empty string.
      * @param mixed $emptyValue Empty value.
      * @return void
      */
     public function testConstructEmptyNameArgument($emptyValue)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The `$name` argument is invalid. Expected a non-empty string.');
+
         new TestFilter(
             $emptyValue,
             $this->Manager,

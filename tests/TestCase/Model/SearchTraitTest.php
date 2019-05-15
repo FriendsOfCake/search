@@ -21,7 +21,7 @@ class SearchTraitTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists(Webservice::class)) {
             $this->markTestSkipped(

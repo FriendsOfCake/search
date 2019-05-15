@@ -40,7 +40,7 @@ class SearchBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -292,12 +292,13 @@ class SearchBehaviorTest extends TestCase
     /**
      * testFindSearchException
      *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Custom finder "search" expects search arguments to be nested under key "search" in find() options.
      * @return void
      */
     public function testFindSearchException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Custom finder "search" expects search arguments to be nested under key "search" in find() options.');
+
         $this->Articles->find('search');
     }
 
