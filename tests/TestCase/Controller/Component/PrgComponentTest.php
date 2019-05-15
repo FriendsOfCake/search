@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;

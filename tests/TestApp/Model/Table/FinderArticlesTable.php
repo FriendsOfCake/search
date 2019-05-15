@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Search\Test\TestApp\Model\Table;
 
 use Cake\ORM\Query;

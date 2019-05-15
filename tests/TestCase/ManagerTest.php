@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Search\Test\TestCase;
 
 use Cake\Core\Configure;
@@ -37,7 +38,7 @@ class ManagerTest extends TestCase
         $manager->like('like', $options);
         $manager->value('value', $options);
 
-        /* @var $result \Search\Model\Filter\Base[] */
+        /** @var \Search\Model\Filter\Base[] $result */
         $result = $manager->getFilters();
         $this->assertCount(7, $result);
         $this->assertInstanceOf('\Search\Model\Filter\Boolean', $result['boolean']);
@@ -72,7 +73,7 @@ class ManagerTest extends TestCase
 
         Configure::clear();
 
-        /* @var $result \Search\Model\Filter\Base[] */
+        /** @var \Search\Model\Filter\Base[] $result */
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
         $this->assertInstanceOf('\Search\Test\TestApp\Model\Filter\TestFilter', $result['test1']);

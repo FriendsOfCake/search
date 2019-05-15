@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Search\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
@@ -133,7 +134,7 @@ class SearchBehaviorTest extends TestCase
         $filters['name'] = $filter;
         $filters['date'] = $filter2;
 
-        /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject $behavior */
         $behavior = $this->Comments->behaviors()->get('Search');
         $behavior
             ->expects($this->once())
