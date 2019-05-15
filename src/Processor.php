@@ -8,7 +8,7 @@ use Search\Model\Filter\FilterCollectionInterface;
 class Processor
 {
     /**
-     * The filtered and flattend params from query string used for filtering.
+     * The filtered and flattend params used for filtering.
      *
      * @var array
      */
@@ -25,8 +25,8 @@ class Processor
      * Processes the given filters.
      *
      * @param \Search\Model\Filter\FilterCollectionInterface $filters The filters to process.
-     * @param \Cake\Datasource\QueryInterface $query The query to pass to the filters.
-     * @param array $params The parameters to pass to the filters.
+     * @param \Cake\Datasource\QueryInterface $query The query to be modified by the filters.
+     * @param array $params The search parameters to pass to the filters.
      * @return bool True is $query was modified by filters else false.
      */
     public function process(FilterCollectionInterface $filters, QueryInterface $query, array $params)
@@ -38,13 +38,7 @@ class Processor
         $filtered = false;
 
         foreach ($filters as $filter) {
-            $filter->setQuery($query);
-            $filter->setArgs($params);
-
-            if ($filter->skip()) {
-                continue;
-            }
-            $result = $filter->process();
+            $result = $filter($query, $params);
             if ($result !== false) {
                 $filtered = true;
             }

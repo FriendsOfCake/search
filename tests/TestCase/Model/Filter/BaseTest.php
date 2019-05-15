@@ -1,6 +1,7 @@
 <?php
 namespace Search\Test\TestCase\Model\Filter;
 
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
@@ -262,5 +263,22 @@ class BaseTest extends TestCase
         );
 
         $this->assertEquals('field', $filter->field());
+    }
+
+    /**
+     * @return void
+     */
+    public function testBeforeProcessCallback()
+    {
+        $filter = new TestFilter(
+            'field',
+            $this->Manager,
+            ['beforeProcess' => function ($query, $params) {
+                $query->where($params);
+            }]
+        );
+
+        $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
+        $this->assertNotEmpty($filter->getQuery()->clause('where'));
     }
 }

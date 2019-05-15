@@ -68,6 +68,7 @@ abstract class Base
             'multiValue' => false,
             'multiValueSeparator' => null,
             'flatten' => true,
+            'beforeProcess' => null,
         ];
         $config += $defaults;
         $this->setConfig($config);
@@ -297,6 +298,28 @@ abstract class Base
     public function getQuery()
     {
         return $this->_query;
+    }
+
+    /**
+     * Run the filter.
+     *
+     * @return bool True if processed, false if skipped
+     */
+    public function __invoke($query, $args)
+    {
+        $this->setQuery($query);
+        $this->setArgs($args);
+
+        if ($this->skip()) {
+            return false;
+        }
+
+        $beforeProcess = $this->getConfig('beforeProcess');
+        if (is_callable($beforeProcess)) {
+            $beforeProcess($this->getQuery(), $this->getArgs());
+        }
+
+        return $this->process();
     }
 
     /**
