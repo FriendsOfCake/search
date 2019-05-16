@@ -333,15 +333,15 @@ The following options are supported by all filters except `Callback` and `Finder
   processing of the filter will be skipped. If it returns `array` it will be used
   as filter arguments.
   
-```php
-// PostsTable::initialize()
-    $searchManager->like('q', [
-        'fields' => ['Posts.title', 'Authors.title'],
-        'beforeProcess' => function ($query, $args) {
-            $query->contain('Authors');
-        },
-    ]);
-```
+    ```php
+    // PostsTable::initialize()
+        $searchManager->like('q', [
+            'fields' => ['Posts.title', 'Authors.title'],
+            'beforeProcess' => function (Query $query, array $args) {
+                $query->contain('Authors');
+            },
+        ]);
+    ```
 
 #### `Boolean`
 
