@@ -337,7 +337,7 @@ The following options are supported by all filters except `Callback` and `Finder
     // PostsTable::initialize()
         $searchManager->like('q', [
             'fields' => ['Posts.title', 'Authors.title'],
-            'beforeProcess' => function (Query $query, array $args) {
+            'beforeProcess' => function (\Cake\ORM\Query $query, array $args) {
                 $query->contain('Authors');
             },
         ]);
