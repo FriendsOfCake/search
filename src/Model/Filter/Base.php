@@ -318,7 +318,7 @@ abstract class Base
 
         $beforeProcess = $this->getConfig('beforeProcess');
         if (is_callable($beforeProcess)) {
-            $return = $beforeProcess($this->getQuery(), $this->getArgs());
+            $return = $beforeProcess($this->getQuery(), $this->getArgs(), $this);
 
             if ($return === false) {
                 return false;
