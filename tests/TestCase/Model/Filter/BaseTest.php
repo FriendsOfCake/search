@@ -1,6 +1,7 @@
 <?php
 namespace Search\Test\TestCase\Model\Filter;
 
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
@@ -262,5 +263,70 @@ class BaseTest extends TestCase
         );
 
         $this->assertEquals('field', $filter->field());
+    }
+
+    /**
+     * @return void
+     */
+    public function testBeforeProcessCallback()
+    {
+        $filter = new TestFilter(
+            'field',
+            $this->Manager,
+            ['beforeProcess' => function ($query, $params) {
+                $query->where($params);
+            }]
+        );
+
+        $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
+        $this->assertNotEmpty($filter->getQuery()->clause('where'));
+    }
+
+    /**
+     * Test that beforeProcess callback returning false prevent process() from running.
+     *
+     * @return void
+     */
+    public function testBeforeProcessReturnFalse()
+    {
+        $filter = $this->getMockBuilder(TestFilter::class)
+            ->setMethods(['process'])
+            ->setConstructorArgs([
+                'field',
+                $this->Manager,
+                [
+                    'beforeProcess' => function ($query, $params) {
+                        return false;
+                    },
+                ],
+            ])
+            ->getMock();
+
+        $filter
+            ->expects($this->never())
+            ->method('process');
+
+        $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
+    }
+
+    /**
+     * Test that if beforeProcess returns array it's used as filter args.
+     *
+     * @return void
+     */
+    public function testBeforeProcessReturnArgsArray()
+    {
+        $filter = new TestFilter(
+            'field',
+            $this->Manager,
+            ['beforeProcess' => function ($query, $params) {
+                $params['extra'] = 'value';
+
+                return $params;
+            }]
+        );
+
+        $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
+        $this->assertEquals(['field' => 'bar', 'extra' => 'value'], $filter->getArgs());
     }
 }

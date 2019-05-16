@@ -326,11 +326,18 @@ The following options are supported by all filters except `Callback` and `Finder
 - `defaultValue` (`mixed`, defaults to `null`) The default value that is being
   used in case the value passed for the corresponding field is invalid or missing.
 
+- `beforeProcess` (`callable`, defaults to `null`) A callable which can be used
+  to modify the query before the main `process()` method of filter is run.
+  It receives `$query` and `$args` as arguments. You can use the callback for e.g.
+  to setup joins or contains on the query. If the callback returns `false` then
+  processing of the filter will be skipped. If it returns `array` it will be used
+  as filter arguments.
+
 #### `Boolean`
 
 - `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
   against multiple fields. Valid values are `OR` and `AND`.
-  
+
 #### `Exists`
 
 - `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
@@ -409,10 +416,10 @@ Set it to an empty string there to check via `=`/`!=` instead of `IS NULL`/`IS N
 - `multiValue` (`bool`, defaults to `false`) Defines whether the filter accepts
   multiple values. If disabled, and multiple values are being passed, the filter
   will fall back to using the default value defined by the `defaultValue` option.
-  
+
 - `multiValueSeparator` (`string`, defaults to `null`) Defines whether the filter should
   auto-tokenize multiple values using a specific separator string. If disabled, the data
-  must be an in form of an array.  
+  must be an in form of an array.
 
 - `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
   against multiple fields. Valid values are `OR` and `AND`.
@@ -472,9 +479,9 @@ class MyCustomFilter extends \Search\Model\Filter\Base
     public function process()
     {
         // return false if you want to skip modifying the query based on some condition.
-        
+
         // Use $this->query() to get query instance and modify it as needed.
-        
+
         return true;
     }
 }
