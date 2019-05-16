@@ -4,6 +4,7 @@ namespace Search\Model\Filter;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Datasource\QueryInterface;
 use Search\Manager;
+use UnexpectedValueException;
 
 /**
  * Base class for search type classes.
@@ -317,7 +318,11 @@ abstract class Base
         }
 
         $beforeProcess = $this->getConfig('beforeProcess');
-        if (is_callable($beforeProcess)) {
+        if ($beforeProcess !== null) {
+            if (!is_callable($beforeProcess)) {
+                throw new UnexpectedValueException('Value for "beforeProcess" config must be a valid callable');
+            }
+
             $return = $beforeProcess($this->getQuery(), $this->getArgs(), $this);
 
             if ($return === false) {
