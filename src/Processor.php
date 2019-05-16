@@ -140,7 +140,7 @@ class Processor
      * @param \Search\Model\Filter\FilterCollectionInterface $filters Filter collection.
      * @return array The extracted parameters.
      */
-    protected function _extractParams($params, FilterCollectionInterface $filters)
+    protected function _extractParams(array $params, FilterCollectionInterface $filters)
     {
         $emptyValues = $this->_emptyValues;
 
