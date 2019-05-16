@@ -332,6 +332,16 @@ The following options are supported by all filters except `Callback` and `Finder
   to setup joins or contains on the query. If the callback returns `false` then
   processing of the filter will be skipped. If it returns `array` it will be used
   as filter arguments.
+  
+```php
+// PostsTable::initialize()
+    $searchManager->like('q', [
+        'fields' => ['Posts.title', 'Authors.title'],
+        'beforeProcess' => function ($query, $args) {
+            $query->contain('Authors');
+        },
+    ]);
+```
 
 #### `Boolean`
 
