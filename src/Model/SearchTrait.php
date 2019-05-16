@@ -72,6 +72,11 @@ trait SearchTrait
         return $query;
     }
 
+    /**
+     * Get filters processor instance.
+     *
+     * @return \Search\Processor
+     */
     public function processor()
     {
         if ($this->_processor === null) {

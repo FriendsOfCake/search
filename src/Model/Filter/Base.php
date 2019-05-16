@@ -303,9 +303,11 @@ abstract class Base
     /**
      * Run the filter.
      *
+     * @param \Cake\Datasource\QueryInterface $query Query instance.
+     * @param array $args Filter arguments.
      * @return bool True if processed, false if skipped
      */
-    public function __invoke($query, $args)
+    public function __invoke(QueryInterface $query, array $args)
     {
         $this->setQuery($query);
         $this->setArgs($args);
