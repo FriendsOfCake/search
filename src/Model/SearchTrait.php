@@ -214,6 +214,7 @@ trait SearchTrait
             if ($filter->skip()) {
                 continue;
             }
+            $filter->beforeProcess();
             $result = $filter->process();
             if ($result !== false) {
                 $this->_isSearch = true;

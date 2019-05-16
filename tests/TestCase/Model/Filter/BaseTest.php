@@ -156,6 +156,33 @@ class BaseTest extends TestCase
     /**
      * @return void
      */
+    public function testBeforeProcess()
+    {
+        $query = $this->Manager->getRepository()->find();
+
+        $callback = $this->getMockBuilder(\stdClass::class)
+            ->setMethods(['__invoke'])
+            ->getMock();
+
+        $callback->expects($this->once())
+            ->method('__invoke')
+            ->willReturn($query);
+
+        $filter = new TestFilter(
+            'field',
+            $this->Manager,
+            [
+                'alwaysRun' => true,
+                'beforeProcess' => $callback
+            ]
+        );
+        $filter->setQuery($query);
+        $filter->beforeProcess();
+    }
+
+    /**
+     * @return void
+     */
     public function testValue()
     {
         $filter = new TestFilter(

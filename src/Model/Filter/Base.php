@@ -68,6 +68,7 @@ abstract class Base
             'multiValue' => false,
             'multiValueSeparator' => null,
             'flatten' => true,
+            'beforeProcess' => null,
         ];
         $config += $defaults;
         $this->setConfig($config);
@@ -297,6 +298,19 @@ abstract class Base
     public function getQuery()
     {
         return $this->_query;
+    }
+
+    /**
+     * Calls beforeProcess callback to modify the Query
+     *
+     * @return void
+     */
+    public function beforeProcess()
+    {
+        $callback = $this->getConfig('beforeProcess');
+        if (is_callable($callback) || $callback instanceof \Closure) {
+            $this->setQuery($callback($this->getQuery()));
+        }
     }
 
     /**
