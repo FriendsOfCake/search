@@ -1,6 +1,4 @@
 <?php
-declare(strict_types=1);
-
 namespace Search\Model\Behavior;
 
 use Cake\Core\Configure;
@@ -39,7 +37,7 @@ class SearchBehavior extends Behavior
      * @param array $config Config
      * @return void
      */
-    public function initialize(array $config): void
+    public function initialize(array $config)
     {
         parent::initialize($config);
 
