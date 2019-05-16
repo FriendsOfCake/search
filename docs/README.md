@@ -329,7 +329,9 @@ The following options are supported by all filters except `Callback` and `Finder
 - `beforeProcess` (`callable`, defaults to `null`) A callable which can be used
   to modify the query before the main `process()` method of filter is run.
   It receives `$query` and `$args` as arguments. You can use the callback for e.g.
-  to setup joins or contains on the query.
+  to setup joins or contains on the query. If the callback returns `false` then
+  processing of the filter will be skipped. If it returns `array` it will be used
+  as filter arguments.
 
 #### `Boolean`
 

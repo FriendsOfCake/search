@@ -281,4 +281,52 @@ class BaseTest extends TestCase
         $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
         $this->assertNotEmpty($filter->getQuery()->clause('where'));
     }
+
+    /**
+     * Test that beforeProcess callback returning false prevent process() from running.
+     *
+     * @return void
+     */
+    public function testBeforeProcessReturnFalse()
+    {
+        $filter = $this->getMockBuilder(TestFilter::class)
+            ->setMethods(['process'])
+            ->setConstructorArgs([
+                'field',
+                $this->Manager,
+                [
+                    'beforeProcess' => function ($query, $params) {
+                        return false;
+                    },
+                ],
+            ])
+            ->getMock();
+
+        $filter
+            ->expects($this->never())
+            ->method('process');
+
+        $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
+    }
+
+    /**
+     * Test that if beforeProcess returns array it's used as filter args.
+     *
+     * @return void
+     */
+    public function testBeforeProcessReturnArgsArray()
+    {
+        $filter = new TestFilter(
+            'field',
+            $this->Manager,
+            ['beforeProcess' => function ($query, $params) {
+                $params['extra'] = 'value';
+
+                return $params;
+            }]
+        );
+
+        $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
+        $this->assertEquals(['field' => 'bar', 'extra' => 'value'], $filter->getArgs());
+    }
 }

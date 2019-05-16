@@ -318,7 +318,15 @@ abstract class Base
 
         $beforeProcess = $this->getConfig('beforeProcess');
         if (is_callable($beforeProcess)) {
-            $beforeProcess($this->getQuery(), $this->getArgs());
+            $return = $beforeProcess($this->getQuery(), $this->getArgs());
+
+            if ($return === false) {
+                return false;
+            }
+
+            if (is_array($return)) {
+                $this->setArgs($return);
+            }
         }
 
         return $this->process();
