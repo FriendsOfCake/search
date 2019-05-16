@@ -318,20 +318,20 @@ abstract class Base
         }
 
         $beforeProcess = $this->getConfig('beforeProcess');
-        if ($beforeProcess !== null) {
-            if (!is_callable($beforeProcess)) {
-                throw new UnexpectedValueException('Value for "beforeProcess" config must be a valid callable');
-            }
+        if ($beforeProcess === null) {
+            return $this->process();
+        }
 
-            $return = $beforeProcess($this->getQuery(), $this->getArgs(), $this);
+        if (!is_callable($beforeProcess)) {
+            throw new UnexpectedValueException('Value for "beforeProcess" config must be a valid callable');
+        }
 
-            if ($return === false) {
-                return false;
-            }
-
-            if (is_array($return)) {
-                $this->setArgs($return);
-            }
+        $return = $beforeProcess($this->getQuery(), $this->getArgs(), $this);
+        if ($return === false) {
+            return false;
+        }
+        if (is_array($return)) {
+            $this->setArgs($return);
         }
 
         return $this->process();
