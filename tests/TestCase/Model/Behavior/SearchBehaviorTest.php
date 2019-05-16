@@ -98,11 +98,13 @@ class SearchBehaviorTest extends TestCase
         $filter
             ->expects($this->once())
             ->method('setArgs')
-            ->with($params);
+            ->with($params)
+            ->willReturnSelf();
         $filter
             ->expects($this->once())
             ->method('setQuery')
-            ->with($query);
+            ->with($query)
+            ->willReturnSelf();
         $filter
             ->expects($this->at(2))
             ->method('skip');
@@ -118,11 +120,13 @@ class SearchBehaviorTest extends TestCase
         $filter2
             ->expects($this->once())
             ->method('setArgs')
-            ->with($params);
+            ->with($params)
+            ->willReturnSelf();
         $filter2
             ->expects($this->once())
             ->method('setQuery')
-            ->with($query);
+            ->with($query)
+            ->willReturnSelf();
         $filter2
             ->expects($this->at(2))
             ->method('skip');

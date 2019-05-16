@@ -22,7 +22,7 @@ class Value extends Base
      *
      * @return bool
      */
-    public function process()
+    public function process(): bool
     {
         $value = $this->value();
         if ($value === null) {

@@ -32,7 +32,7 @@ class Compare extends Base
      * @return bool
      * @throws \InvalidArgumentException
      */
-    public function process()
+    public function process(): bool
     {
         $conditions = [];
         if (!in_array($this->getConfig('operator'), $this->_operators, true)) {

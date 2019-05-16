@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Http\Response;
 use Cake\Utility\Hash;
 use UnexpectedValueException;
 
@@ -58,7 +59,7 @@ class PrgComponent extends Component
      *
      * @return \Cake\Http\Response|null
      */
-    public function startup()
+    public function startup(): ?Response
     {
         if (!$this->getController()->getRequest()->is('post') || !$this->_actionCheck()) {
             return null;
@@ -80,12 +81,12 @@ class PrgComponent extends Component
      * You need to configure the modelClass config if you are not using the controller's
      * default modelClass property.
      *
-     * @return \Cake\Http\Response|null
+     * @return void
      */
     public function beforeRender()
     {
         if (!$this->_actionCheck()) {
-            return null;
+            return;
         }
 
         $controller = $this->getController();
@@ -93,11 +94,11 @@ class PrgComponent extends Component
             /** @var \Cake\ORM\Table&\Search\Model\Behavior\SearchBehavior $model */
             $model = $controller->loadModel($this->getConfig('modelClass'));
         } catch (UnexpectedValueException $e) {
-            return null;
+            return;
         }
 
         if (!$model->behaviors()->has('Search')) {
-            return null;
+            return;
         }
 
         $controller->set('_isSearch', $model->isSearch());
@@ -109,7 +110,7 @@ class PrgComponent extends Component
      *
      * @return bool
      */
-    protected function _actionCheck()
+    protected function _actionCheck(): bool
     {
         $actions = $this->getConfig('actions');
         if (is_bool($actions)) {
@@ -124,7 +125,7 @@ class PrgComponent extends Component
      *
      * @return array
      */
-    protected function _filterParams()
+    protected function _filterParams(): array
     {
         $params = Hash::filter((array)$this->getController()->getRequest()->getData());
 

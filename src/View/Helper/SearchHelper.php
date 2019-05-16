@@ -64,7 +64,7 @@ class SearchHelper extends Helper
      *
      * @return bool
      */
-    public function isSearch()
+    public function isSearch(): bool
     {
         return (bool)$this->_View->get('_isSearch');
     }
@@ -76,7 +76,7 @@ class SearchHelper extends Helper
      * @param array $options Array of options and HTML attributes.
      * @return string HTML.
      */
-    public function resetLink($label, array $options = [])
+    public function resetLink(string $label, array $options = []): string
     {
         return $this->Html->link($label, $this->resetUrl(), $options);
     }
@@ -86,7 +86,7 @@ class SearchHelper extends Helper
      *
      * @return array URL with cleaned Query string.
      */
-    public function resetUrl()
+    public function resetUrl(): array
     {
         $query = $this->request->getQuery();
 

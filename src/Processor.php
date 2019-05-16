@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search;
 
 use Cake\Datasource\QueryInterface;
@@ -29,7 +31,7 @@ class Processor
      * @param array $params The search parameters to pass to the filters.
      * @return bool True is $query was modified by filters else false.
      */
-    public function process(FilterCollectionInterface $filters, QueryInterface $query, array $params)
+    public function process(FilterCollectionInterface $filters, QueryInterface $query, array $params): bool
     {
         $params = $this->_flattenParams($params, $filters);
         $params = $this->_extractParams($params, $filters);
@@ -65,7 +67,7 @@ class Processor
      *
      * @return array
      */
-    public function searchParams()
+    public function searchParams(): array
     {
         return $this->_searchParams;
     }
@@ -109,7 +111,7 @@ class Processor
      * @param \Search\Model\Filter\FilterCollectionInterface $filters Filter collection instance.
      * @return array The flattened parameters array.
      */
-    protected function _flattenParams(array $params, FilterCollectionInterface $filters)
+    protected function _flattenParams(array $params, FilterCollectionInterface $filters): array
     {
         $flattened = [];
         foreach ($params as $key => $value) {
@@ -140,7 +142,7 @@ class Processor
      * @param \Search\Model\Filter\FilterCollectionInterface $filters Filter collection.
      * @return array The extracted parameters.
      */
-    protected function _extractParams(array $params, FilterCollectionInterface $filters)
+    protected function _extractParams(array $params, FilterCollectionInterface $filters): array
     {
         $emptyValues = $this->_emptyValues;
 

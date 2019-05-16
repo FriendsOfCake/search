@@ -38,7 +38,7 @@ class DefaultEscaper implements EscaperInterface
      * @param string $value Value.
      * @return string Value
      */
-    public function formatWildcards($value)
+    public function formatWildcards(string $value): string
     {
         $from = $to = $substFrom = $substTo = [];
         if ($this->getConfig('wildcardAny') !== '%') {

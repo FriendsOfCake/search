@@ -22,7 +22,7 @@ class Exists extends Base
      *
      * @return bool
      */
-    public function process()
+    public function process(): bool
     {
         $value = $this->value();
         if (!is_scalar($value) || $value === '') {

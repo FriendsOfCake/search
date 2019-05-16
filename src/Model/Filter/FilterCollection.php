@@ -6,6 +6,7 @@ namespace Search\Model\Filter;
 use ArrayIterator;
 use Cake\Core\App;
 use InvalidArgumentException;
+use Iterator;
 use Search\Manager;
 
 /**
@@ -44,7 +45,7 @@ class FilterCollection implements FilterCollectionInterface
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
     }
 
@@ -56,7 +57,7 @@ class FilterCollection implements FilterCollectionInterface
      * @param array $options Filter options.
      * @return $this
      */
-    public function add($name, $filter, array $options = [])
+    public function add(string $name, string $filter, array $options = [])
     {
         $this->_filters[$name] = $this->_loadFilter($name, $filter, $options);
 
@@ -72,7 +73,7 @@ class FilterCollection implements FilterCollectionInterface
      * @return \Search\Model\Filter\Base
      * @throws \InvalidArgumentException When no filter was found.
      */
-    protected function _loadFilter($name, $filter, array $options = [])
+    protected function _loadFilter(string $name, string $filter, array $options = []): Base
     {
         if (empty($options['className'])) {
             $class = $filter;
@@ -95,7 +96,7 @@ class FilterCollection implements FilterCollectionInterface
      * @param string $name Name of the filter
      * @return bool
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return $this->offsetExists($name);
     }
@@ -106,7 +107,7 @@ class FilterCollection implements FilterCollectionInterface
      * @param string $name Name of the filter
      * @return \Search\Model\Filter\Base|null
      */
-    public function get($name)
+    public function get(string $name): ?Base
     {
         return $this->offsetGet($name);
     }
@@ -117,7 +118,7 @@ class FilterCollection implements FilterCollectionInterface
      * @param string $name Name of the filter
      * @return $this
      */
-    public function remove($name)
+    public function remove(string $name)
     {
         $this->offsetUnset($name);
 
@@ -129,7 +130,7 @@ class FilterCollection implements FilterCollectionInterface
      *
      * @return \Iterator
      */
-    public function getIterator()
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->_filters);
     }
@@ -140,7 +141,7 @@ class FilterCollection implements FilterCollectionInterface
      * @param string $name The name to check for.
      * @return bool True on success or false on failure.
      */
-    public function offsetExists($name)
+    public function offsetExists($name): bool
     {
         return isset($this->_filters[$name]);
     }
@@ -151,7 +152,7 @@ class FilterCollection implements FilterCollectionInterface
      * @param string $name Name of filter to retrieve.
      * @return \Search\Model\Filter\Base|null Filter instance or null.
      */
-    public function offsetGet($name)
+    public function offsetGet($name): ?Base
     {
         if ($this->offsetExists($name)) {
             return $this->_filters[$name];
@@ -167,7 +168,7 @@ class FilterCollection implements FilterCollectionInterface
      * @param \Search\Model\Filter\Base $value Filter instance to set.
      * @return void
      */
-    public function offsetSet($name, $value)
+    public function offsetSet($name, $value): void
     {
         $this->_filters[$name] = $value;
     }
@@ -178,7 +179,7 @@ class FilterCollection implements FilterCollectionInterface
      * @param string $name Name of filter to unset.
      * @return void
      */
-    public function offsetUnset($name)
+    public function offsetUnset($name): void
     {
         unset($this->_filters[$name]);
     }

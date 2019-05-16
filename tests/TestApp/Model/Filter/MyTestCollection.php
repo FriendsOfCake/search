@@ -7,7 +7,7 @@ use Search\Model\Filter\FilterCollection;
 
 class MyTestCollection extends FilterCollection
 {
-    public function initialize()
+    public function initialize(): void
     {
         $this->add('first', 'Search.Callback');
     }

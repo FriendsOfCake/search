@@ -54,7 +54,7 @@ abstract class Base
      * @param array $config Config.
      * @throws \InvalidArgumentException
      */
-    public function __construct($name, Manager $manager, array $config = [])
+    public function __construct(string $name, Manager $manager, array $config = [])
     {
         $this->_manager = $manager;
 
@@ -96,7 +96,7 @@ abstract class Base
      *
      * @return \Search\Manager
      */
-    public function manager()
+    public function manager(): Manager
     {
         return $this->_manager;
     }
@@ -136,7 +136,7 @@ abstract class Base
      *
      * @return array
      */
-    public function fields()
+    public function fields(): array
     {
         return (array)$this->field();
     }
@@ -146,7 +146,7 @@ abstract class Base
      *
      * @return string
      */
-    public function name()
+    public function name(): string
     {
         return $this->getConfig('name');
     }
@@ -156,7 +156,7 @@ abstract class Base
      *
      * @return bool
      */
-    public function present()
+    public function present(): bool
     {
         return $this->getConfig('alwaysRun') || array_key_exists($this->name(), $this->_args);
     }
@@ -166,7 +166,7 @@ abstract class Base
      *
      * @return bool
      */
-    public function filterEmpty()
+    public function filterEmpty(): bool
     {
         return $this->getConfig('filterEmpty');
     }
@@ -176,7 +176,7 @@ abstract class Base
      *
      * @return bool
      */
-    public function skip()
+    public function skip(): bool
     {
         return !$this->present() ||
             ($this->filterEmpty() &&
@@ -229,11 +229,13 @@ abstract class Base
      *
      * @param array $args Value.
      *
-     * @return void
+     * @return $this
      */
     public function setArgs(array $args)
     {
         $this->_args = $args;
+
+        return $this;
     }
 
     /**
@@ -241,7 +243,7 @@ abstract class Base
      *
      * @return array
      */
-    public function getArgs()
+    public function getArgs(): array
     {
         return $this->_args;
     }
@@ -254,7 +256,7 @@ abstract class Base
      * @codeCoverageIgnore
      * @internal
      */
-    public function validate(?array $value = null)
+    public function validate(?array $value = null): ?array
     {
         if ($value === null) {
             return $this->getConfig('validate');
@@ -270,7 +272,7 @@ abstract class Base
      * @codeCoverageIgnore
      * @internal
      */
-    public function valid()
+    public function valid(): bool
     {
         $rules = $this->validate();
         if (empty($rules)) {
@@ -284,11 +286,13 @@ abstract class Base
      * Sets the query object.
      *
      * @param \Cake\Datasource\QueryInterface $query Query instance.
-     * @return void
+     * @return $this
      */
     public function setQuery(QueryInterface $query)
     {
         $this->_query = $query;
+
+        return $this;
     }
 
     /**
@@ -296,7 +300,7 @@ abstract class Base
      *
      * @return \Cake\Datasource\QueryInterface|null
      */
-    public function getQuery()
+    public function getQuery(): ?QueryInterface
     {
         return $this->_query;
     }
@@ -308,10 +312,9 @@ abstract class Base
      * @param array $args Filter arguments.
      * @return bool True if processed, false if skipped
      */
-    public function __invoke(QueryInterface $query, array $args)
+    public function __invoke(QueryInterface $query, array $args): bool
     {
-        $this->setQuery($query);
-        $this->setArgs($args);
+        $this->setQuery($query)->setArgs($args);
 
         if ($this->skip()) {
             return false;
@@ -339,5 +342,5 @@ abstract class Base
      *
      * @return bool True if processed, false if skipped
      */
-    abstract public function process();
+    abstract public function process(): bool;
 }

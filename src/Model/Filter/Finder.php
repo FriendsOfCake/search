@@ -18,7 +18,7 @@ class Finder extends Base
      *
      * @return string
      */
-    public function finder()
+    public function finder(): string
     {
         $finder = $this->getConfig('finder');
 
@@ -30,7 +30,7 @@ class Finder extends Base
      *
      * @return bool
      */
-    public function process()
+    public function process(): bool
     {
         $args = $this->getArgs();
         $map = $this->getConfig('map');

@@ -5,6 +5,7 @@ namespace Search\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\ORM\Behavior;
+use Cake\ORM\Table;
 use Search\Model\SearchTrait;
 
 class SearchBehavior extends Behavior
@@ -69,7 +70,7 @@ class SearchBehavior extends Behavior
      *
      * @return \Cake\ORM\Table
      */
-    protected function _repository()
+    protected function _repository(): Table
     {
         return $this->_table;
     }
@@ -79,7 +80,7 @@ class SearchBehavior extends Behavior
      *
      * @return array|null
      */
-    protected function _emptyValues()
+    protected function _emptyValues(): ?array
     {
         return $this->getConfig('emptyValues');
     }

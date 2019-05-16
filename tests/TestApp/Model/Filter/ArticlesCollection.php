@@ -7,7 +7,7 @@ use Search\Model\Filter\FilterCollection;
 
 class ArticlesCollection extends FilterCollection
 {
-    public function initialize()
+    public function initialize(): void
     {
         $this->value('foo')
             ->like('search', ['filterEmpty' => true])

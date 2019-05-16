@@ -67,23 +67,6 @@ class BaseTest extends TestCase
     }
 
     /**
-     * @dataProvider emptyDataProvider
-     * @param mixed $emptyValue Empty value.
-     * @return void
-     */
-    public function testConstructEmptyNameArgument($emptyValue)
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The `$name` argument is invalid. Expected a non-empty string.');
-
-        new TestFilter(
-            $emptyValue,
-            $this->Manager,
-            ['field' => 'field']
-        );
-    }
-
-    /**
      * @return array
      */
     public function nonEmptyFieldDataProvider()

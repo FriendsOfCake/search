@@ -10,7 +10,7 @@ class Callback extends Base
      *
      * @return bool
      */
-    public function process()
+    public function process(): bool
     {
         $ret = call_user_func(
             $this->getConfig('callback'),
