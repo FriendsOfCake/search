@@ -317,15 +317,6 @@ The following options are supported by all filters.
   should be maintained to ease parsing the passed data with your chosen filter,
   set this to `false`.
 
-The following options are supported by all filters except `Callback` and `Finder`.
-
-- `aliasField` (`bool`, defaults to `true`) Defines whether the field name should
-  be aliased with respect to the alias used by the table class to which the behavior
-  is attached to.
-
-- `defaultValue` (`mixed`, defaults to `null`) The default value that is being
-  used in case the value passed for the corresponding field is invalid or missing.
-
 - `beforeProcess` (`callable`, defaults to `null`) A callable which can be used
   to modify the query before the main `process()` method of filter is run.
   It receives `$query` and `$args` as arguments. You can use the callback for e.g.
@@ -342,6 +333,15 @@ The following options are supported by all filters except `Callback` and `Finder
             },
         ]);
     ```
+
+The following options are supported by all filters except `Callback` and `Finder`.
+
+- `aliasField` (`bool`, defaults to `true`) Defines whether the field name should
+  be aliased with respect to the alias used by the table class to which the behavior
+  is attached to.
+
+- `defaultValue` (`mixed`, defaults to `null`) The default value that is being
+  used in case the value passed for the corresponding field is invalid or missing.
 
 #### `Boolean`
 
