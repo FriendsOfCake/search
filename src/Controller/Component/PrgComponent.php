@@ -65,6 +65,7 @@ class PrgComponent extends Component
 
         $params = $this->_filterParams();
         if ($params) {
+            $params = Hash::expand($params);
             $url .= '?' . http_build_query($params);
         }
 
