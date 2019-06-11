@@ -169,6 +169,32 @@ class PrgComponentTest extends TestCase
     /**
      * @return void
      */
+    public function testInitializePostWithNestedQueryString()
+    {
+        $this->Controller->request = $this->Controller->request->withQueryParams([
+            'scope' => [
+                'sort' => 'created',
+                'direction' => 'desc',
+                'page' => 9,
+            ],
+        ]);
+        $this->Controller->request = $this->Controller->request->withAttribute('params', [
+            'controller' => 'Posts',
+            'action' => 'index',
+            'pass' => ['pass'],
+        ]);
+        $this->Controller->request = $this->Controller->request->withRequestTarget('/Posts/index/pass');
+        $this->Controller->request = $this->Controller->request->withData('foo', 'bar');
+        $this->Controller->request = $this->Controller->request->withEnv('REQUEST_METHOD', 'POST');
+
+        $this->Prg->configShallow('queryStringWhitelist', ['scope.sort', 'scope.direction']);
+        $response = $this->Prg->startup();
+        $this->assertEquals('http://localhost/Posts/index/pass?foo=bar&scope%5Bsort%5D=created&scope%5Bdirection%5D=desc', $response->getHeaderLine('Location'));
+    }
+
+    /**
+     * @return void
+     */
     public function testInitializePostWithQueryStringWhitelistEmpty()
     {
         $request = $this->Controller->getRequest()
