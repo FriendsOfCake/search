@@ -75,7 +75,9 @@ abstract class Base
         $this->setConfig($config);
 
         if ((empty($config['field']) && $config['field'] !== '0') ||
-            (is_array($config['field']) && !array_filter($config['field'], 'strlen'))
+            (is_array($config['field']) && !array_filter($config['field'], function ($value) {
+                return strlen($value) > 0;
+            }))
         ) {
             throw new \InvalidArgumentException(
                 'The `field` option is invalid. Expected a non-empty string or array.'
