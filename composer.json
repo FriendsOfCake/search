@@ -4,6 +4,8 @@
     "type": "cakephp-plugin",
     "keywords": [
         "cakephp",
+        "prg",
+        "filter",
         "search"
     ],
     "homepage": "https://github.com/FriendsOfCake/search",
@@ -11,8 +13,7 @@
     "authors": [
         {
             "name": "Christian Winther",
-            "role": "Author",
-            "homepage": "http://cakephp.nu/"
+            "role": "Author"
         },
         {
             "name": "ADmad",
