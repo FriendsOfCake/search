@@ -72,13 +72,13 @@ class SearchHelper extends Helper
     /**
      * Returns a reset link for the search form.
      *
-     * @param string $label Label text.
+     * @param string|null $label Label text. Defaults to 'Reset'.
      * @param array $options Array of options and HTML attributes.
      * @return string HTML.
      */
-    public function resetLink(string $label, array $options = []): string
+    public function resetLink(?string $label = null, array $options = []): string
     {
-        return $this->Html->link($label, $this->resetUrl(), $options);
+        return $this->Html->link($label ?? __d('search', 'Reset'), $this->resetUrl(), $options);
     }
 
     /**
