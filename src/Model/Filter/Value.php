@@ -30,7 +30,8 @@ class Value extends Base
         }
 
         $isMultiValue = is_array($value);
-        if ($isMultiValue &&
+        if (
+            $isMultiValue &&
             empty($value)
         ) {
             return false;

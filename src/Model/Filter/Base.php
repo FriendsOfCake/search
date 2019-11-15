@@ -75,7 +75,8 @@ abstract class Base
         $config += $defaults;
         $this->setConfig($config);
 
-        if ((empty($config['field']) && $config['field'] !== '0') ||
+        if (
+            (empty($config['field']) && $config['field'] !== '0') ||
             (is_array($config['field']) && !array_filter($config['field'], function ($value) {
                 return strlen($value) > 0;
             }))
@@ -85,7 +86,8 @@ abstract class Base
             );
         }
 
-        if (!is_string($config['name']) ||
+        if (
+            !is_string($config['name']) ||
             (empty($config['name']) && $config['name'] !== '0')
         ) {
             throw new \InvalidArgumentException(
