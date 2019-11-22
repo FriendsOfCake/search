@@ -113,7 +113,8 @@ class Processor
     {
         $flattened = [];
         foreach ($params as $key => $value) {
-            if (!is_array($value) ||
+            if (
+                !is_array($value) ||
                 (!empty($filters[$key]) && $filters[$key]->getConfig('flatten') === false)
             ) {
                 $flattened[$key] = $value;
