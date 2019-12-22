@@ -326,12 +326,12 @@ The following options are supported by all filters.
 
     ```php
     // PostsTable::initialize()
-        $searchManager->like('q', [
-            'fields' => ['Posts.title', 'Authors.title'],
-            'beforeProcess' => function (\Cake\ORM\Query $query, array $args, \Search\Model\Filter\Base $filter) {
-                $query->contain('Authors');
-            },
-        ]);
+    $searchManager->like('q', [
+        'field' => ['Posts.title', 'Authors.title'],
+        'beforeProcess' => function (\Cake\ORM\Query $query, array $args, \Search\Model\Filter\Base $filter) {
+            $query->contain('Authors');
+        },
+    ]);
     ```
 
 The following options are supported by all filters except `Callback` and `Finder`.

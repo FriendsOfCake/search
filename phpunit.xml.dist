@@ -2,8 +2,7 @@
 <phpunit
     bootstrap="tests/bootstrap.php"
     colors="true"
-    stopOnFailure="false"
-    >
+>
 
     <testsuites>
         <testsuite name="search">
@@ -13,10 +12,9 @@
 
     <!-- Setup a listener for fixtures -->
     <listeners>
-        <listener
-        class="Cake\TestSuite\Fixture\FixtureInjector">
+        <listener class="Cake\TestSuite\Fixture\FixtureInjector">
             <arguments>
-                <object class="Cake\TestSuite\Fixture\FixtureManager" />
+                <object class="Cake\TestSuite\Fixture\FixtureManager"/>
             </arguments>
         </listener>
     </listeners>

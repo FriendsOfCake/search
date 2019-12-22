@@ -3,7 +3,7 @@ language: php
 php:
   - 7.2
   - 7.3
-  - 7.4snapshot
+  - 7.4
 
 services:
   - postgresql
@@ -29,15 +29,15 @@ matrix:
       env: PREFER_LOWEST=1
 
 before_script:
-  - if [[ $TRAVIS_PHP_VERSION != 7.3 && $TRAVIS_PHP_VERSION != "7.4snapshot" ]]; then phpenv config-rm xdebug.ini; fi
+  - if [[ $TRAVIS_PHP_VERSION != 7.3 && $TRAVIS_PHP_VERSION != 7.4 ]]; then phpenv config-rm xdebug.ini; fi
 
   - if [[ $PREFER_LOWEST != 1 ]]; then composer install --no-interaction ; fi
   - if [[ $PREFER_LOWEST == 1 ]]; then composer update --prefer-lowest --prefer-stable --no-interaction ; fi
 
-  - if [[ $CHECKS = 1 ]]; then composer require phpstan/phpstan:^0.11; fi
+  - if [[ $CHECKS == 1 ]]; then composer require phpstan/phpstan:^0.11; fi
 
-  - if [[ $DB = 'mysql' ]]; then mysql -e 'CREATE DATABASE cakephp_test;'; fi
-  - if [[ $DB = 'pgsql' ]]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi
+  - if [[ $DB == 'mysql' ]]; then mysql -e 'CREATE DATABASE cakephp_test;'; fi
+  - if [[ $DB == 'pgsql' ]]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi
 
 script:
   - if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION != 7.3 ]]; then vendor/bin/phpunit; fi
@@ -47,8 +47,8 @@ script:
         vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
       fi
 
-  - if [[ $CHECKS = 1 ]]; then composer cs-check; fi
-  - if [[ $CHECKS = 1 ]]; then composer phpstan; fi
+  - if [[ $CHECKS == 1 ]]; then composer cs-check; fi
+  - if [[ $CHECKS == 1 ]]; then composer phpstan; fi
 
 after_success:
   - |
