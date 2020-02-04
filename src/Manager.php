@@ -101,7 +101,7 @@ class Manager
     {
         if ($name === self::DEFAULT_COLLECTION) {
             $class = $this->_collectionClass;
-        } else if (strpos($name, '\\') === false) {
+        } elseif (strpos($name, '\\') === false) {
             $class = Inflector::camelize(str_replace('-', '_', $name));
         } else {
             $class = $name;
