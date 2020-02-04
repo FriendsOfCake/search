@@ -101,8 +101,10 @@ class Manager
     {
         if ($name === self::DEFAULT_COLLECTION) {
             $class = $this->_collectionClass;
-        } else {
+        } else if (strpos($name, '\\') === false) {
             $class = Inflector::camelize(str_replace('-', '_', $name));
+        } else {
+            $class = $name;
         }
 
         $className = App::className($class, 'Model/Filter', 'Collection');
