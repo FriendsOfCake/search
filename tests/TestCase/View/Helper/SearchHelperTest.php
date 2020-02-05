@@ -149,7 +149,17 @@ class SearchHelperTest extends TestCase
      */
     public function testResetLink()
     {
-        $request = new ServerRequest('/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar');
+        $request = new ServerRequest([
+            'url' => '/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar',
+            'params' => [
+                'plugin' => null,
+                'controller' => 'Controller',
+                'action' => 'action',
+                '_ext' => null,
+                'pass' => [],
+            ],
+        ]);
+        Router::pushRequest($request);
 
         $this->view = new View($request);
         $config = [];
@@ -162,7 +172,7 @@ class SearchHelperTest extends TestCase
 
         $result = $this->searchHelper->resetLink('Reset search filter', ['class' => 'button']);
 
-        $expected = '<a href="/?page=2&amp;limit=5&amp;sort=x&amp;direction=asc" class="button">Reset search filter</a>';
+        $expected = '<a href="/controller/action?page=2&amp;limit=5&amp;sort=x&amp;direction=asc" class="button">Reset search filter</a>';
         $this->assertSame($expected, $result);
     }
 }
