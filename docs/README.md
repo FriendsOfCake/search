@@ -107,7 +107,7 @@ use Search\Model\Filter\FilterCollection;
 
 class PostsCollection extends FilterCollection
 {
-    public function initialize()
+    public function initialize(): void
     {
         $this->add('foo', 'Search.Callback', [
             'callback' => function ($query, $args, $filter) {
