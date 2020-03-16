@@ -46,7 +46,7 @@ class PostsTable extends Table
                 'field' => ['title', 'content']
             ])
             ->add('foo', 'Search.Callback', [
-                'callback' => function ($query, $args, $filter) {
+                'callback' => function (\Cake\ORM\Query $query, array $args, \Search\Model\Filter\Base $filter) {
                     // Modify $query as required
                 }
             ]);
@@ -86,7 +86,7 @@ Let's use the *backend*'s filters by doing:
 // PostsController::action()
     $query = $this->Examples
         ->find('search', [
-            'search' => $this->request->getQuery(),
+            'search' => $this->request->getQueryParams(),
             'collection' => 'backend',
         ]);
     }
@@ -515,10 +515,10 @@ You can use `queryStringBlacklist` option of `PrgComponent` to set an array of
 form fields that should not end up in the query when extracting params from POST
 request and redirecting.
 
-## Filtering and Security component
-When the Security component is activated for the whole controller, it should be disabled for the paginated actions:
+## Filtering and FormProtection component
+When the FormProtection component is activated for the whole controller, it should be disabled for the paginated actions:
 ```php
-$this->Security->setConfig('unlockedActions', ['index']);
+$this->FormProtection->setConfig('unlockedActions', ['index']);
 ```
 
 ## Tips
