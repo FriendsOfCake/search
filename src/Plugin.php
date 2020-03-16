@@ -13,4 +13,18 @@ class Plugin extends BasePlugin
      * @var string
      */
     protected $name = 'Search';
+
+    /**
+     * Do bootstrapping or not
+     *
+     * @var bool
+     */
+    protected $bootstrapEnabled = false;
+
+    /**
+     * Load routes or not
+     *
+     * @var bool
+     */
+    protected $routesEnabled = false;
 }
