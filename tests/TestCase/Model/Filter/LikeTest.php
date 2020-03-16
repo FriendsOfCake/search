@@ -86,7 +86,7 @@ class LikeTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
-            'field' => ['title', 'other'],
+            'fields' => ['title', 'other'],
             'valueMode' => 'and',
         ]);
         $filter->setArgs(['title' => 'foo']);
@@ -159,7 +159,7 @@ class LikeTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
             'multiValue' => true,
-            'field' => ['title', 'other'],
+            'fields' => ['title', 'other'],
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
         $filter->setQuery($articles->find());
@@ -185,7 +185,7 @@ class LikeTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
             'multiValue' => true,
-            'field' => ['title', 'other'],
+            'fields' => ['title', 'other'],
             'fieldMode' => 'and',
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
@@ -227,7 +227,7 @@ class LikeTest extends TestCase
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
-        $filter = new Like('search', $manager, ['field' => ['title', 'number'], 'colType' => ['number' => 'string']]);
+        $filter = new Like('search', $manager, ['fields' => ['title', 'number'], 'colType' => ['number' => 'string']]);
         $filter->setArgs(['search' => '234']);
         $filter->setQuery($articles->find());
         $filter->process();

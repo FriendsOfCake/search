@@ -18,7 +18,7 @@ class CommentsTable extends Table
             ->value('Comments.foo')
             ->like('Comments.search', ['filterEmpty' => true, 'multiValue' => true])
             ->value('Comments.baz')
-            ->value('Comments.group', ['field' => 'Comments.group'])
+            ->value('Comments.group', ['fields' => 'Comments.group'])
             ->value('group', ['multiValue' => true])
             ->value('published');
     }

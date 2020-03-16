@@ -279,7 +279,7 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('boolean', $manager, [
-            'field' => ['is_active', 'other'],
+            'fields' => ['is_active', 'other'],
         ]);
         $filter->setArgs(['boolean' => true]);
         $filter->setQuery($articles->find());
@@ -303,7 +303,7 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('boolean', $manager, [
-            'field' => ['is_active', 'other'],
+            'fields' => ['is_active', 'other'],
             'mode' => 'AND',
         ]);
         $filter->setArgs(['boolean' => true]);
