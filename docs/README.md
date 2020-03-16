@@ -43,7 +43,7 @@ class PostsTable extends Table
                 'comparison' => 'LIKE',
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
-                'field' => ['title', 'content']
+                'fields' => ['title', 'content']
             ])
             ->add('foo', 'Search.Callback', [
                 'callback' => function (\Cake\ORM\Query $query, array $args, \Search\Model\Filter\Base $filter) {
@@ -74,7 +74,7 @@ All you need to do is:
             'comparison' => 'LIKE',
             'wildcardAny' => '*',
             'wildcardOne' => '?',
-            'field' => ['body']
+            'fields' => ['body']
         ])
         ->useCollection('frontend')
         ->value('name');
@@ -327,7 +327,7 @@ The following options are supported by all filters.
     ```php
     // PostsTable::initialize()
     $searchManager->like('q', [
-        'field' => ['Posts.title', 'Authors.title'],
+        'fields' => ['Posts.title', 'Authors.title'],
         'beforeProcess' => function (\Cake\ORM\Query $query, array $args, \Search\Model\Filter\Base $filter) {
             $query->contain('Authors');
         },
@@ -500,7 +500,7 @@ class MyCustomFilter extends \Search\Model\Filter\Base
 After that you can use your filter as:
 
 ```php
-$this->searchManager()->add('field', 'MyCustom');
+$this->searchManager()->add('name', 'MyCustom');
 ```
 
 ## Persisting the Query String

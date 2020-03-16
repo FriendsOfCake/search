@@ -12,6 +12,6 @@ class ArticlesCollection extends FilterCollection
         $this->value('foo')
             ->like('search', ['filterEmpty' => true])
             ->value('baz')
-            ->value('group', ['field' => 'Articles.group']);
+            ->value('group', ['fields' => 'Articles.group']);
     }
 }

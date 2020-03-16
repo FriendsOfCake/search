@@ -49,7 +49,7 @@ class CompareTest extends TestCase
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
-        $filter = new Compare('time', $manager, ['field' => ['created', 'modified']]);
+        $filter = new Compare('time', $manager, ['fields' => ['created', 'modified']]);
         $filter->setArgs(['time' => '2012-01-01 00:00:00']);
         $filter->setQuery($articles->find());
         $filter->process();
@@ -71,7 +71,7 @@ class CompareTest extends TestCase
     {
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
-        $filter = new Compare('time', $manager, ['mode' => 'OR', 'field' => ['created', 'modified']]);
+        $filter = new Compare('time', $manager, ['mode' => 'OR', 'fields' => ['created', 'modified']]);
         $filter->setArgs(['time' => '2012-01-01 00:00:00']);
         $filter->setQuery($articles->find());
         $filter->process();

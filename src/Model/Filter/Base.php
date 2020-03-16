@@ -59,8 +59,8 @@ abstract class Base
     {
         $this->_manager = $manager;
 
-        $defaults = [
-            'field' => $name,
+        $config += [
+            'fields' => $name,
             'aliasField' => true,
             'name' => $name,
             'validate' => [],
@@ -72,12 +72,18 @@ abstract class Base
             'flatten' => true,
             'beforeProcess' => null,
         ];
-        $config += $defaults;
+
+        if (isset($config['field'])) {
+            throw new \InvalidArgumentException(
+                'The `field` option has been renamed to `fields`.'
+            );
+        }
+        $config['fields'] = (array)$config['fields'];
         $this->setConfig($config);
 
         if (
-            (empty($config['field']) && $config['field'] !== '0') ||
-            (is_array($config['field']) && !array_filter($config['field'], function ($value) {
+            empty($config['fields']) ||
+            (!array_filter($config['fields'], function ($value) {
                 return strlen($value) > 0;
             }))
         ) {
@@ -107,14 +113,13 @@ abstract class Base
     }
 
     /**
-     * Get the database field name.
+     * Get the database field name(s) as an array.
      *
-     * @deprecated Use fields() instead.
-     * @return string|array
+     * @return array
      */
-    public function field()
+    public function fields(): array
     {
-        $field = $this->getConfig('field');
+        $field = $this->getConfig('fields');
         if (!$this->getConfig('aliasField')) {
             return $field;
         }
@@ -124,27 +129,12 @@ abstract class Base
             return $field;
         }
 
-        if (is_string($field)) {
-            return $repository->aliasField($field);
-        }
-
         $return = [];
         foreach ($field as $fld) {
             $return[] = $repository->aliasField($fld);
         }
 
         return $return;
-    }
-
-    /**
-     * Get the database field name(s) as an array.
-     *
-     * @return array
-     */
-    public function fields(): array
-    {
-        /** @psalm-suppress DeprecatedMethod */
-        return (array)$this->field();
     }
 
     /**

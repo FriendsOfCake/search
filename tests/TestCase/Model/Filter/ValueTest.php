@@ -72,7 +72,7 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
-            'field' => ['title', 'other'],
+            'fields' => ['title', 'other'],
         ]);
         $filter->setArgs(['title' => 'foo']);
         $filter->setQuery($articles->find());
@@ -96,7 +96,7 @@ class ValueTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
-            'field' => ['title', 'other'],
+            'fields' => ['title', 'other'],
             'mode' => 'and',
         ]);
         $filter->setArgs(['title' => 'foo']);
@@ -169,7 +169,7 @@ class ValueTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
-            'field' => ['title', 'other'],
+            'fields' => ['title', 'other'],
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
         $filter->setQuery($articles->find());
@@ -195,7 +195,7 @@ class ValueTest extends TestCase
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
-            'field' => ['title', 'other'],
+            'fields' => ['title', 'other'],
             'mode' => 'and',
         ]);
         $filter->setArgs(['title' => ['foo', 'bar']]);

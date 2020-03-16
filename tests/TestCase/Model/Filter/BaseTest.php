@@ -62,7 +62,7 @@ class BaseTest extends TestCase
         new TestFilter(
             'name',
             $this->Manager,
-            ['field' => $emptyValue]
+            ['fields' => $emptyValue]
         );
     }
 
@@ -86,9 +86,9 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'name',
             $this->Manager,
-            ['field' => $nonEmptyValue, 'aliasField' => false]
+            ['fields' => $nonEmptyValue, 'aliasField' => false]
         );
-        $this->assertEquals($filter->field(), $nonEmptyValue);
+        $this->assertEquals((array)$nonEmptyValue, $filter->fields());
     }
 
     /**
@@ -111,7 +111,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             $nonEmptyValue,
             $this->Manager,
-            ['field' => 'field']
+            ['fields' => 'fields']
         );
         $this->assertEquals($filter->name(), $nonEmptyValue);
     }
@@ -122,21 +122,21 @@ class BaseTest extends TestCase
     public function testSkip()
     {
         $filter = new TestFilter(
-            'field',
+            'fields',
             $this->Manager,
             ['alwaysRun' => true, 'filterEmpty' => true]
         );
 
-        $filter->setArgs(['field' => '1']);
+        $filter->setArgs(['fields' => '1']);
         $this->assertFalse($filter->skip());
 
-        $filter->setArgs(['field' => '0']);
+        $filter->setArgs(['fields' => '0']);
         $this->assertFalse($filter->skip());
 
-        $filter->setArgs(['field' => '']);
+        $filter->setArgs(['fields' => '']);
         $this->assertTrue($filter->skip());
 
-        $filter->setArgs(['field' => []]);
+        $filter->setArgs(['fields' => []]);
         $this->assertTrue($filter->skip());
     }
 
@@ -146,18 +146,18 @@ class BaseTest extends TestCase
     public function testValue()
     {
         $filter = new TestFilter(
-            'field',
+            'fields',
             $this->Manager,
             ['defaultValue' => 'default']
         );
 
-        $filter->setArgs(['field' => 'value']);
+        $filter->setArgs(['fields' => 'value']);
         $this->assertEquals('value', $filter->value());
 
         $filter->setArgs(['other_field' => 'value']);
         $this->assertEquals('default', $filter->value());
 
-        $filter->setArgs(['field' => ['value1', 'value2']]);
+        $filter->setArgs(['fields' => ['value1', 'value2']]);
         $this->assertEquals('default', $filter->value());
     }
 
@@ -167,13 +167,13 @@ class BaseTest extends TestCase
     public function testValueMultiValue()
     {
         $filter = new TestFilter(
-            'field',
+            'fields',
             $this->Manager,
             ['defaultValue' => 'default']
         );
 
         $filter->setConfig('multiValue', true);
-        $filter->setArgs(['field' => ['value1', 'value2']]);
+        $filter->setArgs(['fields' => ['value1', 'value2']]);
         $this->assertEquals(['value1', 'value2'], $filter->value());
     }
 
@@ -183,14 +183,14 @@ class BaseTest extends TestCase
     public function testValueMultiValueSeparator()
     {
         $filter = new TestFilter(
-            'field',
+            'fields',
             $this->Manager,
             ['defaultValue' => 'default']
         );
 
         $filter->setConfig('multiValueSeparator', '|');
 
-        $filter->setArgs(['field' => 'value1|value2']);
+        $filter->setArgs(['fields' => 'value1|value2']);
         $this->assertEquals(['value1', 'value2'], $filter->value());
     }
 
@@ -200,14 +200,14 @@ class BaseTest extends TestCase
     public function testValueMultiValueSeparatorInvalid()
     {
         $filter = new TestFilter(
-            'field',
+            'fields',
             $this->Manager,
             ['defaultValue' => 'default']
         );
 
         $filter->setConfig('multiValue', true);
 
-        $filter->setArgs(['field' => 'value1|value2']);
+        $filter->setArgs(['fields' => 'value1|value2']);
         $this->assertEquals('value1|value2', $filter->value());
     }
 
@@ -222,19 +222,19 @@ class BaseTest extends TestCase
             []
         );
 
-        $this->assertEquals('Articles.field', $filter->field());
+        $this->assertEquals(['Articles.field'], $filter->fields());
 
         $filter->setConfig('aliasField', false);
-        $this->assertEquals('field', $filter->field());
+        $this->assertEquals(['field'], $filter->fields());
 
         $filter = new TestFilter(
             'name',
             $this->Manager,
-            ['field' => ['field1', 'field2']]
+            ['fields' => ['field1', 'field2']]
         );
 
         $expected = ['Articles.field1', 'Articles.field2'];
-        $this->assertEquals($expected, $filter->field());
+        $this->assertEquals($expected, $filter->fields());
     }
 
     /**
@@ -246,12 +246,12 @@ class BaseTest extends TestCase
             ->getMock();
 
         $filter = new TestFilter(
-            'field',
+            'fields',
             new Manager($repo),
             ['aliasField' => true]
         );
 
-        $this->assertEquals('field', $filter->field());
+        $this->assertEquals(['fields'], $filter->fields());
     }
 
     /**
@@ -260,14 +260,14 @@ class BaseTest extends TestCase
     public function testBeforeProcessCallback()
     {
         $filter = new TestFilter(
-            'field',
+            'fields',
             $this->Manager,
             ['beforeProcess' => function ($query, $params) {
                 $query->where($params);
             }]
         );
 
-        $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
+        $filter($this->Manager->getRepository()->find(), ['fields' => 'bar']);
         $this->assertNotEmpty($filter->getQuery()->clause('where'));
     }
 
@@ -281,7 +281,7 @@ class BaseTest extends TestCase
         $filter = $this->getMockBuilder(TestFilter::class)
             ->setMethods(['process'])
             ->setConstructorArgs([
-                'field',
+                'fields',
                 $this->Manager,
                 [
                     'beforeProcess' => function ($query, $params) {
@@ -295,7 +295,7 @@ class BaseTest extends TestCase
             ->expects($this->never())
             ->method('process');
 
-        $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
+        $filter($this->Manager->getRepository()->find(), ['fields' => 'bar']);
     }
 
     /**
@@ -306,7 +306,7 @@ class BaseTest extends TestCase
     public function testBeforeProcessReturnArgsArray()
     {
         $filter = new TestFilter(
-            'field',
+            'fields',
             $this->Manager,
             ['beforeProcess' => function ($query, $params) {
                 $params['extra'] = 'value';
@@ -315,7 +315,7 @@ class BaseTest extends TestCase
             }]
         );
 
-        $filter($this->Manager->getRepository()->find(), ['field' => 'bar']);
-        $this->assertEquals(['field' => 'bar', 'extra' => 'value'], $filter->getArgs());
+        $filter($this->Manager->getRepository()->find(), ['fields' => 'bar']);
+        $this->assertEquals(['fields' => 'bar', 'extra' => 'value'], $filter->getArgs());
     }
 }
