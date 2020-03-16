@@ -6,5 +6,5 @@ parameters:
         - tests/bootstrap.php
     ignoreErrors:
         - '#Call to an undefined method Cake\\ORM\\Table::searchManager\(\)#'
-        - '#Method Search\\Model\\Filter\\Base::validate\(\) should return array|null but return statement is missing#'
+        - '#Method Search\\Model\\Filter\\Base::validate\(\) should return array\|null but return statement is missing#'
         - '#PHPDoc tag @var for variable \$model contains unresolvable type#'
