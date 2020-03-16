@@ -30,13 +30,14 @@ trait SearchTrait
      * Default collection class.
      *
      * @var string|null
+     * @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface>|null
      */
     protected $_collectionClass;
 
     /**
      * Filters processor instance.
      *
-     * @var \Search\Processor
+     * @var \Search\Processor|null
      */
     protected $_processor;
 
@@ -61,8 +62,9 @@ trait SearchTrait
 
         $filters = $this->_getFilters(Hash::get($options, 'collection', Manager::DEFAULT_COLLECTION));
 
-        if ($this->_emptyValues() !== null) {
-            $this->processor()->setEmptyValues($this->_emptyValues());
+        $emptyValues = $this->_emptyValues();
+        if ($emptyValues !== null) {
+            $this->processor()->setEmptyValues($emptyValues);
         }
 
         $this->_isSearch = $this->processor()->process(

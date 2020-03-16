@@ -55,6 +55,7 @@ class SearchBehavior extends Behavior
             return;
         }
 
+        /** @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface> */
         $defaultCollectionClass = sprintf(
             '%s\Model\Filter\%sCollection',
             Configure::read('App.namespace'),

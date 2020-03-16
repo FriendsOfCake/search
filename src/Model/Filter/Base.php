@@ -40,7 +40,7 @@ abstract class Base
     /**
      * Query object.
      *
-     * @var \Cake\Datasource\QueryInterface|null
+     * @var \Cake\Datasource\QueryInterface
      */
     protected $_query;
 
@@ -143,6 +143,7 @@ abstract class Base
      */
     public function fields(): array
     {
+        /** @psalm-suppress DeprecatedMethod */
         return (array)$this->field();
     }
 
@@ -268,6 +269,8 @@ abstract class Base
         }
 
         $this->setConfig('validate', $value);
+
+        return null;
     }
 
     /**
@@ -303,9 +306,9 @@ abstract class Base
     /**
      * Gets the query object.
      *
-     * @return \Cake\Datasource\QueryInterface|null
+     * @return \Cake\Datasource\QueryInterface
      */
-    public function getQuery(): ?QueryInterface
+    public function getQuery(): QueryInterface
     {
         return $this->_query;
     }

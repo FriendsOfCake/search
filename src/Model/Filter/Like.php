@@ -168,8 +168,9 @@ class Like extends Base
         }
 
         $class = $this->getConfig('escaper');
+        /** @psalm-var class-string<\Search\Model\Filter\Escaper\EscaperInterface>|null $className */
         $className = App::className($class, 'Model/Filter/Escaper', 'Escaper');
-        if (!$className) {
+        if ($className === null) {
             throw new InvalidArgumentException(sprintf(
                 'Escape driver "%s" in like filter was not found.',
                 $class
