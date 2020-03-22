@@ -8,6 +8,11 @@ use Cake\ORM\Behavior;
 use Cake\ORM\Table;
 use Search\Model\SearchTrait;
 
+/**
+ * Search Behaviors.
+ *
+ * Allows configuring the search manager and provides the "search" finder.
+ */
 class SearchBehavior extends Behavior
 {
     use SearchTrait;

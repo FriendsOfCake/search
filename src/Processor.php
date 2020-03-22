@@ -7,6 +7,11 @@ use Cake\Datasource\QueryInterface;
 use Cake\Utility\Hash;
 use Search\Model\Filter\FilterCollectionInterface;
 
+/**
+ * Filters processor.
+ *
+ * Iterates the filter collections and invokes the filters.
+ */
 class Processor
 {
     /**

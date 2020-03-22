@@ -8,6 +8,13 @@ use Cake\Http\Response;
 use Cake\Utility\Hash;
 use UnexpectedValueException;
 
+/**
+ * PRG Component.
+ *
+ * Handles the search from submission and redirects to URL containing search params as query string.
+ *
+ * @see https://en.wikipedia.org/wiki/Post/Redirect/Get
+ */
 class PrgComponent extends Component
 {
     /**
