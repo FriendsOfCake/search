@@ -15,7 +15,7 @@ class SearchHelper extends Helper
     /**
      * @var array
      */
-    public $helpers = [
+    protected $helpers = [
         'Url',
         'Html',
     ];
