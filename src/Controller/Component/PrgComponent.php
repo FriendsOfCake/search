@@ -68,7 +68,7 @@ class PrgComponent extends Component
      */
     public function startup(): ?Response
     {
-        if (!$this->getController()->getRequest()->is('post') || !$this->_actionCheck()) {
+        if (!$this->getController()->getRequest()->is('post') || !$this->_isSearchAction()) {
             return null;
         }
 
@@ -93,7 +93,7 @@ class PrgComponent extends Component
      */
     public function beforeRender()
     {
-        if (!$this->_actionCheck()) {
+        if (!$this->_isSearchAction()) {
             return;
         }
 
@@ -118,7 +118,7 @@ class PrgComponent extends Component
      *
      * @return bool
      */
-    protected function _actionCheck(): bool
+    protected function _isSearchAction(): bool
     {
         $actions = $this->getConfig('actions');
         if (is_bool($actions)) {
