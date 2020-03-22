@@ -72,7 +72,7 @@ class PrgComponent extends Component
             return null;
         }
 
-        [$url] = explode('?', $this->getController()->getRequest()->getRequestTarget());
+        $url = $this->getController()->getRequest()->getPath();
 
         $params = $this->_filterParams();
         if ($params) {
