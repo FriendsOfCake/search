@@ -45,7 +45,7 @@ class Processor
         $filtered = false;
 
         foreach ($filters as $filter) {
-            $result = $filter($query, $params);
+            $result = $filter->execute($query, $params);
             if ($result !== false) {
                 $filtered = true;
             }

@@ -273,7 +273,7 @@ abstract class Base
      * @param array $args Filter arguments.
      * @return bool True if processed, false if skipped
      */
-    public function __invoke(QueryInterface $query, array $args): bool
+    public function execute(QueryInterface $query, array $args): bool
     {
         $this->setQuery($query)->setArgs($args);
 
