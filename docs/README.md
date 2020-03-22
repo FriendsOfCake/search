@@ -4,7 +4,7 @@
 
 ### Search Behavior
 
-Attach the `Search` behaviour to your table class. In your table class'
+Attach the `Search` behavior to your table class. In your table class'
 `initialize()` method call the `searchManager()` method, it will return a search
 manager instance. You can now add filters to the manager by chaining them.
 The first arg of the `add()` method is the field, the second is the filter using
@@ -27,7 +27,7 @@ class PostsTable extends Table
     {
         parent::initialize($config);
 
-        // Add the behaviour to your table
+        // Add the behavior to your table
         $this->addBehavior('Search.Search');
 
         // Setup search filter using search manager
@@ -43,7 +43,7 @@ class PostsTable extends Table
                 'comparison' => 'LIKE',
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
-                'fields' => ['title', 'content']
+                'fields' => ['title', 'content'],
             ])
             ->add('foo', 'Search.Callback', [
                 'callback' => function (\Cake\ORM\Query $query, array $args, \Search\Model\Filter\Base $filter) {
@@ -74,7 +74,7 @@ All you need to do is:
             'comparison' => 'LIKE',
             'wildcardAny' => '*',
             'wildcardOne' => '?',
-            'fields' => ['body']
+            'fields' => ['body'],
         ])
         ->useCollection('frontend')
         ->value('name');
@@ -112,7 +112,7 @@ class PostsCollection extends FilterCollection
         $this->add('foo', 'Search.Callback', [
             'callback' => function ($query, $args, $filter) {
                 // Modify $query as required
-            }
+            },
         ]);
         // More $this->add() calls here. The argument for FilterCollection::add()
         // are same as those of searchManager()->add() shown above.
@@ -131,7 +131,7 @@ use App\Model\Filter\MyPostsCollection;
 
 // In PostsTable::initialize()
 $this->addBehavior('Search.Search', [
-    'collectionClass' => MyPostsCollection::class
+    'collectionClass' => MyPostsCollection::class,
 ]);
 ```
 
@@ -142,7 +142,7 @@ You can also specify alternate collection class to use when making find call:
     $query = $this->Posts
         ->find('search', [
             'search' => $this->request->getQueryParams(),
-            'collection' => 'posts_backend'
+            'collection' => 'posts_backend',
         ]);
     }
 ```
@@ -160,7 +160,7 @@ public function initialize()
     $this->loadComponent('Search.Prg', [
         // This is default config. You can modify "actions" as needed to make
         // the PRG component work only for specified methods.
-        'actions' => ['index', 'lookup']
+        'actions' => ['index', 'lookup'],
     ]);
 }
 ```
@@ -447,7 +447,7 @@ your form. You can use the `filterEmpty` search option to ignore any empty field
 ```php
 // PostsTable::initialize()
     $searchManager->value('author_id', [
-        'filterEmpty' => true
+        'filterEmpty' => true,
     ]);
 ```
 
@@ -467,7 +467,7 @@ getting the query string attached for this "disabled" search field, you can set
         ...
         'emptyValues' => [
             'my_checkbox' => '0',
-        ]
+        ],
     ]);
 ```
 
