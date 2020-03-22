@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model;
 
 use Cake\TestSuite\TestCase;
-use Muffin\Webservice\AbstractDriver;
-use Muffin\Webservice\Connection;
+use Muffin\Webservice\Datasource\Connection;
+use Muffin\Webservice\Webservice\Driver\AbstractDriver;
 use Muffin\Webservice\Webservice\Webservice;
 use Search\Manager;
 use Search\Test\TestApp\Model\Endpoint\ArticlesEndpoint;
@@ -21,8 +22,14 @@ class SearchTraitTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
+        if (!class_exists(Webservice::class)) {
+            $this->markTestSkipped(
+                'Muffin/Webservice plugin is not loaded.'
+            );
+        }
+
         parent::setUp();
 
         $webserviceMock = $this->getMockBuilder(Webservice::class)
@@ -38,10 +45,10 @@ class SearchTraitTest extends TestCase
                     'driver' => $driverMock,
                 ],
             ])
-            ->setMethods(['webservice'])
+            ->setMethods(['getWebservice'])
             ->getMock();
         $connectionMock
-            ->method('webservice')
+            ->method('getWebservice')
             ->willReturn($webserviceMock);
 
         $this->Articles = new ArticlesEndpoint([
@@ -74,12 +81,13 @@ class SearchTraitTest extends TestCase
     /**
      * testFindSearchException
      *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Custom finder "search" expects search arguments to be nested under key "search" in find() options.
      * @return void
      */
     public function testFindSearchException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Custom finder "search" expects search arguments to be nested under key "search" in find() options.');
+
         $this->Articles->find('search');
     }
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Test\TestApp\Model\Table;
 
 use Cake\ORM\Query;
@@ -13,7 +15,7 @@ class FinderArticlesTable extends Table
      * @param array $config
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 

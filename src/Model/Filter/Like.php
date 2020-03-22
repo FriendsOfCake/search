@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Model\Filter;
 
 use Cake\Core\App;
@@ -8,7 +10,6 @@ use RuntimeException;
 
 class Like extends Base
 {
-
     /**
      * Escaper to be used.
      *
@@ -38,7 +39,7 @@ class Like extends Base
      *
      * @return bool
      */
-    public function process()
+    public function process(): bool
     {
         $this->_setEscaper();
         $comparison = $this->getConfig('comparison');
@@ -88,7 +89,7 @@ class Like extends Base
      * @param array $colTypes Column types to be aliased.
      * @return array Aliased column types.
      */
-    protected function _aliasColTypes($colTypes)
+    protected function _aliasColTypes(array $colTypes): array
     {
         $repository = $this->manager()->getRepository();
         if (!method_exists($repository, 'aliasField')) {
@@ -106,7 +107,7 @@ class Like extends Base
     /**
      * Wrap wild cards around the value.
      *
-     * @param string $value Value.
+     * @param mixed $value Value.
      * @return string|false Either the wildcard decorated input value, or `false` when
      *  encountering a non-string value.
      */
@@ -135,7 +136,7 @@ class Like extends Base
      * @param string $value Value.
      * @return string Value
      */
-    protected function _formatWildcards($value)
+    protected function _formatWildcards(string $value): string
     {
         $value = $this->_escaper->formatWildcards($value);
 
@@ -148,12 +149,14 @@ class Like extends Base
      * @return void
      * @throws \InvalidArgumentException
      */
-    protected function _setEscaper()
+    protected function _setEscaper(): void
     {
         if ($this->getConfig('escaper') === null) {
             $query = $this->getQuery();
             if (!$query instanceof Query) {
-                throw new RuntimeException('$query must be instance of Cake\ORM\Query to be able to check driver name.');
+                throw new RuntimeException(
+                    '$query must be instance of Cake\ORM\Query to be able to check driver name.'
+                );
             }
             $driver = get_class($query->getConnection()->getDriver());
             $driverName = 'Sqlserver';
@@ -165,8 +168,9 @@ class Like extends Base
         }
 
         $class = $this->getConfig('escaper');
+        /** @psalm-var class-string<\Search\Model\Filter\Escaper\EscaperInterface>|null $className */
         $className = App::className($class, 'Model/Filter/Escaper', 'Escaper');
-        if (!$className) {
+        if ($className === null) {
             throw new InvalidArgumentException(sprintf(
                 'Escape driver "%s" in like filter was not found.',
                 $class

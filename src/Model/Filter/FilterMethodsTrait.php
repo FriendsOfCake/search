@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Model\Filter;
 
 trait FilterMethodsTrait
@@ -10,7 +12,7 @@ trait FilterMethodsTrait
      * @param array $config Config
      * @return $this
      */
-    public function boolean($name, array $config = [])
+    public function boolean(string $name, array $config = [])
     {
         $this->add($name, 'Search.Boolean', $config);
 
@@ -24,7 +26,7 @@ trait FilterMethodsTrait
      * @param array $config Config
      * @return $this
      */
-    public function exists($name, array $config = [])
+    public function exists(string $name, array $config = [])
     {
         $this->add($name, 'Search.Exists', $config);
 
@@ -38,7 +40,7 @@ trait FilterMethodsTrait
      * @param array $config Config
      * @return $this
      */
-    public function like($name, array $config = [])
+    public function like(string $name, array $config = [])
     {
         $this->add($name, 'Search.Like', $config);
 
@@ -52,7 +54,7 @@ trait FilterMethodsTrait
      * @param array $config Config
      * @return $this
      */
-    public function value($name, array $config = [])
+    public function value(string $name, array $config = [])
     {
         $this->add($name, 'Search.Value', $config);
 
@@ -66,7 +68,7 @@ trait FilterMethodsTrait
      * @param array $config Config
      * @return $this
      */
-    public function finder($name, array $config = [])
+    public function finder(string $name, array $config = [])
     {
         $this->add($name, 'Search.Finder', $config);
 
@@ -80,7 +82,7 @@ trait FilterMethodsTrait
      * @param array $config Config
      * @return $this
      */
-    public function callback($name, array $config = [])
+    public function callback(string $name, array $config = [])
     {
         $this->add($name, 'Search.Callback', $config);
 
@@ -94,7 +96,7 @@ trait FilterMethodsTrait
      * @param array $config Config
      * @return $this
      */
-    public function compare($name, array $config = [])
+    public function compare(string $name, array $config = [])
     {
         $this->add($name, 'Search.Compare', $config);
 
@@ -108,7 +110,7 @@ trait FilterMethodsTrait
      * @param array $config Config
      * @return $this
      */
-    public function custom($name, array $config = [])
+    public function custom(string $name, array $config = [])
     {
         $this->add($name, $config['className'], $config);
 
@@ -122,7 +124,7 @@ trait FilterMethodsTrait
      * @param array $args Arguments.
      * @return $this
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         if (!isset($args[1])) {
             $args[1] = [];

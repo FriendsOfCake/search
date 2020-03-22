@@ -1,10 +1,21 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Http\Response;
 use Cake\Utility\Hash;
+use UnexpectedValueException;
 
-class PrgComponent extends Component
+/**
+ * SearchComponent Component.
+ *
+ * Handles the search from submission and redirects to URL containing search params as query string.
+ *
+ * @see https://en.wikipedia.org/wiki/Post/Redirect/Get
+ */
+class SearchComponent extends Component
 {
     /**
      * Default config
@@ -44,7 +55,7 @@ class PrgComponent extends Component
      *
      * @return array
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return Hash::filter($this->getConfig('events'));
     }
@@ -55,13 +66,13 @@ class PrgComponent extends Component
      *
      * @return \Cake\Http\Response|null
      */
-    public function startup()
+    public function startup(): ?Response
     {
-        if (!$this->request->is('post') || !$this->_actionCheck()) {
+        if (!$this->getController()->getRequest()->is('post') || !$this->_isSearchAction()) {
             return null;
         }
 
-        list($url) = explode('?', $this->request->getRequestTarget());
+        $url = $this->getController()->getRequest()->getPath();
 
         $params = $this->_filterParams();
         if ($params) {
@@ -78,29 +89,24 @@ class PrgComponent extends Component
      * You need to configure the modelClass config if you are not using the controller's
      * default modelClass property.
      *
-     * @return \Cake\Http\Response|null
+     * @return void
      */
     public function beforeRender()
     {
-        if (!$this->_actionCheck()) {
-            return null;
+        if (!$this->_isSearchAction()) {
+            return;
         }
 
-        $controller = $this->_registry->getController();
-        $modelClass = $this->getConfig('modelClass', $controller->modelClass);
-        if (!$modelClass) {
-            return null;
+        $controller = $this->getController();
+        try {
+            /** @var \Cake\ORM\Table&\Search\Model\Behavior\SearchBehavior $model */
+            $model = $controller->loadModel($this->getConfig('modelClass'));
+        } catch (UnexpectedValueException $e) {
+            return;
         }
 
-        list (, $modelName) = pluginSplit($modelClass);
-        if (!isset($controller->{$modelName})) {
-            return null;
-        }
-
-        /* @var \Cake\ORM\Table|\Search\Model\Behavior\SearchBehavior $model */
-        $model = $controller->{$modelName};
         if (!$model->behaviors()->has('Search')) {
-            return null;
+            return;
         }
 
         $controller->set('_isSearch', $model->isSearch());
@@ -112,14 +118,14 @@ class PrgComponent extends Component
      *
      * @return bool
      */
-    protected function _actionCheck()
+    protected function _isSearchAction(): bool
     {
         $actions = $this->getConfig('actions');
         if (is_bool($actions)) {
             return $actions;
         }
 
-        return in_array($this->request->getParam('action'), (array)$actions, true);
+        return in_array($this->getController()->getRequest()->getParam('action'), (array)$actions, true);
     }
 
     /**
@@ -127,9 +133,9 @@ class PrgComponent extends Component
      *
      * @return array
      */
-    protected function _filterParams()
+    protected function _filterParams(): array
     {
-        $params = Hash::filter((array)$this->request->getData());
+        $params = Hash::filter((array)$this->getController()->getRequest()->getData());
 
         foreach ((array)$this->getConfig('queryStringBlacklist') as $field) {
             unset($params[$field]);
@@ -146,7 +152,7 @@ class PrgComponent extends Component
         }
 
         foreach ((array)$this->getConfig('queryStringWhitelist') as $field) {
-            $value = $this->request->getQuery($field);
+            $value = $this->getController()->getRequest()->getQuery($field);
             if ($value !== null && !isset($params[$field])) {
                 $params[$field] = $value;
             }

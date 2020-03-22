@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Test\TestCase;
 
 use Cake\Core\Configure;
@@ -9,7 +11,6 @@ use Search\Manager;
 
 class ManagerTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -37,7 +38,7 @@ class ManagerTest extends TestCase
         $manager->like('like', $options);
         $manager->value('value', $options);
 
-        /* @var $result \Search\Model\Filter\Base[] */
+        /** @var \Search\Model\Filter\Base[] $result */
         $result = $manager->getFilters();
         $this->assertCount(7, $result);
         $this->assertInstanceOf('\Search\Model\Filter\Boolean', $result['boolean']);
@@ -72,7 +73,7 @@ class ManagerTest extends TestCase
 
         Configure::clear();
 
-        /* @var $result \Search\Model\Filter\Base[] */
+        /** @var \Search\Model\Filter\Base[] $result */
         $result = $manager->getFilters();
         $this->assertCount(2, $result);
         $this->assertInstanceOf('\Search\Test\TestApp\Model\Filter\TestFilter', $result['test1']);
@@ -139,12 +140,13 @@ class ManagerTest extends TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The collection class "NonExistentCollection" does not exist
      * @return void
      */
     public function testGetFiltersNonExistentCollection()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The collection class "NonExistentCollection" does not exist');
+
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
         $manager->getFilters('non_existent');
@@ -202,7 +204,7 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
 
-        $result = $manager->getCollection();
+        $result = $manager->getCollectionName();
         $this->assertEquals('default', $result);
 
         $result = $manager->useCollection('default');
@@ -233,7 +235,7 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
 
-        $result = $manager->getCollection();
+        $result = $manager->getCollectionName();
         $this->assertEquals('default', $result);
 
         $result = $manager->useCollection('default');
@@ -246,12 +248,12 @@ class ManagerTest extends TestCase
     public function testInvalidCollectionClass()
     {
         $table = TableRegistry::get('Articles');
-        $manager = new Manager($table, self::class);
+        $manager = new Manager($table, Configure::class);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
             'The collection must be instance of FilterCollectionInterface. Got instance of "%s" instead',
-            self::class
+            Configure::class
         ));
         $manager->getFilters();
     }

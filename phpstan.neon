@@ -1,7 +1,9 @@
 parameters:
-    level: 5
+    level: 6
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
     autoload_files:
         - tests/bootstrap.php
     ignoreErrors:
         - '#Call to an undefined method Cake\\ORM\\Table::searchManager\(\)#'
-        - '#Access to protected property Cake\\View\\View::\$request#'
+        - '#PHPDoc tag @var for variable \$model contains unresolvable type#'

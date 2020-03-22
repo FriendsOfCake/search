@@ -1,10 +1,18 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\ORM\Behavior;
+use Cake\ORM\Table;
 use Search\Model\SearchTrait;
 
+/**
+ * Search Behaviors.
+ *
+ * Allows configuring the search manager and provides the "search" finder.
+ */
 class SearchBehavior extends Behavior
 {
     use SearchTrait;
@@ -37,7 +45,7 @@ class SearchBehavior extends Behavior
      * @param array $config Config
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -52,6 +60,7 @@ class SearchBehavior extends Behavior
             return;
         }
 
+        /** @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface> */
         $defaultCollectionClass = sprintf(
             '%s\Model\Filter\%sCollection',
             Configure::read('App.namespace'),
@@ -67,7 +76,7 @@ class SearchBehavior extends Behavior
      *
      * @return \Cake\ORM\Table
      */
-    protected function _repository()
+    protected function _repository(): Table
     {
         return $this->_table;
     }
@@ -77,7 +86,7 @@ class SearchBehavior extends Behavior
      *
      * @return array|null
      */
-    protected function _emptyValues()
+    protected function _emptyValues(): ?array
     {
         return $this->getConfig('emptyValues');
     }

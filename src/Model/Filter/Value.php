@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Model\Filter;
 
 use Cake\Database\Expression\QueryExpression;
@@ -6,7 +8,6 @@ use Cake\ORM\Table;
 
 class Value extends Base
 {
-
     /**
      * Default configuration.
      *
@@ -21,7 +22,7 @@ class Value extends Base
      *
      * @return bool
      */
-    public function process()
+    public function process(): bool
     {
         $value = $this->value();
         if ($value === null) {
@@ -57,7 +58,7 @@ class Value extends Base
             };
         }
 
-        $this->getQuery()->andWhere([$this->getConfig('mode') => $expressions]);
+        $this->getQuery()->where([$this->getConfig('mode') => $expressions]);
 
         return true;
     }

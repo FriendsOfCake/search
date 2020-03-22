@@ -1,7 +1,7 @@
 language: php
 
 php:
-  - 5.6
+  - 7.2
   - 7.4
 
 services:
@@ -24,29 +24,38 @@ matrix:
     - php: 7.2
       env: CHECKS=1 DEFAULT=0
 
-    - php: 5.6
+    - php: 7.2
       env: PREFER_LOWEST=1
 
 before_script:
   - if [[ $TRAVIS_PHP_VERSION != 7.4 ]]; then phpenv config-rm xdebug.ini; fi
 
-  - if [[ $PREFER_LOWEST != 1 ]]; then composer install --prefer-source --no-interaction ; fi
-  - if [[ $PREFER_LOWEST == 1 ]]; then composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction ; fi
+  - if [[ $PREFER_LOWEST != 1 ]]; then composer install --no-interaction ; fi
+  - if [[ $PREFER_LOWEST == 1 ]]; then composer update --prefer-lowest --prefer-stable --no-interaction ; fi
 
-  - if [[ $CHECKS == 1 ]]; then composer require phpstan/phpstan:^0.11; fi
+  - if [[ $CHECKS == 1 ]]; then composer stan-setup; fi
 
   - if [[ $DB == 'mysql' ]]; then mysql -e 'CREATE DATABASE cakephp_test;'; fi
   - if [[ $DB == 'pgsql' ]]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi
 
 script:
-  - if [[ $DEFAULT == 1 && $TRAVIS_PHP_VERSION != 7.4 ]]; then vendor/bin/phpunit; fi
-  - if [[ $DEFAULT == 1 && $TRAVIS_PHP_VERSION == 7.4 ]]; then vendor/bin/phpunit --coverage-clover=clover.xml; fi
+  - if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION != 7.3 ]]; then vendor/bin/phpunit; fi
+  - |
+      if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION = 7.3 ]]; then
+        mkdir -p build/logs
+        vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
+      fi
 
   - if [[ $CHECKS == 1 ]]; then composer cs-check; fi
-  - if [[ $CHECKS == 1 ]]; then composer phpstan; fi
+  - if [[ $CHECKS == 1 ]]; then composer stan; fi
 
 after_success:
-  - if [[ $DEFAULT == 1 && $TRAVIS_PHP_VERSION == 7.4 ]]; then bash <(curl -s https://codecov.io/bash); fi
+  - |
+      if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION = 7.3 ]]; then
+        wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar
+        chmod +x php-coveralls.phar
+        ./php-coveralls.phar
+      fi
 
 notifications:
   email: false

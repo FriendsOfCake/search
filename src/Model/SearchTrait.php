@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Search\Model;
 
@@ -6,6 +7,7 @@ use Cake\Datasource\QueryInterface;
 use Cake\Utility\Hash;
 use Exception;
 use Search\Manager;
+use Search\Model\Filter\FilterCollectionInterface;
 use Search\Processor;
 
 trait SearchTrait
@@ -28,13 +30,14 @@ trait SearchTrait
      * Default collection class.
      *
      * @var string|null
+     * @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface>|null
      */
     protected $_collectionClass;
 
     /**
      * Filters processor instance.
      *
-     * @var \Search\Processor
+     * @var \Search\Processor|null
      */
     protected $_processor;
 
@@ -48,7 +51,7 @@ trait SearchTrait
      * @return \Cake\Datasource\QueryInterface The Query object used in pagination.
      * @throws \Exception When missing search arguments.
      */
-    public function findSearch(QueryInterface $query, array $options)
+    public function findSearch(QueryInterface $query, array $options): QueryInterface
     {
         if (!isset($options['search'])) {
             throw new Exception(
@@ -59,8 +62,9 @@ trait SearchTrait
 
         $filters = $this->_getFilters(Hash::get($options, 'collection', Manager::DEFAULT_COLLECTION));
 
-        if ($this->_emptyValues() !== null) {
-            $this->processor()->setEmptyValues($this->_emptyValues());
+        $emptyValues = $this->_emptyValues();
+        if ($emptyValues !== null) {
+            $this->processor()->setEmptyValues($emptyValues);
         }
 
         $this->_isSearch = $this->processor()->process(
@@ -77,7 +81,7 @@ trait SearchTrait
      *
      * @return \Search\Processor
      */
-    public function processor()
+    public function processor(): Processor
     {
         if ($this->_processor === null) {
             $this->_processor = new Processor();
@@ -92,7 +96,7 @@ trait SearchTrait
      *
      * @return bool
      */
-    public function isSearch()
+    public function isSearch(): bool
     {
         return $this->_isSearch;
     }
@@ -102,7 +106,7 @@ trait SearchTrait
      *
      * @return array
      */
-    public function searchParams()
+    public function searchParams(): array
     {
         return $this->processor()->searchParams();
     }
@@ -112,7 +116,7 @@ trait SearchTrait
      *
      * @return \Search\Manager
      */
-    public function searchManager()
+    public function searchManager(): Manager
     {
         if ($this->_manager === null) {
             $this->_manager = new Manager(
@@ -130,7 +134,7 @@ trait SearchTrait
      * @param string $collection name of collection
      * @return \Search\Model\Filter\FilterCollectionInterface Filter collection instance.
      */
-    protected function _getFilters($collection = Manager::DEFAULT_COLLECTION)
+    protected function _getFilters(string $collection = Manager::DEFAULT_COLLECTION): FilterCollectionInterface
     {
         return $this->_repository()->searchManager()->getFilters($collection);
     }
@@ -150,7 +154,7 @@ trait SearchTrait
      *
      * @return array|null
      */
-    protected function _emptyValues()
+    protected function _emptyValues(): ?array
     {
         return null;
     }

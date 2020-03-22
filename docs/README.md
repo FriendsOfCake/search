@@ -4,7 +4,7 @@
 
 ### Search Behavior
 
-Attach the `Search` behaviour to your table class. In your table class'
+Attach the `Search` behavior to your table class. In your table class'
 `initialize()` method call the `searchManager()` method, it will return a search
 manager instance. You can now add filters to the manager by chaining them.
 The first arg of the `add()` method is the field, the second is the filter using
@@ -27,7 +27,7 @@ class PostsTable extends Table
     {
         parent::initialize($config);
 
-        // Add the behaviour to your table
+        // Add the behavior to your table
         $this->addBehavior('Search.Search');
 
         // Setup search filter using search manager
@@ -43,10 +43,10 @@ class PostsTable extends Table
                 'comparison' => 'LIKE',
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
-                'field' => ['title', 'content']
+                'fields' => ['title', 'content'],
             ])
             ->add('foo', 'Search.Callback', [
-                'callback' => function ($query, $args, $filter) {
+                'callback' => function (\Cake\ORM\Query $query, array $args, \Search\Model\Filter\Base $filter) {
                     // Modify $query as required
                 }
             ]);
@@ -74,7 +74,7 @@ All you need to do is:
             'comparison' => 'LIKE',
             'wildcardAny' => '*',
             'wildcardOne' => '?',
-            'field' => ['body']
+            'fields' => ['body'],
         ])
         ->useCollection('frontend')
         ->value('name');
@@ -86,7 +86,7 @@ Let's use the *backend*'s filters by doing:
 // PostsController::action()
     $query = $this->Examples
         ->find('search', [
-            'search' => $this->request->getQuery(),
+            'search' => $this->request->getQueryParams(),
             'collection' => 'backend',
         ]);
     }
@@ -107,12 +107,12 @@ use Search\Model\Filter\FilterCollection;
 
 class PostsCollection extends FilterCollection
 {
-    public function initialize()
+    public function initialize(): void
     {
         $this->add('foo', 'Search.Callback', [
             'callback' => function ($query, $args, $filter) {
                 // Modify $query as required
-            }
+            },
         ]);
         // More $this->add() calls here. The argument for FilterCollection::add()
         // are same as those of searchManager()->add() shown above.
@@ -131,7 +131,7 @@ use App\Model\Filter\MyPostsCollection;
 
 // In PostsTable::initialize()
 $this->addBehavior('Search.Search', [
-    'collectionClass' => MyPostsCollection::class
+    'collectionClass' => MyPostsCollection::class,
 ]);
 ```
 
@@ -142,30 +142,30 @@ You can also specify alternate collection class to use when making find call:
     $query = $this->Posts
         ->find('search', [
             'search' => $this->request->getQueryParams(),
-            'collection' => 'posts_backend'
+            'collection' => 'posts_backend',
         ]);
     }
 ```
 
 The above will use `App\Model\Filter\PostsBackendCollection`.
 
-### Prg Component
-Add the Search Prg component to the necessary methods in your controller.
+### Search Component
+Add the `Search.Search` component with the necessary actions in your controller.
 
 ```php
 public function initialize()
 {
     parent::initialize();
 
-    $this->loadComponent('Search.Prg', [
+    $this->loadComponent('Search.Search', [
         // This is default config. You can modify "actions" as needed to make
         // the PRG component work only for specified methods.
-        'actions' => ['index', 'lookup']
+        'actions' => ['index', 'lookup'],
     ]);
 }
 ```
 
-The `Search.Prg` component will allow your filtering forms to be populated using
+The `Search.Search` component will allow your filtering forms to be populated using
 the data in the query params. It uses the [Post, redirect, get pattern](https://en.wikipedia.org/wiki/Post/Redirect/Get).
 
 ### Find call
@@ -233,7 +233,7 @@ filter your posts using the following.
 
 Would filter your list of posts to any article with "cakephp" in the `title`
 or `content` field. You might choose to make a `get` form which posts the filter
-directly to the URL, but if you're using the `Search.Prg` component, you'll want
+directly to the URL, but if you're using the `Search.Search` component, you'll want
 to use `POST`.
 
 ### Creating your form
@@ -256,7 +256,7 @@ The array passed to `FormHelper::create()` will cause the helper to create an
 query params.
 
 #### Adding a reset button dynamically
-The Prg component will pass down the information on whether the query was
+The Search component will pass down the information on whether the query was
 modified by your search query string by setting `$_isSearch` view variable to
 true here in this case. It also passes down a `$_searchParams` array of all query string params
 that currently are part of the search.
@@ -327,7 +327,7 @@ The following options are supported by all filters.
     ```php
     // PostsTable::initialize()
     $searchManager->like('q', [
-        'field' => ['Posts.title', 'Authors.title'],
+        'fields' => ['Posts.title', 'Authors.title'],
         'beforeProcess' => function (\Cake\ORM\Query $query, array $args, \Search\Model\Filter\Base $filter) {
             $query->contain('Authors');
         },
@@ -447,7 +447,7 @@ your form. You can use the `filterEmpty` search option to ignore any empty field
 ```php
 // PostsTable::initialize()
     $searchManager->value('author_id', [
-        'filterEmpty' => true
+        'filterEmpty' => true,
     ]);
 ```
 
@@ -463,11 +463,11 @@ getting the query string attached for this "disabled" search field, you can set
 `emptyValues` in the component:
 
 ```php
-    $this->loadComponent('Search.Prg', [
+    $this->loadComponent('Search.Search', [
         ...
         'emptyValues' => [
             'my_checkbox' => '0',
-        ]
+        ],
     ]);
 ```
 
@@ -500,7 +500,7 @@ class MyCustomFilter extends \Search\Model\Filter\Base
 After that you can use your filter as:
 
 ```php
-$this->searchManager()->add('field', 'MyCustom');
+$this->searchManager()->add('name', 'MyCustom');
 ```
 
 ## Persisting the Query String
@@ -511,14 +511,14 @@ by default. Simply add all query strings that should be whitelisted.
 
 ## Blacklist Query String
 
-You can use `queryStringBlacklist` option of `PrgComponent` to set an array of
+You can use `queryStringBlacklist` option of `SearchComponent` to set an array of
 form fields that should not end up in the query when extracting params from POST
 request and redirecting.
 
-## Filtering and Security component
-When the Security component is activated for the whole controller, it should be disabled for the paginated actions:
+## Filtering and FormProtection component
+When the FormProtection component is activated for the whole controller, it should be disabled for the paginated actions:
 ```php
-$this->Security->setConfig('unlockedActions', ['index']);
+$this->FormProtection->setConfig('unlockedActions', ['index']);
 ```
 
 ## Tips

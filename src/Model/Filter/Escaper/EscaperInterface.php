@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Model\Filter\Escaper;
 
 interface EscaperInterface
@@ -10,5 +12,5 @@ interface EscaperInterface
      * @param string $value Value.
      * @return string Value
      */
-    public function formatWildcards($value);
+    public function formatWildcards(string $value): string;
 }

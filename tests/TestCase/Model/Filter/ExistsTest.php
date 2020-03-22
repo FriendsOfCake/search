@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\ORM\TableRegistry;
@@ -152,7 +154,7 @@ class ExistsTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Exists('exists', $manager, [
-            'field' => ['number', 'title'],
+            'fields' => ['number', 'title'],
         ]);
         $filter->setArgs(['exists' => true]);
         $filter->setQuery($articles->find());

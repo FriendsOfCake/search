@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Model\Filter;
 
 use ArrayAccess;
@@ -17,7 +19,7 @@ interface FilterCollectionInterface extends ArrayAccess, IteratorAggregate
      * @param array $options Filter options.
      * @return $this
      */
-    public function add($name, $filter, array $options = []);
+    public function add(string $name, string $filter, array $options = []);
 
     /**
      * Removes a filter by name
@@ -25,7 +27,7 @@ interface FilterCollectionInterface extends ArrayAccess, IteratorAggregate
      * @param string $name Name of the filter
      * @return $this
      */
-    public function remove($name);
+    public function remove(string $name);
 
     /**
      * Checks if a filter is in the collection
@@ -33,7 +35,7 @@ interface FilterCollectionInterface extends ArrayAccess, IteratorAggregate
      * @param string $name Name of the filter
      * @return bool
      */
-    public function has($name);
+    public function has(string $name): bool;
 
     /**
      * Returns filter from the collection
@@ -41,5 +43,5 @@ interface FilterCollectionInterface extends ArrayAccess, IteratorAggregate
      * @param string $name Name of the filter
      * @return \Search\Model\Filter\Base|null
      */
-    public function get($name);
+    public function get(string $name): ?Base;
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\ORM\TableRegistry;
@@ -9,7 +11,6 @@ use Search\Model\Filter\Boolean;
 
 class BooleanTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -278,7 +279,7 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('boolean', $manager, [
-            'field' => ['is_active', 'other'],
+            'fields' => ['is_active', 'other'],
         ]);
         $filter->setArgs(['boolean' => true]);
         $filter->setQuery($articles->find());
@@ -302,7 +303,7 @@ class BooleanTest extends TestCase
         $articles = TableRegistry::get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('boolean', $manager, [
-            'field' => ['is_active', 'other'],
+            'fields' => ['is_active', 'other'],
             'mode' => 'AND',
         ]);
         $filter->setArgs(['boolean' => true]);

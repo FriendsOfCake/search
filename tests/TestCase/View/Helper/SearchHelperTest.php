@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Test\View\Helper;
 
 use Cake\Http\ServerRequest;
@@ -25,7 +27,7 @@ class SearchHelperTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -33,7 +35,6 @@ class SearchHelperTest extends TestCase
         $config = [];
         $this->searchHelper = new SearchHelper($this->view, $config);
 
-        Router::$initialized = true;
         Router::scope('/', function (RouteBuilder $routes) {
             $routes->connect(
                 '/controller/action',
@@ -65,7 +66,9 @@ class SearchHelperTest extends TestCase
         $result = $this->searchHelper->resetUrl();
         $this->assertSame(['?' => []], $result);
 
-        $request = new ServerRequest('/controller/action?limit=5&sort=x&direction=asc&foo=baz&bar=1');
+        $request = new ServerRequest([
+            'url' => '/controller/action?limit=5&sort=x&direction=asc&foo=baz&bar=1',
+        ]);
         $this->view = new View($request);
         $this->searchHelper = new SearchHelper($this->view, []);
 
@@ -91,7 +94,9 @@ class SearchHelperTest extends TestCase
      */
     public function testResetUrlWithPaginator()
     {
-        $request = new ServerRequest('/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar');
+        $request = new ServerRequest([
+            'url' => '/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar',
+        ]);
         $request = $request->withParam('paging', ['Something']);
 
         $this->view = new View($request);
@@ -118,7 +123,9 @@ class SearchHelperTest extends TestCase
      */
     public function testResetUrlWithPaginatorAndAdditionalBlacklist()
     {
-        $request = new ServerRequest('/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar');
+        $request = new ServerRequest([
+            'url' => '/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar',
+        ]);
         $request = $request->withParam('paging', ['Something']);
 
         $this->view = new View($request);
@@ -152,14 +159,12 @@ class SearchHelperTest extends TestCase
         $request = new ServerRequest([
             'url' => '/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar',
             'params' => [
-                'plugin' => null,
                 'controller' => 'Controller',
                 'action' => 'action',
-                '_ext' => null,
-                'pass' => [],
+                'plugin' => null,
             ],
         ]);
-        Router::pushRequest($request);
+        Router::setRequest($request);
 
         $this->view = new View($request);
         $config = [];

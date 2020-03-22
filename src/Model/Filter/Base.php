@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Model\Filter;
 
 use Cake\Core\InstanceConfigTrait;
@@ -38,7 +40,7 @@ abstract class Base
     /**
      * Query object.
      *
-     * @var \Cake\Datasource\QueryInterface|null
+     * @var \Cake\Datasource\QueryInterface
      */
     protected $_query;
 
@@ -53,15 +55,14 @@ abstract class Base
      * @param array $config Config.
      * @throws \InvalidArgumentException
      */
-    public function __construct($name, Manager $manager, array $config = [])
+    public function __construct(string $name, Manager $manager, array $config = [])
     {
         $this->_manager = $manager;
 
-        $defaults = [
-            'field' => $name,
+        $config += [
+            'fields' => $name,
             'aliasField' => true,
             'name' => $name,
-            'validate' => [],
             'alwaysRun' => false,
             'filterEmpty' => false,
             'defaultValue' => null,
@@ -70,12 +71,18 @@ abstract class Base
             'flatten' => true,
             'beforeProcess' => null,
         ];
-        $config += $defaults;
+
+        if (isset($config['field'])) {
+            throw new \InvalidArgumentException(
+                'The `field` option has been renamed to `fields`.'
+            );
+        }
+        $config['fields'] = (array)$config['fields'];
         $this->setConfig($config);
 
         if (
-            (empty($config['field']) && $config['field'] !== '0') ||
-            (is_array($config['field']) && !array_filter($config['field'], function ($value) {
+            empty($config['fields']) ||
+            (!array_filter($config['fields'], function ($value) {
                 return strlen($value) > 0;
             }))
         ) {
@@ -99,20 +106,19 @@ abstract class Base
      *
      * @return \Search\Manager
      */
-    public function manager()
+    public function manager(): Manager
     {
         return $this->_manager;
     }
 
     /**
-     * Get the database field name.
+     * Get the database field name(s) as an array.
      *
-     * @deprecated Use fields() instead.
-     * @return string|array
+     * @return array
      */
-    public function field()
+    public function fields(): array
     {
-        $field = $this->getConfig('field');
+        $field = $this->getConfig('fields');
         if (!$this->getConfig('aliasField')) {
             return $field;
         }
@@ -120,10 +126,6 @@ abstract class Base
         $repository = $this->manager()->getRepository();
         if (!method_exists($repository, 'aliasField')) {
             return $field;
-        }
-
-        if (is_string($field)) {
-            return $repository->aliasField($field);
         }
 
         $return = [];
@@ -135,21 +137,11 @@ abstract class Base
     }
 
     /**
-     * Get the database field name(s) as an array.
-     *
-     * @return array
-     */
-    public function fields()
-    {
-        return (array)$this->field();
-    }
-
-    /**
      * Get the field name from HTTP GET query string.
      *
      * @return string
      */
-    public function name()
+    public function name(): string
     {
         return $this->getConfig('name');
     }
@@ -159,7 +151,7 @@ abstract class Base
      *
      * @return bool
      */
-    public function present()
+    public function present(): bool
     {
         return $this->getConfig('alwaysRun') || array_key_exists($this->name(), $this->_args);
     }
@@ -169,7 +161,7 @@ abstract class Base
      *
      * @return bool
      */
-    public function filterEmpty()
+    public function filterEmpty(): bool
     {
         return $this->getConfig('filterEmpty');
     }
@@ -179,7 +171,7 @@ abstract class Base
      *
      * @return bool
      */
-    public function skip()
+    public function skip(): bool
     {
         return !$this->present() ||
             ($this->filterEmpty() &&
@@ -232,11 +224,13 @@ abstract class Base
      *
      * @param array $args Value.
      *
-     * @return void
+     * @return $this
      */
     public function setArgs(array $args)
     {
         $this->_args = $args;
+
+        return $this;
     }
 
     /**
@@ -244,62 +238,30 @@ abstract class Base
      *
      * @return array
      */
-    public function getArgs()
+    public function getArgs(): array
     {
         return $this->_args;
-    }
-
-    /**
-     * Get / Set the validation rules.
-     *
-     * @param array|null $value Value.
-     * @return array|null
-     * @codeCoverageIgnore
-     * @internal
-     */
-    public function validate(array $value = null)
-    {
-        if ($value === null) {
-            return $this->getConfig('validate');
-        }
-
-        $this->setConfig('validate', $value);
-    }
-
-    /**
-     * Valid method.
-     *
-     * @return bool
-     * @codeCoverageIgnore
-     * @internal
-     */
-    public function valid()
-    {
-        $rules = $this->validate();
-        if (empty($rules)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
      * Sets the query object.
      *
      * @param \Cake\Datasource\QueryInterface $query Query instance.
-     * @return void
+     * @return $this
      */
     public function setQuery(QueryInterface $query)
     {
         $this->_query = $query;
+
+        return $this;
     }
 
     /**
      * Gets the query object.
      *
-     * @return \Cake\Datasource\QueryInterface|null
+     * @return \Cake\Datasource\QueryInterface
      */
-    public function getQuery()
+    public function getQuery(): QueryInterface
     {
         return $this->_query;
     }
@@ -311,10 +273,9 @@ abstract class Base
      * @param array $args Filter arguments.
      * @return bool True if processed, false if skipped
      */
-    public function __invoke(QueryInterface $query, array $args)
+    public function execute(QueryInterface $query, array $args): bool
     {
-        $this->setQuery($query);
-        $this->setArgs($args);
+        $this->setQuery($query)->setArgs($args);
 
         if ($this->skip()) {
             return false;
@@ -346,5 +307,5 @@ abstract class Base
      *
      * @return bool True if processed, false if skipped
      */
-    abstract public function process();
+    abstract public function process(): bool;
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search;
 
 use Cake\Core\App;
@@ -19,7 +21,7 @@ class Manager
     /**
      * Default collection name.
      */
-    const DEFAULT_COLLECTION = 'default';
+    public const DEFAULT_COLLECTION = 'default';
 
     /**
      * Repository
@@ -32,6 +34,7 @@ class Manager
      * Filter collections
      *
      * @var \Search\Model\Filter\FilterCollectionInterface[] Filter collections list.
+     * @psalm-var array<string, \Search\Model\Filter\FilterCollectionInterface>
      */
     protected $_collections = [];
 
@@ -40,12 +43,13 @@ class Manager
      *
      * @var string
      */
-    protected $_collection = self::DEFAULT_COLLECTION;
+    protected $_collectionName = self::DEFAULT_COLLECTION;
 
     /**
      * Default collection class.
      *
      * @var string
+     * @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface>
      */
     protected $_collectionClass = FilterCollection::class;
 
@@ -54,8 +58,9 @@ class Manager
      *
      * @param \Cake\Datasource\RepositoryInterface $repository Repository
      * @param string|null $collectionClass Default collection class.
+     * @psalm-param class-string<\Search\Model\Filter\FilterCollectionInterface>|null $collectionClass
      */
-    public function __construct(RepositoryInterface $repository, $collectionClass = null)
+    public function __construct(RepositoryInterface $repository, ?string $collectionClass = null)
     {
         $this->_repository = $repository;
 
@@ -69,7 +74,7 @@ class Manager
      *
      * @return \Cake\Datasource\RepositoryInterface Repository Instance
      */
-    public function getRepository()
+    public function getRepository(): RepositoryInterface
     {
         return $this->_repository;
     }
@@ -81,7 +86,7 @@ class Manager
      * @return \Search\Model\Filter\FilterCollectionInterface Filter collection instance.
      * @throws \InvalidArgumentException If requested collection is not set.
      */
-    public function getFilters($collection = self::DEFAULT_COLLECTION)
+    public function getFilters(string $collection = self::DEFAULT_COLLECTION): FilterCollectionInterface
     {
         if (!isset($this->_collections[$collection])) {
             $this->_collections[$collection] = $this->_loadCollection($collection);
@@ -97,7 +102,7 @@ class Manager
      * @return \Search\Model\Filter\FilterCollectionInterface
      * @throws \InvalidArgumentException When no filter was found.
      */
-    protected function _loadCollection($name)
+    protected function _loadCollection(string $name): FilterCollectionInterface
     {
         if ($name === self::DEFAULT_COLLECTION) {
             $class = $this->_collectionClass;
@@ -133,9 +138,9 @@ class Manager
      * @param string $name Name of the active filter collection to set.
      * @return $this
      */
-    public function useCollection($name)
+    public function useCollection(string $name)
     {
-        $this->_collection = $name;
+        $this->_collectionName = $name;
 
         return $this;
     }
@@ -145,13 +150,13 @@ class Manager
      *
      * @return \Search\Model\Filter\FilterCollectionInterface
      */
-    protected function _collection()
+    protected function _collection(): FilterCollectionInterface
     {
-        if (!isset($this->_collections[$this->_collection])) {
-            $this->_collections[$this->_collection] = new $this->_collectionClass($this);
+        if (!isset($this->_collections[$this->_collectionName])) {
+            $this->_collections[$this->_collectionName] = new $this->_collectionClass($this);
         }
 
-        return $this->_collections[$this->_collection];
+        return $this->_collections[$this->_collectionName];
     }
 
     /**
@@ -159,9 +164,9 @@ class Manager
      *
      * @return string The name of the active collection.
      */
-    public function getCollection()
+    public function getCollectionName(): string
     {
-        return $this->_collection;
+        return $this->_collectionName;
     }
 
     /**
@@ -172,7 +177,7 @@ class Manager
      * @param array $options Filter options.
      * @return $this
      */
-    public function add($name, $filter, array $options = [])
+    public function add(string $name, string $filter, array $options = [])
     {
         $this->_collection()->add($name, $filter, $options);
 
@@ -185,7 +190,7 @@ class Manager
      * @param string $name Name of the filter to be removed.
      * @return $this
      */
-    public function remove($name)
+    public function remove(string $name)
     {
         $this->_collection()->remove($name);
 

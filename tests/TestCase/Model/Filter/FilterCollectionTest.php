@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\ORM\TableRegistry;
@@ -15,7 +17,7 @@ use Search\Model\Filter\Value;
  */
 class FilterCollectionTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $repository = TableRegistry::get('Articles');
         $manager = new Manager($repository);

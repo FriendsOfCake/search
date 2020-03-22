@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Behavior;
 
@@ -40,7 +41,7 @@ class SearchBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -97,11 +98,13 @@ class SearchBehaviorTest extends TestCase
         $filter
             ->expects($this->once())
             ->method('setArgs')
-            ->with($params);
+            ->with($params)
+            ->willReturnSelf();
         $filter
             ->expects($this->once())
             ->method('setQuery')
-            ->with($query);
+            ->with($query)
+            ->willReturnSelf();
         $filter
             ->expects($this->at(2))
             ->method('skip');
@@ -117,11 +120,13 @@ class SearchBehaviorTest extends TestCase
         $filter2
             ->expects($this->once())
             ->method('setArgs')
-            ->with($params);
+            ->with($params)
+            ->willReturnSelf();
         $filter2
             ->expects($this->once())
             ->method('setQuery')
-            ->with($query);
+            ->with($query)
+            ->willReturnSelf();
         $filter2
             ->expects($this->at(2))
             ->method('skip');
@@ -133,7 +138,7 @@ class SearchBehaviorTest extends TestCase
         $filters['name'] = $filter;
         $filters['date'] = $filter2;
 
-        /* @var $behavior \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject $behavior */
         $behavior = $this->Comments->behaviors()->get('Search');
         $behavior
             ->expects($this->once())
@@ -262,7 +267,7 @@ class SearchBehaviorTest extends TestCase
      * @dataProvider collectionFinderProvider
      * @param string $collection The collection name.
      * @param string $queryString The query string data.
-     * @param integer $expected The expected record count.
+     * @param int $expected The expected record count.
      * @return void
      */
     public function testCollectionFinder($collection, $queryString, $expected)
@@ -292,12 +297,13 @@ class SearchBehaviorTest extends TestCase
     /**
      * testFindSearchException
      *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Custom finder "search" expects search arguments to be nested under key "search" in find() options.
      * @return void
      */
     public function testFindSearchException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Custom finder "search" expects search arguments to be nested under key "search" in find() options.');
+
         $this->Articles->find('search');
     }
 

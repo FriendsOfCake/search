@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Model\Filter;
 
 class Finder extends Base
@@ -16,7 +18,7 @@ class Finder extends Base
      *
      * @return string
      */
-    public function finder()
+    public function finder(): string
     {
         $finder = $this->getConfig('finder');
 
@@ -28,12 +30,12 @@ class Finder extends Base
      *
      * @return bool
      */
-    public function process()
+    public function process(): bool
     {
         $args = $this->getArgs();
         $map = $this->getConfig('map');
         foreach ($map as $to => $from) {
-            $args[$to] = isset($args[$from]) ? $args[$from] : null;
+            $args[$to] = $args[$from] ?? null;
         }
 
         $options = $this->getConfig('options');

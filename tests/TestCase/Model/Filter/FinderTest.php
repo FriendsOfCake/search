@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\ORM\TableRegistry;
@@ -9,7 +11,6 @@ use Search\Model\Filter\Finder;
 
 class FinderTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -71,12 +72,13 @@ class FinderTest extends TestCase
     }
 
     /**
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage Unknown finder method "nonExistent"
      * @return void
      */
     public function testProcessNonExistentFinderMethod()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Unknown finder method "nonExistent"');
+
         $articles = TableRegistry::get('FinderArticles', [
             'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
         ]);

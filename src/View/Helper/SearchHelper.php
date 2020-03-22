@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Search\View\Helper;
 
 use Cake\View\Helper;
@@ -13,17 +15,10 @@ class SearchHelper extends Helper
     /**
      * @var array
      */
-    public $helpers = [
+    protected $helpers = [
         'Url',
         'Html',
     ];
-
-    /**
-     * Request instance.
-     *
-     * @var \Cake\Http\ServerRequest;
-     */
-    public $request;
 
     /**
      * Default config for this class
@@ -45,12 +40,7 @@ class SearchHelper extends Helper
      */
     public function __construct(View $View, array $config)
     {
-        if (method_exists($View, 'getRequest')) {
-            $this->request = $View->getRequest();
-        } else {
-            $this->request = $View->request;
-        }
-        if ($this->request->getParam('paging')) {
+        if ($View->getRequest()->getParam('paging')) {
             $this->_defaultConfig['additionalBlacklist'][] = 'page';
         }
 
@@ -62,7 +52,7 @@ class SearchHelper extends Helper
      *
      * @return bool
      */
-    public function isSearch()
+    public function isSearch(): bool
     {
         return (bool)$this->_View->get('_isSearch');
     }
@@ -70,13 +60,13 @@ class SearchHelper extends Helper
     /**
      * Returns a reset link for the search form.
      *
-     * @param string $label Label text.
+     * @param string|null $label Label text. Defaults to 'Reset'.
      * @param array $options Array of options and HTML attributes.
      * @return string HTML.
      */
-    public function resetLink($label, array $options = [])
+    public function resetLink(?string $label = null, array $options = []): string
     {
-        return $this->Html->link($label, $this->resetUrl(), $options);
+        return $this->Html->link($label ?? __d('search', 'Reset'), $this->resetUrl(), $options);
     }
 
     /**
@@ -84,9 +74,9 @@ class SearchHelper extends Helper
      *
      * @return array URL with cleaned Query string.
      */
-    public function resetUrl()
+    public function resetUrl(): array
     {
-        $query = $this->request->getQuery();
+        $query = $this->_View->getRequest()->getQueryParams();
 
         $searchParams = (array)$this->_View->get('_searchParams');
         $query = array_diff_key($query, $searchParams);
