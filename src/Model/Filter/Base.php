@@ -63,7 +63,6 @@ abstract class Base
             'fields' => $name,
             'aliasField' => true,
             'name' => $name,
-            'validate' => [],
             'alwaysRun' => false,
             'filterEmpty' => false,
             'defaultValue' => null,
@@ -242,42 +241,6 @@ abstract class Base
     public function getArgs(): array
     {
         return $this->_args;
-    }
-
-    /**
-     * Get / Set the validation rules.
-     *
-     * @param array|null $value Value.
-     * @return array|null
-     * @codeCoverageIgnore
-     * @internal
-     */
-    public function validate(?array $value = null): ?array
-    {
-        if ($value === null) {
-            return $this->getConfig('validate');
-        }
-
-        $this->setConfig('validate', $value);
-
-        return null;
-    }
-
-    /**
-     * Valid method.
-     *
-     * @return bool
-     * @codeCoverageIgnore
-     * @internal
-     */
-    public function valid(): bool
-    {
-        $rules = $this->validate();
-        if (empty($rules)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
