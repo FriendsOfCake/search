@@ -204,7 +204,7 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
 
-        $result = $manager->getCollection();
+        $result = $manager->getCollectionName();
         $this->assertEquals('default', $result);
 
         $result = $manager->useCollection('default');
@@ -235,7 +235,7 @@ class ManagerTest extends TestCase
         $table = TableRegistry::get('Articles');
         $manager = new Manager($table);
 
-        $result = $manager->getCollection();
+        $result = $manager->getCollectionName();
         $this->assertEquals('default', $result);
 
         $result = $manager->useCollection('default');

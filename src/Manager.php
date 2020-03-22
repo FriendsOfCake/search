@@ -43,7 +43,7 @@ class Manager
      *
      * @var string
      */
-    protected $_collection = self::DEFAULT_COLLECTION;
+    protected $_collectionName = self::DEFAULT_COLLECTION;
 
     /**
      * Default collection class.
@@ -140,7 +140,7 @@ class Manager
      */
     public function useCollection(string $name)
     {
-        $this->_collection = $name;
+        $this->_collectionName = $name;
 
         return $this;
     }
@@ -152,11 +152,11 @@ class Manager
      */
     protected function _collection(): FilterCollectionInterface
     {
-        if (!isset($this->_collections[$this->_collection])) {
-            $this->_collections[$this->_collection] = new $this->_collectionClass($this);
+        if (!isset($this->_collections[$this->_collectionName])) {
+            $this->_collections[$this->_collectionName] = new $this->_collectionClass($this);
         }
 
-        return $this->_collections[$this->_collection];
+        return $this->_collections[$this->_collectionName];
     }
 
     /**
@@ -164,9 +164,9 @@ class Manager
      *
      * @return string The name of the active collection.
      */
-    public function getCollection(): string
+    public function getCollectionName(): string
     {
-        return $this->_collection;
+        return $this->_collectionName;
     }
 
     /**
