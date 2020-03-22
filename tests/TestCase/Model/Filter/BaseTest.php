@@ -267,7 +267,7 @@ class BaseTest extends TestCase
             }]
         );
 
-        $filter($this->Manager->getRepository()->find(), ['fields' => 'bar']);
+        $filter->execute($this->Manager->getRepository()->find(), ['fields' => 'bar']);
         $this->assertNotEmpty($filter->getQuery()->clause('where'));
     }
 
@@ -295,7 +295,7 @@ class BaseTest extends TestCase
             ->expects($this->never())
             ->method('process');
 
-        $filter($this->Manager->getRepository()->find(), ['fields' => 'bar']);
+        $filter->execute($this->Manager->getRepository()->find(), ['fields' => 'bar']);
     }
 
     /**
@@ -315,7 +315,7 @@ class BaseTest extends TestCase
             }]
         );
 
-        $filter($this->Manager->getRepository()->find(), ['fields' => 'bar']);
+        $filter->execute($this->Manager->getRepository()->find(), ['fields' => 'bar']);
         $this->assertEquals(['fields' => 'bar', 'extra' => 'value'], $filter->getArgs());
     }
 }
