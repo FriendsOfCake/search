@@ -149,15 +149,15 @@ You can also specify alternate collection class to use when making find call:
 
 The above will use `App\Model\Filter\PostsBackendCollection`.
 
-### Prg Component
-Add the Search Prg component to the necessary methods in your controller.
+### Search Component
+Add the `Search.Search` component with the necessary actions in your controller.
 
 ```php
 public function initialize()
 {
     parent::initialize();
 
-    $this->loadComponent('Search.Prg', [
+    $this->loadComponent('Search.Search', [
         // This is default config. You can modify "actions" as needed to make
         // the PRG component work only for specified methods.
         'actions' => ['index', 'lookup'],
@@ -165,7 +165,7 @@ public function initialize()
 }
 ```
 
-The `Search.Prg` component will allow your filtering forms to be populated using
+The `Search.Search` component will allow your filtering forms to be populated using
 the data in the query params. It uses the [Post, redirect, get pattern](https://en.wikipedia.org/wiki/Post/Redirect/Get).
 
 ### Find call
@@ -233,7 +233,7 @@ filter your posts using the following.
 
 Would filter your list of posts to any article with "cakephp" in the `title`
 or `content` field. You might choose to make a `get` form which posts the filter
-directly to the URL, but if you're using the `Search.Prg` component, you'll want
+directly to the URL, but if you're using the `Search.Search` component, you'll want
 to use `POST`.
 
 ### Creating your form
@@ -256,7 +256,7 @@ The array passed to `FormHelper::create()` will cause the helper to create an
 query params.
 
 #### Adding a reset button dynamically
-The Prg component will pass down the information on whether the query was
+The Search component will pass down the information on whether the query was
 modified by your search query string by setting `$_isSearch` view variable to
 true here in this case. It also passes down a `$_searchParams` array of all query string params
 that currently are part of the search.
@@ -463,7 +463,7 @@ getting the query string attached for this "disabled" search field, you can set
 `emptyValues` in the component:
 
 ```php
-    $this->loadComponent('Search.Prg', [
+    $this->loadComponent('Search.Search', [
         ...
         'emptyValues' => [
             'my_checkbox' => '0',
@@ -511,7 +511,7 @@ by default. Simply add all query strings that should be whitelisted.
 
 ## Blacklist Query String
 
-You can use `queryStringBlacklist` option of `PrgComponent` to set an array of
+You can use `queryStringBlacklist` option of `SearchComponent` to set an array of
 form fields that should not end up in the query when extracting params from POST
 request and redirecting.
 
