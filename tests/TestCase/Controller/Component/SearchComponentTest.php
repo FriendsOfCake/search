@@ -9,9 +9,9 @@ use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use Search\Controller\Component\PrgComponent;
+use Search\Controller\Component\SearchComponent;
 
-class PrgComponentTest extends TestCase
+class SearchComponentTest extends TestCase
 {
     /**
      * @var array
@@ -26,9 +26,9 @@ class PrgComponentTest extends TestCase
     public $Controller;
 
     /**
-     * @var \Search\Controller\Component\PrgComponent
+     * @var \Search\Controller\Component\SearchComponent
      */
-    public $Prg;
+    public $Search;
 
     /**
      * @return void
@@ -53,7 +53,7 @@ class PrgComponentTest extends TestCase
             ->getMock();
 
         $this->Controller = new Controller($request, $response);
-        $this->Prg = new PrgComponent($this->Controller->components());
+        $this->Search = new SearchComponent($this->Controller->components());
     }
 
     /**
@@ -73,28 +73,28 @@ class PrgComponentTest extends TestCase
 
         $this->Controller->setRequest($request);
 
-        $response = $this->Prg->startup();
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
-        $this->Prg->setConfig('actions', false);
-        $response = $this->Prg->startup();
+        $this->Search->setConfig('actions', false);
+        $response = $this->Search->startup();
         $this->assertNull($response);
 
-        $this->Prg->setConfig('actions', 'does-not-exist', false);
-        $response = $this->Prg->startup();
+        $this->Search->setConfig('actions', 'does-not-exist', false);
+        $response = $this->Search->startup();
         $this->assertNull($response);
 
-        $this->Prg->setConfig('actions', 'index', false);
+        $this->Search->setConfig('actions', 'index', false);
         $this->Controller->setResponse($this->Controller->getResponse()->withHeader('Location', ''));
-        $response = $this->Prg->startup();
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
-        $this->Prg->setConfig('actions', ['index', 'does-not-exist'], false);
+        $this->Search->setConfig('actions', ['index', 'does-not-exist'], false);
         $this->Controller->setResponse($this->Controller->getResponse()->withHeader('Location', ''));
-        $response = $this->Prg->startup();
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
-        $this->Prg->setConfig('actions', true);
+        $this->Search->setConfig('actions', true);
         $request = $this->Controller->getRequest()
             ->withAttribute('params', [
                 'controller' => 'UserAnswers',
@@ -106,12 +106,12 @@ class PrgComponentTest extends TestCase
         $this->Controller->setRequest($request);
 
         $this->Controller->setResponse($this->Controller->getResponse()->withHeader('Location', ''));
-        $response = $this->Prg->startup();
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/users/my-predictions?foo=bar', $response->getHeaderLine('Location'));
 
         $this->Controller->setRequest($this->Controller->getRequest()->withData('foo', ''));
         $this->Controller->setResponse($this->Controller->getResponse()->withHeader('Location', ''));
-        $response = $this->Prg->startup();
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/users/my-predictions', $response->getHeaderLine('Location'));
     }
 
@@ -133,10 +133,10 @@ class PrgComponentTest extends TestCase
 
         $this->Controller->setRequest($request);
 
-        $this->Prg->configShallow('emptyValues', [
+        $this->Search->configShallow('emptyValues', [
             'checkbox' => '0',
         ]);
-        $response = $this->Prg->startup();
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
@@ -162,7 +162,7 @@ class PrgComponentTest extends TestCase
 
         $this->Controller->setRequest($request);
 
-        $response = $this->Prg->startup();
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar&sort=created&direction=desc', $response->getHeaderLine('Location'));
     }
 
@@ -190,8 +190,8 @@ class PrgComponentTest extends TestCase
 
         $this->Controller->setRequest($request);
 
-        $this->Prg->configShallow('queryStringWhitelist', ['scope.sort', 'scope.direction']);
-        $response = $this->Prg->startup();
+        $this->Search->configShallow('queryStringWhitelist', ['scope.sort', 'scope.direction']);
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar&scope%5Bsort%5D=created&scope%5Bdirection%5D=desc', $response->getHeaderLine('Location'));
     }
 
@@ -218,8 +218,8 @@ class PrgComponentTest extends TestCase
         $this->Controller->setRequest($request);
 
         // Needed as config() would not do anything here due to internal default behavior of merging here
-        $this->Prg->configShallow('queryStringWhitelist', []);
-        $response = $this->Prg->startup();
+        $this->Search->configShallow('queryStringWhitelist', []);
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
@@ -240,7 +240,7 @@ class PrgComponentTest extends TestCase
 
         $this->Controller->setRequest($request);
 
-        $response = $this->Prg->startup();
+        $response = $this->Search->startup();
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
@@ -260,7 +260,7 @@ class PrgComponentTest extends TestCase
         $this->Controller->Articles->addBehavior('Search.Search');
         $this->Controller->Articles->find('search', ['search' => []]);
 
-        $this->Prg->beforeRender();
+        $this->Search->beforeRender();
 
         $viewVars = $this->Controller->viewBuilder()->getVars();
         $this->assertFalse($viewVars['_isSearch']);
@@ -282,7 +282,7 @@ class PrgComponentTest extends TestCase
         $this->Controller->Articles->addBehavior('Search.Search');
         $this->Controller->Articles->expects($this->once())->method('isSearch')->willReturn(true);
 
-        $this->Prg->beforeRender();
+        $this->Search->beforeRender();
 
         $viewVars = $this->Controller->viewBuilder()->getVars();
         $this->assertTrue($viewVars['_isSearch']);
@@ -298,16 +298,16 @@ class PrgComponentTest extends TestCase
             'Controller.beforeRender' => 'beforeRender',
         ];
 
-        $result = $this->Prg->implementedEvents();
+        $result = $this->Search->implementedEvents();
         $this->assertSame($expected, $result);
 
         $events = [
             'Controller.startup' => 'startup',
             'Controller.beforeRender' => false,
         ];
-        $this->Prg->setConfig(['events' => $events]);
+        $this->Search->setConfig(['events' => $events]);
 
-        $result = $this->Prg->implementedEvents();
+        $result = $this->Search->implementedEvents();
         $this->assertSame(['Controller.startup' => 'startup'], $result);
     }
 }
