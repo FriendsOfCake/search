@@ -159,14 +159,14 @@ public function initialize()
 
     $this->loadComponent('Search.Search', [
         // This is default config. You can modify "actions" as needed to make
-        // the PRG component work only for specified methods.
+        // the Search component work only for specified methods.
         'actions' => ['index', 'lookup'],
     ]);
 }
 ```
 
 The `Search.Search` component will allow your filtering forms to be populated using
-the data in the query params. It uses the [Post, redirect, get pattern](https://en.wikipedia.org/wiki/Post/Redirect/Get).
+the data in the query params. It uses the [PRG pattern](https://en.wikipedia.org/wiki/Post/Redirect/Get) (Post, redirect, get).
 
 ### Find call
 In order for the Search plugin to work it will need to process the query params
