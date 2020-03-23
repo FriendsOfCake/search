@@ -87,6 +87,7 @@ class SearchBehaviorTest extends TestCase
                 'm' => '01',
                 'y' => '2017',
             ],
+            'Comments.foo' => 'a',
         ];
         $query = $this->Comments->find();
 
@@ -134,11 +135,34 @@ class SearchBehaviorTest extends TestCase
             ->expects($this->at(2))
             ->method('process');
 
+        $filter3 = $this
+            ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
+            ->setConstructorArgs(['name', $manager])
+            ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
+            ->getMock();
+        $filter3
+            ->expects($this->once())
+            ->method('setArgs')
+            ->with($params)
+            ->willReturnSelf();
+        $filter3
+            ->expects($this->once())
+            ->method('setQuery')
+            ->with($query)
+            ->willReturnSelf();
+        $filter3
+            ->expects($this->at(2))
+            ->method('skip');
+        $filter3
+            ->expects($this->at(2))
+            ->method('process');
+
         $filters = new FilterCollection($manager);
         $filters['name'] = $filter;
         $filters['date'] = $filter2;
+        $filters['Comments.foo'] = $filter3;
 
-        /** @var \Search\Model\Behavior\SearchBehavior|\PHPUnit_Framework_MockObject_MockObject $behavior */
+        /** @var \Search\Model\Behavior\SearchBehavior|\PHPUnit\Framework\MockObject\MockObject $behavior */
         $behavior = $this->Comments->behaviors()->get('Search');
         $behavior
             ->expects($this->once())
@@ -152,6 +176,9 @@ class SearchBehaviorTest extends TestCase
                 'd' => '01',
                 'm' => '01',
                 'y' => '2017',
+            ],
+            'Comments' => [
+                'foo' => 'a',
             ],
         ];
         $behavior->findSearch($query, ['search' => $queryString]);
