@@ -68,19 +68,7 @@ class SearchComponent extends Component
      */
     public function startup(): ?Response
     {
-        if (!$this->getController()->getRequest()->is('post') || !$this->_isSearchAction()) {
-            return null;
-        }
-
-        $url = $this->getController()->getRequest()->getPath();
-
-        $params = $this->_filterParams();
-        if ($params) {
-            $params = Hash::expand($params);
-            $url .= '?' . http_build_query($params);
-        }
-
-        return $this->_registry->getController()->redirect($url);
+        return null;
     }
 
     /**
@@ -95,6 +83,18 @@ class SearchComponent extends Component
     {
         if (!$this->_isSearchAction()) {
             return;
+        }
+        
+        if ($this->getController()->getRequest()->is('post') && $this->_isSearchAction()) {
+            $url = $this->getController()->getRequest()->getPath();
+
+            $params = $this->_filterParams();
+            if ($params) {
+                $params = Hash::expand($params);
+                $url .= '?' . http_build_query($params);
+            }
+
+            return $this->_registry->getController()->redirect($url);    
         }
 
         $controller = $this->getController();
