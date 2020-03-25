@@ -84,7 +84,7 @@ class SearchComponent extends Component
         if (!$this->_isSearchAction()) {
             return;
         }
-        
+
         if ($this->getController()->getRequest()->is('post') && $this->_isSearchAction()) {
             $url = $this->getController()->getRequest()->getPath();
 
@@ -94,7 +94,7 @@ class SearchComponent extends Component
                 $url .= '?' . http_build_query($params);
             }
 
-            return $this->_registry->getController()->redirect($url);    
+            return $this->_registry->getController()->redirect($url);
         }
 
         $controller = $this->getController();
