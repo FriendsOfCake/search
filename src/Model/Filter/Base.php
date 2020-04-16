@@ -10,7 +10,6 @@ use UnexpectedValueException;
 
 /**
  * Base class for search type classes.
- *
  */
 abstract class Base
 {
@@ -223,7 +222,6 @@ abstract class Base
      * Sets the args.
      *
      * @param array $args Value.
-     *
      * @return $this
      */
     public function setArgs(array $args)

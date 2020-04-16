@@ -25,7 +25,6 @@ class FinderArticlesTable extends Table
     /**
      * @param \Cake\ORM\Query $query
      * @param array $options
-     *
      * @return \Cake\ORM\Query
      */
     public function findActive(Query $query, array $options)
@@ -40,7 +39,6 @@ class FinderArticlesTable extends Table
      *
      * @param \Cake\ORM\Query $query
      * @param array $options
-     *
      * @return \Cake\ORM\Query
      */
     public function findSlugged(Query $query, array $options)

@@ -24,7 +24,6 @@ class SearchBehavior extends Behavior
      * when initializing the behavior
      *
      * @var array
-     *
      */
     protected $_defaultConfig = [
         'implementedFinders' => [
