@@ -20,10 +20,9 @@ class PostsTable extends Table
 {
     /**
      * @param array $config
-     *
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -101,6 +100,9 @@ loaded only when actually used.
 
 ```php
 // src/Model/Filter/PostsCollection.php
+<?php
+declare(strict_types=1);
+
 namespace App\Model\Filter;
 
 use Search\Model\Filter\FilterCollection;
@@ -202,6 +204,7 @@ in the Webservice plugin.
 
 ```php
 <?php
+declare(strict_types=1);
 
 namespace App\Model\Endpoint;
 
@@ -453,7 +456,7 @@ your form. You can use the `filterEmpty` search option to ignore any empty field
 
 Be sure to allow empty in your search form, if you're using one.
 ```php
-echo $this->Form->input('author_id', ['empty' => 'Pick an author']);
+echo $this->Form->control('author_id', ['empty' => 'Pick an author']);
 ```
 
 ## Empty fields
@@ -479,6 +482,8 @@ You can create your own filter by by creating a filter class under `src/Model/Fi
 
 ```php
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Filter;
 
 class MyCustomFilter extends \Search\Model\Filter\Base
