@@ -55,7 +55,5 @@
             "@psalm"
         ],
         "test": "phpunit"
-    },
-    "minimum-stability": "beta",
-    "prefer-stable": true
+    }
 }
