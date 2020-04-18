@@ -27,7 +27,7 @@
     "require-dev": {
         "phpunit/phpunit": "~8.5.0",
         "cakephp/cakephp-codesniffer": "^4.0",
-        "muffin/webservice": "^3.0"
+        "muffin/webservice": "^3.0@beta"
     },
     "autoload": {
         "psr-4": {
@@ -55,7 +55,5 @@
             "@psalm"
         ],
         "test": "phpunit"
-    },
-    "minimum-stability": "beta",
-    "prefer-stable": true
+    }
 }
