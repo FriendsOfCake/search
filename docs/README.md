@@ -439,7 +439,7 @@ Set it to an empty string there to check via `=`/`!=` instead of `IS NULL`/`IS N
 
 #### `Finder`
 
-- `finder` (`string`) The [find type](https://book.cakephp.org/4.0/en/orm/retrieving-data-and-resultsets.html#custom-finder-methods) to use.
+- `finder` (`string`) The [find type](https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#custom-finder-methods) to use.
   Use the `map` config array if you need to map your field to a finder key (`'to_field' => 'from_field'`). Use `options` config to pass additional config.
 
 ## Optional fields
