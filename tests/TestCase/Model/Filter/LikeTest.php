@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
@@ -16,7 +15,7 @@ class LikeTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -25,7 +24,7 @@ class LikeTest extends TestCase
      */
     public function testProcess()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Like('title', $manager);
@@ -61,7 +60,7 @@ class LikeTest extends TestCase
      */
     public function testProcessSingleValueWithAndValueMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, ['valueMode' => 'and']);
         $filter->setArgs(['title' => 'foo']);
@@ -83,7 +82,7 @@ class LikeTest extends TestCase
      */
     public function testProcessSingleValueAndMultiFieldWithAndValueMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
             'fields' => ['title', 'other'],
@@ -108,7 +107,7 @@ class LikeTest extends TestCase
      */
     public function testProcessMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, ['multiValue' => true]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
@@ -130,7 +129,7 @@ class LikeTest extends TestCase
      */
     public function testProcessMultiValueWithAndValueMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
             'multiValue' => true,
@@ -155,7 +154,7 @@ class LikeTest extends TestCase
      */
     public function testProcessMultiValueAndMultiField()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
             'multiValue' => true,
@@ -181,7 +180,7 @@ class LikeTest extends TestCase
      */
     public function testProcessMultiValueAndMultiFieldWithAndFieldMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, [
             'multiValue' => true,
@@ -208,7 +207,7 @@ class LikeTest extends TestCase
      */
     public function testProcessMultiValueWithNonScalarValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, ['multiValue' => true]);
         $filter->setArgs(['title' => ['foo' => ['bar']]]);
@@ -225,7 +224,7 @@ class LikeTest extends TestCase
      */
     public function testProcessWithNumericFields()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('search', $manager, ['fields' => ['title', 'number'], 'colType' => ['number' => 'string']]);
         $filter->setArgs(['search' => '234']);
@@ -254,7 +253,7 @@ class LikeTest extends TestCase
      */
     public function testProcessEmptyMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, ['multiValue' => true]);
         $filter->setArgs(['title' => []]);
@@ -271,7 +270,7 @@ class LikeTest extends TestCase
      */
     public function testProcessDefaultFallbackForDisallowedMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager, ['defaultValue' => 'default']);
         $filter->setArgs(['title' => ['foo', 'bar']]);
@@ -293,7 +292,7 @@ class LikeTest extends TestCase
      */
     public function testProcessNoDefaultFallbackForDisallowedMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Like('title', $manager);
         $filter->setArgs(['title' => ['foo', 'bar']]);
@@ -310,7 +309,7 @@ class LikeTest extends TestCase
      */
     public function testWildcardsEscaping()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Like('title', $manager);
@@ -330,7 +329,7 @@ class LikeTest extends TestCase
      */
     public function testWildcardsEscapingSqlserver()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Like('title', $manager, ['escaper' => 'Search.Sqlserver']);
@@ -350,7 +349,7 @@ class LikeTest extends TestCase
      */
     public function testWildcardsBeforeAfterSqlserver()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Like('title', $manager, ['before' => true, 'after' => true, 'escaper' => 'Search.Sqlserver']);
@@ -370,7 +369,7 @@ class LikeTest extends TestCase
      */
     public function testWildcardsBeforeAfter()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Like('title', $manager, ['before' => true, 'after' => true]);
@@ -390,7 +389,7 @@ class LikeTest extends TestCase
      */
     public function testWildcardsAlternatives()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Like(
@@ -414,7 +413,7 @@ class LikeTest extends TestCase
      */
     public function testWildcardsAlternativesSqlserver()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Like(

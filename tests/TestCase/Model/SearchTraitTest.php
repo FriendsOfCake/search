@@ -45,7 +45,7 @@ class SearchTraitTest extends TestCase
                     'driver' => $driverMock,
                 ],
             ])
-            ->setMethods(['getWebservice'])
+            ->addMethods(['getWebservice'])
             ->getMock();
         $connectionMock
             ->method('getWebservice')

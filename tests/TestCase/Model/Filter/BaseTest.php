@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\Datasource\RepositoryInterface;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Test\TestApp\Model\Filter\TestFilter;
@@ -14,14 +13,14 @@ class BaseTest extends TestCase
     /**
      * @var \Search\Manager
      */
-    public $Manager;
+    protected $Manager;
 
     /**
      * Fixtures
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -32,7 +31,7 @@ class BaseTest extends TestCase
      */
     public function setUp(): void
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $this->Manager = new Manager($table);
     }
 
@@ -279,7 +278,7 @@ class BaseTest extends TestCase
     public function testBeforeProcessReturnFalse()
     {
         $filter = $this->getMockBuilder(TestFilter::class)
-            ->setMethods(['process'])
+            ->onlyMethods(['process'])
             ->setConstructorArgs([
                 'fields',
                 $this->Manager,

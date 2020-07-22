@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
+use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
@@ -16,19 +17,19 @@ class SearchComponentTest extends TestCase
     /**
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
     ];
 
     /**
      * @var \Cake\Controller\Controller
      */
-    public $Controller;
+    protected $Controller;
 
     /**
      * @var \Search\Controller\Component\SearchComponent
      */
-    public $Search;
+    protected $Search;
 
     /**
      * @return void
@@ -47,10 +48,7 @@ class SearchComponentTest extends TestCase
             $routes->fallbacks();
         });
         $request = new ServerRequest();
-        $response = $this
-            ->getMockBuilder('Cake\Http\Response')
-            ->setMethods(['stop'])
-            ->getMock();
+        $response = new Response();
 
         $this->Controller = new Controller($request, $response);
         $this->Search = new SearchComponent($this->Controller->components());
@@ -278,7 +276,7 @@ class SearchComponentTest extends TestCase
             ])
         );
         $this->Controller->modelClass = 'SomePlugin.Articles';
-        $this->Controller->Articles = $this->getMockBuilder(Table::class)->setMethods(['isSearch'])->getMock();
+        $this->Controller->Articles = $this->getMockBuilder(Table::class)->addMethods(['isSearch'])->getMock();
         $this->Controller->Articles->addBehavior('Search.Search');
         $this->Controller->Articles->expects($this->once())->method('isSearch')->willReturn(true);
 

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Behavior;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Model\Filter\FilterCollection;
@@ -13,27 +12,27 @@ class SearchBehaviorTest extends TestCase
     /**
      * @var \Search\Test\TestApp\Model\Table\ArticlesTable
      */
-    public $Articles;
+    protected $Articles;
 
     /**
      * @var \Search\Test\TestApp\Model\Table\CommentsTable
      */
-    public $Comments;
+    protected $Comments;
 
     /**
-     * @var \Search\Test\TestApp\Model\Table\GroupsTable
+     * @var \Search\Test\TestApp\Model\Table\SectionsTable
      */
-    public $Groups;
+    protected $Sections;
 
     /**
      * Fixtures
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
+        'plugin.Search.Sections',
         'core.Comments',
-        'core.Groups',
     ];
 
     /**
@@ -45,19 +44,19 @@ class SearchBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        TableRegistry::clear();
-        $this->Articles = TableRegistry::get('Articles', [
+        $this->getTableLocator()->clear();
+        $this->Articles = $this->getTableLocator()->get('Articles', [
             'className' => 'Search\Test\TestApp\Model\Table\ArticlesTable',
         ]);
         $this->Articles->addBehavior('Search.Search');
-        $this->Comments = TableRegistry::get('Comments', [
+        $this->Comments = $this->getTableLocator()->get('Comments', [
             'className' => 'Search\Test\TestApp\Model\Table\CommentsTable',
         ]);
         $this->Comments->addBehavior('Search.Search');
-        $this->Groups = TableRegistry::get('Groups', [
-            'className' => 'Search\Test\TestApp\Model\Table\GroupsTable',
+        $this->Sections = $this->getTableLocator()->get('Sections', [
+            'className' => 'Search\Test\TestApp\Model\Table\SectionsTable',
         ]);
-        $this->Groups->addBehavior('Search.Search');
+        $this->Sections->addBehavior('Search.Search');
     }
 
     /**
@@ -71,7 +70,7 @@ class SearchBehaviorTest extends TestCase
         $behavior = $this
             ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
             ->setConstructorArgs([$this->Comments])
-            ->setMethods(['_getFilters'])
+            ->onlyMethods(['_getFilters'])
             ->getMock();
         $this->Comments->behaviors()->reset();
         $this->Comments->addBehavior('Search', [
@@ -94,7 +93,7 @@ class SearchBehaviorTest extends TestCase
         $filter = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
             ->setConstructorArgs(['name', $manager])
-            ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
+            ->onlyMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter
             ->expects($this->once())
@@ -116,7 +115,7 @@ class SearchBehaviorTest extends TestCase
         $filter2 = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
             ->setConstructorArgs(['name', $manager, ['flatten' => false]])
-            ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
+            ->onlyMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter2
             ->expects($this->once())
@@ -138,7 +137,7 @@ class SearchBehaviorTest extends TestCase
         $filter3 = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
             ->setConstructorArgs(['name', $manager])
-            ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
+            ->onlyMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter3
             ->expects($this->once())
@@ -299,7 +298,7 @@ class SearchBehaviorTest extends TestCase
      */
     public function testCollectionFinder($collection, $queryString, $expected)
     {
-        $query = $this->Groups->find('search', ['search' => $queryString, 'collection' => $collection]);
+        $query = $this->Sections->find('search', ['search' => $queryString, 'collection' => $collection]);
         $this->assertEquals($expected, $query->count());
     }
 

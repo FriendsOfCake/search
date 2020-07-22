@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
@@ -16,7 +15,7 @@ class ValueTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -25,7 +24,7 @@ class ValueTest extends TestCase
      */
     public function testProcess()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager);
         $filter->setArgs(['title' => 'test']);
@@ -47,7 +46,7 @@ class ValueTest extends TestCase
      */
     public function testProcessSingleValueWithAndMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['mode' => 'and']);
         $filter->setArgs(['title' => 'foo']);
@@ -69,7 +68,7 @@ class ValueTest extends TestCase
      */
     public function testProcessSingleValueAndMultiField()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'fields' => ['title', 'other'],
@@ -93,7 +92,7 @@ class ValueTest extends TestCase
      */
     public function testProcessSingleValueAndMultiFieldWithAndMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'fields' => ['title', 'other'],
@@ -118,7 +117,7 @@ class ValueTest extends TestCase
      */
     public function testProcessMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['multiValue' => true]);
         $filter->setArgs(['title' => ['foo', 'bar']]);
@@ -140,7 +139,7 @@ class ValueTest extends TestCase
      */
     public function testProcessMultiValueWithAndMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
@@ -165,7 +164,7 @@ class ValueTest extends TestCase
      */
     public function testProcessMultiValueAndMultiField()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
@@ -191,7 +190,7 @@ class ValueTest extends TestCase
      */
     public function testProcessMultiValueAndMultiFieldWithAndMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,
@@ -218,7 +217,7 @@ class ValueTest extends TestCase
      */
     public function testProcessMultiValueWithNonScalarValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['multiValue' => true]);
         $filter->setArgs(['title' => ['foo' => ['bar']]]);
@@ -240,7 +239,7 @@ class ValueTest extends TestCase
      */
     public function testProcessEmptyMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['multiValue' => true]);
         $filter->setArgs(['title' => []]);
@@ -256,7 +255,7 @@ class ValueTest extends TestCase
      */
     public function testProcessDefaultFallbackForDisallowedMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, ['defaultValue' => 'default']);
         $filter->setArgs(['title' => ['foo', 'bar']]);
@@ -278,7 +277,7 @@ class ValueTest extends TestCase
      */
     public function testProcessNoDefaultFallbackForDisallowedMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager);
         $filter->setArgs(['title' => ['foo', 'bar']]);
@@ -294,7 +293,7 @@ class ValueTest extends TestCase
      */
     public function testProcessCaseInsensitiveMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('title', $manager, [
             'multiValue' => true,

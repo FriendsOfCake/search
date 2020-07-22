@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
@@ -16,7 +15,7 @@ class ExistsTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -25,7 +24,7 @@ class ExistsTest extends TestCase
      */
     public function testProcessWithFlagOn()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Exists('number', $manager);
         $filter->setArgs(['number' => '1']);
@@ -45,7 +44,7 @@ class ExistsTest extends TestCase
      */
     public function testProcessWithFlagOff()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Exists('number', $manager);
         $filter->setArgs(['number' => '0']);
@@ -65,7 +64,7 @@ class ExistsTest extends TestCase
      */
     public function testProcessWithFlagOnNotNullable()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Exists('number', $manager);
         $filter->setConfig('nullValue', '');
@@ -91,7 +90,7 @@ class ExistsTest extends TestCase
      */
     public function testProcessWithFlagOffNotNullable()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Exists('number', $manager);
         $filter->setConfig('nullValue', '');
@@ -117,7 +116,7 @@ class ExistsTest extends TestCase
      */
     public function testProcessWithStringDisabled()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Exists('number', $manager);
         $filter->setArgs(['number' => '']);
@@ -132,7 +131,7 @@ class ExistsTest extends TestCase
      */
     public function testProcessMultiValueSafe()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Exists('number', $manager, ['multiValue' => true]);
         $filter->setArgs(['number' => [0, 1]]);
@@ -151,7 +150,7 @@ class ExistsTest extends TestCase
      */
     public function testProcessMultiField()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Exists('exists', $manager, [
             'fields' => ['number', 'title'],

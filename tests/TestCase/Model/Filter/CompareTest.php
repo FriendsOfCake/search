@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
@@ -16,7 +15,7 @@ class CompareTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -25,7 +24,7 @@ class CompareTest extends TestCase
      */
     public function testProcess()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Compare('created', $manager, ['multiValue' => true]);
         $filter->setArgs(['created' => '2012-01-01 00:00:00']);
@@ -47,7 +46,7 @@ class CompareTest extends TestCase
      */
     public function testProcessMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Compare('time', $manager, ['fields' => ['created', 'modified']]);
         $filter->setArgs(['time' => '2012-01-01 00:00:00']);
@@ -69,7 +68,7 @@ class CompareTest extends TestCase
      */
     public function testProcessModeOr()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Compare('time', $manager, ['mode' => 'OR', 'fields' => ['created', 'modified']]);
         $filter->setArgs(['time' => '2012-01-01 00:00:00']);
@@ -91,7 +90,7 @@ class CompareTest extends TestCase
      */
     public function testProcessMultiValueSafe()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Compare('created', $manager, ['multiValue' => true]);
         $filter->setArgs(['created' => ['foo', 'bar']]);
@@ -108,7 +107,7 @@ class CompareTest extends TestCase
      */
     public function testProcessDefaultFallbackForDisallowedMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Compare('created', $manager, ['defaultValue' => '2012-01-01 00:00:00']);
         $filter->setArgs(['created' => ['foo', 'bar']]);
@@ -131,7 +130,7 @@ class CompareTest extends TestCase
      */
     public function testProcessNoDefaultFallbackForDisallowedMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Compare('created', $manager);
         $filter->setArgs(['created' => ['foo', 'bar']]);

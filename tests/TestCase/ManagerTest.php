@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Search\Test\TestCase;
 
 use Cake\Core\Configure;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use Search\Manager;
@@ -16,7 +15,7 @@ class ManagerTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -25,7 +24,7 @@ class ManagerTest extends TestCase
      */
     public function testShorthandMethods()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
 
         $options = ['foo' => 'bar'];
 
@@ -65,7 +64,7 @@ class ManagerTest extends TestCase
     {
         Configure::write('App.namespace', 'Search\Test\TestApp');
 
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
 
         $manager = new Manager($table);
         $manager->testFilter('test1');
@@ -86,7 +85,7 @@ class ManagerTest extends TestCase
      */
     public function testAll()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table);
 
         $this->assertEmpty(iterator_to_array($manager->getFilters()));
@@ -107,7 +106,7 @@ class ManagerTest extends TestCase
      */
     public function testAdd()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table);
         $manager->add('testOne', 'Search.Value');
         $manager->add('testTwo', 'Search.Compare');
@@ -123,7 +122,7 @@ class ManagerTest extends TestCase
      */
     public function testGetFilters()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table);
         $manager->add('test', 'Search.Value');
         $manager->add('test2', 'Search.Compare');
@@ -147,7 +146,7 @@ class ManagerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The collection class "NonExistentCollection" does not exist');
 
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table);
         $manager->getFilters('non_existent');
     }
@@ -157,7 +156,7 @@ class ManagerTest extends TestCase
      */
     public function testRemove()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table);
 
         $manager->add('test', 'Search.Value');
@@ -179,7 +178,7 @@ class ManagerTest extends TestCase
      */
     public function testRepository()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table);
         $result = $manager->getRepository();
         $this->assertInstanceOf('\Cake\Datasource\RepositoryInterface', $result);
@@ -190,7 +189,7 @@ class ManagerTest extends TestCase
      */
     public function testTable()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table);
         $result = $manager->getRepository();
         $this->assertInstanceOf('\Cake\Datasource\RepositoryInterface', $result);
@@ -201,7 +200,7 @@ class ManagerTest extends TestCase
      */
     public function testCollection()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table);
 
         $result = $manager->getCollectionName();
@@ -232,7 +231,7 @@ class ManagerTest extends TestCase
      */
     public function testCollectionCombined()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table);
 
         $result = $manager->getCollectionName();
@@ -247,7 +246,7 @@ class ManagerTest extends TestCase
      */
     public function testInvalidCollectionClass()
     {
-        $table = TableRegistry::get('Articles');
+        $table = $this->getTableLocator()->get('Articles');
         $manager = new Manager($table, Configure::class);
 
         $this->expectException(InvalidArgumentException::class);

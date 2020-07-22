@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Model\Filter\Callback;
@@ -19,7 +18,7 @@ class FilterCollectionTest extends TestCase
 {
     public function setUp(): void
     {
-        $repository = TableRegistry::get('Articles');
+        $repository = $this->getTableLocator()->get('Articles');
         $manager = new Manager($repository);
 
         $this->collection = new FilterCollection($manager);
