@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Behavior;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Search\Manager;
 use Search\Model\Filter\FilterCollection;
@@ -45,16 +44,16 @@ class SearchBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        TableRegistry::clear();
-        $this->Articles = TableRegistry::get('Articles', [
+        $this->getTableLocator()->clear();
+        $this->Articles = $this->getTableLocator()->get('Articles', [
             'className' => 'Search\Test\TestApp\Model\Table\ArticlesTable',
         ]);
         $this->Articles->addBehavior('Search.Search');
-        $this->Comments = TableRegistry::get('Comments', [
+        $this->Comments = $this->getTableLocator()->get('Comments', [
             'className' => 'Search\Test\TestApp\Model\Table\CommentsTable',
         ]);
         $this->Comments->addBehavior('Search.Search');
-        $this->Groups = TableRegistry::get('Groups', [
+        $this->Groups = $this->getTableLocator()->get('Groups', [
             'className' => 'Search\Test\TestApp\Model\Table\GroupsTable',
         ]);
         $this->Groups->addBehavior('Search.Search');

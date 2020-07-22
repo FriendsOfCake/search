@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
@@ -25,7 +24,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithFlagOn()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 'on']);
@@ -47,7 +46,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithFlagOff()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 'off']);
@@ -69,7 +68,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithStringFlagTrue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 'true']);
@@ -91,7 +90,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithStringFlagFalse()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 'false']);
@@ -113,7 +112,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithBooleanFlagTrue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => true]);
@@ -135,7 +134,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithBooleanFlagFalse()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => false]);
@@ -157,7 +156,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithStringFlag1()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => '1']);
@@ -179,7 +178,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithStringFlag0()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => '0']);
@@ -201,7 +200,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithIntegerFlag1()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 1]);
@@ -220,7 +219,7 @@ class BooleanTest extends TestCase
 
     public function testProcessWithIntegerFlag0()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 0]);
@@ -242,7 +241,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessWithFlagInvalid()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 'neitherTruthyNorFalsy']);
@@ -259,7 +258,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessMultiValueSafe()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager, ['multiValue' => true]);
         $filter->setArgs(['is_active' => [0, 1]]);
@@ -276,7 +275,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessMultiField()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('boolean', $manager, [
             'fields' => ['is_active', 'other'],
@@ -300,7 +299,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessMultiFieldWithAndMode()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('boolean', $manager, [
             'fields' => ['is_active', 'other'],
@@ -325,7 +324,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessDefaultFallbackForDisallowedMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager, ['defaultValue' => true]);
         $filter->setArgs(['is_active' => ['foo', 'bar']]);
@@ -347,7 +346,7 @@ class BooleanTest extends TestCase
      */
     public function testProcessNoDefaultFallbackForDisallowedMultiValue()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => ['foo', 'bar']]);

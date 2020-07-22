@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
@@ -25,7 +24,7 @@ class FinderTest extends TestCase
      */
     public function testProcess()
     {
-        $articles = TableRegistry::get('FinderArticles', [
+        $articles = $this->getTableLocator()->get('FinderArticles', [
             'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
         ]);
         $manager = new Manager($articles);
@@ -52,7 +51,7 @@ class FinderTest extends TestCase
      */
     public function testProcessMap()
     {
-        $articles = TableRegistry::get('FinderArticles', [
+        $articles = $this->getTableLocator()->get('FinderArticles', [
             'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
         ]);
         $manager = new Manager($articles);
@@ -79,7 +78,7 @@ class FinderTest extends TestCase
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Unknown finder method "nonExistent"');
 
-        $articles = TableRegistry::get('FinderArticles', [
+        $articles = $this->getTableLocator()->get('FinderArticles', [
             'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
         ]);
         $manager = new Manager($articles);

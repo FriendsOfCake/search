@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\ORM\Query;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
@@ -26,7 +25,7 @@ class CallbackTest extends TestCase
      */
     public function testProcess()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Callback('title', $manager, [
@@ -53,7 +52,7 @@ class CallbackTest extends TestCase
      */
     public function testProcessFalse()
     {
-        $articles = TableRegistry::get('Articles');
+        $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Callback('title', $manager, [
