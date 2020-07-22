@@ -3,7 +3,7 @@ namespace Search\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
-class GroupsFixture extends TestFixture
+class SectionsFixture extends TestFixture
 {
     /**
      * fields property

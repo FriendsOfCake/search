@@ -8,7 +8,7 @@ use Cake\ORM\Table;
 /**
  * @mixin \Search\Model\Behavior\SearchBehavior
  */
-class GroupsTable extends Table
+class SectionsTable extends Table
 {
     public function initialize(array $config): void
     {

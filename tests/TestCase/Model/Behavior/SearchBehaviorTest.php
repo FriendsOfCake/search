@@ -20,9 +20,9 @@ class SearchBehaviorTest extends TestCase
     protected $Comments;
 
     /**
-     * @var \Search\Test\TestApp\Model\Table\GroupsTable
+     * @var \Search\Test\TestApp\Model\Table\SectionsTable
      */
-    protected $Groups;
+    protected $Sections;
 
     /**
      * Fixtures
@@ -31,7 +31,7 @@ class SearchBehaviorTest extends TestCase
      */
     protected $fixtures = [
         'plugin.Search.Articles',
-        'plugin.Search.Groups',
+        'plugin.Search.Sections',
         'core.Comments',
     ];
 
@@ -53,10 +53,10 @@ class SearchBehaviorTest extends TestCase
             'className' => 'Search\Test\TestApp\Model\Table\CommentsTable',
         ]);
         $this->Comments->addBehavior('Search.Search');
-        $this->Groups = $this->getTableLocator()->get('Groups', [
-            'className' => 'Search\Test\TestApp\Model\Table\GroupsTable',
+        $this->Sections = $this->getTableLocator()->get('Sections', [
+            'className' => 'Search\Test\TestApp\Model\Table\SectionsTable',
         ]);
-        $this->Groups->addBehavior('Search.Search');
+        $this->Sections->addBehavior('Search.Search');
     }
 
     /**
@@ -298,7 +298,7 @@ class SearchBehaviorTest extends TestCase
      */
     public function testCollectionFinder($collection, $queryString, $expected)
     {
-        $query = $this->Groups->find('search', ['search' => $queryString, 'collection' => $collection]);
+        $query = $this->Sections->find('search', ['search' => $queryString, 'collection' => $collection]);
         $this->assertEquals($expected, $query->count());
     }
 
