@@ -16,19 +16,19 @@ class SearchComponentTest extends TestCase
     /**
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
     ];
 
     /**
      * @var \Cake\Controller\Controller
      */
-    public $Controller;
+    protected $Controller;
 
     /**
      * @var \Search\Controller\Component\SearchComponent
      */
-    public $Search;
+    protected $Search;
 
     /**
      * @return void

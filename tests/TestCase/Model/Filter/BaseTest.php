@@ -14,14 +14,14 @@ class BaseTest extends TestCase
     /**
      * @var \Search\Manager
      */
-    public $Manager;
+    protected $Manager;
 
     /**
      * Fixtures
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
     ];
 

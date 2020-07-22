@@ -13,24 +13,24 @@ class SearchBehaviorTest extends TestCase
     /**
      * @var \Search\Test\TestApp\Model\Table\ArticlesTable
      */
-    public $Articles;
+    protected $Articles;
 
     /**
      * @var \Search\Test\TestApp\Model\Table\CommentsTable
      */
-    public $Comments;
+    protected $Comments;
 
     /**
      * @var \Search\Test\TestApp\Model\Table\GroupsTable
      */
-    public $Groups;
+    protected $Groups;
 
     /**
      * Fixtures
      *
      * @var array
      */
-    public $fixtures = [
+    protected $fixtures = [
         'plugin.Search.Articles',
         'core.Comments',
         'core.Groups',
