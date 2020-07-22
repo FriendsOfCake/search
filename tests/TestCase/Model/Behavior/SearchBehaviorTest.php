@@ -31,8 +31,8 @@ class SearchBehaviorTest extends TestCase
      */
     protected $fixtures = [
         'plugin.Search.Articles',
+        'plugin.Search.Groups',
         'core.Comments',
-        'core.Groups',
     ];
 
     /**
