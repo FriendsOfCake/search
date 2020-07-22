@@ -70,7 +70,7 @@ class SearchBehaviorTest extends TestCase
         $behavior = $this
             ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
             ->setConstructorArgs([$this->Comments])
-            ->setMethods(['_getFilters'])
+            ->onlyMethods(['_getFilters'])
             ->getMock();
         $this->Comments->behaviors()->reset();
         $this->Comments->addBehavior('Search', [
@@ -93,7 +93,7 @@ class SearchBehaviorTest extends TestCase
         $filter = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
             ->setConstructorArgs(['name', $manager])
-            ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
+            ->onlyMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter
             ->expects($this->once())
@@ -115,7 +115,7 @@ class SearchBehaviorTest extends TestCase
         $filter2 = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
             ->setConstructorArgs(['name', $manager, ['flatten' => false]])
-            ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
+            ->onlyMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter2
             ->expects($this->once())
@@ -137,7 +137,7 @@ class SearchBehaviorTest extends TestCase
         $filter3 = $this
             ->getMockBuilder('\Search\Test\TestApp\Model\Filter\TestFilter')
             ->setConstructorArgs(['name', $manager])
-            ->setMethods(['setArgs', 'skip', 'process', 'setQuery'])
+            ->onlyMethods(['setArgs', 'skip', 'process', 'setQuery'])
             ->getMock();
         $filter3
             ->expects($this->once())

@@ -278,7 +278,7 @@ class BaseTest extends TestCase
     public function testBeforeProcessReturnFalse()
     {
         $filter = $this->getMockBuilder(TestFilter::class)
-            ->setMethods(['process'])
+            ->onlyMethods(['process'])
             ->setConstructorArgs([
                 'fields',
                 $this->Manager,
