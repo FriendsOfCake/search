@@ -2,7 +2,9 @@ parameters:
     level: 6
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
-    autoload_files:
+    paths:
+        - src
+    bootstrapFiles:
         - tests/bootstrap.php
     ignoreErrors:
         - '#Call to an undefined method Cake\\ORM\\Table::searchManager\(\)#'
