@@ -155,7 +155,7 @@ The above will use `App\Model\Filter\PostsBackendCollection`.
 Add the `Search.Search` component with the necessary actions in your controller.
 
 ```php
-public function initialize()
+public function initialize(): void
 {
     parent::initialize();
 
