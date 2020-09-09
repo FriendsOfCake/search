@@ -495,7 +495,7 @@ class MyCustomFilter extends \Search\Model\Filter\Base
     {
         // return false if you want to skip modifying the query based on some condition.
 
-        // Use $this->query() to get query instance and modify it as needed.
+        // Use $this->getQuery() to get query instance and modify it as needed.
 
         return true;
     }
