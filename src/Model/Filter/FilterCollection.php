@@ -88,6 +88,7 @@ class FilterCollection implements FilterCollectionInterface
             throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
         }
 
+        /** @psalm-suppress UnsafeInstantiation */
         return new $className($name, $this->_manager, $options);
     }
 
