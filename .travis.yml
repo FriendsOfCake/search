@@ -43,22 +43,13 @@ before_script:
 
 script:
   - if [[ $DEFAULT == 1 ]]; then vendor/bin/phpunit; fi
-  - |
-      if [[ $COVERAGE == 1 ]]; then
-        mkdir -p build/logs
-        vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
-      fi
+  - if [[ $COVERAGE == 1 ]]; then vendor/bin/phpunit --coverage-clover=clover.xml; fi
 
   - if [[ $CHECKS == 1 ]]; then composer cs-check; fi
   - if [[ $CHECKS == 1 ]]; then composer stan; fi
 
 after_success:
-  - |
-      if [[ $COVERAGE == 1 ]]; then
-        wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar
-        chmod +x php-coveralls.phar
-        ./php-coveralls.phar
-      fi
+  - if [[ $COVERAGE == 1 ]]; then bash <(curl -s https://codecov.io/bash); fi
 
 notifications:
   email: false
