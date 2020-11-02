@@ -86,8 +86,11 @@ class SearchHelper extends Helper
             unset($query[$param]);
         }
 
-        return [
+        $url = (array)$this->getView()->getRequest()->getParam('pass');
+        $url += [
             '?' => $query,
         ];
+
+        return $url;
     }
 }
