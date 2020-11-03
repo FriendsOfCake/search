@@ -92,6 +92,37 @@ class SearchHelperTest extends TestCase
     /**
      * @return void
      */
+    public function testResetUrlWithPassedParams()
+    {
+        $request = new ServerRequest([
+            'url' => '/controller/action/my-passed?limit=5&sort=x&direction=asc&foo=baz&bar=1',
+        ]);
+        $request = $request->withParam('pass', ['my-passed']);
+
+        $this->view = new View($request);
+        $this->searchHelper = new SearchHelper($this->view, []);
+
+        $params = [
+            'foo' => 'baz',
+            'bar' => '1',
+        ];
+        $this->view->set('_searchParams', $params);
+
+        $result = $this->searchHelper->resetUrl();
+        $expected = [
+            'my-passed',
+            '?' => [
+                'limit' => '5',
+                'sort' => 'x',
+                'direction' => 'asc',
+            ],
+        ];
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * @return void
+     */
     public function testResetUrlWithPaginator()
     {
         $request = new ServerRequest([
