@@ -526,6 +526,10 @@ When the FormProtection component is activated for the whole controller, it shou
 $this->FormProtection->setConfig('unlockedActions', ['index']);
 ```
 
+## Bake Filters
+
+With the `filter_collection` bake task, you can generate filter collection classes easily.
+
 ## Tips
 
 ### IDE compatibility

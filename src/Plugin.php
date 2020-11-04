@@ -27,11 +27,4 @@ class Plugin extends BasePlugin
      * @var bool
      */
     protected $routesEnabled = false;
-
-    /**
-     * Console middleware
-     *
-     * @var bool
-     */
-    protected $consoleEnabled = false;
 }
