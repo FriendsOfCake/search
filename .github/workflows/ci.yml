@@ -36,12 +36,11 @@ jobs:
         mysql -h 127.0.0.1 -u root -proot -e 'CREATE DATABASE cakephp;'
 
     - name: Setup PHP
-      uses: shivammathur/setup-php@v1
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
-        extension-csv: mbstring, intl, pdo_${{ matrix.db-type }}
+        extensions: mbstring, intl, pdo_${{ matrix.db-type }}
         coverage: pcov
-        pecl: false
 
     - name: Composer install
       run: |
@@ -78,12 +77,11 @@ jobs:
         fetch-depth: 1
 
     - name: Setup PHP
-      uses: shivammathur/setup-php@v1
+      uses: shivammathur/setup-php@v2
       with:
         php-version: '7.4'
-        extension-csv: mbstring, intl
+        extensions: mbstring, intl
         coverage: none
-        pecl: false
 
     - name: Composer Install
       run: composer require --dev psalm/phar:^3.18 phpstan/phpstan:^0.12
