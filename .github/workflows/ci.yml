@@ -89,7 +89,7 @@ jobs:
       run: composer require --dev psalm/phar:^3.18 phpstan/phpstan:^0.12
 
     - name: Run phpcs
-      run: vendor/bin/phpcs --report=checkstyle --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/
+      run: vendor/bin/phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/
 
     - name: Run psalm
       run: vendor/bin/psalm.phar --output-format=github
