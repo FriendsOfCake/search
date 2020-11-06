@@ -82,15 +82,16 @@ jobs:
         php-version: '7.4'
         extensions: mbstring, intl
         coverage: none
+        tools: psalm:^4.1, phpstan:^0.12
 
     - name: Composer Install
-      run: composer require --dev psalm/phar:^3.18 phpstan/phpstan:^0.12
+      run: composer install
 
     - name: Run phpcs
       run: vendor/bin/phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/
 
     - name: Run psalm
-      run: vendor/bin/psalm.phar --output-format=github
+      run: psalm --output-format=github
 
     - name: Run phpstan
-      run: vendor/bin/phpstan.phar analyse
+      run: phpstan analyse
