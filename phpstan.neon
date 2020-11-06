@@ -7,4 +7,5 @@ parameters:
     bootstrapFiles:
         - tests/bootstrap.php
     ignoreErrors:
+        - '#Call to an undefined method Cake\\ORM\\Table::searchManager\(\)#'
         - '#PHPDoc tag @var for variable \$model contains unresolvable type#'
