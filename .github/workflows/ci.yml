@@ -1,6 +1,12 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   testsuite:
@@ -9,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ['7.2', '7.4']
-        db-type: [sqlite, mysql, pgsql]
+        db-type: [mysql, pgsql]
         prefer-lowest: ['']
         include:
           - php-version: '7.2'
@@ -36,17 +42,16 @@ jobs:
         mysql -h 127.0.0.1 -u root -proot -e 'CREATE DATABASE cakephp;'
 
     - name: Setup PHP
-      uses: shivammathur/setup-php@v1
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
-        extension-csv: mbstring, intl, pdo_${{ matrix.db-type }}
+        extensions: mbstring, intl, pdo_${{ matrix.db-type }}
         coverage: pcov
-        pecl: false
 
     - name: Composer install
       run: |
         composer --version
-        if [[ ${{ matrix.prefer-lowest == 'prefer-lowest' }} ]]; then
+        if ${{ matrix.prefer-lowest == 'prefer-lowest' }}; then
           composer update --prefer-lowest --prefer-stable
         else
           composer install
@@ -58,14 +63,14 @@ jobs:
         if [[ ${{ matrix.db-type }} == 'mysql' ]]; then export DB_URL='mysql://root:root@127.0.0.1/cakephp'; fi
         if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then export DB_URL='postgres://postgres:postgres@127.0.0.1/postgres'; fi
 
-        if [[ ${{ matrix.php-version }} == '7.2' && ${{ matrix.db-type }} == 'sqlite' ]]; then
+        if [[ ${{ matrix.php-version }} == '7.2' && ${{ matrix.db-type }} == 'mysql' ]]; then
           vendor/bin/phpunit --coverage-clover=coverage.xml
         else
           vendor/bin/phpunit
         fi
 
     - name: Code Coverage Report
-      if: success() && matrix.php-version == '7.2' && matrix.db-type == 'sqlite'
+      if: success() && matrix.php-version == '7.2' && matrix.db-type == 'mysql'
       uses: codecov/codecov-action@v1
 
   cs-stan:
@@ -78,21 +83,21 @@ jobs:
         fetch-depth: 1
 
     - name: Setup PHP
-      uses: shivammathur/setup-php@v1
+      uses: shivammathur/setup-php@v2
       with:
         php-version: '7.4'
-        extension-csv: mbstring, intl
+        extensions: mbstring, intl
         coverage: none
-        pecl: false
+        tools: psalm:^4.1, phpstan:^0.12
 
     - name: Composer Install
-      run: composer require --dev psalm/phar:^3.18 phpstan/phpstan:^0.12
+      run: composer install
 
     - name: Run phpcs
-      run: vendor/bin/phpcs --report=checkstyle --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/
+      run: vendor/bin/phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/
 
     - name: Run psalm
-      run: vendor/bin/psalm.phar --output-format=github
+      run: psalm --output-format=github
 
     - name: Run phpstan
-      run: vendor/bin/phpstan.phar analyse --error-format=github
+      run: phpstan analyse
