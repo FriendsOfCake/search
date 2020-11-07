@@ -530,3 +530,6 @@ $this->FormProtection->setConfig('unlockedActions', ['index']);
 
 ### IDE compatibility
 For auto-complete and type-hinting on the Search behavior method, using/running the [IdeHelper code completion](https://github.com/dereuromark/cakephp-ide-helper/blob/master/docs/CodeCompletion.md) is recommended.
+
+### Additional Resources
+- For more complex callbacks with custom finders see [Tags plugin docs](https://github.com/dereuromark/cakephp-tags/tree/master/docs#searchfilter).
