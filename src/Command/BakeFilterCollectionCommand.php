@@ -10,6 +10,7 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
 use Cake\Database\Exception;
+use Cake\ORM\Table;
 
 /**
  * For generating filter collection classes.
@@ -49,6 +50,15 @@ class BakeFilterCollectionCommand extends BakeCommand
             'string',
             'char',
         ],
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected $_ignoreFields = [
+        'lft',
+        'rght',
+        'password',
     ];
 
     /**
@@ -177,7 +187,7 @@ class BakeFilterCollectionCommand extends BakeCommand
 
         $fields = [];
         foreach ($columns as $column) {
-            if ($column === $table->getPrimaryKey() || $column === 'password') {
+            if ($this->shouldSkip($column, $table)) {
                 continue;
             }
 
@@ -221,5 +231,19 @@ class BakeFilterCollectionCommand extends BakeCommand
         ]);
 
         return $parser;
+    }
+
+    /**
+     * Checks if this column should be skipped.
+     *
+     * This hook method can be extended and customized as per application needs.
+     *
+     * @param string $column Column name
+     * @param \Cake\ORM\Table $table Table instance
+     * @return bool
+     */
+    protected function shouldSkip(string $column, Table $table): bool
+    {
+        return $column === $table->getPrimaryKey() || in_array($column, $this->_ignoreFields, true);
     }
 }
