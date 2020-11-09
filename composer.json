@@ -47,8 +47,8 @@
         "issues": "https://github.com/FriendsOfCake/search/issues"
     },
     "scripts": {
-        "cs-check": "phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP --ignore=/tests/comparisons/ src/ tests/",
-        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP --ignore=/tests/comparisons/ src/ tests/",
+        "cs-check": "phpcs -p src/ tests/",
+        "cs-fix": "phpcbf src/ tests/",
         "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12 psalm/phar:^3.8 && mv composer.backup composer.json",
         "phpstan": "phpstan.phar analyse",
         "psalm": "psalm.phar",
