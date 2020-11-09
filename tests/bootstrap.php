@@ -31,4 +31,8 @@ if (file_exists($root . '/config/bootstrap.php')) {
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
+
 \Cake\Core\Configure::write('App.namespace', 'Search\Test\TestApp');

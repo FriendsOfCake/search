@@ -92,7 +92,8 @@ abstract class Base
 
         if (
             !is_string($config['name']) ||
-            (empty($config['name']) && $config['name'] !== '0')
+            (empty($config['name']) &&
+            $config['name'] !== '0')
         ) {
             throw new \InvalidArgumentException(
                 'The `$name` argument is invalid. Expected a non-empty string.'

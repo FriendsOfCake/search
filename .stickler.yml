@@ -5,6 +5,9 @@ linters:
     extensions: 'php'
     fixer: true
 
+files:
+  ignore: ['tests/comparisons/*']
+
 fixers:
   enable: true
   workflow: commit

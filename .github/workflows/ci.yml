@@ -94,7 +94,7 @@ jobs:
       run: composer install
 
     - name: Run phpcs
-      run: vendor/bin/phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/
+      run: vendor/bin/phpcs src/ tests/
 
     - name: Run psalm
       run: psalm --output-format=github

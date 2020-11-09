@@ -1,0 +1,19 @@
+<?php
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use Search\Model\Filter\FilterCollection;
+
+class {{ name }}FilterCollection extends FilterCollection
+{
+    /**
+     * @return void
+     */
+    public function initialize(): void
+    {
+{% for field, type in fields %}
+        $this->{{ type }}('{{ field }}');
+{% endfor %}
+    }
+}
