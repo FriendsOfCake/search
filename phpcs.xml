@@ -4,5 +4,5 @@
 
     <rule ref="CakePHP"/>
 
-    <exclude-pattern>/tests/comparisons/</exclude-pattern>
+    <exclude-pattern>*/tests/comparisons/*</exclude-pattern>
 </ruleset>
