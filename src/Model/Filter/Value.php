@@ -39,15 +39,15 @@ class Value extends Base
             return false;
         }
 
-        $isNot = false;
+        $isNegated = false;
         if ($this->getConfig('negationChar')) {
             if ($this->getConfig('multiValue')) {
                 throw new Exception('Cannot use NOT functionality with multi value');
             }
 
             if (strpos($value, $this->getConfig('negationChar')) === 0) {
-                $value = mb_substr($value, strlen($this->getConfig('negationChar')));
-                $isNot = true;
+                $value = mb_substr($value, mb_strlen($this->getConfig('negationChar')));
+                $isNegated = true;
             }
         }
 
@@ -63,12 +63,12 @@ class Value extends Base
 
         $expressions = [];
         foreach ($this->fields() as $field) {
-            $expressions[] = function (QueryExpression $e) use ($field, $value, $isMultiValue, $isNot) {
+            $expressions[] = function (QueryExpression $e) use ($field, $value, $isMultiValue, $isNegated) {
                 if ($isMultiValue) {
                     return $e->in($field, $value);
                 }
 
-                if ($isNot) {
+                if ($isNegated) {
                     return $e->notEq($field, $value);
                 }
 
