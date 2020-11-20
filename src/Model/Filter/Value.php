@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Model\Filter;
 
+use Cake\Core\Exception\Exception;
 use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\Table;
 
@@ -15,6 +16,7 @@ class Value extends Base
      */
     protected $_defaultConfig = [
         'mode' => 'OR',
+        'negationChar' => null,
     ];
 
     /**
@@ -37,6 +39,18 @@ class Value extends Base
             return false;
         }
 
+        $isNegated = false;
+        if ($this->getConfig('negationChar')) {
+            if ($this->getConfig('multiValue')) {
+                throw new Exception('Cannot use NOT functionality with multi value');
+            }
+
+            if (strpos($value, $this->getConfig('negationChar')) === 0) {
+                $value = mb_substr($value, mb_strlen($this->getConfig('negationChar')));
+                $isNegated = true;
+            }
+        }
+
         if (!$this->manager()->getRepository() instanceof Table) {
             foreach ($this->fields() as $field) {
                 $this->getQuery()->where([
@@ -49,9 +63,13 @@ class Value extends Base
 
         $expressions = [];
         foreach ($this->fields() as $field) {
-            $expressions[] = function (QueryExpression $e) use ($field, $value, $isMultiValue) {
+            $expressions[] = function (QueryExpression $e) use ($field, $value, $isMultiValue, $isNegated) {
                 if ($isMultiValue) {
                     return $e->in($field, $value);
+                }
+
+                if ($isNegated) {
+                    return $e->notEq($field, $value);
                 }
 
                 return $e->eq($field, $value);

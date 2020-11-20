@@ -312,4 +312,28 @@ class ValueTest extends TestCase
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
+
+    /**
+     * @return void
+     */
+    public function testProcessNegation()
+    {
+        $articles = $this->getTableLocator()->get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Value('number', $manager, [
+            'negationChar' => '!',
+        ]);
+        $filter->setArgs(['number' => '!3']);
+        $filter->setQuery($articles->find());
+        $filter->process();
+
+        $this->assertRegExp(
+            '/WHERE Articles\.number != :c0$/',
+            $filter->getQuery()->sql()
+        );
+        $this->assertEquals(
+            ['3'],
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+        );
+    }
 }
