@@ -316,12 +316,12 @@ class ValueTest extends TestCase
     /**
      * @return void
      */
-    public function testProcessNot()
+    public function testProcessNegation()
     {
         $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Value('number', $manager, [
-            'not' => '!',
+            'negationChar' => '!',
         ]);
         $filter->setArgs(['number' => '!3']);
         $filter->setQuery($articles->find());

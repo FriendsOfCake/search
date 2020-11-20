@@ -437,10 +437,10 @@ Set it to an empty string there to check via `=`/`!=` instead of `IS NULL`/`IS N
 - `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
   against multiple fields. Valid values are `OR` and `AND`.
 
-- `not` (`string`, defaults to `null`) An alternative to `multiValue`, especially if you have
+- `negationChar` (`string`, defaults to `null`) An alternative to `multiValue`, especially if you have
  a lot of values. The filter accepts any string, but it should ideally be a single and unique char
- as prefix. E.g. `!` for string values or `-` for numeric values.
- If enabled, the filter will invert the expression for this value.
+ as prefix for your search value. E.g. `!` for string values or `-` for numeric values.
+ If enabled, the filter will negate the expression for this value.
 
 #### `Finder`
 

@@ -16,7 +16,7 @@ class Value extends Base
      */
     protected $_defaultConfig = [
         'mode' => 'OR',
-        'not' => null,
+        'negationChar' => null,
     ];
 
     /**
@@ -40,13 +40,13 @@ class Value extends Base
         }
 
         $isNot = false;
-        if ($this->getConfig('not')) {
+        if ($this->getConfig('negationChar')) {
             if ($this->getConfig('multiValue')) {
                 throw new Exception('Cannot use NOT functionality with multi value');
             }
 
-            if (strpos($value, $this->getConfig('not')) === 0) {
-                $value = mb_substr($value, strlen($this->getConfig('not')));
+            if (strpos($value, $this->getConfig('negationChar')) === 0) {
+                $value = mb_substr($value, strlen($this->getConfig('negationChar')));
                 $isNot = true;
             }
         }
