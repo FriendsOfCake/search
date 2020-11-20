@@ -40,13 +40,14 @@ class Value extends Base
         }
 
         $isNegated = false;
-        if ($this->getConfig('negationChar')) {
+        $negationChar = $this->getConfig('negationChar');
+        if ($negationChar) {
             if ($this->getConfig('multiValue')) {
-                throw new Exception('Cannot use NOT functionality with multi value');
+                throw new Exception('Cannot use negation functionality with multi value');
             }
 
-            if (strpos($value, $this->getConfig('negationChar')) === 0) {
-                $value = mb_substr($value, mb_strlen($this->getConfig('negationChar')));
+            if (strpos($value, $negationChar) === 0) {
+                $value = mb_substr($value, mb_strlen($negationChar));
                 $isNegated = true;
             }
         }
