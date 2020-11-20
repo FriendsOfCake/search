@@ -437,15 +437,20 @@ Set it to an empty string there to check via `=`/`!=` instead of `IS NULL`/`IS N
 - `mode` (`string`, defaults to `OR`) The conditional mode to use when matching
   against multiple fields. Valid values are `OR` and `AND`.
 
-- `negationChar` (`string`, defaults to `null`) An alternative to `multiValue`, especially if you have
- a lot of values. The filter accepts any string, but it should ideally be a single and unique char
- as prefix for your search value. E.g. `!` for string values or `-` for numeric values.
- If enabled, the filter will negate the expression for this value.
+- `negationChar` (`string`, defaults to `null`) An alternative to `multiValue`,
+  especially if you have a lot of values. The filter accepts any string, but it
+  should ideally be a single and unique char as prefix for your search value.
+  E.g. `!` for string values or `-` for numeric values. If enabled, the filter
+  will negate the expression for this value.
 
 #### `Finder`
 
-- `finder` (`string`) The [find type](https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#custom-finder-methods) to use.
-  Use the `map` config array if you need to map your field to a finder key (`'to_field' => 'from_field'`). Use `options` config to pass additional config.
+- `finder` (`string`, defaults to the filter name) The [find type](https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#custom-finder-methods) to use.
+
+- `map` (`array`, defaults to `[]`) Config array if you need to map your field
+  to a finder key (`'to_field' => 'from_field'`).
+
+- `options` (`array`, defaults to `[]`) Additional options to pass to the finder.
 
 ## Optional fields
 
