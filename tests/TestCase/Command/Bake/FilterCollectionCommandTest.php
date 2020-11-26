@@ -1,17 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace Search\Test\TestCase\Command;
+namespace Search\Test\TestCase\Command\Bake;
 
 use Cake\Console\BaseCommand;
+use Cake\Console\CommandCollection;
 use Cake\Console\ConsoleInput;
 use Cake\Core\Plugin;
-use Cake\Filesystem\Folder;
+use Cake\Event\EventManager;
+use Cake\Filesystem\Filesystem;
 use Cake\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\StringCompareTrait;
 use Cake\TestSuite\TestCase;
+use Search\Command\Bake\FilterCollectionCommand;
 
-class BakeFilterCollectionCommandTest extends TestCase
+class FilterCollectionCommandTest extends TestCase
 {
     use StringCompareTrait;
     use ConsoleIntegrationTestTrait;
@@ -41,12 +44,17 @@ class BakeFilterCollectionCommandTest extends TestCase
 
         $this->_in = $this->getMockBuilder(ConsoleInput::class)->getMock();
 
-        $files = (new Folder($this->_generatedBasePath))->findRecursive();
-        foreach ($files as $file) {
-            unlink($file);
-        }
+        $fs = new Filesystem();
+        $fs->deleteDir($this->_generatedBasePath);
 
         $this->useCommandRunner();
+
+        EventManager::instance()->on(
+            'Console.buildCommands',
+            function ($event, CommandCollection $commands) {
+                $commands->add(FilterCollectionCommand::defaultName(), FilterCollectionCommand::class);
+            }
+        );
     }
 
     /**
