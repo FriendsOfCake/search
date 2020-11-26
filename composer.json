@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "cakephp/twig-view": "^1.1.1",
-        "cakephp/bake": "^2.2.0",
+        "cakephp/bake": "^2.3",
         "phpunit/phpunit": "~8.5.0",
         "cakephp/cakephp-codesniffer": "^4.0",
         "muffin/webservice": "^3.0@beta"

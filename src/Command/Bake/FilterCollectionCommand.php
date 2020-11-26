@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Search\Command;
+namespace Search\Command\Bake;
 
 use Bake\Command\BakeCommand;
 use Bake\Utility\TemplateRenderer;
@@ -19,7 +19,7 @@ use Cake\ORM\Table;
  * src/Model/Filter/MyCustomFilterCollection.php
  * src/Model/Filter/Admin/UsersFilterCollection.php
  */
-class BakeFilterCollectionCommand extends BakeCommand
+class FilterCollectionCommand extends BakeCommand
 {
     /**
      * Task name used in path generation.
