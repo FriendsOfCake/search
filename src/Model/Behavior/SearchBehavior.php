@@ -59,11 +59,13 @@ class SearchBehavior extends Behavior
             return;
         }
 
+        $tableMethod = method_exists($this, 'table') ? 'table' : 'getTable';
+
         /** @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface> */
         $defaultCollectionClass = sprintf(
             '%s\Model\Filter\%sCollection',
             Configure::read('App.namespace'),
-            $this->getTable()->getAlias()
+            $this->{$tableMethod}()->getAlias()
         );
         if (class_exists($defaultCollectionClass)) {
             $this->_collectionClass = $defaultCollectionClass;
