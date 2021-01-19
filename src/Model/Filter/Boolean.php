@@ -41,25 +41,25 @@ class Boolean extends Base
             $bool = false;
         }
 
-        if ($bool !== null) {
-            if (!$this->manager()->getRepository() instanceof Table) {
-                foreach ($this->fields() as $field) {
-                    $this->getQuery()->where([
-                        $field => $bool,
-                    ]);
-                }
+        if ($bool === null) {
+            return false;
+        }
 
-                return true;
-            }
-
+        if ($this->manager()->getRepository() instanceof Table) {
             $conditions = [];
             foreach ($this->fields() as $field) {
                 $conditions[] = [$field => $bool];
             }
 
             $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);
+        } else {
+            foreach ($this->fields() as $field) {
+                $this->getQuery()->where([
+                    $field => $bool,
+                ]);
+            }
         }
 
-        return false;
+        return true;
     }
 }

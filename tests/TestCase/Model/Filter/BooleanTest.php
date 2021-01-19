@@ -29,8 +29,9 @@ class BooleanTest extends TestCase
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 'on']);
         $filter->setQuery($articles->find());
-        $filter->process();
+        $processed = $filter->process();
 
+        $this->assertTrue($processed);
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
@@ -51,8 +52,9 @@ class BooleanTest extends TestCase
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 'off']);
         $filter->setQuery($articles->find());
-        $filter->process();
+        $processed = $filter->process();
 
+        $this->assertTrue($processed);
         $this->assertRegExp(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
@@ -246,8 +248,9 @@ class BooleanTest extends TestCase
         $filter = new Boolean('is_active', $manager);
         $filter->setArgs(['is_active' => 'neitherTruthyNorFalsy']);
         $filter->setQuery($articles->find());
-        $filter->process();
+        $processed = $filter->process();
 
+        $this->assertFalse($processed);
         $this->assertEmpty($filter->getQuery()->clause('where'));
         $filter->getQuery()->sql();
         $this->assertEmpty($filter->getQuery()->getValueBinder()->bindings());
