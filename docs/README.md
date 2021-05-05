@@ -91,7 +91,7 @@ Let's use the *backend*'s filters by doing:
     }
 ```
 
-## Filter collection classes
+#### Filter collection classes
 
 Apart from configuring filters through search mananger in your table class,
 you can also create them as separate collection classes. This helps in
@@ -150,6 +150,33 @@ You can also specify alternate collection class to use when making find call:
 ```
 
 The above will use `App\Model\Filter\PostsBackendCollection`.
+
+
+#### Collection class vs table config
+
+You can also set defaults in the Table class and inherit those for all searches.
+The added collection classes would then provide only custom ones per search.
+
+In your Table:
+```php
+    /**
+     * @return \Search\Manager
+     */
+    public function searchManager()
+    {
+        $searchManager = $this->behaviors()->Search->searchManager()
+            ->value('status');
+
+        return $searchManager;
+    }
+```
+In your Controller:
+```php
+    $this->Posts->addBehavior('Search.Search', [
+        'collectionClass' => PostsFilterCollection::class,
+    ]);
+```
+This would add additional filters on top of inherited `status` one.
 
 ### Search Component
 Add the `Search.Search` component with the necessary actions in your controller.
