@@ -167,7 +167,7 @@ class FilterCollectionCommand extends BakeCommand
      */
     public function fileName(string $name): string
     {
-        return $name . 'FilterCollection.php';
+        return $name . 'Collection.php';
     }
 
     /**
