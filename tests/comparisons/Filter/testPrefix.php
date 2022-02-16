@@ -5,7 +5,7 @@ namespace Search\Test\TestApp\Model\Filter\Admin;
 
 use Search\Model\Filter\FilterCollection;
 
-class PrefixedPostsFilterCollection extends FilterCollection
+class PrefixedPostsCollection extends FilterCollection
 {
     /**
      * @return void

@@ -5,7 +5,7 @@ namespace Search\Test\TestApp\Model\Filter;
 
 use Search\Model\Filter\FilterCollection;
 
-class PostsFilterCollection extends FilterCollection
+class PostsCollection extends FilterCollection
 {
     /**
      * @return void

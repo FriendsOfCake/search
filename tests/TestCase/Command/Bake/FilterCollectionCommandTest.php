@@ -68,7 +68,7 @@ class FilterCollectionCommandTest extends TestCase
 
         $this->assertExitCode(BaseCommand::CODE_SUCCESS);
 
-        $file = $this->_generatedBasePath . 'EmptyFilterCollection.php';
+        $file = $this->_generatedBasePath . 'EmptyCollection.php';
         $result = file_get_contents($file);
         $this->assertSameAsFile(__FUNCTION__ . '.php', $result);
     }
@@ -82,7 +82,7 @@ class FilterCollectionCommandTest extends TestCase
 
         $this->assertExitCode(BaseCommand::CODE_SUCCESS);
 
-        $file = $this->_generatedBasePath . 'PostsFilterCollection.php';
+        $file = $this->_generatedBasePath . 'PostsCollection.php';
         $result = file_get_contents($file);
         $this->assertSameAsFile(__FUNCTION__ . '.php', $result);
     }
@@ -96,7 +96,7 @@ class FilterCollectionCommandTest extends TestCase
 
         $this->assertExitCode(BaseCommand::CODE_SUCCESS);
 
-        $file = $this->_generatedBasePath . 'MyPostsFilterCollection.php';
+        $file = $this->_generatedBasePath . 'MyPostsCollection.php';
         $result = file_get_contents($file);
         $this->assertSameAsFile(__FUNCTION__ . '.php', $result);
     }
@@ -110,7 +110,7 @@ class FilterCollectionCommandTest extends TestCase
 
         $this->assertExitCode(BaseCommand::CODE_SUCCESS);
 
-        $file = $this->_generatedBasePath . 'Admin/PrefixedPostsFilterCollection.php';
+        $file = $this->_generatedBasePath . 'Admin/PrefixedPostsCollection.php';
         $result = file_get_contents($file);
         $this->assertSameAsFile(__FUNCTION__ . '.php', $result);
     }
