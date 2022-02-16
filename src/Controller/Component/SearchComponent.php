@@ -36,7 +36,7 @@ class SearchComponent extends Component
      *   event by setting it to false.
      *   E.g. `'events' => ['Controller.beforeRender' => false]`
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $_defaultConfig = [
         'actions' => ['index', 'lookup'],
@@ -53,7 +53,7 @@ class SearchComponent extends Component
     /**
      * Get the Controller callbacks this Component is interested in.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function implementedEvents(): array
     {

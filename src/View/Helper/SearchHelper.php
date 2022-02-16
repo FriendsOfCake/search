@@ -26,7 +26,7 @@ class SearchHelper extends Helper
      * - 'additionalBlacklist': Additional params that also should be filtered out.
      *   For pagination views that usually is also limit and page, as the offset would be wrong.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $_defaultConfig = [
         'additionalBlacklist' => [],
