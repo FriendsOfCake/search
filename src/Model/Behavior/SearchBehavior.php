@@ -23,7 +23,7 @@ class SearchBehavior extends Behavior
      * You can overwrite default empty values using emptyValues key
      * when initializing the behavior
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $_defaultConfig = [
         'implementedFinders' => [
