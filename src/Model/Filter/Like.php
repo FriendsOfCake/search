@@ -5,6 +5,7 @@ namespace Search\Model\Filter;
 
 use Cake\Core\App;
 use Cake\ORM\Query;
+use Cake\ORM\Table;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -92,7 +93,7 @@ class Like extends Base
     protected function _aliasColTypes(array $colTypes): array
     {
         $repository = $this->manager()->getRepository();
-        if (!method_exists($repository, 'aliasField')) {
+        if (!$repository instanceof Table) {
             return $colTypes;
         }
 
