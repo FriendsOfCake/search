@@ -24,12 +24,6 @@ class SearchTraitTest extends TestCase
      */
     public function setUp(): void
     {
-        if (!class_exists(Webservice::class)) {
-            $this->markTestSkipped(
-                'Muffin/Webservice plugin is not loaded.'
-            );
-        }
-
         parent::setUp();
 
         $webserviceMock = $this->getMockBuilder(Webservice::class)
