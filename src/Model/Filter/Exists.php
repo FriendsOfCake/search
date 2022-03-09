@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Model\Filter;
 
+use Cake\Database\Expression\ComparisonExpression;
 use Cake\ORM\Table;
 
 class Exists extends Base
@@ -46,7 +47,7 @@ class Exists extends Base
         if (!$this->manager()->getRepository() instanceof Table) {
             foreach ($this->fields() as $field) {
                 $this->getQuery()->where([
-                    $field . $comparison => $nullValue,
+                    new ComparisonExpression($field, $nullValue, 'string', $comparison),
                 ]);
             }
 
@@ -55,7 +56,9 @@ class Exists extends Base
 
         $conditions = [];
         foreach ($this->fields() as $field) {
-            $conditions[] = [$field . $comparison => $nullValue];
+            $conditions[] = [
+                new ComparisonExpression($field, $nullValue, 'string', $comparison),
+            ];
         }
 
         $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);

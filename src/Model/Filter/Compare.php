@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Model\Filter;
 
+use Cake\Database\Expression\ComparisonExpression;
 use InvalidArgumentException;
 
 class Compare extends Base
@@ -48,8 +49,7 @@ class Compare extends Base
         }
 
         foreach ($this->fields() as $field) {
-            $left = $field . ' ' . $this->getConfig('operator');
-            $conditions[] = [$left => $value];
+            $conditions[] = new ComparisonExpression($field, $value, 'string', $this->getConfig('operator'));
         }
 
         $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);

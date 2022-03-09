@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Core\App;
+use Cake\Database\Expression\ComparisonExpression;
 use Cake\ORM\Query;
 use InvalidArgumentException;
 use RuntimeException;
@@ -49,13 +50,12 @@ class Like extends Base
 
         $conditions = [];
         foreach ($this->fields() as $field) {
-            $left = $field . ' ' . $comparison;
             if ($isMultiValue) {
                 $valueConditions = [];
                 foreach ($value as $val) {
                     $right = $this->_wildcards($val);
                     if ($right !== false) {
-                        $valueConditions[] = [$left => $right];
+                        $valueConditions[] = new ComparisonExpression($field, $right, 'string', $comparison);
                     }
                 }
                 if (!empty($valueConditions)) {
@@ -64,7 +64,7 @@ class Like extends Base
             } else {
                 $right = $this->_wildcards($value);
                 if ($right !== false) {
-                    $conditions[] = [$left => $right];
+                    $conditions = new ComparisonExpression($field, $right, 'string', $comparison);
                 }
             }
         }

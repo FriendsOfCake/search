@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Model\Filter;
 
+use Cake\Database\Expression\ComparisonExpression;
 use Cake\ORM\Table;
 
 class Boolean extends Base
@@ -48,7 +49,7 @@ class Boolean extends Base
         if ($this->manager()->getRepository() instanceof Table) {
             $conditions = [];
             foreach ($this->fields() as $field) {
-                $conditions[] = [$field => $bool];
+                $conditions[] = new ComparisonExpression($field, $bool, 'boolean', '=');
             }
 
             $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);
@@ -58,7 +59,7 @@ class Boolean extends Base
 
         foreach ($this->fields() as $field) {
             $this->getQuery()->where([
-                $field => $bool,
+                new ComparisonExpression($field, $bool, 'boolean', '=')
             ]);
         }
 

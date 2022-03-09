@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Core\Exception\Exception;
+use Cake\Database\Expression\ComparisonExpression;
 use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\Table;
 
@@ -55,7 +56,7 @@ class Value extends Base
         if (!$this->manager()->getRepository() instanceof Table) {
             foreach ($this->fields() as $field) {
                 $this->getQuery()->where([
-                    $field => $value,
+                    new ComparisonExpression($field, $value, 'string', $isNegated ? '!=' : '='),
                 ]);
             }
 
