@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Database\Expression\ComparisonExpression;
+use Cake\Database\Expression\UnaryExpression;
 use Cake\ORM\Table;
 
 class Exists extends Base
@@ -31,37 +32,24 @@ class Exists extends Base
         }
 
         $bool = (bool)$value;
-
         $nullValue = $this->getConfig('nullValue');
-        $comparison = ' !=';
-        if (!$bool) {
-            $comparison = '';
-        }
-        if ($nullValue === null) {
-            $comparison = ' IS NOT';
-            if (!$bool) {
-                $comparison = ' IS';
-            }
-        }
-
-        if (!$this->manager()->getRepository() instanceof Table) {
-            foreach ($this->fields() as $field) {
-                $this->getQuery()->where([
-                    new ComparisonExpression($field, $nullValue, 'string', $comparison),
-                ]);
-            }
-
-            return true;
-        }
 
         $conditions = [];
         foreach ($this->fields() as $field) {
-            $conditions[] = [
-                new ComparisonExpression($field, $nullValue, 'string', $comparison),
-            ];
+            if ($nullValue !== null) {
+                $conditions[] = new ComparisonExpression($field, $nullValue, 'string', $bool ? '!=' : '=');
+
+                continue;
+            }
+
+            $conditions[] = new UnaryExpression($bool ? 'IS NOT NULL' : 'IS NULL', $field, UnaryExpression::POSTFIX);
         }
 
-        $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);
+        if (!$this->manager()->getRepository() instanceof Table) {
+            $this->getQuery()->where($conditions);
+        } else {
+            $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);
+        }
 
         return true;
     }

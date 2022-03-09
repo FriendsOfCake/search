@@ -46,21 +46,15 @@ class Boolean extends Base
             return false;
         }
 
-        if ($this->manager()->getRepository() instanceof Table) {
-            $conditions = [];
-            foreach ($this->fields() as $field) {
-                $conditions[] = new ComparisonExpression($field, $bool, 'boolean', '=');
-            }
-
-            $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);
-
-            return true;
+        $conditions = [];
+        foreach ($this->fields() as $field) {
+            $conditions[] = new ComparisonExpression($field, $bool, 'boolean', '=');
         }
 
-        foreach ($this->fields() as $field) {
-            $this->getQuery()->where([
-                new ComparisonExpression($field, $bool, 'boolean', '='),
-            ]);
+        if ($this->manager()->getRepository() instanceof Table) {
+            $this->getQuery()->andWhere([$this->getConfig('mode') => $conditions]);
+        } else {
+            $this->getQuery()->where($conditions);
         }
 
         return true;
