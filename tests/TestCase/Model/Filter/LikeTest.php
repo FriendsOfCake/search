@@ -33,7 +33,7 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE Articles\.title like \:c0$/',
+            '/WHERE Articles\.title LIKE \:c0$/',
             $filter->getQuery()->sql()
         );
         $this->assertEquals(
@@ -46,7 +46,7 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE Articles\.title ilike \:c0$/',
+            '/WHERE Articles\.title ILIKE \:c0$/',
             $filter->getQuery()->sql()
         );
         $this->assertEquals(
@@ -68,7 +68,7 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE Articles\.title like :c0$/',
+            '/WHERE Articles\.title LIKE :c0$/',
             $filter->getQuery()->sql()
         );
         $this->assertEquals(
@@ -93,7 +93,7 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE \(Articles\.title like :c0 OR Articles\.other like :c1\)$/',
+            '/WHERE \(Articles\.title LIKE :c0 OR Articles\.other LIKE :c1\)$/',
             $filter->getQuery()->sql()
         );
         $this->assertEquals(
@@ -115,7 +115,7 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE \(Articles\.title like :c0 OR Articles\.title like :c1\)$/',
+            '/WHERE \(Articles\.title LIKE :c0 OR Articles\.title LIKE :c1\)$/',
             $filter->getQuery()->sql()
         );
         $this->assertEquals(
@@ -140,7 +140,7 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE \(Articles\.title like :c0 AND Articles\.title like :c1\)$/',
+            '/WHERE \(Articles\.title LIKE :c0 AND Articles\.title LIKE :c1\)$/',
             $filter->getQuery()->sql()
         );
         $this->assertEquals(
@@ -165,8 +165,8 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE \(\(Articles\.title like :c0 OR Articles\.title like :c1\) ' .
-                'OR \(Articles\.other like :c2 OR Articles\.other like :c3\)\)$/',
+            '/WHERE \(\(Articles\.title LIKE :c0 OR Articles\.title LIKE :c1\) ' .
+                'OR \(Articles\.other LIKE :c2 OR Articles\.other LIKE :c3\)\)$/',
             $filter->getQuery()->sql()
         );
         $this->assertEquals(
@@ -192,8 +192,8 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE \(\(Articles\.title like :c0 OR Articles\.title like :c1\) ' .
-                'AND \(Articles\.other like :c2 OR Articles\.other like :c3\)\)$/',
+            '/WHERE \(\(Articles\.title LIKE :c0 OR Articles\.title LIKE :c1\) ' .
+                'AND \(Articles\.other LIKE :c2 OR Articles\.other LIKE :c3\)\)$/',
             $filter->getQuery()->sql()
         );
         $this->assertEquals(
@@ -278,7 +278,7 @@ class LikeTest extends TestCase
         $filter->process();
 
         $this->assertRegExp(
-            '/WHERE Articles\.title like :c0$/',
+            '/WHERE Articles\.title LIKE :c0$/',
             $filter->getQuery()->sql()
         );
         $this->assertEquals(

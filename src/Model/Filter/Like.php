@@ -64,7 +64,7 @@ class Like extends Base
             } else {
                 $right = $this->_wildcards($value);
                 if ($right !== false) {
-                    $conditions = new ComparisonExpression($field, $right, 'string', $comparison);
+                    $conditions[] = new ComparisonExpression($field, $right, 'string', $comparison);
                 }
             }
         }
