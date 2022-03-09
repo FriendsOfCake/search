@@ -59,7 +59,7 @@ class Boolean extends Base
 
         foreach ($this->fields() as $field) {
             $this->getQuery()->where([
-                new ComparisonExpression($field, $bool, 'boolean', '=')
+                new ComparisonExpression($field, $bool, 'boolean', '='),
             ]);
         }
 
