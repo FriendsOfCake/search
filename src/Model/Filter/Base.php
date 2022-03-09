@@ -81,9 +81,7 @@ abstract class Base
 
         if (
             empty($config['fields']) ||
-            (!array_filter($config['fields'], function ($value) {
-                return strlen($value) > 0;
-            }))
+            (!array_filter($config['fields']))
         ) {
             throw new \InvalidArgumentException(
                 'The `field` option is invalid. Expected a non-empty string or array.'
@@ -128,12 +126,12 @@ abstract class Base
             return $field;
         }
 
-        $return = [];
-        foreach ($field as $fld) {
-            $return[] = $repository->aliasField($fld);
-        }
-
-        return $return;
+        return array_map(
+            function ($field) use ($repository) {
+                return is_string($field) ? $repository->aliasField($field) : $field;
+            },
+            $field
+        );
     }
 
     /**
