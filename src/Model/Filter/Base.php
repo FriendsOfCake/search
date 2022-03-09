@@ -81,7 +81,9 @@ abstract class Base
 
         if (
             empty($config['fields']) ||
-            (!array_filter($config['fields']))
+            (!array_filter($config['fields'], function ($value) {
+                return !empty($value) || (is_string($value) && strlen($value) > 0);
+            }))
         ) {
             throw new \InvalidArgumentException(
                 'The `field` option is invalid. Expected a non-empty string or array.'
