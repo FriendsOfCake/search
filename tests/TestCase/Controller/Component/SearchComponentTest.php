@@ -10,6 +10,7 @@ use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use ReflectionProperty;
 use Search\Controller\Component\SearchComponent;
 
 class SearchComponentTest extends TestCase
@@ -50,6 +51,12 @@ class SearchComponentTest extends TestCase
         $response = new Response();
 
         $this->Controller = new Controller($request, $response);
+        if (method_exists($this->Controller, 'fetchTable')) {
+            $reflection = new ReflectionProperty(Controller::class, 'defaultTable');
+            $reflection->setAccessible(true);
+            $reflection->setValue($this->Controller, 'Articles');
+        }
+
         $this->Search = new SearchComponent($this->Controller->components());
     }
 
@@ -252,10 +259,16 @@ class SearchComponentTest extends TestCase
                 'action' => 'index',
             ])
         );
-        $this->Controller->modelClass = 'Articles';
-        $this->Controller->loadModel('Articles');
-        $this->Controller->Articles->addBehavior('Search.Search');
-        $this->Controller->Articles->find('search', ['search' => []]);
+
+        if (method_exists($this->Controller, 'fetchTable')) {
+            $this->Controller->fetchTable()->addBehavior('Search.Search');
+            $this->Controller->fetchTable()->find('search', ['search' => []]);
+        } else {
+            $this->Controller->modelClass = 'Articles';
+            $this->Controller->loadModel('Articles');
+            $this->Controller->Articles->addBehavior('Search.Search');
+            $this->Controller->Articles->find('search', ['search' => []]);
+        }
 
         $this->Search->beforeRender();
 
@@ -274,10 +287,17 @@ class SearchComponentTest extends TestCase
                 'action' => 'index',
             ])
         );
-        $this->Controller->modelClass = 'SomePlugin.Articles';
-        $this->Controller->Articles = $this->getMockBuilder(Table::class)->addMethods(['isSearch'])->getMock();
-        $this->Controller->Articles->addBehavior('Search.Search');
-        $this->Controller->Articles->expects($this->once())->method('isSearch')->willReturn(true);
+
+        $articles = $this->getMockBuilder(Table::class)->addMethods(['isSearch'])->getMock();
+        $articles->addBehavior('Search.Search');
+        $articles->expects($this->once())->method('isSearch')->willReturn(true);
+
+        if (method_exists($this->Controller, 'fetchTable')) {
+            $this->Controller->getTableLocator()->set('Articles', $articles);
+        } else {
+            $this->Controller->modelClass = 'SomePlugin.Articles';
+            $this->Controller->Articles = $articles;
+        }
 
         $this->Search->beforeRender();
 
