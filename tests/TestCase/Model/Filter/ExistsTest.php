@@ -33,7 +33,7 @@ class ExistsTest extends TestCase
 
         $this->assertTrue($result);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.number\) IS NOT NULL$/',
             $filter->getQuery()->sql()
         );
@@ -53,7 +53,7 @@ class ExistsTest extends TestCase
 
         $this->assertTrue($result);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.number\) IS NULL$/',
             $filter->getQuery()->sql()
         );
@@ -75,7 +75,7 @@ class ExistsTest extends TestCase
 
         $this->assertTrue($result);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.number != \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -101,7 +101,7 @@ class ExistsTest extends TestCase
 
         $this->assertTrue($result);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.number = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -161,7 +161,7 @@ class ExistsTest extends TestCase
 
         $this->assertTrue($result);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(\(Articles\.number\) IS NOT NULL OR \(Articles\.title\) IS NOT NULL\)$/',
             $filter->getQuery()->sql()
         );

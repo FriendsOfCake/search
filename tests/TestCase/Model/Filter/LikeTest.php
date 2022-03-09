@@ -32,7 +32,7 @@ class LikeTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title like \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -45,7 +45,7 @@ class LikeTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title ilike \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -67,7 +67,7 @@ class LikeTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title like :c0$/',
             $filter->getQuery()->sql()
         );
@@ -92,7 +92,7 @@ class LikeTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title like :c0 OR Articles\.other like :c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -114,7 +114,7 @@ class LikeTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title like :c0 OR Articles\.title like :c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -139,7 +139,7 @@ class LikeTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title like :c0 AND Articles\.title like :c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -164,7 +164,7 @@ class LikeTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(\(Articles\.title like :c0 OR Articles\.title like :c1\) ' .
                 'OR \(Articles\.other like :c2 OR Articles\.other like :c3\)\)$/',
             $filter->getQuery()->sql()
@@ -191,7 +191,7 @@ class LikeTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(\(Articles\.title like :c0 OR Articles\.title like :c1\) ' .
                 'AND \(Articles\.other like :c2 OR Articles\.other like :c3\)\)$/',
             $filter->getQuery()->sql()
@@ -277,7 +277,7 @@ class LikeTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title like :c0$/',
             $filter->getQuery()->sql()
         );

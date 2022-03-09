@@ -38,8 +38,7 @@ class SearchComponentTest extends TestCase
     {
         parent::setUp();
 
-        // Router::$initialized = true;
-        Router::scope('/', function (RouteBuilder $routes) {
+        Router::createRouteBuilder('/')->scope('/', function (RouteBuilder $routes) {
             $routes->connect(
                 '/users/my-predictions',
                 ['controller' => 'UserAnswers', 'action' => 'index', 'type' => 'open'],

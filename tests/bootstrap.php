@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use Cake\Core\Configure;
+
 /**
  * Test suite bootstrap.
  *
@@ -36,3 +38,7 @@ if (!defined('DS')) {
 }
 
 \Cake\Core\Configure::write('App.namespace', 'Search\Test\TestApp');
+
+Configure::write('Error.ignoredDeprecationPaths', [
+    'src/TestSuite/Fixture/FixtureInjector.php',
+]);

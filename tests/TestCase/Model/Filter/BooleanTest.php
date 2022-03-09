@@ -32,7 +32,7 @@ class BooleanTest extends TestCase
         $result = $filter->process();
 
         $this->assertTrue($result);
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -54,7 +54,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -76,7 +76,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -98,7 +98,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -120,7 +120,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -142,7 +142,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -164,7 +164,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -186,7 +186,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -208,7 +208,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -227,7 +227,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
@@ -286,7 +286,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.is_active = :c0 OR Articles\.other = :c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -311,7 +311,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.is_active = :c0 AND Articles\.other = :c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -333,7 +333,7 @@ class BooleanTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = :c0$/',
             $filter->getQuery()->sql()
         );

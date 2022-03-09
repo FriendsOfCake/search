@@ -31,7 +31,7 @@ class CompareTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.created >= :c0$/',
             $filter->getQuery()->sql()
         );
@@ -53,7 +53,7 @@ class CompareTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.created >= :c0 AND Articles\.modified >= :c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -75,7 +75,7 @@ class CompareTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.created >= :c0 OR Articles\.modified >= :c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -114,7 +114,7 @@ class CompareTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.created >= :c0$/',
             $filter->getQuery()->sql()
         );
