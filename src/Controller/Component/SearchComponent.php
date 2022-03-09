@@ -100,7 +100,7 @@ class SearchComponent extends Component
         $controller = $this->getController();
         try {
             /** @var \Cake\ORM\Table&\Search\Model\Behavior\SearchBehavior $model */
-            $model = $controller->loadModel($this->getConfig('modelClass'));
+            $model = $controller->getTableLocator()->get($this->getConfig('modelClass'));
         } catch (UnexpectedValueException $e) {
             return;
         }
