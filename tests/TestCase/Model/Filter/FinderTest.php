@@ -33,7 +33,7 @@ class FinderTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.is_active = \:c0 AND foo = \:c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -60,7 +60,7 @@ class FinderTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE title = :c0$/',
             $filter->getQuery()->sql()
         );

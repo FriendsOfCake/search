@@ -37,7 +37,7 @@ class CallbackTest extends TestCase
         $filter->setQuery($articles->find());
         $this->assertTrue($filter->process());
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE title = \:c0$/',
             $filter->getQuery()->sql()
         );

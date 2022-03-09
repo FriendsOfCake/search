@@ -31,7 +31,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title = :c0$/',
             $filter->getQuery()->sql()
         );
@@ -53,7 +53,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title = :c0$/',
             $filter->getQuery()->sql()
         );
@@ -77,7 +77,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title = :c0 OR Articles\.other = :c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -102,7 +102,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title = :c0 AND Articles\.other = :c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -124,7 +124,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title IN \(:c0,:c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -149,7 +149,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title IN \(:c0,:c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -174,7 +174,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
             'OR Articles\.other IN \(:c2,:c3\)\)$/',
             $filter->getQuery()->sql()
@@ -201,7 +201,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
             'AND Articles\.other IN \(:c2,:c3\)\)$/',
             $filter->getQuery()->sql()
@@ -224,7 +224,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title IN \(:c0\)$/',
             $filter->getQuery()->sql()
         );
@@ -262,7 +262,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title = :c0$/',
             $filter->getQuery()->sql()
         );
@@ -303,7 +303,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title IN \(:c0,:c1\)$/',
             $filter->getQuery()->sql()
         );
@@ -327,7 +327,7 @@ class ValueTest extends TestCase
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/WHERE Articles\.number != :c0$/',
             $filter->getQuery()->sql()
         );

@@ -35,7 +35,7 @@ class SearchHelperTest extends TestCase
         $config = [];
         $this->searchHelper = new SearchHelper($this->view, $config);
 
-        Router::scope('/', function (RouteBuilder $routes) {
+        Router::createRouteBuilder('/')->scope('/', function (RouteBuilder $routes) {
             $routes->connect(
                 '/controller/action',
                 ['controller' => 'Controller', 'action' => 'action']
