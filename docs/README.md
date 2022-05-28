@@ -479,6 +479,26 @@ Set it to an empty string there to check via `=`/`!=` instead of `IS NULL`/`IS N
 
 - `options` (`array`, defaults to `[]`) Additional options to pass to the finder.
 
+## `Callback for belongsToMany Associations`
+
+If you want to filter values related to a `belongsToMany` association your best option
+is to use a `callback` like so:
+
+```php
+$searchManager
+->callback('category_id', [
+	'callback' => function (Query $query, array $args, $manager) {
+        $query
+		    ->innerJoinWith('Categories', function (Query $query) use ($args) {
+				return $query->where(['Categories.id IN' => $args['category_id']]);
+			});
+		return true;
+	}
+]);
+```
+
+Where `$args['category_id']` is an array of IDs like `['1','2']`
+
 ## Optional fields
 
 Sometimes you might want to search your data based on two of three inputs in
