@@ -19,11 +19,12 @@ class HABTM extends Base
         $fkName = $this->getConfig('fkName');
         $query = $this->getQuery();
         $args = $this->getArgs();
-        if(isset($args[$fkName])){
+        if (isset($args[$fkName])) {
             $query
                 ->matching($assoc, function (Query $query) use ($assoc, $pkName, $fkName, $args) {
                     return $query->where([sprintf('%s.%s IN', $assoc, $pkName) => $args[$fkName]]);
                 });
+
             return true;
         }
 
