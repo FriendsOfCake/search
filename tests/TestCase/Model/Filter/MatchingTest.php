@@ -6,9 +6,9 @@ namespace Search\Test\TestCase\Model\Filter;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
-use Search\Model\Filter\HABTM;
+use Search\Model\Filter\Matching;
 
-class HABTMTest extends TestCase
+class MatchingTest extends TestCase
 {
     /**
      * Fixtures
@@ -30,7 +30,7 @@ class HABTMTest extends TestCase
         $articles->addAssociations(['belongsToMany' => ['Categories']]);
         $manager = new Manager($articles);
 
-        $filter = new HABTM('title', $manager, [
+        $filter = new Matching('title', $manager, [
             'assoc' => 'Categories',
             'pkName' => 'id',
             'fkName' => 'category_id',
@@ -58,7 +58,7 @@ class HABTMTest extends TestCase
         $articles->addAssociations(['belongsToMany' => ['Categories']]);
         $manager = new Manager($articles);
 
-        $filter = new HABTM('title', $manager, [
+        $filter = new Matching('title', $manager, [
             'assoc' => 'Categories',
             'pkName' => 'id',
             'fkName' => 'category_id',
@@ -86,7 +86,7 @@ class HABTMTest extends TestCase
         $articles->addAssociations(['belongsToMany' => ['Categories']]);
         $manager = new Manager($articles);
 
-        $filter = new HABTM('title', $manager, [
+        $filter = new Matching('title', $manager, [
             'assoc' => 'Categories',
             'pkName' => 'id',
             'fkName' => 'category_id',
