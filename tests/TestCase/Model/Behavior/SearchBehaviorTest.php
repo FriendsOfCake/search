@@ -106,10 +106,10 @@ class SearchBehaviorTest extends TestCase
             ->with($query)
             ->willReturnSelf();
         $filter
-            ->expects($this->at(2))
+            ->expects($this->once())
             ->method('skip');
         $filter
-            ->expects($this->at(2))
+            ->expects($this->once())
             ->method('process');
 
         $filter2 = $this
@@ -128,10 +128,10 @@ class SearchBehaviorTest extends TestCase
             ->with($query)
             ->willReturnSelf();
         $filter2
-            ->expects($this->at(2))
+            ->expects($this->once())
             ->method('skip');
         $filter2
-            ->expects($this->at(2))
+            ->expects($this->once())
             ->method('process');
 
         $filter3 = $this
@@ -150,10 +150,10 @@ class SearchBehaviorTest extends TestCase
             ->with($query)
             ->willReturnSelf();
         $filter3
-            ->expects($this->at(2))
+            ->expects($this->once())
             ->method('skip');
         $filter3
-            ->expects($this->at(2))
+            ->expects($this->once())
             ->method('process');
 
         $filters = new FilterCollection($manager);
