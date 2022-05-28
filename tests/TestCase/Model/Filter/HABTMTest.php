@@ -33,7 +33,7 @@ class HABTMTest extends TestCase
         $filter = new HABTM('title', $manager, [
             'assoc' => 'Categories',
             'pkName' => 'id',
-            'fkName' => 'category_id'
+            'fkName' => 'category_id',
         ]);
         $filter->setArgs(['category_id' => ['1']]);
         $filter->setQuery($articles->find());
@@ -61,7 +61,7 @@ class HABTMTest extends TestCase
         $filter = new HABTM('title', $manager, [
             'assoc' => 'Categories',
             'pkName' => 'id',
-            'fkName' => 'category_id'
+            'fkName' => 'category_id',
         ]);
         $filter->setArgs(['category_id' => ['1', '2']]);
         $filter->setQuery($articles->find());
