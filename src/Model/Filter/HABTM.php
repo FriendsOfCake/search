@@ -8,7 +8,7 @@ use Cake\ORM\Query;
 class HABTM extends Base
 {
     /**
-     * Modify query using callback.
+     * Modify query to filter a HABTM association.
      *
      * @return bool
      */
@@ -19,11 +19,14 @@ class HABTM extends Base
         $fkName = $this->getConfig('fkName');
         $query = $this->getQuery();
         $args = $this->getArgs();
-        $query
-            ->matching($assoc, function (Query $query) use ($assoc, $pkName, $fkName, $args) {
-                return $query->where([sprintf('%s.%s IN', $assoc, $pkName) => $args[$fkName]]);
-            });
+        if(isset($args[$fkName])){
+            $query
+                ->matching($assoc, function (Query $query) use ($assoc, $pkName, $fkName, $args) {
+                    return $query->where([sprintf('%s.%s IN', $assoc, $pkName) => $args[$fkName]]);
+                });
+            return true;
+        }
 
-        return true;
+        return false;
     }
 }

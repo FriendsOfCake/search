@@ -76,4 +76,23 @@ class HABTMTest extends TestCase
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
+
+    /**
+     * @return void
+     */
+    public function testProcessFalse()
+    {
+        $articles = $this->getTableLocator()->get('Articles');
+        $articles->addAssociations(['belongsToMany' => ['Categories']]);
+        $manager = new Manager($articles);
+
+        $filter = new HABTM('title', $manager, [
+            'assoc' => 'Categories',
+            'pkName' => 'id',
+            'fkName' => 'category_id',
+        ]);
+        $filter->setArgs([]);
+        $filter->setQuery($articles->find());
+        $this->assertFalse($filter->process());
+    }
 }
