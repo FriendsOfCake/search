@@ -481,8 +481,8 @@ Set it to an empty string there to check via `=`/`!=` instead of `IS NULL`/`IS N
 
 ## Filtering by `belongsToMany` and `hasMany` associations
 
-If you want to filter values related to a `belongsToMany` association your best option
-is to use a `callback` like so:
+If you want to filter values related to a `belongsToMany` or `hasMany` association,
+your best option is to use a `callback` like so:
 
 ```php
 $searchManager
