@@ -479,7 +479,7 @@ Set it to an empty string there to check via `=`/`!=` instead of `IS NULL`/`IS N
 
 - `options` (`array`, defaults to `[]`) Additional options to pass to the finder.
 
-## `Callback for belongsToMany Associations`
+## Filtering by `belongsToMany` and `hasMany` associations
 
 If you want to filter values related to a `belongsToMany` association your best option
 is to use a `callback` like so:
