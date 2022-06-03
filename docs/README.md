@@ -486,15 +486,17 @@ is to use a `callback` like so:
 
 ```php
 $searchManager
-->callback('category_id', [
-	'callback' => function (Query $query, array $args, $manager) {
-        $query
-		    ->innerJoinWith('Categories', function (Query $query) use ($args) {
-				return $query->where(['Categories.id IN' => $args['category_id']]);
-			});
-		return true;
-	}
-]);
+    ->callback('category_id', [
+        'callback' => function (\Cake\ORM\Query $query, array $args,  \Search\Model\Filter\Base $filter) {
+            $query
+                ->innerJoinWith('Categories', function (\Cake\ORM\Query $query) use ($args) {
+                    return $query->where(['Categories.id IN' => $args['category_id']]);
+                })
+                ->group('Products.id');
+
+            return true;
+        }
+    ]);
 ```
 
 Where `$args['category_id']` is an array of IDs like `['1','2']`
