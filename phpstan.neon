@@ -6,6 +6,8 @@ parameters:
         - src/
     bootstrapFiles:
         - tests/bootstrap.php
+        - vendor/cakephp/cakephp/src/Core/Exception/CakeException.php
+        - vendor/cakephp/cakephp/src/Database/Exception/DatabaseException.php
     ignoreErrors:
         - '#Call to an undefined method Cake\\ORM\\Table::searchManager\(\)#'
         - '#PHPDoc tag @var for variable \$model contains unresolvable type#'
