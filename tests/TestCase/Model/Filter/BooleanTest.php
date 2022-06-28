@@ -10,12 +10,7 @@ use Search\Model\Filter\Boolean;
 
 class BooleanTest extends TestCase
 {
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -116,7 +111,7 @@ class BooleanTest extends TestCase
         $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->setArgs(['is_active' => true]);
+        $filter->setArgs(['is_active' => '1']);
         $filter->setQuery($articles->find());
         $filter->process();
 
@@ -138,7 +133,7 @@ class BooleanTest extends TestCase
         $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->setArgs(['is_active' => false]);
+        $filter->setArgs(['is_active' => '0']);
         $filter->setQuery($articles->find());
         $filter->process();
 
@@ -204,7 +199,7 @@ class BooleanTest extends TestCase
         $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->setArgs(['is_active' => 1]);
+        $filter->setArgs(['is_active' => '1']);
         $filter->setQuery($articles->find());
         $filter->process();
 
@@ -223,7 +218,7 @@ class BooleanTest extends TestCase
         $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
         $filter = new Boolean('is_active', $manager);
-        $filter->setArgs(['is_active' => 0]);
+        $filter->setArgs(['is_active' => '0']);
         $filter->setQuery($articles->find());
         $filter->process();
 
@@ -282,7 +277,7 @@ class BooleanTest extends TestCase
         $filter = new Boolean('boolean', $manager, [
             'fields' => ['is_active', 'other'],
         ]);
-        $filter->setArgs(['boolean' => true]);
+        $filter->setArgs(['boolean' => '1']);
         $filter->setQuery($articles->find());
         $filter->process();
 
@@ -307,7 +302,7 @@ class BooleanTest extends TestCase
             'fields' => ['is_active', 'other'],
             'mode' => 'AND',
         ]);
-        $filter->setArgs(['boolean' => true]);
+        $filter->setArgs(['boolean' => '1']);
         $filter->setQuery($articles->find());
         $filter->process();
 

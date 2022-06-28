@@ -19,8 +19,13 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * @var array<string, \Search\Model\Filter\Base> List of filter objects
      */
-    protected $_filters = [];
+    protected array $_filters = [];
 
+    /**
+     * Search Manager
+     *
+     * @var \Search\Manager
+     */
     protected Manager $_manager;
 
     /**
@@ -135,7 +140,7 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * Check whether filter with given name exists.
      *
-     * @param string $name The name to check for.
+     * @param mixed $name The name to check for.
      * @return bool True on success or false on failure.
      */
     public function offsetExists(mixed $name): bool
@@ -146,7 +151,7 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * Name of filter to retrieve.
      *
-     * @param string $name Name of filter to retrieve.
+     * @param mixed $name Name of filter to retrieve.
      * @return \Search\Model\Filter\Base|null Filter instance or null.
      */
     public function offsetGet(mixed $name): ?Base
@@ -173,7 +178,7 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * Name of filter to unset.
      *
-     * @param string $name Name of filter to unset.
+     * @param mixed $name Name of filter to unset.
      * @return void
      */
     public function offsetUnset(mixed $name): void

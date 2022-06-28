@@ -15,7 +15,7 @@ class ManagerTest extends TestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -143,7 +143,7 @@ class ManagerTest extends TestCase
      */
     public function testGetFiltersNonExistentCollection()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The collection class "NonExistentCollection" does not exist');
 
         $table = $this->getTableLocator()->get('Articles');

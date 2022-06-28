@@ -11,12 +11,7 @@ use Search\Model\Filter\Callback;
 
 class CallbackTest extends TestCase
 {
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
     ];
 

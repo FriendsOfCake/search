@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Cake\Core\Configure;
+use Cake\TestSuite\Fixture\SchemaLoader;
 
 /**
  * Test suite bootstrap.
@@ -33,12 +34,10 @@ if (file_exists($root . '/config/bootstrap.php')) {
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
+Configure::write('App.namespace', 'Search\Test\TestApp');
+
+// Create test database schema
+if (env('FIXTURE_SCHEMA_METADATA')) {
+    $loader = new SchemaLoader();
+    $loader->loadInternalFile(env('FIXTURE_SCHEMA_METADATA'));
 }
-
-\Cake\Core\Configure::write('App.namespace', 'Search\Test\TestApp');
-
-Configure::write('Error.ignoredDeprecationPaths', [
-    'src/TestSuite/Fixture/FixtureInjector.php',
-]);

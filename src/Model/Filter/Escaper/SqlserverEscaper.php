@@ -10,7 +10,7 @@ class SqlserverEscaper extends DefaultEscaper
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'fromWildCardAny' => '%',
         'toWildCardAny' => '[%]',
         'fromWildCardOne' => '_',

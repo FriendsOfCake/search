@@ -10,12 +10,7 @@ use Search\Model\Filter\Exists;
 
 class ExistsTest extends TestCase
 {
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -69,7 +64,7 @@ class ExistsTest extends TestCase
         $filter = new Exists('number', $manager);
         $filter->setConfig('nullValue', '');
 
-        $filter->setArgs(['number' => 1]);
+        $filter->setArgs(['number' => '1']);
         $filter->setQuery($articles->find());
         $result = $filter->process();
 
@@ -95,7 +90,7 @@ class ExistsTest extends TestCase
         $filter = new Exists('number', $manager);
         $filter->setConfig('nullValue', '');
 
-        $filter->setArgs(['number' => 0]);
+        $filter->setArgs(['number' => '0']);
         $filter->setQuery($articles->find());
         $result = $filter->process();
 
@@ -155,7 +150,7 @@ class ExistsTest extends TestCase
         $filter = new Exists('exists', $manager, [
             'fields' => ['number', 'title'],
         ]);
-        $filter->setArgs(['exists' => true]);
+        $filter->setArgs(['exists' => '1']);
         $filter->setQuery($articles->find());
         $result = $filter->process();
 

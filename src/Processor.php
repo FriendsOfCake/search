@@ -19,14 +19,14 @@ class Processor
      *
      * @var array
      */
-    protected $_searchParams = [];
+    protected array $_searchParams = [];
 
     /**
      * Values that should be treated as empty in search params.
      *
      * @var array
      */
-    protected $_emptyValues = ['', false, null];
+    protected array $_emptyValues = ['', false, null];
 
     /**
      * Processes the given filters.

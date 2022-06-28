@@ -22,14 +22,13 @@
         }
     ],
     "require": {
-        "cakephp/cakephp": "^4.0"
+        "cakephp/cakephp": "5.x-dev"
     },
     "require-dev": {
-        "cakephp/twig-view": "^1.1.1",
-        "cakephp/bake": "^2.3",
-        "phpunit/phpunit": "~8.5.0 || ^9.3",
-        "cakephp/cakephp-codesniffer": "^4.0",
-        "muffin/webservice": "^3.0"
+        "cakephp/twig-view": "dev-cake5",
+        "cakephp/bake": "dev-cake5",
+        "phpunit/phpunit": "^9.5.19",
+        "cakephp/cakephp-codesniffer": "5.x-dev"
     },
     "autoload": {
         "psr-4": {

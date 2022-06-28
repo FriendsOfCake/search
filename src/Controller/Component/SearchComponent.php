@@ -38,7 +38,7 @@ class SearchComponent extends Component
      *
      * @var array<string, mixed>
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'actions' => ['index', 'lookup'],
         'queryStringWhitelist' => ['sort', 'direction', 'limit'],
         'queryStringBlacklist' => ['_csrfToken', '_Token'],
@@ -91,7 +91,7 @@ class SearchComponent extends Component
      *
      * @return void
      */
-    public function beforeRender()
+    public function beforeRender(): void
     {
         if (!$this->_isSearchAction()) {
             return;
@@ -99,12 +99,10 @@ class SearchComponent extends Component
 
         $controller = $this->getController();
         try {
-            $method = 'loadModel';
-            if (method_exists($controller, 'fetchTable')) {
-                $method = 'fetchTable';
-            }
-            /** @var \Cake\ORM\Table&\Search\Model\Behavior\SearchBehavior $model */
-            $model = $controller->{$method}($this->getConfig('modelClass'));
+            /**
+             * @var \Cake\ORM\Table&\Search\Model\Behavior\SearchBehavior $model
+             */
+            $model = $controller->fetchTable($this->getConfig('modelClass'));
         } catch (UnexpectedValueException $e) {
             return;
         }

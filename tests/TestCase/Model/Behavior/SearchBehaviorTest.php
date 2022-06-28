@@ -4,32 +4,22 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Behavior;
 
 use Cake\TestSuite\TestCase;
+use Exception;
 use Search\Manager;
 use Search\Model\Filter\FilterCollection;
+use Search\Test\TestApp\Model\Table\ArticlesTable;
+use Search\Test\TestApp\Model\Table\CommentsTable;
+use Search\Test\TestApp\Model\Table\SectionsTable;
 
 class SearchBehaviorTest extends TestCase
 {
-    /**
-     * @var \Search\Test\TestApp\Model\Table\ArticlesTable
-     */
-    protected $Articles;
+    protected ArticlesTable $Articles;
 
-    /**
-     * @var \Search\Test\TestApp\Model\Table\CommentsTable
-     */
-    protected $Comments;
+    protected CommentsTable $Comments;
 
-    /**
-     * @var \Search\Test\TestApp\Model\Table\SectionsTable
-     */
-    protected $Sections;
+    protected SectionsTable $Sections;
 
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
         'plugin.Search.Sections',
         'core.Comments',
@@ -210,9 +200,9 @@ class SearchBehaviorTest extends TestCase
 
         $query = $this->Articles->find('search', [
             'search' => [
-                'foo' => 0,
+                'foo' => '0',
                 'search' => 'b',
-                'page' => 1,
+                'page' => '1',
             ],
         ]);
         $this->assertEquals(2, $query->clause('where')->count());
@@ -229,11 +219,11 @@ class SearchBehaviorTest extends TestCase
         $queryString = [
             'foo' => 'a',
             'search' => 'b',
-            'group' => false,
+            'group' => '0',
         ];
 
         $query = $this->Articles->find('search', ['search' => $queryString]);
-        $this->assertSame(2, $query->clause('where')->count());
+        $this->assertSame(3, $query->clause('where')->count());
 
         $this->Articles->removeBehavior('Search');
         $this->Articles->addBehavior('Search.Search', [
@@ -249,7 +239,7 @@ class SearchBehaviorTest extends TestCase
 
         $this->Articles->removeBehavior('Search');
         $this->Articles->addBehavior('Search.Search', [
-            'emptyValues' => ['a', false],
+            'emptyValues' => ['a', '0'],
         ]);
         $this->Articles->searchManager()
             ->value('foo')
@@ -327,7 +317,7 @@ class SearchBehaviorTest extends TestCase
      */
     public function testFindSearchException()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Custom finder "search" expects search arguments to be nested under key "search" in find() options.');
 
         $this->Articles->find('search');

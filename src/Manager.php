@@ -28,22 +28,22 @@ class Manager
      *
      * @var \Cake\Datasource\RepositoryInterface Repository instance
      */
-    protected $_repository;
+    protected RepositoryInterface $_repository;
 
     /**
      * Filter collections
      *
-     * @var \Search\Model\Filter\FilterCollectionInterface[] Filter collections list.
+     * @var array<\Search\Model\Filter\FilterCollectionInterface>  Filter collections list.
      * @psalm-var array<string, \Search\Model\Filter\FilterCollectionInterface>
      */
-    protected $_collections = [];
+    protected array $_collections = [];
 
     /**
      * Active filter collection.
      *
      * @var string
      */
-    protected $_collectionName = self::DEFAULT_COLLECTION;
+    protected string $_collectionName = self::DEFAULT_COLLECTION;
 
     /**
      * Default collection class.
@@ -51,7 +51,7 @@ class Manager
      * @var string
      * @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface>
      */
-    protected $_collectionClass = FilterCollection::class;
+    protected string $_collectionClass = FilterCollection::class;
 
     /**
      * Constructor

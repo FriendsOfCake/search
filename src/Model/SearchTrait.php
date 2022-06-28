@@ -17,14 +17,14 @@ trait SearchTrait
      *
      * @var \Search\Manager|null
      */
-    protected $_manager = null;
+    protected ?Manager $_manager = null;
 
     /**
      * Internal flag to check whether the behavior modified the query.
      *
      * @var bool
      */
-    protected $_isSearch = false;
+    protected bool $_isSearch = false;
 
     /**
      * Default collection class.
@@ -32,14 +32,14 @@ trait SearchTrait
      * @var string|null
      * @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface>|null
      */
-    protected $_collectionClass;
+    protected ?string $_collectionClass = null;
 
     /**
      * Filters processor instance.
      *
      * @var \Search\Processor|null
      */
-    protected $_processor;
+    protected ?Processor $_processor = null;
 
     /**
      * Callback fired from the controller.
@@ -136,6 +136,7 @@ trait SearchTrait
      */
     protected function _getFilters(string $collection = Manager::DEFAULT_COLLECTION): FilterCollectionInterface
     {
+        /** @phpstan-ignore-next-line */
         return $this->_repository()->searchManager()->getFilters($collection);
     }
 
