@@ -6,34 +6,26 @@ easily create the search results you need. Use:
 ----------
 
 `Value` to limit results to exact matches
-<details>
-    <summary>Code Example</summary>
 
 ```php
 // WHERE category_id = $paramFromRequest
 $searchManager->value('category_id');
 ```
-</details>
 
 ----------
 
 `Like` to produce results containing the search query (`LIKE` or `ILIKE`)
-<details>
-    <summary>Code Example</summary>
 
 ```php
 // WHERE name LIKE $paramFromRequest
 $searchManager->like('name');
 ```
-</details>
 
 ----------
 
 `Boolean` to limit results by truthy (by default: 1, true, '1', 'true', 'yes', 'on')
 and falsy (by default: 0, false, '0', 'false', 'no', 'off') values which are
 passed down to the ORM as true/1 or false/0 or ignored when being neither truthy or falsy.
-<details>
-    <summary>Code Example</summary>
 
 ```php
 // WHERE is_active = 1
@@ -41,50 +33,38 @@ passed down to the ORM as true/1 or false/0 or ignored when being neither truthy
 // WHERE is_active = 0
 $searchManager->boolean('is_active');
 ```
-</details>
 
 ----------
 
 `Exists` to produce results for existing (non-empty) column content.
-<details>
-    <summary>Code Example</summary>
 
 ```php
 // WHERE nullable_field IS NOT NULL
 $searchManager->exists('nullable_field');
 ```
-</details>
 
 ----------
 
 `Finder` to produce results using a [(custom)](https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
-<details>
-    <summary>Code Example</summary>
 
 ```php
 // executes the findMyFinder() method in your table class
 $searchManager->finder('myFinder');
 ```
-</details>
 
 ----------
 
 `Compare` to produce results requiring operator comparison (`>`, `<`, `>=` and `<=` | default: `>=`)
-<details>
-    <summary>Code Example</summary>
 
 ```php
 // WHERE amount >= $paramFromRequest
 $searchManager->compare('amount');
 ```
-</details>
 
 ----------
 
 `Callback` to produce results using your own custom callable function, it
 should return bool to specify `isSearch()` (useful when using with `alwaysRun` enabled)
-<details>
-    <summary>Code Example</summary>
 
 ```php
 // Completely up to your code inside the callback
@@ -95,7 +75,6 @@ $searchManager->callback('category_id', [
             return true;
         }
 ```
-</details>
 
 ----------
 
