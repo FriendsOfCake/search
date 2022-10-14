@@ -6,6 +6,7 @@ namespace Search\Controller\Component;
 use Cake\Controller\Component;
 use Cake\Http\Response;
 use Cake\Utility\Hash;
+use ReflectionClass;
 use UnexpectedValueException;
 
 /**
@@ -103,8 +104,16 @@ class SearchComponent extends Component
             if (method_exists($controller, 'fetchTable')) {
                 $method = 'fetchTable';
             }
+            $modelClassName = $this->getConfig('modelClass');
+            if (!$modelClassName && $method === 'fetchTable') {
+                $reflection = new ReflectionClass(get_class($controller));
+                $property = $reflection->getProperty('modelClass');
+                $property->setAccessible(true);
+                $modelClassName = $property->getValue($controller);
+            }
+
             /** @var \Cake\ORM\Table&\Search\Model\Behavior\SearchBehavior $model */
-            $model = $controller->{$method}($this->getConfig('modelClass'));
+            $model = $controller->{$method}($modelClassName);
         } catch (UnexpectedValueException $e) {
             return;
         }
