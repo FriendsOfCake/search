@@ -12,7 +12,7 @@ class Boolean extends Base
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'mode' => 'OR',
         'truthy' => [1, true, '1', 'true', 'yes', 'on'],
         'falsy' => [0, false, '0', 'false', 'no', 'off'],

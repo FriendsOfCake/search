@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
@@ -11,12 +11,7 @@ use Search\Model\Filter\Callback;
 
 class CallbackTest extends TestCase
 {
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -29,7 +24,7 @@ class CallbackTest extends TestCase
         $manager = new Manager($articles);
 
         $filter = new Callback('title', $manager, [
-            'callback' => function (Query $query, array $args, Callback $filter) {
+            'callback' => function (SelectQuery $query, array $args, Callback $filter) {
                 $query->where(['title' => 'test']);
             },
         ]);
@@ -56,7 +51,7 @@ class CallbackTest extends TestCase
         $manager = new Manager($articles);
 
         $filter = new Callback('title', $manager, [
-            'callback' => function (Query $query, array $args, Callback $filter) {
+            'callback' => function (SelectQuery $query, array $args, Callback $filter) {
                 return false;
             },
         ]);

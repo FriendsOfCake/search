@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\TestSuite\TestCase;
+use InvalidArgumentException;
 use Search\Manager;
 use Search\Model\Filter\Callback;
 use Search\Model\Filter\Compare;
@@ -61,7 +62,7 @@ class FilterCollectionTest extends TestCase
      */
     public function testLoadFilterInvalidArgumentException()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->collection->add('test', 'DOES-NOT-EXIST');
     }

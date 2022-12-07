@@ -9,7 +9,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
-use Cake\Database\Exception;
+use Cake\Database\Exception\DatabaseException;
 use Cake\ORM\Table;
 
 /**
@@ -26,17 +26,17 @@ class FilterCollectionCommand extends BakeCommand
      *
      * @var string
      */
-    public $pathFragment = 'Model/Filter/';
+    public string $pathFragment = 'Model/Filter/';
 
     /**
      * @var string
      */
-    protected $_name;
+    protected string $_name;
 
     /**
-     * @var string[][]
+     * @var array<array<string>>
      */
-    protected $_map = [
+    protected array $_map = [
         'value' => [
             'integer',
             'tinyinteger',
@@ -53,9 +53,9 @@ class FilterCollectionCommand extends BakeCommand
     ];
 
     /**
-     * @var string[]
+     * @var array<string>
      */
-    protected $_ignoreFields = [
+    protected array $_ignoreFields = [
         'lft',
         'rght',
         'password',
@@ -181,7 +181,7 @@ class FilterCollectionCommand extends BakeCommand
         try {
             $table = $this->getTableLocator()->get($model);
             $columns = $table->getSchema()->columns();
-        } catch (Exception $exception) {
+        } catch (DatabaseException) {
             return [];
         }
 
@@ -200,7 +200,6 @@ class FilterCollectionCommand extends BakeCommand
 
             if (in_array($type, $this->_map['like'], true)) {
                 $fields[$column] = 'like';
-                continue;
             }
         }
 

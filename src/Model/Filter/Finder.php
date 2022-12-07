@@ -8,7 +8,7 @@ class Finder extends Base
     /**
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'map' => [],
         'options' => [],
     ];

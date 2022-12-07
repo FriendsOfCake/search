@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Test\TestApp\Model\Table;
 
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 
 /**
@@ -23,11 +23,11 @@ class FinderArticlesTable extends Table
     }
 
     /**
-     * @param \Cake\ORM\Query $query
+     * @param \Cake\ORM\Query\SelectQuery $query
      * @param array $options
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findActive(Query $query, array $options)
+    public function findActive(SelectQuery $query, array $options): SelectQuery
     {
         return $query->where([
                 'Articles.is_active' => true,
@@ -37,11 +37,11 @@ class FinderArticlesTable extends Table
     /**
      * Requires slug key to be present in $options array.
      *
-     * @param \Cake\ORM\Query $query
+     * @param \Cake\ORM\Query\SelectQuery $query
      * @param array $options
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findSlugged(Query $query, array $options)
+    public function findSlugged(SelectQuery $query, array $options): SelectQuery
     {
         return $query->where(['title' => $options['slug']]);
     }

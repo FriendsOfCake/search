@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
-use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
@@ -15,22 +14,13 @@ use Search\Controller\Component\SearchComponent;
 
 class SearchComponentTest extends TestCase
 {
-    /**
-     * @var array
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
     ];
 
-    /**
-     * @var \Cake\Controller\Controller
-     */
-    protected $Controller;
+    protected Controller $Controller;
 
-    /**
-     * @var \Search\Controller\Component\SearchComponent
-     */
-    protected $Search;
+    protected SearchComponent $Search;
 
     /**
      * @return void
@@ -48,14 +38,11 @@ class SearchComponentTest extends TestCase
             $routes->fallbacks();
         });
         $request = new ServerRequest();
-        $response = new Response();
 
-        $this->Controller = new Controller($request, $response);
-        if (method_exists($this->Controller, 'fetchTable')) {
-            $reflection = new ReflectionProperty(Controller::class, 'defaultTable');
-            $reflection->setAccessible(true);
-            $reflection->setValue($this->Controller, 'Articles');
-        }
+        $this->Controller = new Controller($request);
+        $reflection = new ReflectionProperty(Controller::class, 'defaultTable');
+        $reflection->setAccessible(true);
+        $reflection->setValue($this->Controller, 'Articles');
 
         $this->Search = new SearchComponent($this->Controller->components());
     }

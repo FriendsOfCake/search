@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Model\Filter;
 
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\Table;
 
@@ -14,7 +14,7 @@ class Value extends Base
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'mode' => 'OR',
         'negationChar' => null,
     ];
@@ -43,7 +43,7 @@ class Value extends Base
         $negationChar = $this->getConfig('negationChar');
         if ($negationChar) {
             if ($this->getConfig('multiValue')) {
-                throw new Exception('Cannot use negation functionality with multi value');
+                throw new CakeException('Cannot use negation functionality with multi value');
             }
 
             if (strpos($value, $negationChar) === 0) {

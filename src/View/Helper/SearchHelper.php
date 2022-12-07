@@ -15,7 +15,7 @@ class SearchHelper extends Helper
     /**
      * @var array
      */
-    protected $helpers = [
+    protected array $helpers = [
         'Url',
         'Html',
     ];
@@ -28,7 +28,7 @@ class SearchHelper extends Helper
      *
      * @var array<string, mixed>
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'additionalBlacklist' => [],
     ];
 

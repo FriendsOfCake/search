@@ -6,6 +6,7 @@ namespace Search\Model\Filter;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Datasource\QueryInterface;
 use Cake\ORM\Table;
+use InvalidArgumentException;
 use Search\Manager;
 use UnexpectedValueException;
 
@@ -21,28 +22,28 @@ abstract class Base
      *
      * @var array
      */
-    protected $_defaultConfig = [];
+    protected array $_defaultConfig = [];
 
     /**
      * The parent Search Manager.
      *
      * @var \Search\Manager
      */
-    protected $_manager;
+    protected Manager $_manager;
 
     /**
      * Set the data to process on.
      *
      * @var array
      */
-    protected $_args = [];
+    protected array $_args = [];
 
     /**
      * Query object.
      *
      * @var \Cake\Datasource\QueryInterface
      */
-    protected $_query;
+    protected QueryInterface $_query;
 
     /**
      * Constructor.
@@ -73,7 +74,7 @@ abstract class Base
         ];
 
         if (isset($config['field'])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The `field` option has been renamed to `fields`.'
             );
         }
@@ -86,7 +87,7 @@ abstract class Base
                 return strlen($value) > 0;
             }))
         ) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The `field` option is invalid. Expected a non-empty string or array.'
             );
         }
@@ -96,7 +97,7 @@ abstract class Base
             (empty($config['name']) &&
             $config['name'] !== '0')
         ) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The `$name` argument is invalid. Expected a non-empty string.'
             );
         }
@@ -186,7 +187,7 @@ abstract class Base
      *
      * @return mixed
      */
-    public function value()
+    public function value(): mixed
     {
         $value = $this->_config['defaultValue'];
 
@@ -199,9 +200,9 @@ abstract class Base
     }
 
     /**
-     * @return string|array|null
+     * @return array|string|null
      */
-    protected function passedValue()
+    protected function passedValue(): string|array|null
     {
         if (!isset($this->_args[$this->name()])) {
             return null;
