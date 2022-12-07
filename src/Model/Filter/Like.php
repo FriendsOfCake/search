@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Core\App;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use InvalidArgumentException;
 use RuntimeException;
@@ -155,9 +155,9 @@ class Like extends Base
     {
         if ($this->getConfig('escaper') === null) {
             $query = $this->getQuery();
-            if (!$query instanceof Query) {
+            if (!$query instanceof SelectQuery) {
                 throw new RuntimeException(
-                    '$query must be instance of Cake\ORM\Query to be able to check driver name.'
+                    '$query must be instance of Cake\ORM\Query\SelectQuery to be able to check driver name.'
                 );
             }
             $driver = get_class($query->getConnection()->getDriver());

@@ -72,7 +72,7 @@ class FinderTest extends TestCase
     public function testProcessNonExistentFinderMethod()
     {
         $this->expectException(BadMethodCallException::class);
-        $this->expectExceptionMessage('Unknown finder method "nonExistent"');
+        $this->expectExceptionMessage('Unknown finder method `nonExistent`');
 
         $articles = $this->getTableLocator()->get('FinderArticles', [
             'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
