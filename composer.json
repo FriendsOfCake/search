@@ -25,9 +25,9 @@
         "cakephp/cakephp": "5.x-dev"
     },
     "require-dev": {
-        "cakephp/twig-view": "dev-cake5",
-        "cakephp/bake": "dev-cake5",
-        "phpunit/phpunit": "^9.5.19",
+        "cakephp/twig-view": "2.x-dev",
+        "cakephp/bake": "3.x-dev",
+        "phpunit/phpunit": "^10.1",
         "cakephp/cakephp-codesniffer": "^5.0"
     },
     "autoload": {

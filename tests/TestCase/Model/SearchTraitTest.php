@@ -83,7 +83,7 @@ class SearchTraitTest extends TestCase
     public function testFindSearchException()
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Custom finder "search" expects search arguments to be nested under key "search" in find() options.');
+        $this->expectExceptionMessage('Custom finder "search" expects search arguments to be set as "search" named argument in the find() call.');
 
         $this->Articles->find('search');
     }

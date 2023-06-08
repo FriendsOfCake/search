@@ -31,7 +31,7 @@ class BaseTest extends TestCase
     /**
      * @return array
      */
-    public function emptyDataProvider()
+    public static function emptyDataProvider()
     {
         return [
             [''],
@@ -61,7 +61,7 @@ class BaseTest extends TestCase
     /**
      * @return array
      */
-    public function nonEmptyFieldDataProvider()
+    public static function nonEmptyFieldDataProvider()
     {
         return [
             ['0'], ['value'], [['value']],
@@ -86,7 +86,7 @@ class BaseTest extends TestCase
     /**
      * @return array
      */
-    public function nonEmptyNameDataProvider()
+    public static function nonEmptyNameDataProvider()
     {
         return [
             ['0'], ['value'],

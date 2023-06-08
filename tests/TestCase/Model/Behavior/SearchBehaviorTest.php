@@ -170,7 +170,7 @@ class SearchBehaviorTest extends TestCase
                 'foo' => 'a',
             ],
         ];
-        $behavior->findSearch($query, ['search' => $queryString]);
+        $behavior->findSearch($query, search: $queryString);
     }
 
     /**
@@ -187,24 +187,25 @@ class SearchBehaviorTest extends TestCase
         ];
         $this->assertFalse($this->Articles->isSearch());
 
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', search: $queryString);
         $this->assertEquals(3, $query->clause('where')->count());
 
         $queryString['search'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', search: $queryString);
         $this->assertEquals(2, $query->clause('where')->count());
 
         $queryString['foo'] = '';
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', search: $queryString);
         $this->assertEquals(1, $query->clause('where')->count());
 
-        $query = $this->Articles->find('search', [
-            'search' => [
+        $query = $this->Articles->find(
+            'search',
+            search: [
                 'foo' => '0',
                 'search' => 'b',
                 'page' => '1',
-            ],
-        ]);
+            ]
+        );
         $this->assertEquals(2, $query->clause('where')->count());
         $this->assertTrue($this->Articles->isSearch());
     }
@@ -222,7 +223,7 @@ class SearchBehaviorTest extends TestCase
             'group' => '0',
         ];
 
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', search: $queryString);
         $this->assertSame(3, $query->clause('where')->count());
 
         $this->Articles->removeBehavior('Search');
@@ -234,7 +235,7 @@ class SearchBehaviorTest extends TestCase
             ->like('search')
             ->value('baz')
             ->boolean('group');
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', search: $queryString);
         $this->assertSame(2, $query->clause('where')->count());
 
         $this->Articles->removeBehavior('Search');
@@ -246,7 +247,7 @@ class SearchBehaviorTest extends TestCase
             ->like('search')
             ->value('baz')
             ->boolean('group');
-        $query = $this->Articles->find('search', ['search' => $queryString]);
+        $query = $this->Articles->find('search', search: $queryString);
         $this->assertSame(1, $query->clause('where')->count());
     }
 
@@ -265,15 +266,15 @@ class SearchBehaviorTest extends TestCase
             ],
         ];
 
-        $query = $this->Comments->find('search', ['search' => $queryString]);
+        $query = $this->Comments->find('search', search: $queryString);
         $this->assertEquals(3, $query->clause('where')->count());
 
         $queryString['Comments']['search'] = '';
-        $query = $this->Comments->find('search', ['search' => $queryString]);
+        $query = $this->Comments->find('search', search: $queryString);
         $this->assertEquals(2, $query->clause('where')->count());
 
         $queryString['Comments']['foo'] = '';
-        $query = $this->Comments->find('search', ['search' => $queryString]);
+        $query = $this->Comments->find('search', search: $queryString);
         $this->assertEquals(1, $query->clause('where')->count());
     }
 
@@ -288,7 +289,7 @@ class SearchBehaviorTest extends TestCase
      */
     public function testCollectionFinder($collection, $queryString, $expected)
     {
-        $query = $this->Sections->find('search', ['search' => $queryString, 'collection' => $collection]);
+        $query = $this->Sections->find('search', search: $queryString, collection: $collection);
         $this->assertEquals($expected, $query->count());
     }
 
@@ -297,7 +298,7 @@ class SearchBehaviorTest extends TestCase
      *
      * @return array
      */
-    public function collectionFinderProvider()
+    public static function collectionFinderProvider()
     {
         return [
             ['frontend', ['title' => 'foo'], 1],
@@ -318,7 +319,7 @@ class SearchBehaviorTest extends TestCase
     public function testFindSearchException()
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Custom finder "search" expects search arguments to be nested under key "search" in find() options.');
+        $this->expectExceptionMessage('Custom finder "search" expects search arguments to be set as "search" named argument in the find() call.');
 
         $this->Articles->find('search');
     }
