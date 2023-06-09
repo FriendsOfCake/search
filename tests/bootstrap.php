@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Cake\Core\Configure;
 use Cake\TestSuite\Fixture\SchemaLoader;
+use function Cake\Core\env;
 
 /**
  * Test suite bootstrap.

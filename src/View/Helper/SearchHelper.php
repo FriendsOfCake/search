@@ -5,6 +5,7 @@ namespace Search\View\Helper;
 
 use Cake\View\Helper;
 use Cake\View\View;
+use function Cake\I18n\__d;
 
 /**
  * @property \Cake\View\Helper\UrlHelper $Url

@@ -25,9 +25,9 @@
         "cakephp/cakephp": "5.x-dev"
     },
     "require-dev": {
-        "cakephp/twig-view": "dev-cake5",
-        "cakephp/bake": "dev-cake5",
-        "phpunit/phpunit": "^9.5.19",
+        "cakephp/twig-view": "2.x-dev",
+        "cakephp/bake": "3.x-dev",
+        "phpunit/phpunit": "^10.1",
         "cakephp/cakephp-codesniffer": "^5.0"
     },
     "autoload": {
@@ -48,6 +48,15 @@
     "scripts": {
         "cs-check": "phpcs -p src/ tests/",
         "cs-fix": "phpcbf src/ tests/",
+        "stan-setup": "phive install",
+        "phpstan": "tools/phpstan analyse",
+        "psalm": "tools/psalm --show-info=false",
+        "stan": [
+            "@phpstan",
+            "@psalm"
+        ],
+        "stan-tests": "tools/phpstan analyze -c tests/phpstan.neon",
+        "stan-baseline": "tools/phpstan --generate-baseline",
         "test": "phpunit"
     },
     "config": {
