@@ -48,6 +48,15 @@
     "scripts": {
         "cs-check": "phpcs -p src/ tests/",
         "cs-fix": "phpcbf src/ tests/",
+        "stan-setup": "phive install",
+        "phpstan": "tools/phpstan analyse",
+        "psalm": "tools/psalm --show-info=false",
+        "stan": [
+            "@phpstan",
+            "@psalm"
+        ],
+        "stan-tests": "tools/phpstan analyze -c tests/phpstan.neon",
+        "stan-baseline": "tools/phpstan --generate-baseline",
         "test": "phpunit"
     },
     "config": {

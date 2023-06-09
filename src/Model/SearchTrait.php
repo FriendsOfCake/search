@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Search\Model;
 
 use Cake\Datasource\QueryInterface;
-use Exception;
 use Search\Manager;
 use Search\Model\Filter\FilterCollectionInterface;
 use Search\Processor;
@@ -47,20 +46,12 @@ trait SearchTrait
      * @param array $search Array of search arguments.
      * @param string $collection Filter collection name.
      * @return \Cake\Datasource\QueryInterface The Query object used in pagination.
-     * @throws \Exception When missing search arguments.
      */
     public function findSearch(
         QueryInterface $query,
-        array $search = [],
+        array $search,
         string $collection = Manager::DEFAULT_COLLECTION
     ): QueryInterface {
-        if (!$search) {
-            throw new Exception(
-                'Custom finder "search" expects search arguments ' .
-                'to be set as "search" named argument in the find() call.'
-            );
-        }
-
         $filters = $this->_getFilters($collection);
 
         $emptyValues = $this->_emptyValues();

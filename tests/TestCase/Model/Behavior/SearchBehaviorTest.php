@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Behavior;
 
 use Cake\TestSuite\TestCase;
-use Exception;
 use Search\Manager;
 use Search\Model\Filter\FilterCollection;
 use Search\Test\TestApp\Model\Table\ArticlesTable;
@@ -309,19 +308,6 @@ class SearchBehaviorTest extends TestCase
             ['backend', ['title' => 'baa'], 0],
             ['frontend', ['title' => 'fooo'], 0],
         ];
-    }
-
-    /**
-     * testFindSearchException
-     *
-     * @return void
-     */
-    public function testFindSearchException()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Custom finder "search" expects search arguments to be set as "search" named argument in the find() call.');
-
-        $this->Articles->find('search');
     }
 
     /**

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Model;
 
 use Cake\TestSuite\TestCase;
-use Exception;
 use Muffin\Webservice\Datasource\Connection;
 use Muffin\Webservice\Webservice\Driver\AbstractDriver;
 use Muffin\Webservice\Webservice\Webservice;
@@ -73,19 +72,6 @@ class SearchTraitTest extends TestCase
             'public' => false,
         ], $query->where());
         $this->assertTrue($this->Articles->isSearch());
-    }
-
-    /**
-     * testFindSearchException
-     *
-     * @return void
-     */
-    public function testFindSearchException()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Custom finder "search" expects search arguments to be set as "search" named argument in the find() call.');
-
-        $this->Articles->find('search');
     }
 
     /**

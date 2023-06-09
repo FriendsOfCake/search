@@ -3,3 +3,4 @@ phpunit.xml
 composer.lock
 .idea/
 .phpunit.result.cache
+/tools
