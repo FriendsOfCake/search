@@ -6,7 +6,7 @@ namespace Search;
 use Cake\Console\CommandCollection;
 use Cake\Core\BasePlugin;
 
-class Plugin extends BasePlugin
+class SearchPlugin extends BasePlugin
 {
     /**
      * Plugin name
