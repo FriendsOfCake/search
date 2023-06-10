@@ -24,25 +24,25 @@ class FinderArticlesTable extends Table
 
     /**
      * @param \Cake\ORM\Query\SelectQuery $query
-     * @param array $options
+     * @param array $active
      * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findActive(SelectQuery $query, array $options): SelectQuery
+    public function findActive(SelectQuery $query, array $active): SelectQuery
     {
         return $query->where([
                 'Articles.is_active' => true,
-            ] + $options['active']);
+            ] + $active);
     }
 
     /**
      * Requires slug key to be present in $options array.
      *
      * @param \Cake\ORM\Query\SelectQuery $query
-     * @param array $options
+     * @param string $slug
      * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findSlugged(SelectQuery $query, array $options): SelectQuery
+    public function findSlugged(SelectQuery $query, string $slug): SelectQuery
     {
-        return $query->where(['title' => $options['slug']]);
+        return $query->where(['title' => $slug]);
     }
 }
