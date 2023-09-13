@@ -27,11 +27,7 @@ Let's use the *backend*'s filters by doing:
 ```php
 // PostsController::action()
     $query = $this->Examples
-        ->find('search', [
-            'search' => $this->request->getQueryParams(),
-            'collection' => 'backend',
-        ]);
-    }
+        ->find('search', search: $this->request->getQueryParams(), collection: 'backend');
 ```
 
 ## Filter collection classes
@@ -85,11 +81,7 @@ You can also specify alternate collection class to use when making find call:
 ```php
 // PostsController::action()
     $query = $this->Posts
-        ->find('search', [
-            'search' => $this->request->getQueryParams(),
-            'collection' => 'posts_backend',
-        ]);
-    }
+        ->find('search', search: $this->request->getQueryParams(), collection: 'posts_backend');
 ```
 
 The above will use `App\Model\Filter\PostsBackendCollection`.
