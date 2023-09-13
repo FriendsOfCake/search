@@ -12,7 +12,7 @@ class Compare extends Base
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'operator' => '>=',
         'mode' => 'AND',
     ];
@@ -22,7 +22,7 @@ class Compare extends Base
      *
      * @var array
      */
-    protected $_operators = [
+    protected array $_operators = [
         '>=', '<=', '<', '>',
     ];
 

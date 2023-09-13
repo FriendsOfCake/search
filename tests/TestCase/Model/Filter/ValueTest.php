@@ -10,12 +10,7 @@ use Search\Model\Filter\Value;
 
 class ValueTest extends TestCase
 {
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
     ];
 

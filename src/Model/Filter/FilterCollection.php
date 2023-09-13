@@ -17,16 +17,16 @@ class FilterCollection implements FilterCollectionInterface
     use FilterMethodsTrait;
 
     /**
-     * @var \Search\Model\Filter\Base[] List of filter objects
+     * @var array<string, \Search\Model\Filter\Base> List of filter objects
      */
-    protected $_filters = [];
+    protected array $_filters = [];
 
     /**
      * Search Manager
      *
      * @var \Search\Manager
      */
-    protected $_manager;
+    protected Manager $_manager;
 
     /**
      * Constructor
@@ -140,10 +140,10 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * Check whether filter with given name exists.
      *
-     * @param string $name The name to check for.
+     * @param mixed $name The name to check for.
      * @return bool True on success or false on failure.
      */
-    public function offsetExists($name): bool
+    public function offsetExists(mixed $name): bool
     {
         return isset($this->_filters[$name]);
     }
@@ -151,10 +151,10 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * Name of filter to retrieve.
      *
-     * @param string $name Name of filter to retrieve.
+     * @param mixed $name Name of filter to retrieve.
      * @return \Search\Model\Filter\Base|null Filter instance or null.
      */
-    public function offsetGet($name): ?Base
+    public function offsetGet(mixed $name): ?Base
     {
         if ($this->offsetExists($name)) {
             return $this->_filters[$name];
@@ -166,11 +166,11 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * Set filter.
      *
-     * @param mixed $name Filter name.
+     * @param string $name Filter name.
      * @param \Search\Model\Filter\Base $value Filter instance to set.
      * @return void
      */
-    public function offsetSet($name, $value): void
+    public function offsetSet(mixed $name, mixed $value): void
     {
         $this->_filters[$name] = $value;
     }
@@ -178,10 +178,10 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * Name of filter to unset.
      *
-     * @param string $name Name of filter to unset.
+     * @param mixed $name Name of filter to unset.
      * @return void
      */
-    public function offsetUnset($name): void
+    public function offsetUnset(mixed $name): void
     {
         unset($this->_filters[$name]);
     }

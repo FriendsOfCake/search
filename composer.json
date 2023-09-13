@@ -22,14 +22,13 @@
         }
     ],
     "require": {
-        "cakephp/cakephp": "^4.0"
+        "cakephp/cakephp": "^5.0"
     },
     "require-dev": {
-        "cakephp/twig-view": "^1.1.1",
-        "cakephp/bake": "^2.3",
-        "phpunit/phpunit": "~8.5.0 || ^9.3",
-        "cakephp/cakephp-codesniffer": "^4.0",
-        "muffin/webservice": "^3.0"
+        "cakephp/twig-view": "^2.0",
+        "cakephp/bake": "^3.0",
+        "phpunit/phpunit": "^10.1",
+        "cakephp/cakephp-codesniffer": "^5.0"
     },
     "autoload": {
         "psr-4": {
@@ -49,13 +48,15 @@
     "scripts": {
         "cs-check": "phpcs -p src/ tests/",
         "cs-fix": "phpcbf src/ tests/",
-        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:~1.7.0 psalm/phar:~4.23.0 && mv composer.backup composer.json",
-        "phpstan": "phpstan.phar analyse",
-        "psalm": "psalm.phar",
+        "stan-setup": "phive install",
+        "phpstan": "tools/phpstan analyse",
+        "psalm": "tools/psalm --show-info=false",
         "stan": [
             "@phpstan",
             "@psalm"
         ],
+        "stan-tests": "tools/phpstan analyze -c tests/phpstan.neon",
+        "stan-baseline": "tools/phpstan --generate-baseline",
         "test": "phpunit"
     },
     "config": {

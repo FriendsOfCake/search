@@ -45,7 +45,7 @@ $searchManager->exists('nullable_field');
 
 ----------
 
-`Finder` to produce results using a [(custom)](https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
+`Finder` to produce results using a [(custom)](https://book.cakephp.org/5/en/orm/retrieving-data-and-resultsets.html#custom-find-methods) finder
 
 ```php
 // executes the findMyFinder() method in your table class
@@ -69,7 +69,7 @@ should return bool to specify `isSearch()` (useful when using with `alwaysRun` e
 ```php
 // Completely up to your code inside the callback
 $searchManager->callback('category_id', [
-        'callback' => function (\Cake\ORM\Query $query, array $args,  \Search\Model\Filter\Base $filter) {
+        'callback' => function (\Cake\ORM\Query\SelectQuery $query, array $args,  \Search\Model\Filter\Base $filter) {
             // $args contains the values given in the request
             // $query->where([]);
             return true;
@@ -117,7 +117,7 @@ The following options are supported by all filters.
     // PostsTable::initialize()
     $searchManager->like('q', [
         'fields' => ['Posts.title', 'Authors.title'],
-        'beforeProcess' => function (\Cake\ORM\Query $query, array $args, \Search\Model\Filter\Base $filter) {
+        'beforeProcess' => function (\Cake\ORM\Query\SelectQuery $query, array $args, \Search\Model\Filter\Base $filter) {
             $query->contain('Authors');
         },
     ]);
@@ -246,9 +246,9 @@ your best option is to use a `callback` like so:
 ```php
 $searchManager
     ->callback('category_id', [
-        'callback' => function (\Cake\ORM\Query $query, array $args,  \Search\Model\Filter\Base $filter) {
+        'callback' => function (\Cake\ORM\Query\SelectQuery $query, array $args,  \Search\Model\Filter\Base $filter) {
             $query
-                ->innerJoinWith('Categories', function (\Cake\ORM\Query $query) use ($args) {
+                ->innerJoinWith('Categories', function (\Cake\ORM\Query\SelectQuery $query) use ($args) {
                     return $query->where(['Categories.id IN' => $args['category_id']]);
                 })
                 ->group('Products.id');
@@ -309,7 +309,7 @@ class MyCustomFilter extends \Search\Model\Filter\Base
     /**
      * @return bool
      */
-    public function process()
+    public function process(): bool
     {
         // return false if you want to skip modifying the query based on some condition.
 

@@ -12,7 +12,7 @@ class Exists extends Base
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'mode' => 'OR',
         'nullValue' => null, // Set to empty string for required fields
     ];

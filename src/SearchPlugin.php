@@ -6,28 +6,28 @@ namespace Search;
 use Cake\Console\CommandCollection;
 use Cake\Core\BasePlugin;
 
-class Plugin extends BasePlugin
+class SearchPlugin extends BasePlugin
 {
     /**
      * Plugin name
      *
-     * @var string
+     * @var string|null
      */
-    protected $name = 'Search';
+    protected ?string $name = 'Search';
 
     /**
      * Do bootstrapping or not
      *
      * @var bool
      */
-    protected $bootstrapEnabled = false;
+    protected bool $bootstrapEnabled = false;
 
     /**
      * Load routes or not
      *
      * @var bool
      */
-    protected $routesEnabled = false;
+    protected bool $routesEnabled = false;
 
     /**
      * Add console commands for the plugin.

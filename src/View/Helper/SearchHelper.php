@@ -5,6 +5,7 @@ namespace Search\View\Helper;
 
 use Cake\View\Helper;
 use Cake\View\View;
+use function Cake\I18n\__d;
 
 /**
  * @property \Cake\View\Helper\UrlHelper $Url
@@ -15,7 +16,7 @@ class SearchHelper extends Helper
     /**
      * @var array
      */
-    protected $helpers = [
+    protected array $helpers = [
         'Url',
         'Html',
     ];
@@ -28,7 +29,7 @@ class SearchHelper extends Helper
      *
      * @var array<string, mixed>
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'additionalBlacklist' => [],
     ];
 

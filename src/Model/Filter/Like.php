@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Core\App;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use InvalidArgumentException;
 use RuntimeException;
+use Search\Model\Filter\Escaper\EscaperInterface;
 
 class Like extends Base
 {
@@ -16,14 +17,14 @@ class Like extends Base
      *
      * @var \Search\Model\Filter\Escaper\EscaperInterface
      */
-    protected $_escaper;
+    protected EscaperInterface $_escaper;
 
     /**
      * Default configuration.
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'before' => false,
         'after' => false,
         'fieldMode' => 'OR',
@@ -70,8 +71,8 @@ class Like extends Base
             }
         }
 
-        if (!empty($conditions)) {
-            $colTypes = $this->getConfig('colType');
+        if ($conditions) {
+            $colTypes = (array)$this->getConfig('colType');
             if ($colTypes) {
                 $colTypes = $this->_aliasColTypes($colTypes);
             }
@@ -112,7 +113,7 @@ class Like extends Base
      * @return string|false Either the wildcard decorated input value, or `false` when
      *  encountering a non-string value.
      */
-    protected function _wildcards($value)
+    protected function _wildcards(mixed $value): string|false
     {
         if (!is_string($value)) {
             return false;
@@ -154,9 +155,9 @@ class Like extends Base
     {
         if ($this->getConfig('escaper') === null) {
             $query = $this->getQuery();
-            if (!$query instanceof Query) {
+            if (!$query instanceof SelectQuery) {
                 throw new RuntimeException(
-                    '$query must be instance of Cake\ORM\Query to be able to check driver name.'
+                    '$query must be instance of Cake\ORM\Query\SelectQuery to be able to check driver name.'
                 );
             }
             $driver = get_class($query->getConnection()->getDriver());

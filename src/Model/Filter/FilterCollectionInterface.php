@@ -8,6 +8,9 @@ use IteratorAggregate;
 
 /**
  * Filter Collection Interface
+ *
+ * @extends \ArrayAccess<string, \Search\Model\Filter\Base>
+ * @extends \IteratorAggregate<string, \Search\Model\Filter\Base>
  */
 interface FilterCollectionInterface extends ArrayAccess, IteratorAggregate
 {

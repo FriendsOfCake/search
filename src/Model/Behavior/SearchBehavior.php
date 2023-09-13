@@ -25,7 +25,7 @@ class SearchBehavior extends Behavior
      *
      * @var array<string, mixed>
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'implementedFinders' => [
             'search' => 'findSearch',
         ],
@@ -59,15 +59,16 @@ class SearchBehavior extends Behavior
             return;
         }
 
-        $tableMethod = method_exists($this, 'table') ? 'table' : 'getTable';
-
-        /** @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface> */
         $defaultCollectionClass = sprintf(
             '%s\Model\Filter\%sCollection',
             Configure::read('App.namespace'),
-            $this->{$tableMethod}()->getAlias()
+            $this->table()->getAlias()
         );
         if (class_exists($defaultCollectionClass)) {
+            /**
+             * @psalm-suppress PropertyTypeCoercion
+             * @phpstan-ignore-next-line
+             */
             $this->_collectionClass = $defaultCollectionClass;
         }
     }

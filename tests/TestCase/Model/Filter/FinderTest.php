@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
+use BadMethodCallException;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Search\Manager;
@@ -10,12 +11,7 @@ use Search\Model\Filter\Finder;
 
 class FinderTest extends TestCase
 {
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -75,8 +71,8 @@ class FinderTest extends TestCase
      */
     public function testProcessNonExistentFinderMethod()
     {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Unknown finder method "nonExistent"');
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Unknown finder method `nonExistent`');
 
         $articles = $this->getTableLocator()->get('FinderArticles', [
             'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',

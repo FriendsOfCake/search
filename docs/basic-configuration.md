@@ -83,7 +83,7 @@ public function index()
     $query = $this->Posts
         // Use the plugins 'search' custom finder and pass in the
         // processed query params
-        ->find('search', ['search' => $this->request->getQueryParams()])
+        ->find('search', search: $this->request->getQueryParams())
         // You can add extra things to the query if you need to
         ->contain(['Comments'])
         ->where(['title IS NOT' => null]);

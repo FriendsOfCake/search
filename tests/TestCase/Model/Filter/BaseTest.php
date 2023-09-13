@@ -5,22 +5,15 @@ namespace Search\Test\TestCase\Model\Filter;
 
 use Cake\Datasource\RepositoryInterface;
 use Cake\TestSuite\TestCase;
+use InvalidArgumentException;
 use Search\Manager;
 use Search\Test\TestApp\Model\Filter\TestFilter;
 
 class BaseTest extends TestCase
 {
-    /**
-     * @var \Search\Manager
-     */
-    protected $Manager;
+    protected Manager $Manager;
 
-    /**
-     * Fixtures
-     *
-     * @var array
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Search.Articles',
     ];
 
@@ -38,7 +31,7 @@ class BaseTest extends TestCase
     /**
      * @return array
      */
-    public function emptyDataProvider()
+    public static function emptyDataProvider()
     {
         return [
             [''],
@@ -55,7 +48,7 @@ class BaseTest extends TestCase
      */
     public function testConstructEmptyFieldOption($emptyValue)
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The `field` option is invalid. Expected a non-empty string or array.');
 
         new TestFilter(
@@ -68,7 +61,7 @@ class BaseTest extends TestCase
     /**
      * @return array
      */
-    public function nonEmptyFieldDataProvider()
+    public static function nonEmptyFieldDataProvider()
     {
         return [
             ['0'], ['value'], [['value']],
@@ -93,7 +86,7 @@ class BaseTest extends TestCase
     /**
      * @return array
      */
-    public function nonEmptyNameDataProvider()
+    public static function nonEmptyNameDataProvider()
     {
         return [
             ['0'], ['value'],

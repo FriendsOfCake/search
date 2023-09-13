@@ -8,7 +8,7 @@ class Finder extends Base
     /**
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'map' => [],
         'options' => [],
     ];
@@ -41,7 +41,7 @@ class Finder extends Base
         $options = $this->getConfig('options');
         $args += $options;
 
-        $this->getQuery()->find($this->finder(), $args);
+        $this->getQuery()->find($this->finder(), ...$args);
 
         return true;
     }

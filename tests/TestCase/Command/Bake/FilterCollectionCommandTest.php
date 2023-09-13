@@ -5,13 +5,12 @@ namespace Search\Test\TestCase\Command\Bake;
 
 use Cake\Console\BaseCommand;
 use Cake\Console\CommandCollection;
-use Cake\Console\ConsoleInput;
+use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\Core\Plugin;
 use Cake\Event\EventManager;
-use Cake\Filesystem\Filesystem;
-use Cake\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\StringCompareTrait;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Filesystem;
 use Search\Command\Bake\FilterCollectionCommand;
 
 class FilterCollectionCommandTest extends TestCase
@@ -19,17 +18,11 @@ class FilterCollectionCommandTest extends TestCase
     use StringCompareTrait;
     use ConsoleIntegrationTestTrait;
 
-    /**
-     * @var string[]
-     */
-    protected $fixtures = [
+    protected array $fixtures = [
         'core.Posts',
     ];
 
-    /**
-     * @var string
-     */
-    protected $_generatedBasePath;
+    protected string $_generatedBasePath;
 
     /**
      * setup method
@@ -42,12 +35,8 @@ class FilterCollectionCommandTest extends TestCase
         $this->_compareBasePath = Plugin::path('Search') . 'tests' . DS . 'comparisons' . DS . 'Filter' . DS;
         $this->_generatedBasePath = ROOT . DS . 'tests/test_app/TestApp/Model/Filter/';
 
-        $this->_in = $this->getMockBuilder(ConsoleInput::class)->getMock();
-
         $fs = new Filesystem();
         $fs->deleteDir($this->_generatedBasePath);
-
-        $this->useCommandRunner();
 
         EventManager::instance()->on(
             'Console.buildCommands',
