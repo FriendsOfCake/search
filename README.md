@@ -8,7 +8,7 @@
 
 Search provides a simple interface to create paginate-able filters for your CakePHP application.
 
-This branch is for CakePHP **4.x**. For details see [version map](https://github.com/FriendsOfCake/search/wiki#cakephp-version-map).
+This branch is for CakePHP **5.x**. For details see [version map](https://github.com/FriendsOfCake/search/wiki#cakephp-version-map).
 
 ## Installation
 
