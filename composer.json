@@ -1,6 +1,7 @@
 {
     "name": "friendsofcake/search",
     "description": "CakePHP Search plugin using PRG pattern",
+    "license": "MIT",
     "type": "cakephp-plugin",
     "keywords": [
         "cakephp",
@@ -8,8 +9,6 @@
         "filter",
         "search"
     ],
-    "homepage": "https://github.com/FriendsOfCake/search",
-    "license": "MIT",
     "authors": [
         {
             "name": "Christian Winther",
@@ -17,18 +16,23 @@
         },
         {
             "name": "ADmad",
-            "role": "Contributor",
-            "homepage": "https://github.com/admad"
+            "homepage": "https://github.com/admad",
+            "role": "Contributor"
         }
     ],
+    "homepage": "https://github.com/FriendsOfCake/search",
+    "support": {
+        "issues": "https://github.com/FriendsOfCake/search/issues",
+        "source": "https://github.com/FriendsOfCake/search"
+    },
     "require": {
         "cakephp/cakephp": "^5.0"
     },
     "require-dev": {
-        "cakephp/twig-view": "^2.0",
         "cakephp/bake": "^3.0",
-        "phpunit/phpunit": "^10.1",
-        "cakephp/cakephp-codesniffer": "^5.0"
+        "cakephp/cakephp-codesniffer": "^5.0",
+        "cakephp/twig-view": "^2.0",
+        "phpunit/phpunit": "^10.1"
     },
     "autoload": {
         "psr-4": {
@@ -37,31 +41,27 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Search\\Test\\": "tests/",
-            "Cake\\Test\\Fixture\\": "vendor/cakephp/cakephp/tests/Fixture/"
+            "Cake\\Test\\Fixture\\": "vendor/cakephp/cakephp/tests/Fixture/",
+            "Search\\Test\\": "tests/"
         }
     },
-    "support": {
-        "source": "https://github.com/FriendsOfCake/search",
-        "issues": "https://github.com/FriendsOfCake/search/issues"
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     },
     "scripts": {
         "cs-check": "phpcs -p src/ tests/",
         "cs-fix": "phpcbf src/ tests/",
-        "stan-setup": "phive install",
         "phpstan": "tools/phpstan analyse",
         "psalm": "tools/psalm --show-info=false",
         "stan": [
             "@phpstan",
             "@psalm"
         ],
-        "stan-tests": "tools/phpstan analyze -c tests/phpstan.neon",
         "stan-baseline": "tools/phpstan --generate-baseline",
+        "stan-setup": "phive install",
+        "stan-tests": "tools/phpstan analyze -c tests/phpstan.neon",
         "test": "phpunit"
-    },
-    "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
     }
 }
