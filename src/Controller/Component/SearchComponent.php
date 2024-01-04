@@ -108,6 +108,12 @@ class SearchComponent extends Component
         }
 
         if (!$model->behaviors()->has('Search')) {
+            if ($this->getConfig('modelClass')) {
+                throw new UnexpectedValueException(
+                    sprintf('Configured modelClass `%s not found`', $this->getConfig('modelClass'))
+                );
+            }
+
             return;
         }
 
