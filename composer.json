@@ -26,6 +26,7 @@
         "source": "https://github.com/FriendsOfCake/search"
     },
     "require": {
+        "php": ">=8.1",
         "cakephp/cakephp": "^5.0"
     },
     "require-dev": {
