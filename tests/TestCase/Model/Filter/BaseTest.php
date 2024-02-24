@@ -105,7 +105,7 @@ class BaseTest extends TestCase
             $this->Manager,
             ['fields' => 'fields']
         );
-        $this->assertEquals($filter->name(), $nonEmptyValue);
+        $this->assertSame($filter->name(), $nonEmptyValue);
     }
 
     /**
@@ -144,13 +144,13 @@ class BaseTest extends TestCase
         );
 
         $filter->setArgs(['fields' => 'value']);
-        $this->assertEquals('value', $filter->value());
+        $this->assertSame('value', $filter->value());
 
         $filter->setArgs(['other_field' => 'value']);
-        $this->assertEquals('default', $filter->value());
+        $this->assertSame('default', $filter->value());
 
         $filter->setArgs(['fields' => ['value1', 'value2']]);
-        $this->assertEquals('default', $filter->value());
+        $this->assertSame('default', $filter->value());
     }
 
     /**

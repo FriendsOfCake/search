@@ -36,7 +36,7 @@ class CallbackTest extends TestCase
             '/WHERE title = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             ['test'],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );

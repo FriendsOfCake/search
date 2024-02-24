@@ -45,4 +45,16 @@ class FinderArticlesTable extends Table
     {
         return $query->where(['title' => $slug]);
     }
+
+    /**
+     * Requires slug key to be present in $options array.
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query
+     * @param int $uid
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findUser(SelectQuery $query, int $uid): SelectQuery
+    {
+        return $query->where(['user_id' => $uid]);
+    }
 }

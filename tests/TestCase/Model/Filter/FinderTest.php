@@ -33,7 +33,7 @@ class FinderTest extends TestCase
             '/WHERE \(Articles\.is_active = \:c0 AND foo = \:c1\)$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [true, 'bar'],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -60,8 +60,72 @@ class FinderTest extends TestCase
             '/WHERE title = :c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             ['foo'],
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * Tests that a custom finder that requires certain values to be cast, usually from
+     * string to int, float or bool.
+     *
+     * @return void
+     */
+    public function testProcessCast()
+    {
+        $articles = $this->getTableLocator()->get('FinderArticles', [
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
+        ]);
+        $manager = new Manager($articles);
+        $filter = new Finder('user', $manager, ['cast' => ['uid' => 'int']]);
+        $filter->setArgs(['uid' => '1']);
+        $filter->setQuery($articles->find());
+        $filter->process();
+
+        $this->assertMatchesRegularExpression(
+            '/WHERE user_id = :c0$/',
+            $filter->getQuery()->sql()
+        );
+        $this->assertSame(
+            [1],
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * Tests that a custom finder that requires certain values to be cast, using
+     * a custom callable.
+     *
+     * @return void
+     */
+    public function testProcessCastCallback()
+    {
+        $articles = $this->getTableLocator()->get('FinderArticles', [
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
+        ]);
+        $manager = new Manager($articles);
+        $options = [
+            'map' => [
+                'uid' => 'user_id',
+            ],
+            'cast' => [
+                'uid' => function ($value) {
+                    return (int)$value;
+                },
+            ],
+        ];
+        $filter = new Finder('user', $manager, $options);
+        $filter->setArgs(['user_id' => '1']);
+        $filter->setQuery($articles->find());
+        $filter->process();
+
+        $this->assertMatchesRegularExpression(
+            '/WHERE user_id = :c0$/',
+            $filter->getQuery()->sql()
+        );
+        $this->assertSame(
+            [1],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }

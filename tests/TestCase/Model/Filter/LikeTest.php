@@ -31,7 +31,7 @@ class LikeTest extends TestCase
             '/WHERE Articles\.title LIKE \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             ['test'],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -44,7 +44,7 @@ class LikeTest extends TestCase
             '/WHERE Articles\.title ILIKE \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             ['test'],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -66,7 +66,7 @@ class LikeTest extends TestCase
             '/WHERE Articles\.title LIKE :c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             ['foo'],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );

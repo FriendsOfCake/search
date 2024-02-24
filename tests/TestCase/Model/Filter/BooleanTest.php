@@ -31,7 +31,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [true],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -53,7 +53,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [false],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -75,7 +75,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [true],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -97,7 +97,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [false],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -119,7 +119,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [true],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -141,7 +141,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [false],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -163,7 +163,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [true],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -185,7 +185,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [false],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -207,7 +207,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [true],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -226,7 +226,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [false],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -285,7 +285,7 @@ class BooleanTest extends TestCase
             '/WHERE \(Articles\.is_active = :c0 OR Articles\.other = :c1\)$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [true, true],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -310,7 +310,7 @@ class BooleanTest extends TestCase
             '/WHERE \(Articles\.is_active = :c0 AND Articles\.other = :c1\)$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [true, true],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -332,7 +332,7 @@ class BooleanTest extends TestCase
             '/WHERE Articles\.is_active = :c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [true],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );

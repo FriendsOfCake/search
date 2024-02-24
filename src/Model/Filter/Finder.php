@@ -11,6 +11,7 @@ class Finder extends Base
     protected array $_defaultConfig = [
         'map' => [],
         'options' => [],
+        'cast' => [],
     ];
 
     /**
@@ -36,6 +37,21 @@ class Finder extends Base
         $map = $this->getConfig('map');
         foreach ($map as $to => $from) {
             $args[$to] = $args[$from] ?? null;
+        }
+        $casts = $this->getConfig('cast');
+        foreach ($casts as $field => $toType) {
+            $value = $args[$field] ?? null;
+            // Sanity check
+            if (!is_scalar($value)) {
+                continue;
+            }
+
+            if (is_callable($toType)) {
+                $value = $toType($value);
+            } else {
+                settype($value, $toType);
+            }
+            $args[$field] = $value;
         }
 
         $options = $this->getConfig('options');

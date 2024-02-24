@@ -74,7 +74,7 @@ class ExistsTest extends TestCase
             '/WHERE Articles\.number != \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [''],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
@@ -100,7 +100,7 @@ class ExistsTest extends TestCase
             '/WHERE Articles\.number = \:c0$/',
             $filter->getQuery()->sql()
         );
-        $this->assertEquals(
+        $this->assertSame(
             [''],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
