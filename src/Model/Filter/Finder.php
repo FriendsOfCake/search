@@ -6,7 +6,7 @@ namespace Search\Model\Filter;
 class Finder extends Base
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
         'map' => [],

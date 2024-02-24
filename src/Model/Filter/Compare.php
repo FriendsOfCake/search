@@ -10,7 +10,7 @@ class Compare extends Base
     /**
      * Default configuration.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
         'operator' => '>=',
@@ -20,7 +20,7 @@ class Compare extends Base
     /**
      * Allowed operators.
      *
-     * @var array
+     * @var array<string>
      */
     protected array $_operators = [
         '>=', '<=', '<', '>',

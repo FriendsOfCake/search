@@ -12,7 +12,7 @@ class DefaultEscaper implements EscaperInterface
     /**
      * Default configuration.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
         'fromWildCardAny' => '%',
