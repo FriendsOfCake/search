@@ -94,6 +94,33 @@ class FinderTest extends TestCase
     }
 
     /**
+     * Tests that a custom finder that requires certain values to be cast, from null
+     * to int, float or bool.
+     *
+     * @return void
+     */
+    public function testProcessCastNull()
+    {
+        $articles = $this->getTableLocator()->get('FinderArticles', [
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
+        ]);
+        $manager = new Manager($articles);
+        $filter = new Finder('user', $manager, ['cast' => ['uid' => 'int']]);
+        $filter->setArgs(['uid' => null]);
+        $filter->setQuery($articles->find());
+        $filter->process();
+
+        $this->assertMatchesRegularExpression(
+            '/WHERE user_id = :c0$/',
+            $filter->getQuery()->sql()
+        );
+        $this->assertSame(
+            [0],
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
      * Tests that a custom finder that requires certain values to be cast, using
      * a custom callable.
      *
@@ -126,6 +153,40 @@ class FinderTest extends TestCase
         );
         $this->assertSame(
             [1],
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * Tests that a custom finder that requires certain values to be cast, using
+     * a custom callable and null input.
+     *
+     * @return void
+     */
+    public function testProcessCastCallbackNull()
+    {
+        $articles = $this->getTableLocator()->get('FinderArticles', [
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
+        ]);
+        $manager = new Manager($articles);
+        $options = [
+            'cast' => [
+                'slug' => function ($value) {
+                    return (string)$value;
+                },
+            ],
+        ];
+        $filter = new Finder('slugged', $manager, $options);
+        $filter->setArgs(['slug' => null]);
+        $filter->setQuery($articles->find());
+        $filter->process();
+
+        $this->assertMatchesRegularExpression(
+            '/WHERE title = :c0$/',
+            $filter->getQuery()->sql()
+        );
+        $this->assertSame(
+            [''],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
