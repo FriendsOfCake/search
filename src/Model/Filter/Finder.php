@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Search\Model\Filter;
 
+use Closure;
+
 class Finder extends Base
 {
     /**
@@ -45,7 +47,7 @@ class Finder extends Base
                 continue;
             }
 
-            if (is_callable($toType)) {
+            if ($toType instanceof Closure) {
                 $value = $toType($value);
             } else {
                 settype($value, $toType);
