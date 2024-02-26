@@ -3,14 +3,17 @@ declare(strict_types=1);
 
 namespace Search\Model\Filter;
 
+use Closure;
+
 class Finder extends Base
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
         'map' => [],
         'options' => [],
+        'cast' => [],
     ];
 
     /**
@@ -36,6 +39,21 @@ class Finder extends Base
         $map = $this->getConfig('map');
         foreach ($map as $to => $from) {
             $args[$to] = $args[$from] ?? null;
+        }
+        $casts = $this->getConfig('cast');
+        foreach ($casts as $field => $toType) {
+            $value = $args[$field] ?? null;
+            if ($value === null) {
+                continue;
+            }
+
+            if ($toType instanceof Closure) {
+                $value = $toType($value);
+            } else {
+                settype($value, $toType);
+            }
+
+            $args[$field] = $value;
         }
 
         $options = $this->getConfig('options');

@@ -20,7 +20,7 @@ abstract class Base
     /**
      * Default configuration.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [];
 
@@ -200,9 +200,9 @@ abstract class Base
     }
 
     /**
-     * @return array|string|null
+     * @return mixed
      */
-    protected function passedValue(): string|array|null
+    protected function passedValue(): mixed
     {
         if (!isset($this->_args[$this->name()])) {
             return null;

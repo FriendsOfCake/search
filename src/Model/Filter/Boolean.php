@@ -10,7 +10,7 @@ class Boolean extends Base
     /**
      * Default configuration.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
         'mode' => 'OR',

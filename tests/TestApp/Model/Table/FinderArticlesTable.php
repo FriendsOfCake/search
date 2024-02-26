@@ -45,4 +45,40 @@ class FinderArticlesTable extends Table
     {
         return $query->where(['title' => $slug]);
     }
+
+    /**
+     * Requires nullable slug key to be present in $options array.
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query
+     * @param string|null $slug
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findSluggedNullable(SelectQuery $query, ?string $slug): SelectQuery
+    {
+        return $query->where(['title IS' => $slug]);
+    }
+
+    /**
+     * Requires uid key to be present in $options array.
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query
+     * @param int $uid
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findUser(SelectQuery $query, int $uid): SelectQuery
+    {
+        return $query->where(['user_id' => $uid]);
+    }
+
+    /**
+     * Requires nullable uid key to be present in $options array.
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query
+     * @param int|null $uid
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findUserNullable(SelectQuery $query, ?int $uid): SelectQuery
+    {
+        return $query->where(['user_id IS' => $uid]);
+    }
 }

@@ -22,7 +22,7 @@ class Like extends Base
     /**
      * Default configuration.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
         'before' => false,

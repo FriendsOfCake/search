@@ -238,6 +238,10 @@ The following options are supported by all filters except `Callback` and `Finder
 
 - `options` (`array`, defaults to `[]`) Additional options to pass to the finder.
 
+- `cast` (`array`, defaults to `[]`) Additional casts to be used on the (mapped
+  field values. You can use `'int'`, `'bool'`, `'float'`, etc as strings. You can also
+  use callable functions like `function ($value) { ... }` for more complex scenarios.
+
 ## Filtering by `belongsToMany` and `hasMany` associations
 
 If you want to filter values related to a `belongsToMany` or `hasMany` association,
