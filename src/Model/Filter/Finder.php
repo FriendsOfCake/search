@@ -41,6 +41,9 @@ class Finder extends Base
         $casts = $this->getConfig('cast');
         foreach ($casts as $field => $toType) {
             $value = $args[$field] ?? null;
+            if ($value === null) {
+                continue;
+            }
 
             if (is_callable($toType)) {
                 $value = $toType($value);

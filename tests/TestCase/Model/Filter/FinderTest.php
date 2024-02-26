@@ -94,33 +94,6 @@ class FinderTest extends TestCase
     }
 
     /**
-     * Tests that a custom finder that requires certain values to be cast, from null
-     * to int, float or bool.
-     *
-     * @return void
-     */
-    public function testProcessCastNull()
-    {
-        $articles = $this->getTableLocator()->get('FinderArticles', [
-            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
-        ]);
-        $manager = new Manager($articles);
-        $filter = new Finder('user', $manager, ['cast' => ['uid' => 'int']]);
-        $filter->setArgs(['uid' => null]);
-        $filter->setQuery($articles->find());
-        $filter->process();
-
-        $this->assertMatchesRegularExpression(
-            '/WHERE user_id = :c0$/',
-            $filter->getQuery()->sql()
-        );
-        $this->assertSame(
-            [0],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
-        );
-    }
-
-    /**
      * Tests that a custom finder that requires certain values to be cast, using
      * a custom callable.
      *
@@ -158,8 +131,7 @@ class FinderTest extends TestCase
     }
 
     /**
-     * Tests that a custom finder that requires certain values to be cast, using
-     * a custom callable and null input.
+     * Tests that a null input does not use casting.
      *
      * @return void
      */
@@ -176,17 +148,13 @@ class FinderTest extends TestCase
                 },
             ],
         ];
-        $filter = new Finder('slugged', $manager, $options);
+        $filter = new Finder('sluggedNullable', $manager, $options);
         $filter->setArgs(['slug' => null]);
         $filter->setQuery($articles->find());
         $filter->process();
 
-        $this->assertMatchesRegularExpression(
-            '/WHERE title = :c0$/',
-            $filter->getQuery()->sql()
-        );
         $this->assertSame(
-            [''],
+            [],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
         );
     }
@@ -207,7 +175,7 @@ class FinderTest extends TestCase
         $options = [
             'cast' => [
                 'slug' => function ($value) {
-                    if ($value === null || $value === '') {
+                    if ($value === '') {
                         return null;
                     }
 
@@ -216,7 +184,7 @@ class FinderTest extends TestCase
             ],
         ];
         $filter = new Finder('sluggedNullable', $manager, $options);
-        $filter->setArgs(['slug' => null]);
+        $filter->setArgs(['slug' => '']);
         $filter->setQuery($articles->find());
         $filter->process();
 
@@ -246,7 +214,7 @@ class FinderTest extends TestCase
         $options = [
             'cast' => [
                 'uid' => function ($value) {
-                    if ($value === null || $value === '') {
+                    if ($value === '') {
                         return null;
                     }
 
@@ -255,7 +223,7 @@ class FinderTest extends TestCase
             ],
         ];
         $filter = new Finder('userNullable', $manager, $options);
-        $filter->setArgs(['uid' => null]);
+        $filter->setArgs(['uid' => '']);
         $filter->setQuery($articles->find());
         $filter->process();
         $this->assertMatchesRegularExpression(
