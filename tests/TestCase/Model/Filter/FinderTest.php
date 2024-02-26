@@ -162,7 +162,7 @@ class FinderTest extends TestCase
     /**
      * Tests that a custom finder that requires certain values to be cast, using
      * a custom callable and null input. In this case, the callable should return
-     * null if already null or empty string.
+     * null if already empty string.
      *
      * @return void
      */
@@ -201,7 +201,7 @@ class FinderTest extends TestCase
     /**
      * Tests that a custom finder that requires certain values to be cast, using
      * a custom callable and null input. In this case, the callable should return
-     * null if already null or empty string.
+     * null if already empty string.
      *
      * @return void
      */
