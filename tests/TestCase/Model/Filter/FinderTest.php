@@ -192,6 +192,83 @@ class FinderTest extends TestCase
     }
 
     /**
+     * Tests that a custom finder that requires certain values to be cast, using
+     * a custom callable and null input. In this case, the callable should return
+     * null if already null or empty string.
+     *
+     * @return void
+     */
+    public function testProcessCastCallbackNullableString()
+    {
+        $articles = $this->getTableLocator()->get('FinderArticles', [
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
+        ]);
+        $manager = new Manager($articles);
+        $options = [
+            'cast' => [
+                'slug' => function ($value) {
+                    if ($value === null || $value === '') {
+                        return null;
+                    }
+
+                    return (string)$value;
+                },
+            ],
+        ];
+        $filter = new Finder('sluggedNullable', $manager, $options);
+        $filter->setArgs(['slug' => null]);
+        $filter->setQuery($articles->find());
+        $filter->process();
+
+        $this->assertMatchesRegularExpression(
+            '/WHERE \(title\) IS NULL$/',
+            $filter->getQuery()->sql()
+        );
+        $this->assertSame(
+            [],
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
+     * Tests that a custom finder that requires certain values to be cast, using
+     * a custom callable and null input. In this case, the callable should return
+     * null if already null or empty string.
+     *
+     * @return void
+     */
+    public function testProcessCastCallbackNullableInt()
+    {
+        $articles = $this->getTableLocator()->get('FinderArticles', [
+            'className' => '\Search\Test\TestApp\Model\Table\FinderArticlesTable',
+        ]);
+        $manager = new Manager($articles);
+        $options = [
+            'cast' => [
+                'uid' => function ($value) {
+                    if ($value === null || $value === '') {
+                        return null;
+                    }
+
+                    return (int)$value;
+                },
+            ],
+        ];
+        $filter = new Finder('userNullable', $manager, $options);
+        $filter->setArgs(['uid' => null]);
+        $filter->setQuery($articles->find());
+        $filter->process();
+        $this->assertMatchesRegularExpression(
+            '/WHERE \(user_id\) IS NULL$/',
+            $filter->getQuery()->sql()
+        );
+        $this->assertSame(
+            [],
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+        );
+    }
+
+    /**
      * @return void
      */
     public function testProcessNonExistentFinderMethod()
