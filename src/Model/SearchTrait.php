@@ -75,11 +75,7 @@ trait SearchTrait
      */
     public function processor(): Processor
     {
-        if ($this->_processor === null) {
-            $this->_processor = new Processor();
-        }
-
-        return $this->_processor;
+        return $this->_processor ??= new Processor();
     }
 
     /**
@@ -110,14 +106,10 @@ trait SearchTrait
      */
     public function searchManager(): Manager
     {
-        if ($this->_manager === null) {
-            $this->_manager = new Manager(
-                $this->_repository(),
-                $this->_collectionClass
-            );
-        }
-
-        return $this->_manager;
+        return $this->_manager ??= new Manager(
+            $this->_repository(),
+            $this->_collectionClass
+        );
     }
 
     /**

@@ -153,23 +153,26 @@ class Like extends Base
      */
     protected function _setEscaper(): void
     {
-        if ($this->getConfig('escaper') === null) {
+        $class = $this->getConfig('escaper');
+
+        if ($class === null) {
             $query = $this->getQuery();
             if (!$query instanceof SelectQuery) {
                 throw new RuntimeException(
                     '$query must be instance of Cake\ORM\Query\SelectQuery to be able to check driver name.'
                 );
             }
+
             $driver = get_class($query->getConnection()->getDriver());
             $driverName = 'Sqlserver';
             if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
-                $this->setConfig('escaper', 'Search.Sqlserver');
+                $class = 'Search.Sqlserver';
             } else {
-                $this->setConfig('escaper', 'Search.Default');
+                $class = 'Search.Default';
             }
+            $this->setConfig('escaper', $class);
         }
 
-        $class = $this->getConfig('escaper');
         /** @psalm-var class-string<\Search\Model\Filter\Escaper\EscaperInterface>|null $className */
         $className = App::className($class, 'Model/Filter/Escaper', 'Escaper');
         if ($className === null) {

@@ -23,9 +23,7 @@ class Finder extends Base
      */
     public function finder(): string
     {
-        $finder = $this->getConfig('finder');
-
-        return $finder ?: $this->name();
+        return $this->getConfig('finder') ?: $this->name();
     }
 
     /**

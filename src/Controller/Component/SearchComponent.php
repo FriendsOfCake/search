@@ -99,9 +99,6 @@ class SearchComponent extends Component
 
         $controller = $this->getController();
         try {
-            /**
-             * @var \Cake\ORM\Table&\Search\Model\Behavior\SearchBehavior $model
-             */
             $model = $controller->fetchTable($this->getConfig('modelClass'));
         } catch (UnexpectedValueException $e) {
             return;
@@ -111,7 +108,9 @@ class SearchComponent extends Component
             return;
         }
 
+        /** @phpstan-ignore method.notFound */
         $controller->set('_isSearch', $model->isSearch());
+        /** @phpstan-ignore method.notFound */
         $controller->set('_searchParams', $model->searchParams());
     }
 

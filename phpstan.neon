@@ -1,7 +1,5 @@
 parameters:
     level: 8
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
     paths:
         - src/
     bootstrapFiles:
@@ -9,4 +7,4 @@ parameters:
         - vendor/cakephp/cakephp/src/Core/Exception/CakeException.php
         - vendor/cakephp/cakephp/src/Database/Exception/DatabaseException.php
     ignoreErrors:
-        - '#PHPDoc tag @var for variable \$model contains unresolvable type#'
+        - identifier: missingType.iterableValue

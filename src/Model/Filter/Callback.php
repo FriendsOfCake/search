@@ -12,16 +12,11 @@ class Callback extends Base
      */
     public function process(): bool
     {
-        $ret = call_user_func(
+        return call_user_func(
             $this->getConfig('callback'),
             $this->getQuery(),
             $this->getArgs(),
             $this
-        );
-        if ($ret === null) {
-            return true;
-        }
-
-        return $ret;
+        ) ?? true;
     }
 }
