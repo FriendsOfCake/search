@@ -189,14 +189,7 @@ abstract class Base
      */
     public function value(): mixed
     {
-        $value = $this->_config['defaultValue'];
-
-        $passedValue = $this->passedValue();
-        if ($passedValue === null) {
-            return $value;
-        }
-
-        return $passedValue;
+        return $this->passedValue() ?? $this->_config['defaultValue'];
     }
 
     /**
