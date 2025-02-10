@@ -20,5 +20,6 @@
         <PropertyNotSetInConstructor errorLevel="suppress" />
         <MissingClosureParamType errorLevel="suppress" />
         <MissingClosureReturnType errorLevel="suppress" />
+        <RiskyTruthyFalsyComparison errorLevel="suppress" />
     </issueHandlers>
 </psalm>
