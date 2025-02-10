@@ -17,6 +17,8 @@ use Search\Model\Filter\Value;
  */
 class FilterCollectionTest extends TestCase
 {
+    protected FilterCollection $collection;
+
     public function setUp(): void
     {
         $repository = $this->getTableLocator()->get('Articles');

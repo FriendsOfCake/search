@@ -44,6 +44,8 @@ class FilterCollectionCommandTest extends TestCase
                 $commands->add(FilterCollectionCommand::defaultName(), FilterCollectionCommand::class);
             }
         );
+
+        $this->loadPlugins(['Search']);
     }
 
     /**
