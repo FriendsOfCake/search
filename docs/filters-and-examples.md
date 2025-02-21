@@ -84,7 +84,7 @@ $searchManager->callback('category_id', [
 
 The following options are supported by all filters.
 
-- `field` (`string`, defaults to the name passed to the first argument of the
+- `fields` (`string`, defaults to the name passed to the first argument of the
   add filter method) The name of the field to use for searching. Use this option
   if you need to use a name in your forms that doesn't match the actual field name.
 
