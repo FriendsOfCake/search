@@ -69,13 +69,14 @@ abstract class Base
             'defaultValue' => null,
             'multiValue' => false,
             'multiValueSeparator' => null,
+            'multiValueExactMatching' => false,
             'flatten' => true,
             'beforeProcess' => null,
         ];
 
         if (isset($config['field'])) {
             throw new InvalidArgumentException(
-                'The `field` option has been renamed to `fields`.'
+                'The `field` option has been renamed to `fields`.',
             );
         }
         $config['fields'] = (array)$config['fields'];
@@ -88,7 +89,7 @@ abstract class Base
             }))
         ) {
             throw new InvalidArgumentException(
-                'The `field` option is invalid. Expected a non-empty string or array.'
+                'The `field` option is invalid. Expected a non-empty string or array.',
             );
         }
 
@@ -98,7 +99,7 @@ abstract class Base
             $config['name'] !== '0')
         ) {
             throw new InvalidArgumentException(
-                'The `$name` argument is invalid. Expected a non-empty string.'
+                'The `$name` argument is invalid. Expected a non-empty string.',
             );
         }
     }
@@ -208,10 +209,53 @@ abstract class Base
         }
 
         if ($this->getConfig('multiValueSeparator')) {
-            return explode($this->getConfig('multiValueSeparator'), $value);
+            if (!$this->getConfig('multiValueExactMatching')) {
+                return explode($this->getConfig('multiValueSeparator'), $value);
+            }
+
+            return $this->parseSearchTerms($value);
         }
 
         return $value;
+    }
+
+    /**
+     * @param string $input
+     * @return array<string>
+     */
+    protected function parseSearchTerms(string $input): array
+    {
+        if ($this->getConfig('multiValueSeparator') !== ' ') {
+            throw new UnexpectedValueException(
+                'The `multiValueSeparator` option must be a single space when `multiValueExactMatching` is used.',
+            );
+        }
+
+        $quoteChar = $this->getConfig('multiValueExactMatching');
+        if ($quoteChar === true) {
+            $quoteChar = '"';
+        }
+
+        $terms = [];
+
+        $escapedQuoteChar = preg_quote($quoteChar, '/');
+        // Match quoted phrases and unquoted words
+        preg_match_all(
+            '/' . $escapedQuoteChar . '([^' . $escapedQuoteChar . ']+)' . $escapedQuoteChar . '|\S+/',
+            $input,
+            $matches,
+        );
+
+        foreach ($matches[0] as $match) {
+            // If it's quoted, strip the quotes
+            if ($match[0] === $quoteChar) {
+                $terms[] = trim($match, $quoteChar);
+            } else {
+                $terms[] = $match;
+            }
+        }
+
+        return $terms;
     }
 
     /**

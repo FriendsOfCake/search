@@ -29,11 +29,11 @@ class LikeTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title LIKE \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             ['test'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
 
         $filter->setConfig('comparison', 'ILIKE');
@@ -42,11 +42,11 @@ class LikeTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title ILIKE \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             ['test'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -64,11 +64,11 @@ class LikeTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title LIKE :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             ['foo'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -89,11 +89,11 @@ class LikeTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title LIKE :c0 OR Articles\.other LIKE :c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'foo'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -111,11 +111,11 @@ class LikeTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title LIKE :c0 OR Articles\.title LIKE :c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -136,11 +136,11 @@ class LikeTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title LIKE :c0 AND Articles\.title LIKE :c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -162,11 +162,11 @@ class LikeTest extends TestCase
         $this->assertMatchesRegularExpression(
             '/WHERE \(\(Articles\.title LIKE :c0 OR Articles\.title LIKE :c1\) ' .
                 'OR \(Articles\.other LIKE :c2 OR Articles\.other LIKE :c3\)\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -189,11 +189,11 @@ class LikeTest extends TestCase
         $this->assertMatchesRegularExpression(
             '/WHERE \(\(Articles\.title LIKE :c0 OR Articles\.title LIKE :c1\) ' .
                 'AND \(Articles\.other LIKE :c2 OR Articles\.other LIKE :c3\)\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -274,11 +274,11 @@ class LikeTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title LIKE :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['default'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -315,7 +315,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['part\_1 _ 100\% %'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -335,7 +335,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['part[_]1 _ 100[%] %'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -355,7 +355,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['%22[%] 44[_]%'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -375,7 +375,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['%22\% 44\_%'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -390,7 +390,7 @@ class LikeTest extends TestCase
         $filter = new Like(
             'title',
             $manager,
-            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_']
+            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_'],
         );
         $filter->setArgs(['title' => '22% 44_']);
         $filter->setQuery($articles->find());
@@ -399,7 +399,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['%22% 44_%'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -414,7 +414,7 @@ class LikeTest extends TestCase
         $filter = new Like(
             'title',
             $manager,
-            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_', 'escaper' => 'Search.Sqlserver']
+            ['before' => true, 'after' => true, 'wildcardAny' => '%', 'wildcardOne' => '_', 'escaper' => 'Search.Sqlserver'],
         );
         $filter->setArgs(['title' => '22% 44_']);
         $filter->setQuery($articles->find());
@@ -423,7 +423,7 @@ class LikeTest extends TestCase
         $filter->getQuery()->sql();
         $this->assertEquals(
             ['%22% 44_%'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 }

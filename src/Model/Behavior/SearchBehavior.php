@@ -62,7 +62,7 @@ class SearchBehavior extends Behavior
         $defaultCollectionClass = sprintf(
             '%s\Model\Filter\%sCollection',
             Configure::read('App.namespace'),
-            $this->table()->getAlias()
+            $this->table()->getAlias(),
         );
         if (class_exists($defaultCollectionClass)) {
             /**

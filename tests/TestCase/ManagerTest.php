@@ -252,7 +252,7 @@ class ManagerTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
             'The collection must be instance of FilterCollectionInterface. Got instance of "%s" instead',
-            Configure::class
+            Configure::class,
         ));
         $manager->getFilters();
     }

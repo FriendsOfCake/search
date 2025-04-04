@@ -38,7 +38,7 @@ class Compare extends Base
         if (!in_array($this->getConfig('operator'), $this->_operators, true)) {
             throw new InvalidArgumentException(sprintf(
                 'The operator %s is invalid!',
-                $this->getConfig('operator')
+                $this->getConfig('operator'),
             ));
         }
 

@@ -203,7 +203,7 @@ class SearchBehaviorTest extends TestCase
                 'foo' => '0',
                 'search' => 'b',
                 'page' => '1',
-            ]
+            ],
         );
         $this->assertEquals(2, $query->clause('where')->count());
         $this->assertTrue($this->Articles->isSearch());

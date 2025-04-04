@@ -28,11 +28,11 @@ class CompareTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.created >= :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['2012-01-01 00:00:00'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -50,11 +50,11 @@ class CompareTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.created >= :c0 AND Articles\.modified >= :c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['2012-01-01 00:00:00', '2012-01-01 00:00:00'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -72,11 +72,11 @@ class CompareTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.created >= :c0 OR Articles\.modified >= :c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['2012-01-01 00:00:00', '2012-01-01 00:00:00'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -111,12 +111,12 @@ class CompareTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.created >= :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
 
         $this->assertEquals(
             ['2012-01-01 00:00:00'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 

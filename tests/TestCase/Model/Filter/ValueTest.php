@@ -28,11 +28,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title = :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['test'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -50,11 +50,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title = :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -74,11 +74,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title = :c0 OR Articles\.other = :c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'foo'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -99,11 +99,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title = :c0 AND Articles\.other = :c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'foo'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -121,11 +121,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title IN \(:c0,:c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -146,11 +146,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title IN \(:c0,:c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -172,11 +172,11 @@ class ValueTest extends TestCase
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
             'OR Articles\.other IN \(:c2,:c3\)\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -199,11 +199,11 @@ class ValueTest extends TestCase
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.title IN \(:c0,:c1\) ' .
             'AND Articles\.other IN \(:c2,:c3\)\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'bar', 'foo', 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -221,11 +221,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title IN \(:c0\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             [['bar']],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -259,11 +259,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title = :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['default'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -300,11 +300,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.title IN \(:c0,:c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertEquals(
             ['foo', 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -324,11 +324,11 @@ class ValueTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.number != :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             ['3'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 }

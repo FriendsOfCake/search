@@ -162,6 +162,10 @@ The following options are supported by all filters except `Callback` and `Finder
   auto-tokenize multiple values using a specific separator string. If disabled, the data
   must be an in form of an array.
 
+- `multiValueExactMatching` (`bool|string`, defaults to `false`) If enabled, this will match
+  phrases using a matching character (defaults to `"`). You can also define one yourself.
+  Note: This only works for `multiValueSeparator` set to a single space as character.
+
 - `field` (`string|array`), defaults to the name passed to the first argument of the
   add filter method) The name of the field to use for searching. Works like the base
   `field` option but also accepts multiple field names as an array. When defining

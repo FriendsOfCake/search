@@ -29,11 +29,11 @@ class BooleanTest extends TestCase
         $this->assertTrue($result);
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [true],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -51,11 +51,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [false],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -73,11 +73,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [true],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -95,11 +95,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [false],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -117,11 +117,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [true],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -139,11 +139,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [false],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -161,11 +161,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [true],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -183,11 +183,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [false],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -205,11 +205,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [true],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -224,11 +224,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [false],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -283,11 +283,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.is_active = :c0 OR Articles\.other = :c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [true, true],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -308,11 +308,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.is_active = :c0 AND Articles\.other = :c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [true, true],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -330,11 +330,11 @@ class BooleanTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.is_active = :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [true],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 

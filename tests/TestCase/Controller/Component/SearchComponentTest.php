@@ -33,7 +33,7 @@ class SearchComponentTest extends TestCase
             $routes->connect(
                 '/users/my-predictions',
                 ['controller' => 'UserAnswers', 'action' => 'index', 'type' => 'open'],
-                ['pass' => ['type'], '_name' => 'userOpenPredictions']
+                ['pass' => ['type'], '_name' => 'userOpenPredictions'],
             );
             $routes->fallbacks();
         });
@@ -244,7 +244,7 @@ class SearchComponentTest extends TestCase
             $this->Controller->getRequest()->withAttribute('params', [
                 'controller' => 'Articles',
                 'action' => 'index',
-            ])
+            ]),
         );
 
         if (method_exists($this->Controller, 'fetchTable')) {
@@ -272,7 +272,7 @@ class SearchComponentTest extends TestCase
             $this->Controller->getRequest()->withAttribute('params', [
                 'controller' => 'Articles',
                 'action' => 'index',
-            ])
+            ]),
         );
 
         $articles = $this->getMockBuilder(Table::class)->addMethods(['isSearch'])->getMock();
