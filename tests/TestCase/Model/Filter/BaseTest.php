@@ -206,6 +206,30 @@ class BaseTest extends TestCase
     /**
      * @return void
      */
+    public function testValueMultiValueSeparatorExactMatching()
+    {
+        $filter = new TestFilter(
+            'fields',
+            $this->Manager,
+            ['defaultValue' => 'default']
+        );
+
+        $filter->setConfig('multiValueSeparator', ' ');
+        $filter->setConfig('multiValueExactMatching', true);
+
+        $filter->setArgs(['fields' => 'value1 "value2 and 3" value4']);
+        $this->assertEquals(['value1', 'value2 and 3', 'value4'], $filter->value());
+
+        $filter->setConfig('multiValueSeparator', ' ');
+        $filter->setConfig('multiValueExactMatching', '*');
+
+        $filter->setArgs(['fields' => 'value1 *value2 and 3* value4']);
+        $this->assertEquals(['value1', 'value2 and 3', 'value4'], $filter->value());
+    }
+
+    /**
+     * @return void
+     */
     public function testFieldAliasing()
     {
         $filter = new TestFilter(
