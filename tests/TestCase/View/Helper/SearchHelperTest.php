@@ -38,7 +38,7 @@ class SearchHelperTest extends TestCase
         Router::createRouteBuilder('/')->scope('/', function (RouteBuilder $routes) {
             $routes->connect(
                 '/controller/action',
-                ['controller' => 'Controller', 'action' => 'action']
+                ['controller' => 'Controller', 'action' => 'action'],
             );
             $routes->fallbacks();
         });

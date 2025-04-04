@@ -116,7 +116,7 @@ class Manager
         if (!$className) {
             throw new InvalidArgumentException(sprintf(
                 'The collection class "%sCollection" does not exist',
-                $class
+                $class,
             ));
         }
 
@@ -125,7 +125,7 @@ class Manager
             throw new InvalidArgumentException(sprintf(
                 'The collection must be instance of FilterCollectionInterface. ' .
                 'Got instance of "%s" instead',
-                get_class($instance)
+                get_class($instance),
             ));
         }
 

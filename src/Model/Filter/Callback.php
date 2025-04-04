@@ -16,7 +16,7 @@ class Callback extends Base
             $this->getConfig('callback'),
             $this->getQuery(),
             $this->getArgs(),
-            $this
+            $this,
         ) ?? true;
     }
 }

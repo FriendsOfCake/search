@@ -217,7 +217,7 @@ class FilterCollectionCommand extends BakeCommand
         $parser = $this->_setCommonOptions($parser);
 
         $parser->setDescription(
-            'Bake filter collections for a model search functionality.'
+            'Bake filter collections for a model search functionality.',
         )->addArgument('name', [
             'help' => 'Name of the filter collection to bake. You can use Plugin.name '
             . 'as a shortcut for plugin baking. By default this will also try to find the model based on that name.',

@@ -31,11 +31,11 @@ class FinderTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.is_active = \:c0 AND foo = \:c1\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [true, 'bar'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -58,11 +58,11 @@ class FinderTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE title = :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             ['foo'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -85,11 +85,11 @@ class FinderTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE user_id = :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [1],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -122,11 +122,11 @@ class FinderTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE user_id = :c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [1],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -155,7 +155,7 @@ class FinderTest extends TestCase
 
         $this->assertSame(
             [],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -190,11 +190,11 @@ class FinderTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(title\) IS NULL$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -228,11 +228,11 @@ class FinderTest extends TestCase
         $filter->process();
         $this->assertMatchesRegularExpression(
             '/WHERE \(user_id\) IS NULL$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 

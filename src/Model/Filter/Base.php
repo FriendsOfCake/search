@@ -76,7 +76,7 @@ abstract class Base
 
         if (isset($config['field'])) {
             throw new InvalidArgumentException(
-                'The `field` option has been renamed to `fields`.'
+                'The `field` option has been renamed to `fields`.',
             );
         }
         $config['fields'] = (array)$config['fields'];
@@ -89,7 +89,7 @@ abstract class Base
             }))
         ) {
             throw new InvalidArgumentException(
-                'The `field` option is invalid. Expected a non-empty string or array.'
+                'The `field` option is invalid. Expected a non-empty string or array.',
             );
         }
 
@@ -99,7 +99,7 @@ abstract class Base
             $config['name'] !== '0')
         ) {
             throw new InvalidArgumentException(
-                'The `$name` argument is invalid. Expected a non-empty string.'
+                'The `$name` argument is invalid. Expected a non-empty string.',
             );
         }
     }
@@ -227,7 +227,7 @@ abstract class Base
     {
         if ($this->getConfig('multiValueSeparator') !== ' ') {
             throw new UnexpectedValueException(
-                'The `multiValueSeparator` option must be a single space when `multiValueExactMatching` is used.'
+                'The `multiValueSeparator` option must be a single space when `multiValueExactMatching` is used.',
             );
         }
 
@@ -239,10 +239,14 @@ abstract class Base
         $terms = [];
 
         // Match quoted phrases and unquoted words
-        preg_match_all('/' . preg_quote($quoteChar) . '([^' . preg_quote($quoteChar) . ']+)' . preg_quote($quoteChar) . '|\S+/', $input, $matches);
+        preg_match_all(
+            '/' . preg_quote($quoteChar) . '([^' . preg_quote($quoteChar) . ']+)' . preg_quote($quoteChar) . '|\S+/',
+            $input,
+            $matches,
+        );
 
         foreach ($matches[0] as $match) {
-            // If it’s quoted, strip the quotes
+            // If it's quoted, strip the quotes
             if ($match[0] === $quoteChar) {
                 $terms[] = trim($match, $quoteChar);
             } else {

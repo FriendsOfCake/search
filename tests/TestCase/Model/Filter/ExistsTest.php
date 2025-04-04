@@ -30,7 +30,7 @@ class ExistsTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.number\) IS NOT NULL$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
     }
 
@@ -50,7 +50,7 @@ class ExistsTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(Articles\.number\) IS NULL$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
     }
 
@@ -72,11 +72,11 @@ class ExistsTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.number != \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [''],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -98,11 +98,11 @@ class ExistsTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE Articles\.number = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             [''],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 
@@ -158,7 +158,7 @@ class ExistsTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE \(\(Articles\.number\) IS NOT NULL OR \(Articles\.title\) IS NOT NULL\)$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
     }
 }

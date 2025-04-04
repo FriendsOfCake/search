@@ -50,7 +50,7 @@ trait SearchTrait
     public function findSearch(
         QueryInterface $query,
         array $search,
-        string $collection = Manager::DEFAULT_COLLECTION
+        string $collection = Manager::DEFAULT_COLLECTION,
     ): QueryInterface {
         $filters = $this->_getFilters($collection);
 
@@ -62,7 +62,7 @@ trait SearchTrait
         $this->_isSearch = $this->processor()->process(
             $filters,
             $query,
-            $search
+            $search,
         );
 
         return $query;
@@ -108,7 +108,7 @@ trait SearchTrait
     {
         return $this->_manager ??= new Manager(
             $this->_repository(),
-            $this->_collectionClass
+            $this->_collectionClass,
         );
     }
 

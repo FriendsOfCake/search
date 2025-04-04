@@ -159,7 +159,7 @@ class Like extends Base
             $query = $this->getQuery();
             if (!$query instanceof SelectQuery) {
                 throw new RuntimeException(
-                    '$query must be instance of Cake\ORM\Query\SelectQuery to be able to check driver name.'
+                    '$query must be instance of Cake\ORM\Query\SelectQuery to be able to check driver name.',
                 );
             }
 
@@ -178,7 +178,7 @@ class Like extends Base
         if ($className === null) {
             throw new InvalidArgumentException(sprintf(
                 'Escape driver "%s" in like filter was not found.',
-                $class
+                $class,
             ));
         }
 

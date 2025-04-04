@@ -42,7 +42,7 @@ class FilterCollectionCommandTest extends TestCase
             'Console.buildCommands',
             function ($event, CommandCollection $commands) {
                 $commands->add(FilterCollectionCommand::defaultName(), FilterCollectionCommand::class);
-            }
+            },
         );
 
         $this->loadPlugins(['Search']);

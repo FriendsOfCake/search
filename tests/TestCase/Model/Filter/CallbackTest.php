@@ -34,11 +34,11 @@ class CallbackTest extends TestCase
 
         $this->assertMatchesRegularExpression(
             '/WHERE title = \:c0$/',
-            $filter->getQuery()->sql()
+            $filter->getQuery()->sql(),
         );
         $this->assertSame(
             ['test'],
-            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value')
+            Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
     }
 

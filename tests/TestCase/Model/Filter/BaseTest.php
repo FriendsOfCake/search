@@ -54,7 +54,7 @@ class BaseTest extends TestCase
         new TestFilter(
             'name',
             $this->Manager,
-            ['fields' => $emptyValue]
+            ['fields' => $emptyValue],
         );
     }
 
@@ -78,7 +78,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'name',
             $this->Manager,
-            ['fields' => $nonEmptyValue, 'aliasField' => false]
+            ['fields' => $nonEmptyValue, 'aliasField' => false],
         );
         $this->assertEquals((array)$nonEmptyValue, $filter->fields());
     }
@@ -103,7 +103,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             $nonEmptyValue,
             $this->Manager,
-            ['fields' => 'fields']
+            ['fields' => 'fields'],
         );
         $this->assertSame($filter->name(), $nonEmptyValue);
     }
@@ -116,7 +116,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'fields',
             $this->Manager,
-            ['alwaysRun' => true, 'filterEmpty' => true]
+            ['alwaysRun' => true, 'filterEmpty' => true],
         );
 
         $filter->setArgs(['fields' => '1']);
@@ -140,7 +140,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'fields',
             $this->Manager,
-            ['defaultValue' => 'default']
+            ['defaultValue' => 'default'],
         );
 
         $filter->setArgs(['fields' => 'value']);
@@ -161,7 +161,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'fields',
             $this->Manager,
-            ['defaultValue' => 'default']
+            ['defaultValue' => 'default'],
         );
 
         $filter->setConfig('multiValue', true);
@@ -177,7 +177,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'fields',
             $this->Manager,
-            ['defaultValue' => 'default']
+            ['defaultValue' => 'default'],
         );
 
         $filter->setConfig('multiValueSeparator', '|');
@@ -194,7 +194,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'fields',
             $this->Manager,
-            ['defaultValue' => 'default']
+            ['defaultValue' => 'default'],
         );
 
         $filter->setConfig('multiValue', true);
@@ -211,7 +211,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'fields',
             $this->Manager,
-            ['defaultValue' => 'default']
+            ['defaultValue' => 'default'],
         );
 
         $filter->setConfig('multiValueSeparator', ' ');
@@ -235,7 +235,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'field',
             $this->Manager,
-            []
+            [],
         );
 
         $this->assertEquals(['Articles.field'], $filter->fields());
@@ -246,7 +246,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'name',
             $this->Manager,
-            ['fields' => ['field1', 'field2']]
+            ['fields' => ['field1', 'field2']],
         );
 
         $expected = ['Articles.field1', 'Articles.field2'];
@@ -264,7 +264,7 @@ class BaseTest extends TestCase
         $filter = new TestFilter(
             'fields',
             new Manager($repo),
-            ['aliasField' => true]
+            ['aliasField' => true],
         );
 
         $this->assertEquals(['fields'], $filter->fields());
@@ -280,7 +280,7 @@ class BaseTest extends TestCase
             $this->Manager,
             ['beforeProcess' => function ($query, $params) {
                 $query->where($params);
-            }]
+            }],
         );
 
         $filter->execute($this->Manager->getRepository()->find(), ['fields' => 'bar']);
@@ -328,7 +328,7 @@ class BaseTest extends TestCase
                 $params['extra'] = 'value';
 
                 return $params;
-            }]
+            }],
         );
 
         $filter->execute($this->Manager->getRepository()->find(), ['fields' => 'bar']);
