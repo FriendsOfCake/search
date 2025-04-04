@@ -238,9 +238,10 @@ abstract class Base
 
         $terms = [];
 
+        $escapedQuoteChar = preg_quote($quoteChar, '/');
         // Match quoted phrases and unquoted words
         preg_match_all(
-            '/' . preg_quote($quoteChar) . '([^' . preg_quote($quoteChar) . ']+)' . preg_quote($quoteChar) . '|\S+/',
+            '/' . $escapedQuoteChar . '([^' . $escapedQuoteChar . ']+)' . $escapedQuoteChar . '|\S+/',
             $input,
             $matches,
         );
