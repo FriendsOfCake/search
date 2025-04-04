@@ -69,7 +69,7 @@ abstract class Base
             'defaultValue' => null,
             'multiValue' => false,
             'multiValueSeparator' => null,
-            'multiValueExactMatching' => false,
+            'multiValueExactMatching' => null,
             'flatten' => true,
             'beforeProcess' => null,
         ];
@@ -209,22 +209,25 @@ abstract class Base
         }
 
         if ($this->getConfig('multiValueSeparator')) {
-            if (!$this->getConfig('multiValueExactMatching')) {
-                return explode($this->getConfig('multiValueSeparator'), $value);
-            }
-
-            return $this->parseSearchTerms($value);
+            return $this->parseValue($value);
         }
 
         return $value;
     }
 
     /**
-     * @param string $input
+     * Split string into array of values.
+     *
+     * @param string $value
+     * @throws \UnexpectedValueException
      * @return array<string>
      */
-    protected function parseSearchTerms(string $input): array
+    protected function parseValue(string $value): array
     {
+        if (!$this->getConfig('multiValueExactMatching')) {
+            return explode($this->getConfig('multiValueSeparator'), $value);
+        }
+
         if ($this->getConfig('multiValueSeparator') !== ' ') {
             throw new UnexpectedValueException(
                 'The `multiValueSeparator` option must be a single space when `multiValueExactMatching` is used.',
@@ -242,7 +245,7 @@ abstract class Base
         // Match quoted phrases and unquoted words
         preg_match_all(
             '/' . $escapedQuoteChar . '([^' . $escapedQuoteChar . ']+)' . $escapedQuoteChar . '|\S+/',
-            $input,
+            $value,
             $matches,
         );
 
