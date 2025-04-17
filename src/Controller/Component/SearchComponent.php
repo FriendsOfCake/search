@@ -28,7 +28,7 @@ class SearchComponent extends Component
      *   Defaults to the Paginator `'sort'`, `'direction'` and `'limit'` ones.
      * - `queryStringBlacklist` : An array of form fields that should not end up in the query.
      * - `emptyValues` : A map of fields and their values to be considered empty
-     *   (will not be passed along in the URL).
+     *   (will not be passed along in the URL). Use callables for more control (return true for "empty").
      * - `modelClass` : Configure the controller's modelClass to be used for the query, used to
      *   populate the _isSearch view variable to allow for a reset button, for example.
      *   Set to false to disable the auto-setting of the view variable.
@@ -144,6 +144,15 @@ class SearchComponent extends Component
 
         foreach ((array)$this->getConfig('emptyValues') as $field => $value) {
             if (!isset($params[$field])) {
+                continue;
+            }
+
+            if (is_callable($value)) {
+                $isEmpty = $value($params[$field], $params);
+                if ($isEmpty) {
+                    unset($params[$field]);
+                }
+
                 continue;
             }
 

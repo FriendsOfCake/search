@@ -296,6 +296,9 @@ getting the query string attached for this "disabled" search field, you can set
         ...
         'emptyValues' => [
             'my_checkbox' => '0',
+            'my_custom_field' => callable($value, array $params): bool {
+                //return true to make it behave empty;
+            }
         ],
     ]);
 ```
