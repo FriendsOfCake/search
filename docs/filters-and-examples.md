@@ -334,3 +334,6 @@ After that you can use your filter as:
 $this->searchManager()->add('name', 'MyCustom');
 ```
 
+## More examples
+
+A lose collection of more useful examples can be found in the [wiki section](https://github.com/FriendsOfCake/search/wiki/Pastebin-of-useful-filter-rules).
