@@ -296,6 +296,9 @@ getting the query string attached for this "disabled" search field, you can set
         ...
         'emptyValues' => [
             'my_checkbox' => '0',
+            'my_custom_field' => function ($value, array $params): bool {
+                //return true to make it behave empty;
+            },
         ],
     ]);
 ```
@@ -304,7 +307,7 @@ This is needed for the "isSearch" work as expected.
 
 ## Custom filter
 
-You can create your own filter by by creating a filter class under `src/Model/Filter`.
+You can create your own filter by creating a filter class under `src/Model/Filter`.
 
 ```php
 <?php
