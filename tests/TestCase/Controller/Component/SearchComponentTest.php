@@ -150,7 +150,7 @@ class SearchComponentTest extends TestCase
         $this->Controller->setRequest($request);
 
         $this->Search->configShallow('emptyValues', [
-            'checkbox' => function($value, array $params): bool {
+            'checkbox' => function ($value, array $params): bool {
                 return $value === '0';
             },
         ]);
