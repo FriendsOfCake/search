@@ -14,9 +14,9 @@ request and redirecting.
 
 ## Emptiness based on more than one field.
 If you need to determine `emptyValues` dynamically or based on multiple fields
-(e.g. price range min/max), you can use callables for it and pass this to the `SearchComponent` config:
+(e.g. price range min/max), you can use closures for it and pass this to the `SearchComponent` config:
 ```php
-$callable = function ($value, array $params) use (Price $minPrice, Price $maxPrice): bool {
+$checkEmpty = function ($value, array $params) use (Price $minPrice, Price $maxPrice): bool {
     $minValue = (int)$minPrice->price;
     $maxValue = (int)ceil((float)$maxPrice->price);
 
@@ -31,8 +31,8 @@ $callable = function ($value, array $params) use (Price $minPrice, Price $maxPri
     return false;
 };
 $this->Search->setConfig('emptyValues', [
-    'price_min' => $callable,
-    'price_max' => $callable,
+    'price_min' => $checkEmpty,
+    'price_max' => $checkEmpty,
 ]);
 ```
 It will evaluate the two fields together.

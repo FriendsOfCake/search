@@ -6,6 +6,7 @@ namespace Search\Controller\Component;
 use Cake\Controller\Component;
 use Cake\Http\Response;
 use Cake\Utility\Hash;
+use Closure;
 use UnexpectedValueException;
 
 /**
@@ -28,7 +29,7 @@ class SearchComponent extends Component
      *   Defaults to the Paginator `'sort'`, `'direction'` and `'limit'` ones.
      * - `queryStringBlacklist` : An array of form fields that should not end up in the query.
      * - `emptyValues` : A map of fields and their values to be considered empty
-     *   (will not be passed along in the URL). Use callables for more control (return true for "empty").
+     *   (will not be passed along in the URL). Use closure for more control (return true for "empty").
      * - `modelClass` : Configure the controller's modelClass to be used for the query, used to
      *   populate the _isSearch view variable to allow for a reset button, for example.
      *   Set to false to disable the auto-setting of the view variable.
@@ -147,7 +148,7 @@ class SearchComponent extends Component
                 continue;
             }
 
-            if (is_callable($value)) {
+            if ($value instanceof Closure) {
                 $isEmpty = $value($params[$field], $params);
                 if ($isEmpty) {
                     unset($params[$field]);
