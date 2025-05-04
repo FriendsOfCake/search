@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\Http\Response;
+use Cake\Event\EventInterface;
 use Cake\Utility\Hash;
 use Closure;
 use UnexpectedValueException;
@@ -65,12 +65,13 @@ class SearchComponent extends Component
      * Checks if the current request has posted data and redirects the users
      * to the same action after converting the post data into GET params
      *
-     * @return \Cake\Http\Response|null
+     * @param \Cake\Event\EventInterface $event Event instance
+     * @return void
      */
-    public function startup(): ?Response
+    public function startup(EventInterface $event): void
     {
         if (!$this->getController()->getRequest()->is('post') || !$this->_isSearchAction()) {
-            return null;
+            return;
         }
 
         $url = $this->getController()->getRequest()->getPath();
@@ -81,7 +82,7 @@ class SearchComponent extends Component
             $url .= '?' . http_build_query($params);
         }
 
-        return $this->_registry->getController()->redirect($url);
+        $event->setResult($this->_registry->getController()->redirect($url));
     }
 
     /**
