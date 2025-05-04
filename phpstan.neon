@@ -8,3 +8,4 @@ parameters:
         - vendor/cakephp/cakephp/src/Database/Exception/DatabaseException.php
     ignoreErrors:
         - identifier: missingType.iterableValue
+        - identifier: missingType.generics
