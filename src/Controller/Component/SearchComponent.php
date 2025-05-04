@@ -5,7 +5,6 @@ namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Event\EventInterface;
-use Cake\Http\Response;
 use Cake\Utility\Hash;
 use Closure;
 use UnexpectedValueException;
@@ -66,13 +65,13 @@ class SearchComponent extends Component
      * Checks if the current request has posted data and redirects the users
      * to the same action after converting the post data into GET params
      *
-     * @param \Cake\Event\EventInterface $event The event instance.
-     * @return \Cake\Http\Response|null
+     * @param \Cake\Event\EventInterface $event Event instance
+     * @return void
      */
-    public function startup(EventInterface $event): ?Response
+    public function startup(EventInterface $event): void
     {
         if (!$this->getController()->getRequest()->is('post') || !$this->_isSearchAction()) {
-            return null;
+            return;
         }
 
         $url = $this->getController()->getRequest()->getPath();

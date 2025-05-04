@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
+use Cake\Event\Event;
+use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
@@ -63,26 +65,36 @@ class SearchComponentTest extends TestCase
             ->withEnv('REQUEST_METHOD', 'POST');
 
         $this->Controller->setRequest($request);
-
-        $response = $this->Search->startup();
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $response = $event->getResult();
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
         $this->Search->setConfig('actions', false);
-        $response = $this->Search->startup();
-        $this->assertNull($response);
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $this->assertNull($event->getResult());
 
         $this->Search->setConfig('actions', 'does-not-exist', false);
-        $response = $this->Search->startup();
-        $this->assertNull($response);
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $this->assertNull($event->getResult());
 
         $this->Search->setConfig('actions', 'index', false);
         $this->Controller->setResponse($this->Controller->getResponse()->withHeader('Location', ''));
-        $response = $this->Search->startup();
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $response = $event->getResult();
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
         $this->Search->setConfig('actions', ['index', 'does-not-exist'], false);
         $this->Controller->setResponse($this->Controller->getResponse()->withHeader('Location', ''));
-        $response = $this->Search->startup();
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $response = $event->getResult();
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
 
         $this->Search->setConfig('actions', true);
@@ -93,16 +105,23 @@ class SearchComponentTest extends TestCase
                 'type' => 'open',
                 'pass' => ['open'],
             ])
-            ->withRequestTarget('/users/my-predictions');
+            ->withRequestTarget('/users/my-predictions')
+            ->withData('foo', 'bar');
         $this->Controller->setRequest($request);
 
         $this->Controller->setResponse($this->Controller->getResponse()->withHeader('Location', ''));
-        $response = $this->Search->startup();
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $response = $event->getResult();
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/users/my-predictions?foo=bar', $response->getHeaderLine('Location'));
 
         $this->Controller->setRequest($this->Controller->getRequest()->withData('foo', ''));
         $this->Controller->setResponse($this->Controller->getResponse()->withHeader('Location', ''));
-        $response = $this->Search->startup();
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $response = $event->getResult();
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/users/my-predictions', $response->getHeaderLine('Location'));
     }
 
@@ -123,11 +142,15 @@ class SearchComponentTest extends TestCase
             ->withEnv('REQUEST_METHOD', 'POST');
 
         $this->Controller->setRequest($request);
+        $event = new Event('Controller.startup', $this->Controller);
 
         $this->Search->configShallow('emptyValues', [
             'checkbox' => '0',
         ]);
-        $response = $this->Search->startup();
+        $this->Search->startup($event);
+        $response = $event->getResult();
+
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
@@ -148,13 +171,17 @@ class SearchComponentTest extends TestCase
             ->withEnv('REQUEST_METHOD', 'POST');
 
         $this->Controller->setRequest($request);
+        $event = new Event('Controller.startup', $this->Controller);
 
         $this->Search->configShallow('emptyValues', [
             'checkbox' => function ($value, array $params): bool {
                 return $value === '0';
             },
         ]);
-        $response = $this->Search->startup();
+        $this->Search->startup($event);
+        $response = $event->getResult();
+
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
@@ -179,8 +206,11 @@ class SearchComponentTest extends TestCase
             ->withEnv('REQUEST_METHOD', 'POST');
 
         $this->Controller->setRequest($request);
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $response = $event->getResult();
 
-        $response = $this->Search->startup();
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar&sort=created&direction=desc', $response->getHeaderLine('Location'));
     }
 
@@ -207,9 +237,13 @@ class SearchComponentTest extends TestCase
             ->withEnv('REQUEST_METHOD', 'POST');
 
         $this->Controller->setRequest($request);
+        $event = new Event('Controller.startup', $this->Controller);
 
         $this->Search->configShallow('queryStringWhitelist', ['scope.sort', 'scope.direction']);
-        $response = $this->Search->startup();
+        $this->Search->startup($event);
+        $response = $event->getResult();
+
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar&scope%5Bsort%5D=created&scope%5Bdirection%5D=desc', $response->getHeaderLine('Location'));
     }
 
@@ -237,7 +271,10 @@ class SearchComponentTest extends TestCase
 
         // Needed as config() would not do anything here due to internal default behavior of merging here
         $this->Search->configShallow('queryStringWhitelist', []);
-        $response = $this->Search->startup();
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $response = $event->getResult();
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
@@ -257,8 +294,11 @@ class SearchComponentTest extends TestCase
             ->withEnv('REQUEST_METHOD', 'POST');
 
         $this->Controller->setRequest($request);
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $response = $event->getResult();
 
-        $response = $this->Search->startup();
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('http://localhost/Posts/index/pass?foo=bar', $response->getHeaderLine('Location'));
     }
 
