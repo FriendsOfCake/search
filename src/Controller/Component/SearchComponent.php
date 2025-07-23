@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Controller\ComponentRegistry;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Utility\Hash;
 use Closure;
@@ -50,6 +52,17 @@ class SearchComponent extends Component
             'Controller.beforeRender' => 'beforeRender',
         ],
     ];
+
+    /**
+     * @param \Cake\Controller\ComponentRegistry $registry
+     * @param array<string, mixed> $config
+     */
+    public function __construct(ComponentRegistry $registry, array $config = [])
+    {
+        $this->_defaultConfig = (array)Configure::read('Search') + $this->_defaultConfig;
+
+        parent::__construct($registry, $config);
+    }
 
     /**
      * Get the Controller callbacks this Component is interested in.
