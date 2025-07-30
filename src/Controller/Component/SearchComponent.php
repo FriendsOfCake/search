@@ -59,7 +59,7 @@ class SearchComponent extends Component
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
-        $this->_defaultConfig = (array)Configure::read('Search') + $this->_defaultConfig;
+        $this->_defaultConfig = (array)Configure::read('Search.component') + $this->_defaultConfig;
 
         parent::__construct($registry, $config);
     }
