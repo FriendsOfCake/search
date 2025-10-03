@@ -44,7 +44,6 @@ class SearchComponentTest extends TestCase
 
         $this->Controller = new Controller($request);
         $reflection = new ReflectionProperty(Controller::class, 'defaultTable');
-        $reflection->setAccessible(true);
         $reflection->setValue($this->Controller, 'Articles');
 
         $this->Search = new SearchComponent($this->Controller->components());
