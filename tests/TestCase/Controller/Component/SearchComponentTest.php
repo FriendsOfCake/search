@@ -404,8 +404,8 @@ class SearchComponentTest extends TestCase
 
         $errors = [
             'q' => [
-                'minLength' => 'Search query must be at least 3 characters long'
-            ]
+                'minLength' => 'Search query must be at least 3 characters long',
+            ],
         ];
         $this->assertEquals($errors, $form->getErrors());
     }
