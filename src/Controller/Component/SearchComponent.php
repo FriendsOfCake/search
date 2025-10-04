@@ -104,7 +104,7 @@ class SearchComponent extends Component
 
         $params = (array)$this->getController()->getRequest()->getData();
 
-        if ($form !== null && !$form->validate($params)) {
+        if ($form !== null && !$form->execute($params)) {
             $this->getController()->set('searchForm', $form);
 
             return;
