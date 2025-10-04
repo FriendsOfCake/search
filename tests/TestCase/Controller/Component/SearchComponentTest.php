@@ -13,6 +13,7 @@ use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use ReflectionProperty;
 use Search\Controller\Component\SearchComponent;
+use Search\Test\TestApp\Form\SearchForm;
 
 class SearchComponentTest extends TestCase
 {
@@ -43,7 +44,6 @@ class SearchComponentTest extends TestCase
 
         $this->Controller = new Controller($request);
         $reflection = new ReflectionProperty(Controller::class, 'defaultTable');
-        $reflection->setAccessible(true);
         $reflection->setValue($this->Controller, 'Articles');
 
         $this->Search = new SearchComponent($this->Controller->components());
@@ -357,6 +357,56 @@ class SearchComponentTest extends TestCase
 
         $viewVars = $this->Controller->viewBuilder()->getVars();
         $this->assertTrue($viewVars['_isSearch']);
+    }
+
+    public function testGetWithForm(): void
+    {
+        $request = $this->Controller->getRequest()
+            ->withAttribute('params', [
+                'controller' => 'Posts',
+                'action' => 'index',
+            ])
+            ->withRequestTarget('/Posts')
+            ->withEnv('REQUEST_METHOD', 'GET');
+
+        $this->Search->setConfig('formClass', SearchForm::class);
+
+        $this->Controller->setRequest($request);
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $this->assertNull($event->getResult());
+
+        $this->assertInstanceOf(SearchForm::class, $this->Controller->viewBuilder()->getVar('searchForm'));
+    }
+
+    public function testPostWithFormValidation(): void
+    {
+        $request = $this->Controller->getRequest()
+            ->withAttribute('params', [
+                'controller' => 'Posts',
+                'action' => 'index',
+            ])
+            ->withRequestTarget('/Posts')
+            ->withData('q', 'ab') // too short, validation should fail
+            ->withEnv('REQUEST_METHOD', 'POST');
+
+        $this->Search->setConfig('formClass', SearchForm::class);
+
+        $this->Controller->setRequest($request);
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+        $this->assertNull($event->getResult());
+
+        /** @var \Cake\Form\Form $form */
+        $form = $this->Controller->viewBuilder()->getVar('searchForm');
+        $this->assertInstanceOf(SearchForm::class, $form);
+
+        $errors = [
+            'q' => [
+                'minLength' => 'Search query must be at least 3 characters long',
+            ],
+        ];
+        $this->assertEquals($errors, $form->getErrors());
     }
 
     /**

@@ -5,8 +5,11 @@ namespace Search\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
+use Cake\Core\App;
 use Cake\Core\Configure;
+use Cake\Core\Exception\CakeException;
 use Cake\Event\EventInterface;
+use Cake\Form\Form;
 use Cake\Utility\Hash;
 use Closure;
 use UnexpectedValueException;
@@ -35,6 +38,7 @@ class SearchComponent extends Component
      * - `modelClass` : Configure the controller's modelClass to be used for the query, used to
      *   populate the _isSearch view variable to allow for a reset button, for example.
      *   Set to false to disable the auto-setting of the view variable.
+     * - `formClass` : The form class to use for the search form. Default `null`.
      * - `events`: List of events this component listens to. You can disable an
      *   event by setting it to false.
      *   E.g. `'events' => ['Controller.beforeRender' => false]`
@@ -47,6 +51,7 @@ class SearchComponent extends Component
         'queryStringBlacklist' => ['_csrfToken', '_Token'],
         'emptyValues' => [],
         'modelClass' => null,
+        'formClass' => null,
         'events' => [
             'Controller.startup' => 'startup',
             'Controller.beforeRender' => 'beforeRender',
@@ -83,19 +88,58 @@ class SearchComponent extends Component
      */
     public function startup(EventInterface $event): void
     {
-        if (!$this->getController()->getRequest()->is('post') || !$this->_isSearchAction()) {
+        if (!$this->_isSearchAction()) {
+            return;
+        }
+
+        $form = $this->getSearchForm();
+
+        if (!$this->getController()->getRequest()->is('post')) {
+            if ($form !== null) {
+                $this->getController()->set('searchForm', $form);
+            }
+
+            return;
+        }
+
+        $params = (array)$this->getController()->getRequest()->getData();
+
+        if ($form !== null && !$form->validate($params)) {
+            $this->getController()->set('searchForm', $form);
+
             return;
         }
 
         $url = $this->getController()->getRequest()->getPath();
-
-        $params = $this->_filterParams();
+        $params = $this->_filterParams($params);
         if ($params) {
             $params = Hash::expand($params);
             $url .= '?' . http_build_query($params);
         }
 
         $event->setResult($this->_registry->getController()->redirect($url));
+    }
+
+    /**
+     * Returns the search form instance if a `formClass` has been configured.
+     *
+     * @throws \Cake\Core\Exception\CakeException When the configured form does not exist.
+     * @return \Cake\Form\Form|null
+     */
+    protected function getSearchForm(): ?Form
+    {
+        $fc = $this->getConfig('formClass');
+        if (!is_string($fc)) {
+            return null;
+        }
+
+        /** @var class-string<\Cake\Form\Form>|null $formClass */
+        $formClass = App::className($fc, 'Form', 'Form');
+        if ($formClass === null) {
+            throw new CakeException(sprintf('The form class `%s` could not be found.', $fc));
+        }
+
+        return new $formClass();
     }
 
     /**
@@ -147,11 +191,12 @@ class SearchComponent extends Component
     /**
      * Filters the params from POST data and merges in the whitelisted query string ones.
      *
+     * @param array $params The params to filter.
      * @return array
      */
-    protected function _filterParams(): array
+    protected function _filterParams(array $params): array
     {
-        $params = Hash::filter((array)$this->getController()->getRequest()->getData());
+        $params = Hash::filter($params);
 
         foreach ((array)$this->getConfig('queryStringBlacklist') as $field) {
             unset($params[$field]);

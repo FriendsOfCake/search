@@ -1,5 +1,29 @@
 # Additional documentation
 
+## Using a Form class for your search form
+
+While not mandatory, you can configure the `SearchComponent` to use a
+[Form class](https://book.cakephp.org/5/en/core-libraries/form.html) for your search form.
+
+```php
+$this->loadComponent('Search.Search', [
+    'formClass' => 'MySearch', // Or use the FQCN: App\Form\MySearch::class
+]);
+```
+
+The search component will auto set a `$searchForm` view variable containing the
+form instance, for your search actions. You can use the form in your template as:
+
+```php
+echo $this->Form->create($searchForm, ['valueSources' => 'query', 'data']);
+// Add your search fields here
+```
+
+Using a form class has the advantage of being able to define validation rules
+and form field types. Validation will be done when the form is submitted
+and in case of validation errors the component will not perform a redirect with
+the query params, but instead the view will be rendered with validation errors.
+
 ## Persisting the Query String
 
 Persisting the query string can be done with the `queryStringWhitelist` option.
