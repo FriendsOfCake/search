@@ -379,7 +379,7 @@ class SearchComponentTest extends TestCase
         $this->assertInstanceOf(SearchForm::class, $this->Controller->viewBuilder()->getVar('searchForm'));
     }
 
-    public function testPostWithFormValidation(): void
+    public function testPostFormValidationFailure(): void
     {
         $request = $this->Controller->getRequest()
             ->withAttribute('params', [
@@ -406,7 +406,45 @@ class SearchComponentTest extends TestCase
                 'minLength' => 'Search query must be at least 3 characters long',
             ],
         ];
-        $this->assertEquals($errors, $form->getErrors());
+        $this->assertSame($errors, $form->getErrors());
+    }
+
+    public function testPostFormValidationSuccess(): void
+    {
+        $request = $this->Controller->getRequest()
+            ->withAttribute('params', [
+                'controller' => 'Posts',
+                'action' => 'index',
+            ])
+            ->withRequestTarget('/Posts')
+            ->withData('q', 'abcd')
+            ->withEnv('REQUEST_METHOD', 'POST');
+
+        $mock = new class extends SearchForm
+        {
+            public static $called = false;
+
+            protected function _execute(array $data = []): bool
+            {
+                static::$called = true;
+
+                return true;
+            }
+        };
+
+        $this->Search->setConfig('formClass', $mock::class);
+
+        $this->Controller->setRequest($request);
+        $event = new Event('Controller.startup', $this->Controller);
+        $this->Search->startup($event);
+
+        $result = $event->getResult();
+        $this->assertInstanceOf(Response::class, $result);
+
+        $this->assertTrue($mock::$called, 'Form execute method was not called');
+
+        // View var is not set as there will be a redirect
+        $this->assertNull($this->Controller->viewBuilder()->getVar('searchForm'));
     }
 
     /**
