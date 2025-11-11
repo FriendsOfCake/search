@@ -119,8 +119,7 @@ trait SearchTrait
      */
     protected function _getFilters(string $collection = Manager::DEFAULT_COLLECTION): FilterCollectionInterface
     {
-        /** @phpstan-ignore-next-line */
-        return $this->_repository()->searchManager()->getFilters($collection);
+        return $this->searchManager()->getFilters($collection);
     }
 
     /**
