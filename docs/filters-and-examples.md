@@ -95,8 +95,8 @@ one filter and all sub-values are automatically available.
 
 **Form fields:**
 ```php
-echo $this->Form->control('search[field_a]');
-echo $this->Form->control('search[field_b]');
+echo $this->Form->control('search.field_a');
+echo $this->Form->control('search.field_b');
 ```
 
 **Filter configuration:**
