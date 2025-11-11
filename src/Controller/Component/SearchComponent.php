@@ -167,7 +167,10 @@ class SearchComponent extends Component
             return;
         }
 
-        /** @var \Search\Model\Behavior\SearchBehavior $searchBehavior */
+        /**
+         * @var \Search\Model\Behavior\SearchBehavior $searchBehavior
+         * @phpstan-ignore method.unresolvableReturnType
+         */
         $searchBehavior = $model->getBehavior('Search');
         $controller->set('_isSearch', $searchBehavior->isSearch());
         $controller->set('_searchParams', $searchBehavior->searchParams());
