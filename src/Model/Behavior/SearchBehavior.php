@@ -66,7 +66,6 @@ class SearchBehavior extends Behavior
         );
         if (class_exists($defaultCollectionClass)) {
             /**
-             * @psalm-suppress PropertyTypeCoercion
              * @phpstan-ignore-next-line
              */
             $this->_collectionClass = $defaultCollectionClass;

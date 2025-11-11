@@ -82,13 +82,12 @@ class FilterCollection implements FilterCollectionInterface
             unset($options['className']);
         }
 
-        /** @psalm-var class-string<\Search\Model\Filter\Base>|null $className */
+        /** @var class-string<\Search\Model\Filter\Base>|null $className */
         $className = App::className($class, 'Model/Filter');
         if ($className === null) {
             throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
         }
 
-        /** @psalm-suppress UnsafeInstantiation */
         return new $className($name, $this->_manager, $options);
     }
 

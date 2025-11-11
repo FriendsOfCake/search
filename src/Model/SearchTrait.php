@@ -27,8 +27,7 @@ trait SearchTrait
     /**
      * Default collection class.
      *
-     * @var string|null
-     * @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface>|null
+     * @var class-string<\Search\Model\Filter\FilterCollectionInterface>|null
      */
     protected ?string $_collectionClass = null;
 

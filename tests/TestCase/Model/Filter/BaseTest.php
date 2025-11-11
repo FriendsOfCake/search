@@ -6,6 +6,7 @@ namespace Search\Test\TestCase\Model\Filter;
 use Cake\Datasource\RepositoryInterface;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Search\Manager;
 use Search\Test\TestApp\Model\Filter\TestFilter;
 
@@ -42,10 +43,10 @@ class BaseTest extends TestCase
     }
 
     /**
-     * @dataProvider emptyDataProvider
      * @param mixed $emptyValue Empty value.
      * @return void
      */
+    #[DataProvider('emptyDataProvider')]
     public function testConstructEmptyFieldOption($emptyValue)
     {
         $this->expectException(InvalidArgumentException::class);
@@ -69,10 +70,10 @@ class BaseTest extends TestCase
     }
 
     /**
-     * @dataProvider nonEmptyFieldDataProvider
      * @param mixed $nonEmptyValue Non empty value.
      * @return void
      */
+    #[DataProvider('nonEmptyFieldDataProvider')]
     public function testConstructNonEmptyFieldOption($nonEmptyValue)
     {
         $filter = new TestFilter(
@@ -94,10 +95,10 @@ class BaseTest extends TestCase
     }
 
     /**
-     * @dataProvider nonEmptyNameDataProvider
      * @param mixed $nonEmptyValue Non empty value.
      * @return void
      */
+    #[DataProvider('nonEmptyNameDataProvider')]
     public function testConstructNonEmptyNameArgument($nonEmptyValue)
     {
         $filter = new TestFilter(

@@ -173,7 +173,7 @@ class Like extends Base
             $this->setConfig('escaper', $class);
         }
 
-        /** @psalm-var class-string<\Search\Model\Filter\Escaper\EscaperInterface>|null $className */
+        /** @var class-string<\Search\Model\Filter\Escaper\EscaperInterface>|null $className */
         $className = App::className($class, 'Model/Filter/Escaper', 'Escaper');
         if ($className === null) {
             throw new InvalidArgumentException(sprintf(

@@ -2,5 +2,8 @@
 <ruleset name="friendsofcake-search">
     <rule ref="CakePHP"/>
 
+    <file>src/</file>
+    <file>tests/</file>
+
     <exclude-pattern>*/tests/comparisons/*</exclude-pattern>
 </ruleset>

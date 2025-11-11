@@ -7,7 +7,6 @@ use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
-use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
@@ -342,9 +341,15 @@ class SearchComponentTest extends TestCase
             ]),
         );
 
-        $articles = $this->getMockBuilder(Table::class)->addMethods(['isSearch'])->getMock();
+        $articles = $this->getTableLocator()->get('Articles', [
+            'className' => 'Search\Test\TestApp\Model\Table\ArticlesTable',
+        ]);
         $articles->addBehavior('Search.Search');
-        $articles->expects($this->once())->method('isSearch')->willReturn(true);
+
+        // Mock the isSearch method behavior
+        $behavior = $articles->behaviors()->get('Search');
+        $reflection = new ReflectionProperty($behavior, '_isSearch');
+        $reflection->setValue($behavior, true);
 
         if (method_exists($this->Controller, 'fetchTable')) {
             $this->Controller->getTableLocator()->set('Articles', $articles);
