@@ -33,8 +33,7 @@ class Manager
     /**
      * Filter collections
      *
-     * @var array<\Search\Model\Filter\FilterCollectionInterface>  Filter collections list.
-     * @psalm-var array<string, \Search\Model\Filter\FilterCollectionInterface>
+     * @var array<string, \Search\Model\Filter\FilterCollectionInterface>  Filter collections list.
      */
     protected array $_collections = [];
 
@@ -48,8 +47,7 @@ class Manager
     /**
      * Default collection class.
      *
-     * @var string
-     * @psalm-var class-string<\Search\Model\Filter\FilterCollectionInterface>
+     * @var class-string<\Search\Model\Filter\FilterCollectionInterface>
      */
     protected string $_collectionClass = FilterCollection::class;
 
@@ -57,8 +55,7 @@ class Manager
      * Constructor
      *
      * @param \Cake\Datasource\RepositoryInterface $repository Repository
-     * @param string|null $collectionClass Default collection class.
-     * @psalm-param class-string<\Search\Model\Filter\FilterCollectionInterface>|null $collectionClass
+     * @param class-string<\Search\Model\Filter\FilterCollectionInterface>|null $collectionClass Default collection class.
      */
     public function __construct(RepositoryInterface $repository, ?string $collectionClass = null)
     {

@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Search\Test\TestCase\Model\Behavior;
 
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Search\Manager;
+use Search\Model\Behavior\SearchBehavior;
 use Search\Model\Filter\FilterCollection;
 use Search\Test\TestApp\Model\Table\ArticlesTable;
 use Search\Test\TestApp\Model\Table\CommentsTable;
@@ -56,16 +58,6 @@ class SearchBehaviorTest extends TestCase
      */
     public function testProcessFilters()
     {
-        $behavior = $this
-            ->getMockBuilder('Search\Model\Behavior\SearchBehavior')
-            ->setConstructorArgs([$this->Comments])
-            ->onlyMethods(['_getFilters'])
-            ->getMock();
-        $this->Comments->behaviors()->reset();
-        $this->Comments->addBehavior('Search', [
-            'className' => '\\' . get_class($behavior),
-        ]);
-
         $manager = new Manager($this->Comments);
 
         $params = [
@@ -150,8 +142,11 @@ class SearchBehaviorTest extends TestCase
         $filters['date'] = $filter2;
         $filters['Comments.foo'] = $filter3;
 
-        /** @var \Search\Model\Behavior\SearchBehavior|\PHPUnit\Framework\MockObject\MockObject $behavior */
-        $behavior = $this->Comments->behaviors()->get('Search');
+        $behavior = $this
+            ->getMockBuilder(SearchBehavior::class)
+            ->setConstructorArgs([$this->Comments])
+            ->onlyMethods(['_getFilters'])
+            ->getMock();
         $behavior
             ->expects($this->once())
             ->method('_getFilters')
@@ -280,12 +275,12 @@ class SearchBehaviorTest extends TestCase
     /**
      * Test the custom "search" finder
      *
-     * @dataProvider collectionFinderProvider
      * @param string $collection The collection name.
      * @param string $queryString The query string data.
      * @param int $expected The expected record count.
      * @return void
      */
+    #[DataProvider('collectionFinderProvider')]
     public function testCollectionFinder($collection, $queryString, $expected)
     {
         $query = $this->Sections->find('search', search: $queryString, collection: $collection);
