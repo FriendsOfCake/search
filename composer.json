@@ -33,7 +33,7 @@
         "cakephp/bake": "^3.0",
         "cakephp/cakephp-codesniffer": "^5.0",
         "cakephp/twig-view": "^2.0",
-        "phpunit/phpunit": "^10.5.58 || ^11.5-dev || ^12.4"
+        "phpunit/phpunit": "^10.5.58 || ^11.5.3 || ^12.4"
     },
     "autoload": {
         "psr-4": {
