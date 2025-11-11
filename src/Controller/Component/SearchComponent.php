@@ -167,10 +167,10 @@ class SearchComponent extends Component
             return;
         }
 
-        /** @phpstan-ignore method.notFound */
-        $controller->set('_isSearch', $model->isSearch());
-        /** @phpstan-ignore method.notFound */
-        $controller->set('_searchParams', $model->searchParams());
+        /** @var \Search\Model\Behavior\SearchBehavior $searchBehavior */
+        $searchBehavior = $model->getBehavior('Search');
+        $controller->set('_isSearch', $searchBehavior->isSearch());
+        $controller->set('_searchParams', $searchBehavior->searchParams());
     }
 
     /**
