@@ -6,6 +6,7 @@ namespace Search\Model\Behavior;
 use Cake\Core\Configure;
 use Cake\ORM\Behavior;
 use Cake\ORM\Table;
+use Search\Model\Filter\FilterCollectionInterface;
 use Search\Model\SearchTrait;
 
 /**
@@ -65,9 +66,7 @@ class SearchBehavior extends Behavior
             $this->table()->getAlias(),
         );
         if (class_exists($defaultCollectionClass)) {
-            /**
-             * @phpstan-ignore-next-line
-             */
+            assert(is_subclass_of($defaultCollectionClass, FilterCollectionInterface::class));
             $this->_collectionClass = $defaultCollectionClass;
         }
     }
