@@ -53,10 +53,7 @@ trait SearchTrait
     ): QueryInterface {
         $filters = $this->_getFilters($collection);
 
-        $emptyValues = $this->_emptyValues();
-        if ($emptyValues !== null) {
-            $this->processor()->setEmptyValues($emptyValues);
-        }
+        $this->processor()->setEmptyValues($this->_emptyValues());
 
         $this->_isSearch = $this->processor()->process(
             $filters,
@@ -135,10 +132,10 @@ trait SearchTrait
     /**
      * Return the values which will be seen as empty.
      *
-     * @return array|null
+     * @return array
      */
-    protected function _emptyValues(): ?array
+    protected function _emptyValues(): array
     {
-        return null;
+        return [];
     }
 }
