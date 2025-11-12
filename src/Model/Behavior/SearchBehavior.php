@@ -84,10 +84,10 @@ class SearchBehavior extends Behavior
     /**
      * Return the empty values.
      *
-     * @return array|null
+     * @return array
      */
-    protected function _emptyValues(): ?array
+    protected function _emptyValues(): array
     {
-        return $this->getConfig('emptyValues');
+        return $this->getConfig('emptyValues', []);
     }
 }
