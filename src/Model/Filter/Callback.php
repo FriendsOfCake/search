@@ -6,6 +6,15 @@ namespace Search\Model\Filter;
 class Callback extends Base
 {
     /**
+     * Default configuration.
+     *
+     * @var array<string, mixed>
+     */
+    protected array $_defaultConfig = [
+        'extraParams' => [],
+    ];
+
+    /**
      * Modify query using callback.
      *
      * @return bool

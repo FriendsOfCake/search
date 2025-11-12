@@ -88,10 +88,30 @@ won't be available in `$args` unless you configure a filter for it.
 
 There are two approaches to handle this:
 
-### Approach 1: Nested Array Fields (Recommended)
+### Approach 1: Using the 'extraParams' config
 
-Group related fields under a single parent key in your form. This way, you only need
-one filter and all sub-values are automatically available.
+You can specify additional params to retain using the `extraParams` config and
+make their values available in the `$args` variable.
+
+**Form fields:**
+```php
+echo $this->Form->control('field_a');
+echo $this->Form->control('field_b');
+```
+
+**Filter configuration:**
+```php
+$searchManager->callback('field_a', [
+    'extraParams' => ['field_b'],
+    'callback' => function (SelectQuery $query, array $args, $filter) {
+        // $args will now contain 'field_b' key if it is passed as a param
+    },
+]);
+```
+
+### Approach 2: Nested Array Fields
+
+Group related fields under a single parent key in your form.
 
 **Form fields:**
 ```php
@@ -121,73 +141,9 @@ $this->callback('search', [
 ]);
 ```
 
-**Pros:**
-- Only need one filter
-- No dummy filters required
-- Semantically groups related fields
-- Cleaner configuration
-
-**Cons:**
-- More complex form field names (`search[field_a]` vs `field_a`)
-- URL query string is nested (`?search[field_a]=x&search[field_b]=y`)
-- Less flexible if fields aren't semantically related
-
-### Approach 2: Dummy Filters for Separate Fields
-
-Keep fields independent but create dummy filters to make values available.
-
-**Form fields:**
-```php
-echo $this->Form->control('field_a');
-echo $this->Form->control('field_b');
-```
-
-**Filter configuration:**
-```php
-// Dummy filter to ensure 'field_b' value is available in $args
-$this->callback('field_b', [
-    'callback' => function (SelectQuery $query, array $args, $filter) {
-        // Return false to not modify the query, but make $args['field_b'] available
-        return false;
-    },
-]);
-
-// The actual search logic that uses both 'field_a' and 'field_b'
-$this->callback('field_a', [
-    'callback' => function (SelectQuery $query, array $args, $filter) {
-        // Now $args['field_b'] is available thanks to the dummy filter above
-        $fieldA = $args['field_a'] ?? null;
-        $fieldB = $args['field_b'] ?? null;
-
-        if (!$fieldA || !$fieldB) {
-            return false;
-        }
-
-        // Your custom query logic using both field values
-        $query->where([
-            'Model.field_a' => $fieldA,
-            'Model.field_b' => $fieldB,
-        ]);
-
-        return true;
-    },
-]);
-```
-
-**Pros:**
-- Simple, flat field names
-- Clean URL structure (`?field_a=x&field_b=y`)
-- Fields remain conceptually independent
-- More flexibility for unrelated fields
-
-**Cons:**
-- Requires dummy filter workaround
-- Less obvious that fields are related
-- More verbose configuration
-
 **Which approach to use?**
 - Use **nested arrays** when fields are semantically related (e.g., date range with start/end, tag search with options)
-- Use **separate fields with dummy filters** when fields are independent but happen to be used together in one callback
+- Use **`extraParams` config** when fields are independent but happen to be used together in one callback
 
 ----------
 
