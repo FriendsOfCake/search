@@ -38,14 +38,19 @@ class Processor
      */
     public function process(FilterCollectionInterface $filters, QueryInterface $query, array $params): bool
     {
-        $params = $this->_flattenParams($params, $filters);
-        $params = $this->_extractParams($params, $filters);
+        $filterParams = $this->_flattenParams($params, $filters);
+        $filterParams = $this->_extractParams($filterParams, $filters);
 
-        $this->_searchParams = $params;
+        $this->_searchParams = $filterParams;
         $filtered = false;
 
         foreach ($filters as $filter) {
-            $result = $filter->execute($query, $params);
+            $extraParams = $filter->getConfig('extraParams', []);
+            if ($extraParams) {
+                $filterParams += array_intersect_key($params, array_flip($extraParams));
+            }
+
+            $result = $filter->execute($query, $filterParams);
             if ($result !== false) {
                 $filtered = true;
             }

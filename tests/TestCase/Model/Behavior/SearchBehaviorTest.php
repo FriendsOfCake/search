@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Behavior;
 
+use Cake\ORM\Query\SelectQuery;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Search\Manager;
@@ -314,5 +315,24 @@ class SearchBehaviorTest extends TestCase
     {
         $manager = $this->Articles->searchManager();
         $this->assertInstanceOf('\Search\Manager', $manager);
+    }
+
+    public function testExtraParams(): void
+    {
+        $result = [];
+        $manager = $this->Articles->searchManager();
+        $manager->callback('field1', [
+            'callback' => function (SelectQuery $query, array $args) use (&$result) {
+                $result = $args;
+            },
+            'extraParams' => ['extra_field'],
+        ]);
+
+        $this->Articles->find('search', search: ['field1' => 'foo', 'extra_field' => 'bar']);
+
+        $this->assertSame([
+            'field1' => 'foo',
+            'extra_field' => 'bar',
+        ], $result);
     }
 }
