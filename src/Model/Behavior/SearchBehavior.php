@@ -21,8 +21,11 @@ class SearchBehavior extends Behavior
     /**
      * Default config for the behavior.
      *
-     * You can overwrite default empty values using emptyValues key
-     * when initializing the behavior
+     * - `emptyValues`: Values that should be considered empty and filtered out
+     *   from search parameters
+     * - `extraParams`: Additional parameters that should be preserved even if
+     *   no filter is defined for them.
+     * - `collectionClass`: Custom filter collection class to use for search filters
      *
      * @var array<string, mixed>
      */
@@ -36,6 +39,7 @@ class SearchBehavior extends Behavior
             'searchParams' => 'searchParams',
         ],
         'emptyValues' => ['', false, null],
+        'extraParams' => [],
         'collectionClass' => null,
     ];
 
@@ -89,5 +93,15 @@ class SearchBehavior extends Behavior
     protected function _emptyValues(): ?array
     {
         return $this->getConfig('emptyValues');
+    }
+
+    /**
+     * Return the extra params.
+     *
+     * @return array
+     */
+    protected function _extraParams(): array
+    {
+        return $this->getConfig('extraParams', []);
     }
 }

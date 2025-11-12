@@ -36,6 +36,29 @@ You can use `queryStringBlacklist` option of `SearchComponent` to set an array o
 form fields that should not end up in the query when extracting params from POST
 request and redirecting.
 
+## Extra Parameters
+
+The search manager, by default, only processes params for which filters are defined
+and discards any other query string parameters passed to the search finder.
+The `extraParams` config allows you to preserve additional query string
+parameters that don't have corresponding search filters defined. This is useful
+for implementing filters which are dependent on more than one field.
+
+Configure `extraParams` in your Table's `initialize()` method when adding the behavior:
+
+```php
+$this->addBehavior('Search.Search', [
+    'extraParams' => ['extra_field'],
+]);
+
+$this->searchManager()
+    ->callback('field', function ($query, $args, $filter) {
+        // $args will contain both 'field' and 'extra_field' keys when using the
+        // search finder like $model->find('search', search: $this->request->getQueryParams())
+        // for a URL like /somepath?field=foo&extra_field=bar
+    });
+```
+
 ## Emptiness based on more than one field.
 If you need to determine `emptyValues` dynamically or based on multiple fields
 (e.g. price range min/max), you can use closures for it and pass this to the `SearchComponent` config:

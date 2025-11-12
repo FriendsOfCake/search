@@ -57,6 +57,7 @@ trait SearchTrait
         if ($emptyValues !== null) {
             $this->processor()->setEmptyValues($emptyValues);
         }
+        $this->processor()->setExtraParams($this->_extraParams());
 
         $this->_isSearch = $this->processor()->process(
             $filters,
@@ -140,5 +141,15 @@ trait SearchTrait
     protected function _emptyValues(): ?array
     {
         return null;
+    }
+
+    /**
+     * Return the extra params.
+     *
+     * @return array
+     */
+    protected function _extraParams(): array
+    {
+        return [];
     }
 }

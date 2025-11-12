@@ -29,6 +29,14 @@ class Processor
     protected array $_emptyValues = ['', false, null];
 
     /**
+     * Extra query string params to be preserved even if no filter has been set
+     * for them.
+     *
+     * @var array
+     */
+    protected array $_extraParams = [];
+
+    /**
      * Processes the given filters.
      *
      * @param \Search\Model\Filter\FilterCollectionInterface $filters The filters to process.
@@ -63,6 +71,20 @@ class Processor
     public function setEmptyValues(array $emptyValues)
     {
         $this->_emptyValues = $emptyValues;
+
+        return $this;
+    }
+
+    /**
+     * Set extra query string params to be preserved even if no filter has been set
+     * for them.
+     *
+     * @param array $extraParams Extra params list.
+     * @return $this
+     */
+    public function setExtraParams(array $extraParams)
+    {
+        $this->_extraParams = $extraParams;
 
         return $this;
     }
@@ -157,6 +179,11 @@ class Processor
             return !in_array($val, $emptyValues, true);
         });
 
-        return array_intersect_key($nonEmptyParams, iterator_to_array($filters));
+        $params = array_intersect_key($nonEmptyParams, iterator_to_array($filters));
+        if ($this->_extraParams) {
+            $params += array_intersect_key($nonEmptyParams, array_flip($this->_extraParams));
+        }
+
+        return $params;
     }
 }
