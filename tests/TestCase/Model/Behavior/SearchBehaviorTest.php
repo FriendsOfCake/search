@@ -11,6 +11,7 @@ use Search\Model\Behavior\SearchBehavior;
 use Search\Model\Filter\FilterCollection;
 use Search\Test\TestApp\Model\Table\ArticlesTable;
 use Search\Test\TestApp\Model\Table\CommentsTable;
+use Search\Test\TestApp\Model\Table\CustomSearchManagerTable;
 use Search\Test\TestApp\Model\Table\SectionsTable;
 
 class SearchBehaviorTest extends TestCase
@@ -334,5 +335,26 @@ class SearchBehaviorTest extends TestCase
             'field1' => 'foo',
             'extra_field' => 'bar',
         ], $result);
+    }
+
+    /**
+     * Test that a table's custom searchManager() method is called during find('search').
+     *
+     * @return void
+     */
+    public function testCustomSearchManagerIsCalled(): void
+    {
+        $table = $this->getTableLocator()->get('CustomSearchManager', [
+            'className' => 'Search\Test\TestApp\Model\Table\CustomSearchManagerTable',
+        ]);
+
+        CustomSearchManagerTable::$searchManagerCalled = false;
+
+        $table->find('search', search: ['title' => 'test'])->toArray();
+
+        $this->assertTrue(
+            CustomSearchManagerTable::$searchManagerCalled,
+            'The table\'s custom searchManager() method should be called during find(\'search\')',
+        );
     }
 }
