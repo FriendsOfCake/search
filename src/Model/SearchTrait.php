@@ -7,6 +7,7 @@ use Cake\Datasource\QueryInterface;
 use Search\Manager;
 use Search\Model\Filter\FilterCollectionInterface;
 use Search\Processor;
+use function Cake\Core\deprecationWarning;
 
 trait SearchTrait
 {
@@ -116,6 +117,17 @@ trait SearchTrait
      */
     protected function _getFilters(string $collection = Manager::DEFAULT_COLLECTION): FilterCollectionInterface
     {
+        if (method_exists($this->_repository(), 'searchManager')) {
+            deprecationWarning(
+                '1.7.1',
+                'Support for `searchManager() function on the table class is deprecated.'
+                . ' Access the search manager through the Search behavior instance instead or'
+                . ' filter collections.',
+            );
+
+            return $this->_repository()->searchManager()->getFilters($collection);
+        }
+
         return $this->searchManager()->getFilters($collection);
     }
 
