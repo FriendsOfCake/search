@@ -3,7 +3,7 @@
 ## Search Behavior
 
 Attach the `Search` behavior to your table class. In your table class'
-`initialize()` method call the `searchManager()` method, it will return a search
+`initialize()` method call its `searchManager()` method, it will return a search
 manager instance. You can now add filters to the manager by chaining them.
 The first arg of the `add()` method is the field, the second is the filter using
 the dot notation of cake to load filters from plugins. The third one is an array
@@ -28,7 +28,7 @@ class PostsTable extends Table
         $this->addBehavior('Search.Search');
 
         // Setup search filter using search manager
-        $this->searchManager()
+        $this->getBehavior('Search')->searchManager()
             ->value('author_id')
             // Here we will alias the 'q' query param to search the `Articles.title`
             // field and the `Articles.content` field, using a LIKE match, with `%`
