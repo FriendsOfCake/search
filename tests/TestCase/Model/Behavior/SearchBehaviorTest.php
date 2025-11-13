@@ -6,6 +6,7 @@ namespace Search\Test\TestCase\Model\Behavior;
 use Cake\ORM\Query\SelectQuery;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Runner\Version;
 use Search\Manager;
 use Search\Model\Behavior\SearchBehavior;
 use Search\Model\Filter\FilterCollection;
@@ -341,16 +342,23 @@ class SearchBehaviorTest extends TestCase
      * Test that a table's custom searchManager() method is called during find('search').
      *
      * @return void
+     * @deprecated
      */
     public function testCustomSearchManagerIsCalled(): void
     {
+        if (version_compare(Version::id(), '11.0.0', '<')) {
+            $this->markTestSkipped('This test requires PHPUnit 11 or higher.');
+        }
+
         $table = $this->getTableLocator()->get('CustomSearchManager', [
             'className' => 'Search\Test\TestApp\Model\Table\CustomSearchManagerTable',
         ]);
 
         CustomSearchManagerTable::$searchManagerCalled = false;
 
-        $table->find('search', search: ['title' => 'test'])->toArray();
+        $this->deprecated(function () use ($table) {
+            $table->find('search', search: ['title' => 'test'])->toArray();
+        });
 
         $this->assertTrue(
             CustomSearchManagerTable::$searchManagerCalled,
