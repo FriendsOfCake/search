@@ -13,6 +13,7 @@ use Cake\TestSuite\TestCase;
 use ReflectionProperty;
 use Search\Controller\Component\SearchComponent;
 use Search\Test\TestApp\Form\SearchForm;
+use Search\Test\TestApp\Model\Table\ArticlesTable;
 
 class SearchComponentTest extends TestCase
 {
@@ -461,5 +462,91 @@ class SearchComponentTest extends TestCase
 
         $result = $this->Search->implementedEvents();
         $this->assertSame(['Controller.startup' => 'startup'], $result);
+    }
+
+    /**
+     * Test that autoloadHelper is true by default and loads the Search helper
+     *
+     * @return void
+     */
+    public function testAutoloadHelperDefault()
+    {
+        $this->Controller->setRequest(
+            $this->Controller->getRequest()->withAttribute('params', [
+                'controller' => 'Articles',
+                'action' => 'index',
+            ]),
+        );
+
+        $articles = $this->getTableLocator()->get('Articles', [
+            'className' => ArticlesTable::class,
+        ]);
+        $articles->addBehavior('Search.Search');
+
+        $this->Controller->getTableLocator()->set('Articles', $articles);
+
+        $this->Search->beforeRender();
+
+        $helpers = $this->Controller->viewBuilder()->getHelpers();
+        $this->assertArrayHasKey('Search', $helpers);
+    }
+
+    /**
+     * Test that autoloadHelper can be disabled with false
+     *
+     * @return void
+     */
+    public function testAutoloadHelperDisabled()
+    {
+        $this->Controller->setRequest(
+            $this->Controller->getRequest()->withAttribute('params', [
+                'controller' => 'Articles',
+                'action' => 'index',
+            ]),
+        );
+
+        $articles = $this->getTableLocator()->get('Articles', [
+            'className' => ArticlesTable::class,
+        ]);
+        $articles->addBehavior('Search.Search');
+
+        $this->Controller->getTableLocator()->set('Articles', $articles);
+
+        $this->Search->setConfig('autoloadHelper', false);
+        $this->Search->beforeRender();
+
+        $helpers = $this->Controller->viewBuilder()->getHelpers();
+        $this->assertArrayNotHasKey('Search', $helpers);
+    }
+
+    /**
+     * Test that autoloadHelper accepts array configuration for the helper
+     *
+     * @return void
+     */
+    public function testAutoloadHelperWithConfig()
+    {
+        $this->Controller->setRequest(
+            $this->Controller->getRequest()->withAttribute('params', [
+                'controller' => 'Articles',
+                'action' => 'index',
+            ]),
+        );
+
+        $articles = $this->getTableLocator()->get('Articles', [
+            'className' => ArticlesTable::class,
+        ]);
+        $articles->addBehavior('Search.Search');
+
+        $this->Controller->getTableLocator()->set('Articles', $articles);
+
+        $helperConfig = ['additionalBlacklist' => ['foo']];
+        $this->Search->setConfig('autoloadHelper', $helperConfig);
+        $this->Search->beforeRender();
+
+        $helpers = $this->Controller->viewBuilder()->getHelpers();
+        $this->assertArrayHasKey('Search', $helpers);
+        $this->assertSame('Search.Search', $helpers['Search']['className']);
+        $this->assertSame(['foo'], $helpers['Search']['additionalBlacklist']);
     }
 }
