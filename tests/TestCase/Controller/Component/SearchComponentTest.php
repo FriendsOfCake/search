@@ -313,15 +313,8 @@ class SearchComponentTest extends TestCase
             ]),
         );
 
-        if (method_exists($this->Controller, 'fetchTable')) {
-            $this->Controller->fetchTable()->addBehavior('Search.Search');
-            $this->Controller->fetchTable()->find('search', ['search' => []]);
-        } else {
-            $this->Controller->modelClass = 'Articles';
-            $this->Controller->loadModel('Articles');
-            $this->Controller->Articles->addBehavior('Search.Search');
-            $this->Controller->Articles->find('search', ['search' => []]);
-        }
+        $this->Controller->fetchTable()->addBehavior('Search.Search');
+        $this->Controller->fetchTable()->find('search', ['search' => []]);
 
         $this->Search->beforeRender();
 
@@ -351,12 +344,7 @@ class SearchComponentTest extends TestCase
         $reflection = new ReflectionProperty($behavior, '_isSearch');
         $reflection->setValue($behavior, true);
 
-        if (method_exists($this->Controller, 'fetchTable')) {
-            $this->Controller->getTableLocator()->set('Articles', $articles);
-        } else {
-            $this->Controller->modelClass = 'SomePlugin.Articles';
-            $this->Controller->Articles = $articles;
-        }
+        $this->Controller->getTableLocator()->set('Articles', $articles);
 
         $this->Search->beforeRender();
 
