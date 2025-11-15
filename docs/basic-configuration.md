@@ -132,18 +132,15 @@ query params.
 ### Adding a reset button dynamically
 The Search component will pass down the information on whether the query was
 modified by your search query string by setting `$_isSearch` view variable to
-true here in this case. It also passes down a `$_searchParams` array of all query string params
-that currently are part of the search.
-You can use those to display certain elements on the page or use the following helper as
-convenience wrapper.
+true here in this case. It also passes down a `$_searchParams` array of all query
+string params that currently are part of the search.
+
+You can use the Search helper (which is autoloaded by default for the search actions
+by the Search component).
 
 ```php
-// in AppView.php
-$this->loadHelper('Search.Search');
-
 // in your form template
 if ($this->Search->isSearch()) {
     echo $this->Search->resetLink(__('Reset'), ['class' => 'button']);
 }
 ```
-

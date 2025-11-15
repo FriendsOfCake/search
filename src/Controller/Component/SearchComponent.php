@@ -41,6 +41,8 @@ class SearchComponent extends Component
      * - `formClass` : The form class to use for the search form. Default `null`.
      * - `events`: List of events this component listens to. You can disable an
      *   event by setting it to false.
+     * - `autoloadHelper` : Whether to autoload the SearchHelper for search actions, default `true`.
+     *   Use `false` to disable automatic loading or set it to an array to configure the helper.
      *   E.g. `'events' => ['Controller.beforeRender' => false]`
      *
      * @var array<string, mixed>
@@ -52,6 +54,7 @@ class SearchComponent extends Component
         'emptyValues' => [],
         'modelClass' => null,
         'formClass' => null,
+        'autoloadHelper' => true,
         'events' => [
             'Controller.startup' => 'startup',
             'Controller.beforeRender' => 'beforeRender',
@@ -143,8 +146,9 @@ class SearchComponent extends Component
     }
 
     /**
-     * Populates the $_isSearch view variable based on the current request.
+     * Populates the $_isSearch & $_searchParams view variable based on the current request.
      *
+     * Also autoloads the SearchHelper if configured to do so (default).
      * You need to configure the modelClass config if you are not using the controller's
      * default modelClass property.
      *
@@ -168,6 +172,14 @@ class SearchComponent extends Component
 
         if (!$model->behaviors()->has('Search')) {
             return;
+        }
+
+        $helperConfig = $this->getConfig('autoloadHelper');
+        if ($helperConfig) {
+            $controller->viewBuilder()->addHelper(
+                'Search.Search',
+                is_array($helperConfig) ? $helperConfig : [],
+            );
         }
 
         /** @var \Search\Model\Behavior\SearchBehavior $searchBehavior */
