@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Search\View\Helper;
 
+use Cake\Datasource\Paging\PaginatedInterface;
 use Cake\View\Helper;
 use Cake\View\View;
 use function Cake\I18n\__d;
@@ -34,15 +35,18 @@ class SearchHelper extends Helper
     ];
 
     /**
-     * Checks for pagination and if so, blacklist limit and page params.
+     * Checks for paginated resultset and if so, blacklist the `page` param.
      *
      * @param \Cake\View\View $View View
      * @param array $config Config
      */
     public function __construct(View $View, array $config)
     {
-        if ($View->getRequest()->getParam('paging')) {
-            $this->_defaultConfig['additionalBlacklist'][] = 'page';
+        foreach ($View->getVars() as $name) {
+            if ($View->get($name) instanceof PaginatedInterface) {
+                $this->_defaultConfig['additionalBlacklist'][] = 'page';
+                break;
+            }
         }
 
         parent::__construct($View, $config);

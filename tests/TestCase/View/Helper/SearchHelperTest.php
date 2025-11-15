@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Search\Test\View\Helper;
 
+use Cake\Datasource\Paging\PaginatedInterface;
 use Cake\Http\ServerRequest;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
@@ -128,9 +129,12 @@ class SearchHelperTest extends TestCase
         $request = new ServerRequest([
             'url' => '/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar',
         ]);
-        $request = $request->withParam('paging', ['Something']);
 
         $this->view = new View($request);
+
+        $paginatedResult = $this->createMock(PaginatedInterface::class);
+        $this->view->set('results', $paginatedResult);
+
         $this->searchHelper = new SearchHelper($this->view, []);
 
         $params = [
@@ -157,9 +161,12 @@ class SearchHelperTest extends TestCase
         $request = new ServerRequest([
             'url' => '/controller/action?page=2&limit=5&sort=x&direction=asc&foo=bar',
         ]);
-        $request = $request->withParam('paging', ['Something']);
 
         $this->view = new View($request);
+
+        $paginatedResult = $this->createMock(PaginatedInterface::class);
+        $this->view->set('results', $paginatedResult);
+
         $config = [
             'additionalBlacklist' => [
                 'sort',
