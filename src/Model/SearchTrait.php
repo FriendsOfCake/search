@@ -119,7 +119,7 @@ trait SearchTrait
     {
         if (method_exists($this->_repository(), 'searchManager')) {
             deprecationWarning(
-                '1.7.1',
+                '7.7.1',
                 'Support for `searchManager() function on the table class is deprecated.'
                 . ' Access the search manager through the Search behavior instance instead or'
                 . ' filter collections.',
