@@ -7,7 +7,7 @@ All you need to do is:
 
 ```php
 // PostsTable::initialize()
-    $this->searchManager()
+    $this->Search->searchManager()
         ->useCollection('backend')
         ->add('q', 'Search.Like', [
             'before' => true,
@@ -85,30 +85,3 @@ You can also specify alternate collection class to use when making find call:
 ```
 
 The above will use `App\Model\Filter\PostsBackendCollection`.
-
-
-## Collection class vs table config
-
-You can also set defaults in the Table class and inherit those for all searches.
-The added collection classes would then provide only custom ones per search.
-
-In your Table:
-```php
-    /**
-     * @return \Search\Manager
-     */
-    public function searchManager()
-    {
-        $searchManager = $this->behaviors()->Search->searchManager()
-            ->value('status');
-
-        return $searchManager;
-    }
-```
-In your Controller:
-```php
-    $this->Posts->addBehavior('Search.Search', [
-        'collectionClass' => PostsFilterCollection::class,
-    ]);
-```
-This would add additional filters on top of inherited `status` one.
