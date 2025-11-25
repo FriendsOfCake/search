@@ -145,6 +145,18 @@ $this->callback('search', [
 - Use **nested arrays** when fields are semantically related (e.g., date range with start/end, tag search with options)
 - Use **`extraParams` config** when fields are independent but happen to be used together in one callback
 
+Another use case for `extraParams` is, when you need to inject additional values without going through the URL, e.g. the
+logged-in user data (e.g. `'extraParams' => ['user_id']`):
+```php
+        $identity = $this->request->getAttribute('identity');
+        if ($identity) {
+            $queryParams = $this->request->getQueryParams();
+            $queryParams['user_id'] = $identity->get('id');
+        }
+        $query = $this->Articles->find('search', search: $queryParams);
+```
+The callback then is active on both the primary query string and the passed user id.
+
 ----------
 
 ## Options
