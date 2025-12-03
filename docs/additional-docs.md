@@ -12,8 +12,9 @@ $this->loadComponent('Search.Search', [
 ```
 
 The search component will auto set a `$searchForm` view variable containing the
-form instance, for your search actions. You can use the form in your template as:
+form instance, for your search actions. You can use the form in your template then.
 
+Make sure to also pass `'data'` now into accepted `valueSources`:
 ```php
 echo $this->Form->create($searchForm, ['valueSources' => ['query', 'data']]);
 // Add your search fields here
