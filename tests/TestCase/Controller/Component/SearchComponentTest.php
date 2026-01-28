@@ -418,6 +418,13 @@ class SearchComponentTest extends TestCase
         {
             public static $called = false;
 
+            protected function _execute(array $data = []): bool
+            {
+                static::$called = true;
+
+                return true;
+            }
+
             protected function process(array $data = []): bool
             {
                 static::$called = true;
