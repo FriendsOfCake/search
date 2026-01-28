@@ -167,10 +167,32 @@ class SearchComponent extends Component
              */
             $model = $controller->fetchTable($this->getConfig('modelClass'));
         } catch (UnexpectedValueException $e) {
+            deprecationWarning(
+                '5.0.0',
+                sprintf(
+                    'SearchComponent on `%s::%s()` could not load table: %s. '
+                    . 'Set the `modelClass` config option to the correct table class.',
+                    get_class($controller),
+                    $controller->getRequest()->getParam('action'),
+                    $e->getMessage(),
+                ),
+            );
+
             return;
         }
 
         if (!$model->behaviors()->has('Search')) {
+            deprecationWarning(
+                '5.0.0',
+                sprintf(
+                    'SearchComponent on `%s::%s()`: Table `%s` does not have the Search behavior loaded. '
+                    . 'Make sure to call `addBehavior(\'Search.Search\')` before the render phase.',
+                    get_class($controller),
+                    $controller->getRequest()->getParam('action'),
+                    get_class($model),
+                ),
+            );
+
             return;
         }
 
