@@ -13,6 +13,7 @@ use Cake\Form\Form;
 use Cake\Utility\Hash;
 use Closure;
 use UnexpectedValueException;
+use function Cake\Core\deprecationWarning;
 
 /**
  * SearchComponent Component.
