@@ -424,14 +424,22 @@ class SearchComponentTest extends TestCase
 
                 return true;
             }
-
-            protected function process(array $data = []): bool
-            {
-                static::$called = true;
-
-                return true;
-            }
         };
+
+        // CakePHP 5.3+ uses process() instead of _execute()
+        if (method_exists(SearchForm::class, 'process')) {
+            $mock = new class extends SearchForm
+            {
+                public static $called = false;
+
+                protected function process(array $data = []): bool
+                {
+                    static::$called = true;
+
+                    return true;
+                }
+            };
+        }
 
         $this->Search->setConfig('formClass', $mock::class);
 
