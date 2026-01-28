@@ -14,7 +14,7 @@ class CommentsTable extends Table
     {
         $this->addBehavior('Search.Search');
 
-        $this->searchManager()
+        $this->getBehavior('Search')->searchManager()
             ->value('Comments.foo')
             ->like('Comments.search', ['filterEmpty' => true, 'multiValue' => true])
             ->value('Comments.baz')
