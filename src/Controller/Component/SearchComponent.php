@@ -12,8 +12,8 @@ use Cake\Event\EventInterface;
 use Cake\Form\Form;
 use Cake\Utility\Hash;
 use Closure;
+use RuntimeException;
 use UnexpectedValueException;
-use function Cake\Core\deprecationWarning;
 
 /**
  * SearchComponent Component.
@@ -45,6 +45,11 @@ class SearchComponent extends Component
      * - `autoloadHelper` : Whether to autoload the SearchHelper for search actions, default `true`.
      *   Use `false` to disable automatic loading or set it to an array to configure the helper.
      *   E.g. `'events' => ['Controller.beforeRender' => false]`
+     * - `strictMode` : When `true`, throws exceptions if the model cannot be fetched or the
+     *   Search behavior is not loaded. When `false` (default), silently skips.
+     *   This is useful when the component is loaded in AppController but not all controllers
+     *   have a searchable table. Set to `true` in controller-specific configurations to catch
+     *   misconfiguration early.
      *
      * @var array<string, mixed>
      */
@@ -56,6 +61,7 @@ class SearchComponent extends Component
         'modelClass' => null,
         'formClass' => null,
         'autoloadHelper' => true,
+        'strictMode' => false,
         'events' => [
             'Controller.startup' => 'startup',
             'Controller.beforeRender' => 'beforeRender',
@@ -162,37 +168,37 @@ class SearchComponent extends Component
         }
 
         $controller = $this->getController();
+        $strictMode = $this->getConfig('strictMode');
+
         try {
             /**
              * @var \Cake\ORM\Table<array{Search: \Search\Model\Behavior\SearchBehavior}> $model
              */
             $model = $controller->fetchTable($this->getConfig('modelClass'));
         } catch (UnexpectedValueException $e) {
-            deprecationWarning(
-                '5.0.0',
-                sprintf(
+            if ($strictMode) {
+                throw new RuntimeException(sprintf(
                     'SearchComponent on `%s::%s()` could not load table: %s. '
                     . 'Set the `modelClass` config option to the correct table class.',
                     get_class($controller),
                     $controller->getRequest()->getParam('action'),
                     $e->getMessage(),
-                ),
-            );
+                ), 0, $e);
+            }
 
             return;
         }
 
         if (!$model->behaviors()->has('Search')) {
-            deprecationWarning(
-                '5.0.0',
-                sprintf(
+            if ($strictMode) {
+                throw new RuntimeException(sprintf(
                     'SearchComponent on `%s::%s()`: Table `%s` does not have the Search behavior loaded. '
-                    . 'Make sure to call `addBehavior(\'Search.Search\')` before the render phase.',
+                    . 'Make sure to call `addBehavior(\'Search.Search\')` in the table\'s `initialize()` method.',
                     get_class($controller),
                     $controller->getRequest()->getParam('action'),
                     get_class($model),
-                ),
-            );
+                ));
+            }
 
             return;
         }
