@@ -5,9 +5,9 @@ namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
-use Cake\ORM\Table;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
