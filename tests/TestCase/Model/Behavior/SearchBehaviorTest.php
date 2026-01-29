@@ -182,7 +182,7 @@ class SearchBehaviorTest extends TestCase
             'search' => 'b',
             'group' => 'main',
         ];
-        $this->assertFalse($this->Articles->isSearch());
+        $this->assertFalse($this->Articles->getBehavior('Search')->isSearch());
 
         $query = $this->Articles->find('search', search: $queryString);
         $this->assertEquals(3, $query->clause('where')->count());
@@ -204,7 +204,7 @@ class SearchBehaviorTest extends TestCase
             ],
         );
         $this->assertEquals(2, $query->clause('where')->count());
-        $this->assertTrue($this->Articles->isSearch());
+        $this->assertTrue($this->Articles->getBehavior('Search')->isSearch());
     }
 
     /**
@@ -227,7 +227,7 @@ class SearchBehaviorTest extends TestCase
         $this->Articles->addBehavior('Search.Search', [
             'emptyValues' => ['a'],
         ]);
-        $this->Articles->searchManager()
+        $this->Articles->getBehavior('Search')->searchManager()
             ->value('foo')
             ->like('search')
             ->value('baz')
@@ -239,7 +239,7 @@ class SearchBehaviorTest extends TestCase
         $this->Articles->addBehavior('Search.Search', [
             'emptyValues' => ['a', '0'],
         ]);
-        $this->Articles->searchManager()
+        $this->Articles->getBehavior('Search')->searchManager()
             ->value('foo')
             ->like('search')
             ->value('baz')
@@ -315,14 +315,14 @@ class SearchBehaviorTest extends TestCase
      */
     public function testSearchManager()
     {
-        $manager = $this->Articles->searchManager();
+        $manager = $this->Articles->getBehavior('Search')->searchManager();
         $this->assertInstanceOf('\Search\Manager', $manager);
     }
 
     public function testExtraParams(): void
     {
         $result = [];
-        $manager = $this->Articles->searchManager();
+        $manager = $this->Articles->getBehavior('Search')->searchManager();
         $manager->callback('field1', [
             'callback' => function (SelectQuery $query, array $args) use (&$result) {
                 $result = $args;

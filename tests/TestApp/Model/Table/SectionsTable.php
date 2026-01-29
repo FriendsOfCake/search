@@ -14,7 +14,7 @@ class SectionsTable extends Table
     {
         $this->addBehavior('Search.Search');
 
-        $this->searchManager()
+        $this->getBehavior('Search')->searchManager()
             ->useCollection('frontend')
             ->value('title')
             ->useCollection('backend')
