@@ -5,6 +5,7 @@ namespace Search\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\ORM\Table;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Routing\RouteBuilder;
@@ -588,9 +589,9 @@ class SearchComponentTest extends TestCase
             ]),
         );
 
-        // Table exists but Search behavior is NOT loaded
+        // Use a plain Table without the Search behavior
         $articles = $this->getTableLocator()->get('Articles', [
-            'className' => ArticlesTable::class,
+            'className' => Table::class,
         ]);
         $this->Controller->getTableLocator()->set('Articles', $articles);
 
@@ -639,9 +640,9 @@ class SearchComponentTest extends TestCase
             ]),
         );
 
-        // Table exists but Search behavior is NOT loaded
+        // Use a plain Table without the Search behavior
         $articles = $this->getTableLocator()->get('Articles', [
-            'className' => ArticlesTable::class,
+            'className' => Table::class,
         ]);
         $this->Controller->getTableLocator()->set('Articles', $articles);
 
