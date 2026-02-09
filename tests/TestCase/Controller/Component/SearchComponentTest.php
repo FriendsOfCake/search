@@ -7,10 +7,12 @@ use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use Cake\ORM\Table;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use ReflectionProperty;
+use RuntimeException;
 use Search\Controller\Component\SearchComponent;
 use Search\Test\TestApp\Form\SearchForm;
 use Search\Test\TestApp\Model\Table\ArticlesTable;
@@ -563,5 +565,106 @@ class SearchComponentTest extends TestCase
         $this->assertArrayHasKey('Search', $helpers);
         $this->assertSame('Search.Search', $helpers['Search']['className']);
         $this->assertSame(['foo'], $helpers['Search']['additionalBlacklist']);
+    }
+
+    /**
+     * Test that without strictMode, missing model silently skips.
+     *
+     * @return void
+     */
+    public function testBeforeRenderWithoutModelSilentlySkips(): void
+    {
+        $controller = new Controller(
+            $this->Controller->getRequest()->withAttribute('params', [
+                'controller' => 'NonExistent',
+                'action' => 'index',
+            ]),
+        );
+        $reflection = new ReflectionProperty(Controller::class, 'defaultTable');
+        $reflection->setValue($controller, null);
+
+        $search = new SearchComponent($controller->components());
+        $search->beforeRender();
+
+        $viewVars = $controller->viewBuilder()->getVars();
+        $this->assertArrayNotHasKey('_isSearch', $viewVars);
+    }
+
+    /**
+     * Test that without strictMode, missing Search behavior silently skips.
+     *
+     * @return void
+     */
+    public function testBeforeRenderWithoutBehaviorSilentlySkips(): void
+    {
+        $this->Controller->setRequest(
+            $this->Controller->getRequest()->withAttribute('params', [
+                'controller' => 'Articles',
+                'action' => 'index',
+            ]),
+        );
+
+        // Use a plain Table without the Search behavior
+        $articles = $this->getTableLocator()->get('Articles', [
+            'className' => Table::class,
+        ]);
+        $this->Controller->getTableLocator()->set('Articles', $articles);
+
+        $this->Search->beforeRender();
+
+        $viewVars = $this->Controller->viewBuilder()->getVars();
+        $this->assertArrayNotHasKey('_isSearch', $viewVars);
+    }
+
+    /**
+     * Test that strictMode throws exception when model cannot be fetched.
+     *
+     * @return void
+     */
+    public function testStrictModeThrowsOnMissingModel(): void
+    {
+        $controller = new Controller(
+            $this->Controller->getRequest()->withAttribute('params', [
+                'controller' => 'NonExistent',
+                'action' => 'index',
+            ]),
+        );
+        $reflection = new ReflectionProperty(Controller::class, 'defaultTable');
+        $reflection->setValue($controller, null);
+
+        $search = new SearchComponent($controller->components(), [
+            'strictMode' => true,
+        ]);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('could not load table');
+        $search->beforeRender();
+    }
+
+    /**
+     * Test that strictMode throws exception when Search behavior is not loaded.
+     *
+     * @return void
+     */
+    public function testStrictModeThrowsOnMissingBehavior(): void
+    {
+        $this->Controller->setRequest(
+            $this->Controller->getRequest()->withAttribute('params', [
+                'controller' => 'Articles',
+                'action' => 'index',
+            ]),
+        );
+
+        // Use a plain Table without the Search behavior
+        $articles = $this->getTableLocator()->get('Articles', [
+            'className' => Table::class,
+        ]);
+        $this->Controller->getTableLocator()->set('Articles', $articles);
+
+        $this->Search->setConfig('strictMode', true);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('does not have the Search behavior loaded');
+        $this->Search->beforeRender();
     }
 }
