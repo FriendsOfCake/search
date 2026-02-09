@@ -104,6 +104,23 @@ trait FilterMethodsTrait
     }
 
     /**
+     * Mapped method
+     *
+     * Maps form values to filter conditions. Useful for boolean/status filters
+     * with a default value that shouldn't trigger isSearch().
+     *
+     * @param string $name Name
+     * @param array $config Config
+     * @return $this
+     */
+    public function mapped(string $name, array $config = [])
+    {
+        $this->add($name, 'Search.Mapped', $config);
+
+        return $this;
+    }
+
+    /**
      * Custom method
      *
      * @param string $name Name
