@@ -78,6 +78,34 @@ $searchManager->callback('category_id', [
 
 ----------
 
+`Mapped` to map form values to filter conditions with support for defaults that don't
+trigger `isSearch()`. Useful for filters with a default value (e.g., "show enabled by
+default") where you don't want the Reset button to appear.
+
+```php
+// Boolean example: default to enabled=true, allow showing all with -1
+$searchManager->mapped('enabled', [
+    'map' => ['' => true, '0' => false, '-1' => null],
+    'default' => '',
+]);
+
+// Enum example: default to 'pending' status, unmapped values pass through
+$searchManager->mapped('status', [
+    'map' => ['' => 'pending', '-1' => null],
+    'default' => '',
+]);
+// Values like 'active', 'completed' pass through directly as filter condition
+```
+
+Key features:
+- Map keys are form values, map values are the condition to apply
+- `null` in map means "no filter condition" (show all)
+- `default` key specifies which value doesn't trigger `isSearch()`
+- Non-empty values not in map pass through directly as filter condition
+- Sets `alwaysRun: true` and `filterEmpty: false` by default
+
+----------
+
 ## Multi-field Search Callbacks
 
 When using callback filters that need to access values from multiple form fields,
@@ -313,6 +341,21 @@ The following options are supported by all filters except `Callback` and `Finder
   should ideally be a single and unique char as prefix for your search value.
   E.g. `!` for string values or `-` for numeric values. If enabled, the filter
   will negate the expression for this value.
+
+### `Mapped`
+
+- `map` (`array`, defaults to `[]`) An associative array mapping form values to filter
+  conditions. Keys are form values (strings), values are the conditions to apply.
+  Use `null` as a value to mean "no filter condition" (show all records).
+
+- `default` (`string|null`, defaults to `null`) The form value that should be treated
+  as the default. When the default value is used, `isSearch()` returns false (no
+  Reset button appears).
+
+Note: The `Mapped` filter sets `alwaysRun: true` and `filterEmpty: false` by default.
+Any non-empty form value not found in the `map` will pass through directly as the
+filter condition, making this useful for enum fields where only specific values
+need special handling.
 
 ### `Finder`
 
