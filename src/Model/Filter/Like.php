@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Core\App;
+use Cake\Database\Driver;
 use Cake\Database\Driver\Postgres;
 use Cake\Database\Driver\Sqlserver;
 use Cake\ORM\Query\SelectQuery;
@@ -24,6 +25,23 @@ class Like extends Base
     /**
      * Default configuration.
      *
+     * `escapers` maps a Cake database driver class name to an escaper class
+     * spec (Cake plugin-syntax, e.g. `Search.Sqlserver`). It is consulted by
+     * `_setEscaper()` via `instanceof` so a subclassed driver still matches.
+     * Apps register custom escapers by extending this map at filter setup:
+     *
+     * ```php
+     * $searchManager->like('title', [
+     *     'escapers' => [
+     *         App\Database\Driver\MyMariaDb::class => 'App.MyMariaDb',
+     *     ],
+     * ]);
+     * ```
+     *
+     * Entries are evaluated in iteration order; place more specific driver
+     * classes before less specific ones. When no entry matches the active
+     * driver, `Search.Default` is used.
+     *
      * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
@@ -35,6 +53,10 @@ class Like extends Base
         'wildcardAny' => '*',
         'wildcardOne' => '?',
         'escaper' => null,
+        'escapers' => [
+            Sqlserver::class => 'Search.Sqlserver',
+            Postgres::class => 'Search.Postgres',
+        ],
         'colType' => [],
     ];
 
@@ -166,11 +188,7 @@ class Like extends Base
             }
 
             $driver = $query->getConnection()->getDriver();
-            $class = match (true) {
-                $driver instanceof Sqlserver => 'Search.Sqlserver',
-                $driver instanceof Postgres => 'Search.Postgres',
-                default => 'Search.Default',
-            };
+            $class = $this->_resolveEscaperClass($driver);
             // Intentionally NOT caching the resolved class on the filter:
             // re-using the same filter instance against a query backed by a
             // different connection / driver must resolve afresh.
@@ -186,5 +204,31 @@ class Like extends Base
         }
 
         $this->_escaper = new $className($this->getConfig());
+    }
+
+    /**
+     * Resolve the escaper class spec for the given driver instance against
+     * the configured `escapers` map. Falls back to `Search.Default` when no
+     * map entry matches.
+     *
+     * Override this method (or supply a custom `escapers` map) to register
+     * driver-specific escapers without subclassing the filter.
+     *
+     * @param \Cake\Database\Driver $driver Driver instance to resolve against.
+     * @return string Cake plugin-syntax escaper class spec.
+     */
+    protected function _resolveEscaperClass(Driver $driver): string
+    {
+        $escapers = (array)$this->getConfig('escapers');
+        foreach ($escapers as $driverClass => $escaperClass) {
+            if (!is_string($driverClass) || $driverClass === '') {
+                continue;
+            }
+            if ($driver instanceof $driverClass) {
+                return (string)$escaperClass;
+            }
+        }
+
+        return 'Search.Default';
     }
 }

@@ -488,6 +488,66 @@ class LikeTest extends TestCase
      *
      * @return void
      */
+
+    /**
+     * Apps can register a custom escaper for a driver class via the
+     * `escapers` config map without subclassing the filter. The map is
+     * merged into the defaults at filter construction (Cake's normal
+     * `_defaultConfig` behavior), so existing mappings still apply.
+     *
+     * @return void
+     */
+    public function testCustomEscaperViaEscapersMap()
+    {
+        $articles = $this->getTableLocator()->get('Articles');
+        $manager = new Manager($articles);
+
+        // The user has a driver subclass and wants to send it to a specific
+        // escaper. Map entries are evaluated in iteration order, so listing
+        // the subclass first overrides the shipped Sqlserver-class default.
+        $driver = new class extends Sqlserver {
+            public function connect(): void
+            {
+            }
+        };
+
+        $filter = new Like('title', $manager, [
+            'escapers' => [
+                $driver::class => 'Search.Default',
+            ],
+        ]);
+        $filter->setArgs(['title' => 'foo']);
+        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($driver));
+
+        $this->assertInstanceOf(
+            DefaultEscaper::class,
+            $this->_resolvedEscaper($filter),
+        );
+    }
+
+    /**
+     * Unknown drivers (not in the escapers map and not in the shipped
+     * defaults) fall through to `Search.Default`.
+     *
+     * @return void
+     */
+    public function testEscaperFallsBackToDefaultWhenNoMatch()
+    {
+        $articles = $this->getTableLocator()->get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, [
+            // Explicitly empty map; no entry will match the sqlite driver.
+            'escapers' => [],
+        ]);
+        $filter->setArgs(['title' => 'foo']);
+        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($articles->getConnection()->getDriver()));
+
+        $this->assertInstanceOf(
+            DefaultEscaper::class,
+            $this->_resolvedEscaper($filter),
+        );
+    }
+
     public function testEscaperResolvesAfreshPerQuery()
     {
         $articles = $this->getTableLocator()->get('Articles');
