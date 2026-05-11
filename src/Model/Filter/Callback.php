@@ -40,7 +40,7 @@ class Callback extends Base
                 '7.9.0',
                 sprintf(
                     'Callback filter `%s` returned null; callbacks must return bool to control isSearch(). '
-                    . 'In a future version returning null/void will throw.',
+                    . 'In a future version returning null/void will throw an error.',
                     $this->name(),
                 ),
             );
