@@ -24,8 +24,10 @@ class CallbackTest extends TestCase
         $manager = new Manager($articles);
 
         $filter = new Callback('title', $manager, [
-            'callback' => function (SelectQuery $query, array $args, Callback $filter) {
+            'callback' => function (SelectQuery $query, array $args, Callback $filter): bool {
                 $query->where(['title' => 'test']);
+
+                return true;
             },
         ]);
         $filter->setArgs(['title' => ['test']]);
@@ -40,6 +42,29 @@ class CallbackTest extends TestCase
             ['test'],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
+    }
+
+    /**
+     * A callback that forgets the `return` statement keeps the historic
+     * isSearch=true semantics but raises a deprecation pointing at it. In
+     * a future version this will throw instead.
+     */
+    public function testProcessNullReturnIsDeprecated()
+    {
+        $articles = $this->getTableLocator()->get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Callback('title', $manager, [
+            'callback' => function (SelectQuery $query, array $args, Callback $filter): void {
+                // intentionally no return
+            },
+        ]);
+        $filter->setArgs(['title' => ['test']]);
+        $filter->setQuery($articles->find());
+
+        $this->deprecated(function () use ($filter) {
+            $this->assertTrue($filter->process());
+        });
     }
 
     /**
