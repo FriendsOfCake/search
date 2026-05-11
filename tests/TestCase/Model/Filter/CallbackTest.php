@@ -62,9 +62,26 @@ class CallbackTest extends TestCase
         $filter->setArgs(['title' => ['test']]);
         $filter->setQuery($articles->find());
 
-        $this->deprecated(function () use ($filter) {
-            $this->assertTrue($filter->process());
-        });
+        $deprecations = [];
+        set_error_handler(function ($severity, $message) use (&$deprecations) {
+            $deprecations[] = $message;
+        }, E_USER_DEPRECATED);
+
+        try {
+            $result = $filter->process();
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertTrue($result);
+        $this->assertNotEmpty(
+            $deprecations,
+            'Expected a deprecation warning when the callback returns null.',
+        );
+        $this->assertStringContainsString(
+            'Callback filter `title` returned null',
+            implode("\n", $deprecations),
+        );
     }
 
     /**

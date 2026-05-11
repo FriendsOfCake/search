@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Search\Model\Filter;
 
 use Cake\Core\App;
+use Cake\Database\Driver\Postgres;
+use Cake\Database\Driver\Sqlserver;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use InvalidArgumentException;
@@ -163,14 +165,15 @@ class Like extends Base
                 );
             }
 
-            $driver = get_class($query->getConnection()->getDriver());
-            $driverName = 'Sqlserver';
-            if (substr_compare($driver, $driverName, -strlen($driverName)) === 0) {
-                $class = 'Search.Sqlserver';
-            } else {
-                $class = 'Search.Default';
-            }
-            $this->setConfig('escaper', $class);
+            $driver = $query->getConnection()->getDriver();
+            $class = match (true) {
+                $driver instanceof Sqlserver => 'Search.Sqlserver',
+                $driver instanceof Postgres => 'Search.Postgres',
+                default => 'Search.Default',
+            };
+            // Intentionally NOT caching the resolved class on the filter:
+            // re-using the same filter instance against a query backed by a
+            // different connection / driver must resolve afresh.
         }
 
         /** @var class-string<\Search\Model\Filter\Escaper\EscaperInterface>|null $className */
