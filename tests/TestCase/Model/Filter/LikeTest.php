@@ -3,9 +3,20 @@ declare(strict_types=1);
 
 namespace Search\Test\TestCase\Model\Filter;
 
+use Cake\Database\Connection;
+use Cake\Database\Driver;
+use Cake\Database\Driver\Postgres;
+use Cake\Database\Driver\Sqlserver;
+use Cake\ORM\Query\SelectQuery;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use ReflectionMethod;
+use ReflectionProperty;
 use Search\Manager;
+use Search\Model\Filter\Escaper\DefaultEscaper;
+use Search\Model\Filter\Escaper\EscaperInterface;
+use Search\Model\Filter\Escaper\PostgresEscaper;
+use Search\Model\Filter\Escaper\SqlserverEscaper;
 use Search\Model\Filter\Like;
 
 class LikeTest extends TestCase
@@ -425,5 +436,216 @@ class LikeTest extends TestCase
             ['%22% 44_%'],
             Hash::extract($filter->getQuery()->getValueBinder()->bindings(), '{s}.value'),
         );
+    }
+
+    /**
+     * Driver detection must use `instanceof` against the actual driver
+     * instance, not a substring match on its class name. A custom driver
+     * class that extends or wraps Sqlserver under a different name must
+     * still be detected as Sqlserver.
+     *
+     * @return void
+     */
+    public function testEscaperSelectionForSqlServerDriverSubclass()
+    {
+        $filter = $this->_filterWithDriver(new class extends Sqlserver {
+            public function connect(): void
+            {
+            }
+        });
+
+        $this->assertInstanceOf(
+            SqlserverEscaper::class,
+            $this->_resolvedEscaper($filter),
+        );
+    }
+
+    /**
+     * Postgres drivers must pick the new Postgres escaper rather than the
+     * default. This ensures that driver-specific wildcard rules can diverge
+     * in future without breaking the public API.
+     *
+     * @return void
+     */
+    public function testEscaperSelectionForPostgresDriver()
+    {
+        $filter = $this->_filterWithDriver(new class extends Postgres {
+            public function connect(): void
+            {
+            }
+        });
+
+        $this->assertInstanceOf(
+            PostgresEscaper::class,
+            $this->_resolvedEscaper($filter),
+        );
+    }
+
+    /**
+     * The resolved escaper must NOT stick on the filter instance: running
+     * `_setEscaper()` twice against queries backed by different drivers has
+     * to pick the correct escaper for each.
+     *
+     * @return void
+     */
+
+    /**
+     * Apps can register a custom escaper for a driver class via the
+     * `escapers` config map without subclassing the filter. The map is
+     * merged into the defaults at filter construction (Cake's normal
+     * `_defaultConfig` behavior), so existing mappings still apply.
+     *
+     * @return void
+     */
+    public function testCustomEscaperViaEscapersMap()
+    {
+        $articles = $this->getTableLocator()->get('Articles');
+        $manager = new Manager($articles);
+
+        // The user has a driver subclass and wants to send it to a specific
+        // escaper. Map entries are evaluated in iteration order, so listing
+        // the subclass first overrides the shipped Sqlserver-class default.
+        $driver = new class extends Sqlserver {
+            public function connect(): void
+            {
+            }
+        };
+
+        $filter = new Like('title', $manager, [
+            'escapers' => [
+                $driver::class => 'Search.Default',
+            ],
+        ]);
+        $filter->setArgs(['title' => 'foo']);
+        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($driver));
+
+        $this->assertInstanceOf(
+            DefaultEscaper::class,
+            $this->_resolvedEscaper($filter),
+        );
+    }
+
+    /**
+     * Unknown drivers (not in the escapers map and not in the shipped
+     * defaults) fall through to `Search.Default`.
+     *
+     * @return void
+     */
+    public function testEscaperFallsBackToDefaultWhenNoMatch()
+    {
+        $articles = $this->getTableLocator()->get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, [
+            // Explicitly empty map; no entry will match the sqlite driver.
+            'escapers' => [],
+        ]);
+        $filter->setArgs(['title' => 'foo']);
+        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($articles->getConnection()->getDriver()));
+
+        $this->assertInstanceOf(
+            DefaultEscaper::class,
+            $this->_resolvedEscaper($filter),
+        );
+    }
+
+    public function testEscaperResolvesAfreshPerQuery()
+    {
+        $articles = $this->getTableLocator()->get('Articles');
+        $manager = new Manager($articles);
+        $filter = new Like('title', $manager, []);
+        $filter->setArgs(['title' => 'foo']);
+
+        // First resolution: default (sqlite) -> Default escaper.
+        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($articles->getConnection()->getDriver()));
+        $this->assertInstanceOf(
+            DefaultEscaper::class,
+            $this->_resolvedEscaper($filter),
+        );
+
+        // Second resolution on same filter: Sqlserver-backed query.
+        $this->_invokeSetEscaper($filter, $this->_queryWithDriver(
+            new class extends Sqlserver {
+                public function connect(): void
+                {
+                }
+            },
+        ));
+        $this->assertInstanceOf(
+            SqlserverEscaper::class,
+            $this->_resolvedEscaper($filter),
+        );
+    }
+
+    /**
+     * Build a Like filter, point it at a stub query with the given driver,
+     * and invoke `_setEscaper()` so we can inspect the resolved escaper.
+     *
+     * @param \Cake\Database\Driver $driver Driver instance the stub query exposes.
+     * @return \Search\Model\Filter\Like
+     */
+    protected function _filterWithDriver(Driver $driver): Like
+    {
+        $articles = $this->getTableLocator()->get('Articles');
+        $manager = new Manager($articles);
+
+        $filter = new Like('title', $manager, []);
+        $filter->setArgs(['title' => 'foo']);
+        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($driver));
+
+        return $filter;
+    }
+
+    /**
+     * Invoke the protected `_setEscaper()` with the given query attached,
+     * bypassing `process()` (and the schema introspection it would trigger).
+     */
+    protected function _invokeSetEscaper(Like $filter, SelectQuery $query): void
+    {
+        $filter->setQuery($query);
+        (new ReflectionMethod($filter, '_setEscaper'))->invoke($filter);
+    }
+
+    /**
+     * Build a `SelectQuery` stub whose `getConnection()->getDriver()` returns
+     * the supplied driver instance. The query is otherwise inert — only the
+     * driver-detection path of `_setEscaper()` reads from it.
+     */
+    protected function _queryWithDriver(Driver $driver): SelectQuery
+    {
+        $connection = new class ($driver) extends Connection {
+            public function __construct(private Driver $injectedDriver)
+            {
+                parent::__construct(['driver' => 'Cake\Database\Driver\Sqlite']);
+            }
+
+            public function getDriver(string $role = self::ROLE_WRITE): Driver
+            {
+                return $this->injectedDriver;
+            }
+        };
+
+        return new class ($connection) extends SelectQuery {
+            public function __construct(private Connection $stubConnection)
+            {
+            }
+
+            public function getConnection(): Connection
+            {
+                return $this->stubConnection;
+            }
+        };
+    }
+
+    /**
+     * Reach into the filter's protected `_escaper` property after process().
+     *
+     * @param \Search\Model\Filter\Like $filter Filter to inspect.
+     * @return \Search\Model\Filter\Escaper\EscaperInterface
+     */
+    protected function _resolvedEscaper(Like $filter): EscaperInterface
+    {
+        $reflection = new ReflectionProperty($filter, '_escaper');
+
+        return $reflection->getValue($filter);
     }
 }

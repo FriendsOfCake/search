@@ -46,11 +46,11 @@ class Processor
 
         foreach ($filters as $filter) {
             $extraParams = $filter->getConfig('extraParams', []);
-            if ($extraParams) {
-                $filterParams += array_intersect_key($params, array_flip($extraParams));
-            }
+            $currentParams = $extraParams
+                ? $filterParams + array_intersect_key($params, array_flip($extraParams))
+                : $filterParams;
 
-            $result = $filter->execute($query, $filterParams);
+            $result = $filter->execute($query, $currentParams);
             if ($result !== false) {
                 $filtered = true;
             }

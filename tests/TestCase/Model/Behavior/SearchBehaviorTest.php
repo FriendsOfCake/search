@@ -326,6 +326,8 @@ class SearchBehaviorTest extends TestCase
         $manager->callback('field1', [
             'callback' => function (SelectQuery $query, array $args) use (&$result) {
                 $result = $args;
+
+                return true;
             },
             'extraParams' => ['extra_field'],
         ]);
@@ -336,6 +338,43 @@ class SearchBehaviorTest extends TestCase
             'field1' => 'foo',
             'extra_field' => 'bar',
         ], $result);
+    }
+
+    /**
+     * A filter that declares `extraParams` must not leak those params into
+     * subsequent filters that did not request them.
+     */
+    public function testExtraParamsDoNotLeakBetweenFilters(): void
+    {
+        $seenByA = [];
+        $seenByB = [];
+
+        $manager = $this->Articles->getBehavior('Search')->searchManager();
+        $manager->callback('with_extra', [
+            'callback' => function (SelectQuery $query, array $args) use (&$seenByA): bool {
+                $seenByA = $args;
+
+                return true;
+            },
+            'extraParams' => ['extra_field'],
+        ]);
+        $manager->callback('without_extra', [
+            'callback' => function (SelectQuery $query, array $args) use (&$seenByB): bool {
+                $seenByB = $args;
+
+                return true;
+            },
+        ]);
+
+        $this->Articles->find('search', search: [
+            'with_extra' => '1',
+            'without_extra' => '1',
+            'extra_field' => 'leak?',
+        ]);
+
+        $this->assertArrayHasKey('extra_field', $seenByA);
+        $this->assertSame('leak?', $seenByA['extra_field']);
+        $this->assertArrayNotHasKey('extra_field', $seenByB);
     }
 
     /**

@@ -316,12 +316,44 @@ The following options are supported by all filters except `Callback` and `Finder
   (`_`) is being escaped in case used the search term.
 
 - `escaper` (`string`, default to `null`) Defines the escaper that should
-  escape `%` and `_`. If no escaper is set (`escapeDriver => 'null'`) the escaper
-  is set by database driver. If the driver is `Sqlserver` the `SqlserverEscaper`
-  is used (escaping `%` to `[%]` and `_` to `[_]`). In all other cases the
-  `DefaultEscaper` is used (escaping `%` to `\%` and `_` to `\_`). You can add an
-  own escaper by adding a escaper in `App\Model\Filter\Escaper\OwnEscaper` and
-  settings `'escaper' => 'App.Own'`.
+  escape `%` and `_`. If no escaper is set (the default) the escaper is
+  resolved from the active database driver via the `escapers` map (see
+  below). You can pin a specific escaper for a filter by setting this option
+  (e.g. `'escaper' => 'App.Own'`) — the active driver is then ignored.
+
+- `escapers` (`array<string, string>`, defaults to a built-in map) Maps a
+  Cake `Driver` class name to an escaper class spec (Cake plugin-syntax,
+  e.g. `Search.Sqlserver`). Used when `escaper` is left at `null`. The
+  shipped defaults are:
+
+  - `Cake\Database\Driver\Sqlserver::class => 'Search.Sqlserver'`
+  - `Cake\Database\Driver\Postgres::class => 'Search.Postgres'`
+
+  Apps register custom escapers by extending this map at filter setup
+  without needing to subclass the filter:
+
+  ```php
+  use App\Database\Driver\MyMariaDb;
+
+  $searchManager->like('title', [
+      'escapers' => [
+          MyMariaDb::class => 'App.MyMariaDb',
+      ],
+  ]);
+  ```
+
+  Match is done via `instanceof`, so a subclassed driver still resolves
+  correctly. Entries are evaluated in iteration order; list more specific
+  driver classes before less specific ones. When no entry matches the active
+  driver, `Search.Default` is used (escaping `%` to `\%` and `_` to `\_`).
+
+  The default `SqlserverEscaper` escapes `%` to `[%]` and `_` to `[_]`. The
+  default `PostgresEscaper` currently inherits from `DefaultEscaper`; it
+  exists so Postgres-specific rules can diverge in future without breaking
+  the public API.
+
+  Register your own escaper by adding a class in
+  `App\Model\Filter\Escaper\OwnEscaper` implementing `EscaperInterface`.
 
 ### `Value`
 
