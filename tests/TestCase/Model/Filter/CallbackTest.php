@@ -62,6 +62,12 @@ class CallbackTest extends TestCase
         $filter->setArgs(['title' => ['test']]);
         $filter->setQuery($articles->find());
 
+        // Cake's deprecationWarning() short-circuits when error_reporting()
+        // does not include E_USER_DEPRECATED; the lowest-deps CI matrix
+        // disables it. Force it on so the deprecation surfaces here.
+        $previousReporting = error_reporting();
+        error_reporting($previousReporting | E_USER_DEPRECATED);
+
         $deprecations = [];
         set_error_handler(function ($severity, $message) use (&$deprecations) {
             $deprecations[] = $message;
@@ -71,6 +77,7 @@ class CallbackTest extends TestCase
             $result = $filter->process();
         } finally {
             restore_error_handler();
+            error_reporting($previousReporting);
         }
 
         $this->assertTrue($result);
