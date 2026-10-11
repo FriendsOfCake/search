@@ -20,14 +20,14 @@ class Like extends Base
      *
      * @var \Search\Model\Filter\Escaper\EscaperInterface
      */
-    protected EscaperInterface $_escaper;
+    protected EscaperInterface $escaper;
 
     /**
      * Default configuration.
      *
      * `escapers` maps a Cake database driver class name to an escaper class
      * spec (Cake plugin-syntax, e.g. `Search.Sqlserver`). It is consulted by
-     * `_setEscaper()` via `instanceof` so a subclassed driver still matches.
+     * `setEscaper()` via `instanceof` so a subclassed driver still matches.
      * Apps register custom escapers by extending this map at filter setup:
      *
      * ```php
@@ -44,7 +44,7 @@ class Like extends Base
      *
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'before' => false,
         'after' => false,
         'fieldMode' => 'OR',
@@ -67,7 +67,7 @@ class Like extends Base
      */
     public function process(): bool
     {
-        $this->_setEscaper();
+        $this->setEscaper();
         $comparison = $this->getConfig('comparison');
         $valueMode = $this->getConfig('valueMode');
         $value = $this->value();
@@ -79,7 +79,7 @@ class Like extends Base
             if ($isMultiValue) {
                 $valueConditions = [];
                 foreach ($value as $val) {
-                    $right = $this->_wildcards($val);
+                    $right = $this->wildcards($val);
                     if ($right !== false) {
                         $valueConditions[] = [$left => $right];
                     }
@@ -88,7 +88,7 @@ class Like extends Base
                     $conditions[] = [$valueMode => $valueConditions];
                 }
             } else {
-                $right = $this->_wildcards($value);
+                $right = $this->wildcards($value);
                 if ($right !== false) {
                     $conditions[] = [$left => $right];
                 }
@@ -98,7 +98,7 @@ class Like extends Base
         if ($conditions) {
             $colTypes = (array)$this->getConfig('colType');
             if ($colTypes) {
-                $colTypes = $this->_aliasColTypes($colTypes);
+                $colTypes = $this->aliasColTypes($colTypes);
             }
 
             $this->getQuery()->andWhere([$this->getConfig('fieldMode') => $conditions], $colTypes);
@@ -115,7 +115,7 @@ class Like extends Base
      * @param array $colTypes Column types to be aliased.
      * @return array Aliased column types.
      */
-    protected function _aliasColTypes(array $colTypes): array
+    protected function aliasColTypes(array $colTypes): array
     {
         $repository = $this->manager()->getRepository();
         if (!$repository instanceof Table) {
@@ -137,19 +137,19 @@ class Like extends Base
      * @return string|false Either the wildcard decorated input value, or `false` when
      *  encountering a non-string value.
      */
-    protected function _wildcards(mixed $value): string|false
+    protected function wildcards(mixed $value): string|false
     {
         if (!is_string($value)) {
             return false;
         }
 
-        $value = $this->_formatWildcards($value);
+        $value = $this->formatWildcards($value);
         if ($this->getConfig('before')) {
-            $value = $this->_formatWildcards($this->getConfig('wildcardAny')) . $value;
+            $value = $this->formatWildcards($this->getConfig('wildcardAny')) . $value;
         }
 
         if ($this->getConfig('after')) {
-            $value = $value . $this->_formatWildcards($this->getConfig('wildcardAny'));
+            $value = $value . $this->formatWildcards($this->getConfig('wildcardAny'));
         }
 
         return $value;
@@ -162,9 +162,9 @@ class Like extends Base
      * @param string $value Value.
      * @return string Value
      */
-    protected function _formatWildcards(string $value): string
+    protected function formatWildcards(string $value): string
     {
-        $value = $this->_escaper->formatWildcards($value);
+        $value = $this->escaper->formatWildcards($value);
 
         return $value;
     }
@@ -175,7 +175,7 @@ class Like extends Base
      * @return void
      * @throws \InvalidArgumentException
      */
-    protected function _setEscaper(): void
+    protected function setEscaper(): void
     {
         $class = $this->getConfig('escaper');
 
@@ -188,7 +188,7 @@ class Like extends Base
             }
 
             $driver = $query->getConnection()->getDriver();
-            $class = $this->_resolveEscaperClass($driver);
+            $class = $this->resolveEscaperClass($driver);
             // Intentionally NOT caching the resolved class on the filter:
             // re-using the same filter instance against a query backed by a
             // different connection / driver must resolve afresh.
@@ -203,7 +203,7 @@ class Like extends Base
             ));
         }
 
-        $this->_escaper = new $className($this->getConfig());
+        $this->escaper = new $className($this->getConfig());
     }
 
     /**
@@ -217,7 +217,7 @@ class Like extends Base
      * @param \Cake\Database\Driver $driver Driver instance to resolve against.
      * @return string Cake plugin-syntax escaper class spec.
      */
-    protected function _resolveEscaperClass(Driver $driver): string
+    protected function resolveEscaperClass(Driver $driver): string
     {
         $escapers = (array)$this->getConfig('escapers');
         foreach ($escapers as $driverClass => $escaperClass) {

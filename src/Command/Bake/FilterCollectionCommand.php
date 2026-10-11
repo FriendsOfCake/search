@@ -5,8 +5,6 @@ namespace Search\Command\Bake;
 
 use Bake\Command\BakeCommand;
 use Bake\Utility\TemplateRenderer;
-use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
 use Cake\Database\Exception\DatabaseException;
@@ -31,12 +29,12 @@ class FilterCollectionCommand extends BakeCommand
     /**
      * @var string
      */
-    protected string $_name;
+    protected string $name;
 
     /**
      * @var array<array<string>>
      */
-    protected array $_map = [
+    protected array $map = [
         'value' => [
             'integer',
             'tinyinteger',
@@ -55,7 +53,7 @@ class FilterCollectionCommand extends BakeCommand
     /**
      * @var array<string>
      */
-    protected array $_ignoreFields = [
+    protected array $ignoreFields = [
         'lft',
         'rght',
         'password',
@@ -72,15 +70,13 @@ class FilterCollectionCommand extends BakeCommand
     /**
      * Execute the command.
      *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
      * @return int|null The exit code or null for success
      */
-    public function execute(Arguments $args, ConsoleIo $io): ?int
+    public function execute(): ?int
     {
-        $this->extractCommonProperties($args);
+        $this->extractCommonProperties($this->args);
 
-        $this->bake((string)$args->getArgumentAt(0), $args, $io);
+        $this->bake((string)$this->args->getArgumentAt(0));
 
         return static::CODE_SUCCESS;
     }
@@ -88,22 +84,22 @@ class FilterCollectionCommand extends BakeCommand
     /**
      * @inheritDoc
      */
-    public function bake(string $name, Arguments $args, ConsoleIo $io): void
+    public function bake(string $name): void
     {
-        $this->_name = $name;
+        $this->name = $name;
 
-        $fields = $this->getFields($name, $args->getArgumentAt(1));
-        $templateData = $this->templateData($args) + [
+        $fields = $this->getFields($name, $this->args->getArgumentAt(1));
+        $templateData = $this->templateData() + [
             'fields' => $fields,
         ];
 
-        $renderer = new TemplateRenderer((string)$args->getOption('theme'));
+        $renderer = new TemplateRenderer((string)$this->args->getOption('theme'));
         $renderer->set('name', $name);
         $renderer->set($templateData);
         $contents = $renderer->generate($this->template());
 
-        $filename = $this->getPath($args) . $this->fileName($name);
-        $io->createFile($filename, $contents, (bool)$args->getOption('force'));
+        $filename = $this->getPath() . $this->fileName($name);
+        $this->io->createFile($filename, $contents, (bool)$this->args->getOption('force'));
     }
 
     /**
@@ -115,16 +111,15 @@ class FilterCollectionCommand extends BakeCommand
     }
 
     /**
-     * @param \Cake\Console\Arguments $arguments Arguments
      * @return array
      */
-    public function templateData(Arguments $arguments): array
+    public function templateData(): array
     {
-        $name = $this->_name;
+        $name = $this->name;
         $namespace = Configure::read('App.namespace');
         $pluginPath = '';
         if ($this->plugin) {
-            $namespace = $this->_pluginNamespace($this->plugin);
+            $namespace = $this->pluginNamespace($this->plugin);
             $pluginPath = $this->plugin . '.';
         }
 
@@ -140,7 +135,7 @@ class FilterCollectionCommand extends BakeCommand
             $namespace .= '\\' . $namespacePart;
         }
 
-        $prefix = $arguments->getOption('prefix');
+        $prefix = $this->args->getOption('prefix');
         if ($prefix) {
             $namespace .= '\\' . $prefix;
         }
@@ -193,12 +188,12 @@ class FilterCollectionCommand extends BakeCommand
 
             $columnInfo = (array)$table->getSchema()->getColumn($column);
             $type = $columnInfo['type'];
-            if (in_array($type, $this->_map['value'], true)) {
+            if (in_array($type, $this->map['value'], true)) {
                 $fields[$column] = 'value';
                 continue;
             }
 
-            if (in_array($type, $this->_map['like'], true)) {
+            if (in_array($type, $this->map['like'], true)) {
                 $fields[$column] = 'like';
             }
         }
@@ -214,7 +209,7 @@ class FilterCollectionCommand extends BakeCommand
      */
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
-        $parser = $this->_setCommonOptions($parser);
+        $parser = $this->setCommonOptions($parser);
 
         $parser->setDescription(
             'Bake filter collections for a model search functionality.',
@@ -243,6 +238,6 @@ class FilterCollectionCommand extends BakeCommand
      */
     protected function shouldSkip(string $column, Table $table): bool
     {
-        return $column === $table->getPrimaryKey() || in_array($column, $this->_ignoreFields, true);
+        return $column === $table->getPrimaryKey() || in_array($column, $this->ignoreFields, true);
     }
 }

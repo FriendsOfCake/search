@@ -490,7 +490,7 @@ class MyCustomFilter extends \Search\Model\Filter\Base
 After that you can use your filter as:
 
 ```php
-$this->searchManager()->add('name', 'MyCustom');
+$this->getBehavior('Search')->searchManager()->add('name', 'MyCustom');
 ```
 
 ## More examples

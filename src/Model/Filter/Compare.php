@@ -12,7 +12,7 @@ class Compare extends Base
      *
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'operator' => '>=',
         'mode' => 'AND',
     ];
@@ -22,7 +22,7 @@ class Compare extends Base
      *
      * @var array<string>
      */
-    protected array $_operators = [
+    protected array $operators = [
         '>=', '<=', '<', '>',
     ];
 
@@ -35,7 +35,7 @@ class Compare extends Base
     public function process(): bool
     {
         $conditions = [];
-        if (!in_array($this->getConfig('operator'), $this->_operators, true)) {
+        if (!in_array($this->getConfig('operator'), $this->operators, true)) {
             throw new InvalidArgumentException(sprintf(
                 'The operator %s is invalid!',
                 $this->getConfig('operator'),

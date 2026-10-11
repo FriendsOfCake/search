@@ -448,7 +448,7 @@ class LikeTest extends TestCase
      */
     public function testEscaperSelectionForSqlServerDriverSubclass()
     {
-        $filter = $this->_filterWithDriver(new class extends Sqlserver {
+        $filter = $this->filterWithDriver(new class extends Sqlserver {
             public function connect(): void
             {
             }
@@ -456,7 +456,7 @@ class LikeTest extends TestCase
 
         $this->assertInstanceOf(
             SqlserverEscaper::class,
-            $this->_resolvedEscaper($filter),
+            $this->resolvedEscaper($filter),
         );
     }
 
@@ -469,7 +469,7 @@ class LikeTest extends TestCase
      */
     public function testEscaperSelectionForPostgresDriver()
     {
-        $filter = $this->_filterWithDriver(new class extends Postgres {
+        $filter = $this->filterWithDriver(new class extends Postgres {
             public function connect(): void
             {
             }
@@ -477,13 +477,13 @@ class LikeTest extends TestCase
 
         $this->assertInstanceOf(
             PostgresEscaper::class,
-            $this->_resolvedEscaper($filter),
+            $this->resolvedEscaper($filter),
         );
     }
 
     /**
      * The resolved escaper must NOT stick on the filter instance: running
-     * `_setEscaper()` twice against queries backed by different drivers has
+     * `setEscaper()` twice against queries backed by different drivers has
      * to pick the correct escaper for each.
      *
      * @return void
@@ -517,11 +517,11 @@ class LikeTest extends TestCase
             ],
         ]);
         $filter->setArgs(['title' => 'foo']);
-        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($driver));
+        $this->invokeSetEscaper($filter, $this->queryWithDriver($driver));
 
         $this->assertInstanceOf(
             DefaultEscaper::class,
-            $this->_resolvedEscaper($filter),
+            $this->resolvedEscaper($filter),
         );
     }
 
@@ -540,11 +540,11 @@ class LikeTest extends TestCase
             'escapers' => [],
         ]);
         $filter->setArgs(['title' => 'foo']);
-        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($articles->getConnection()->getDriver()));
+        $this->invokeSetEscaper($filter, $this->queryWithDriver($articles->getConnection()->getDriver()));
 
         $this->assertInstanceOf(
             DefaultEscaper::class,
-            $this->_resolvedEscaper($filter),
+            $this->resolvedEscaper($filter),
         );
     }
 
@@ -556,14 +556,14 @@ class LikeTest extends TestCase
         $filter->setArgs(['title' => 'foo']);
 
         // First resolution: default (sqlite) -> Default escaper.
-        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($articles->getConnection()->getDriver()));
+        $this->invokeSetEscaper($filter, $this->queryWithDriver($articles->getConnection()->getDriver()));
         $this->assertInstanceOf(
             DefaultEscaper::class,
-            $this->_resolvedEscaper($filter),
+            $this->resolvedEscaper($filter),
         );
 
         // Second resolution on same filter: Sqlserver-backed query.
-        $this->_invokeSetEscaper($filter, $this->_queryWithDriver(
+        $this->invokeSetEscaper($filter, $this->queryWithDriver(
             new class extends Sqlserver {
                 public function connect(): void
                 {
@@ -572,45 +572,45 @@ class LikeTest extends TestCase
         ));
         $this->assertInstanceOf(
             SqlserverEscaper::class,
-            $this->_resolvedEscaper($filter),
+            $this->resolvedEscaper($filter),
         );
     }
 
     /**
      * Build a Like filter, point it at a stub query with the given driver,
-     * and invoke `_setEscaper()` so we can inspect the resolved escaper.
+     * and invoke `setEscaper()` so we can inspect the resolved escaper.
      *
      * @param \Cake\Database\Driver $driver Driver instance the stub query exposes.
      * @return \Search\Model\Filter\Like
      */
-    protected function _filterWithDriver(Driver $driver): Like
+    protected function filterWithDriver(Driver $driver): Like
     {
         $articles = $this->getTableLocator()->get('Articles');
         $manager = new Manager($articles);
 
         $filter = new Like('title', $manager, []);
         $filter->setArgs(['title' => 'foo']);
-        $this->_invokeSetEscaper($filter, $this->_queryWithDriver($driver));
+        $this->invokeSetEscaper($filter, $this->queryWithDriver($driver));
 
         return $filter;
     }
 
     /**
-     * Invoke the protected `_setEscaper()` with the given query attached,
+     * Invoke the protected `setEscaper()` with the given query attached,
      * bypassing `process()` (and the schema introspection it would trigger).
      */
-    protected function _invokeSetEscaper(Like $filter, SelectQuery $query): void
+    protected function invokeSetEscaper(Like $filter, SelectQuery $query): void
     {
         $filter->setQuery($query);
-        (new ReflectionMethod($filter, '_setEscaper'))->invoke($filter);
+        (new ReflectionMethod($filter, 'setEscaper'))->invoke($filter);
     }
 
     /**
      * Build a `SelectQuery` stub whose `getConnection()->getDriver()` returns
      * the supplied driver instance. The query is otherwise inert — only the
-     * driver-detection path of `_setEscaper()` reads from it.
+     * driver-detection path of `setEscaper()` reads from it.
      */
-    protected function _queryWithDriver(Driver $driver): SelectQuery
+    protected function queryWithDriver(Driver $driver): SelectQuery
     {
         $connection = new class ($driver) extends Connection {
             public function __construct(private Driver $injectedDriver)
@@ -637,14 +637,14 @@ class LikeTest extends TestCase
     }
 
     /**
-     * Reach into the filter's protected `_escaper` property after process().
+     * Reach into the filter's protected `escaper` property after process().
      *
      * @param \Search\Model\Filter\Like $filter Filter to inspect.
      * @return \Search\Model\Filter\Escaper\EscaperInterface
      */
-    protected function _resolvedEscaper(Like $filter): EscaperInterface
+    protected function resolvedEscaper(Like $filter): EscaperInterface
     {
-        $reflection = new ReflectionProperty($filter, '_escaper');
+        $reflection = new ReflectionProperty($filter, 'escaper');
 
         return $reflection->getValue($filter);
     }

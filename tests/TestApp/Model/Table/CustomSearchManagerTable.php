@@ -9,7 +9,7 @@ use Search\Manager;
 /**
  * Table with custom searchManager() method to test that it gets called.
  *
- * @mixin \Search\Model\Behavior\SearchBehavior
+ * @extends \Cake\ORM\Table<array{Search: \Search\Model\Behavior\SearchBehavior}>
  */
 class CustomSearchManagerTable extends Table
 {

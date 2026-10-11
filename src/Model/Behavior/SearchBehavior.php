@@ -26,14 +26,9 @@ class SearchBehavior extends Behavior
      *
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'implementedFinders' => [
             'search' => 'findSearch',
-        ],
-        'implementedMethods' => [
-            'searchManager' => 'searchManager',
-            'isSearch' => 'isSearch',
-            'searchParams' => 'searchParams',
         ],
         'emptyValues' => ['', false, null],
         'collectionClass' => null,
@@ -55,7 +50,7 @@ class SearchBehavior extends Behavior
 
         $collectionClass = $this->getConfig('collectionClass');
         if ($collectionClass) {
-            $this->_collectionClass = $collectionClass;
+            $this->collectionClass = $collectionClass;
 
             return;
         }
@@ -63,11 +58,11 @@ class SearchBehavior extends Behavior
         $defaultCollectionClass = sprintf(
             '%s\Model\Filter\%sCollection',
             Configure::read('App.namespace'),
-            $this->table()->getAlias(),
+            $this->table->getAlias(),
         );
         if (class_exists($defaultCollectionClass)) {
             assert(is_subclass_of($defaultCollectionClass, FilterCollectionInterface::class));
-            $this->_collectionClass = $defaultCollectionClass;
+            $this->collectionClass = $defaultCollectionClass;
         }
     }
 
@@ -76,9 +71,9 @@ class SearchBehavior extends Behavior
      *
      * @return \Cake\ORM\Table
      */
-    protected function _repository(): Table
+    protected function repository(): Table
     {
-        return $this->_table;
+        return $this->table;
     }
 
     /**
@@ -86,7 +81,7 @@ class SearchBehavior extends Behavior
      *
      * @return array
      */
-    protected function _emptyValues(): array
+    protected function emptyValues(): array
     {
         return $this->getConfig('emptyValues', []);
     }

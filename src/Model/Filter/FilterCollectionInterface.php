@@ -22,7 +22,7 @@ interface FilterCollectionInterface extends ArrayAccess, IteratorAggregate
      * @param array $options Filter options.
      * @return $this
      */
-    public function add(string $name, string $filter, array $options = []);
+    public function add(string $name, string $filter, array $options = []): static;
 
     /**
      * Removes a filter by name
@@ -30,7 +30,7 @@ interface FilterCollectionInterface extends ArrayAccess, IteratorAggregate
      * @param string $name Name of the filter
      * @return $this
      */
-    public function remove(string $name);
+    public function remove(string $name): static;
 
     /**
      * Checks if a filter is in the collection

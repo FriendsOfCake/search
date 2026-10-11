@@ -344,7 +344,7 @@ class SearchComponentTest extends TestCase
 
         // Mock the isSearch method behavior
         $behavior = $articles->behaviors()->get('Search');
-        $reflection = new ReflectionProperty($behavior, '_isSearch');
+        $reflection = new ReflectionProperty($behavior, 'isSearch');
         $reflection->setValue($behavior, true);
 
         $this->Controller->getTableLocator()->set('Articles', $articles);
@@ -420,7 +420,7 @@ class SearchComponentTest extends TestCase
         {
             public static $called = false;
 
-            protected function _execute(array $data = []): bool
+            protected function process(array $data): bool
             {
                 static::$called = true;
 

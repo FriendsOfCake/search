@@ -19,14 +19,14 @@ class Processor
      *
      * @var array
      */
-    protected array $_searchParams = [];
+    protected array $searchParams = [];
 
     /**
      * Values that should be treated as empty in search params.
      *
      * @var array
      */
-    protected array $_emptyValues = ['', false, null];
+    protected array $emptyValues = ['', false, null];
 
     /**
      * Processes the given filters.
@@ -38,10 +38,10 @@ class Processor
      */
     public function process(FilterCollectionInterface $filters, QueryInterface $query, array $params): bool
     {
-        $filterParams = $this->_flattenParams($params, $filters);
-        $filterParams = $this->_extractParams($filterParams, $filters);
+        $filterParams = $this->flattenParams($params, $filters);
+        $filterParams = $this->extractParams($filterParams, $filters);
 
-        $this->_searchParams = $filterParams;
+        $this->searchParams = $filterParams;
         $filtered = false;
 
         foreach ($filters as $filter) {
@@ -65,9 +65,9 @@ class Processor
      * @param array $emptyValues Values list.
      * @return $this
      */
-    public function setEmptyValues(array $emptyValues)
+    public function setEmptyValues(array $emptyValues): static
     {
-        $this->_emptyValues = $emptyValues;
+        $this->emptyValues = $emptyValues;
 
         return $this;
     }
@@ -79,7 +79,7 @@ class Processor
      */
     public function searchParams(): array
     {
-        return $this->_searchParams;
+        return $this->searchParams;
     }
 
     /**
@@ -121,7 +121,7 @@ class Processor
      * @param \Search\Model\Filter\FilterCollectionInterface $filters Filter collection instance.
      * @return array The flattened parameters array.
      */
-    protected function _flattenParams(array $params, FilterCollectionInterface $filters): array
+    protected function flattenParams(array $params, FilterCollectionInterface $filters): array
     {
         $flattened = [];
         foreach ($params as $key => $value) {
@@ -154,9 +154,9 @@ class Processor
      * @param \Search\Model\Filter\FilterCollectionInterface $filters Filter collection.
      * @return array The extracted parameters.
      */
-    protected function _extractParams(array $params, FilterCollectionInterface $filters): array
+    protected function extractParams(array $params, FilterCollectionInterface $filters): array
     {
-        $emptyValues = $this->_emptyValues;
+        $emptyValues = $this->emptyValues;
 
         $nonEmptyParams = Hash::filter($params, function ($val) use ($emptyValues) {
             return !in_array($val, $emptyValues, true);
