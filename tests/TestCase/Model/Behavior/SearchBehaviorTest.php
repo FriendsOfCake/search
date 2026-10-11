@@ -148,11 +148,11 @@ class SearchBehaviorTest extends TestCase
         $behavior = $this
             ->getMockBuilder(SearchBehavior::class)
             ->setConstructorArgs([$this->Comments])
-            ->onlyMethods(['_getFilters'])
+            ->onlyMethods(['getFilters'])
             ->getMock();
         $behavior
             ->expects($this->once())
-            ->method('_getFilters')
+            ->method('getFilters')
             ->with('default')
             ->willReturn($filters);
 

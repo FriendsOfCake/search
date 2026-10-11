@@ -22,28 +22,28 @@ abstract class Base
      *
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [];
+    protected array $defaultConfig = [];
 
     /**
      * The parent Search Manager.
      *
      * @var \Search\Manager
      */
-    protected Manager $_manager;
+    protected Manager $manager;
 
     /**
      * Set the data to process on.
      *
      * @var array
      */
-    protected array $_args = [];
+    protected array $args = [];
 
     /**
      * Query object.
      *
      * @var \Cake\Datasource\QueryInterface
      */
-    protected QueryInterface $_query;
+    protected QueryInterface $query;
 
     /**
      * Constructor.
@@ -58,7 +58,7 @@ abstract class Base
      */
     public function __construct(string $name, Manager $manager, array $config = [])
     {
-        $this->_manager = $manager;
+        $this->manager = $manager;
 
         $config += [
             'fields' => $name,
@@ -111,7 +111,7 @@ abstract class Base
      */
     public function manager(): Manager
     {
-        return $this->_manager;
+        return $this->manager;
     }
 
     /**
@@ -156,7 +156,7 @@ abstract class Base
      */
     public function present(): bool
     {
-        return $this->getConfig('alwaysRun') || array_key_exists($this->name(), $this->_args);
+        return $this->getConfig('alwaysRun') || array_key_exists($this->name(), $this->args);
     }
 
     /**
@@ -178,8 +178,8 @@ abstract class Base
     {
         return !$this->present() ||
             ($this->filterEmpty() &&
-                empty($this->_args[$this->name()]) &&
-                !is_numeric($this->_args[$this->name()])
+                empty($this->args[$this->name()]) &&
+                !is_numeric($this->args[$this->name()])
             );
     }
 
@@ -190,7 +190,7 @@ abstract class Base
      */
     public function value(): mixed
     {
-        return $this->passedValue() ?? $this->_config['defaultValue'];
+        return $this->passedValue() ?? $this->config['defaultValue'];
     }
 
     /**
@@ -198,11 +198,11 @@ abstract class Base
      */
     protected function passedValue(): mixed
     {
-        if (!isset($this->_args[$this->name()])) {
+        if (!isset($this->args[$this->name()])) {
             return null;
         }
 
-        $value = $this->_args[$this->name()];
+        $value = $this->args[$this->name()];
 
         if (is_array($value)) {
             return $this->getConfig('multiValue') ? $value : null;
@@ -267,9 +267,9 @@ abstract class Base
      * @param array $args Value.
      * @return $this
      */
-    public function setArgs(array $args)
+    public function setArgs(array $args): static
     {
-        $this->_args = $args;
+        $this->args = $args;
 
         return $this;
     }
@@ -281,7 +281,7 @@ abstract class Base
      */
     public function getArgs(): array
     {
-        return $this->_args;
+        return $this->args;
     }
 
     /**
@@ -290,9 +290,9 @@ abstract class Base
      * @param \Cake\Datasource\QueryInterface $query Query instance.
      * @return $this
      */
-    public function setQuery(QueryInterface $query)
+    public function setQuery(QueryInterface $query): static
     {
-        $this->_query = $query;
+        $this->query = $query;
 
         return $this;
     }
@@ -304,7 +304,7 @@ abstract class Base
      */
     public function getQuery(): QueryInterface
     {
-        return $this->_query;
+        return $this->query;
     }
 
     /**

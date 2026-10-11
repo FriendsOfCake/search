@@ -19,14 +19,14 @@ class FilterCollection implements FilterCollectionInterface
     /**
      * @var array<string, \Search\Model\Filter\Base> List of filter objects
      */
-    protected array $_filters = [];
+    protected array $filters = [];
 
     /**
      * Search Manager
      *
      * @var \Search\Manager
      */
-    protected Manager $_manager;
+    protected Manager $manager;
 
     /**
      * Constructor
@@ -35,7 +35,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function __construct(Manager $manager)
     {
-        $this->_manager = $manager;
+        $this->manager = $manager;
 
         $this->initialize();
     }
@@ -57,9 +57,9 @@ class FilterCollection implements FilterCollectionInterface
      * @param array $options Filter options.
      * @return $this
      */
-    public function add(string $name, string $filter, array $options = [])
+    public function add(string $name, string $filter, array $options = []): static
     {
-        $this->_filters[$name] = $this->_loadFilter($name, $filter, $options);
+        $this->filters[$name] = $this->loadFilter($name, $filter, $options);
 
         return $this;
     }
@@ -73,7 +73,7 @@ class FilterCollection implements FilterCollectionInterface
      * @return \Search\Model\Filter\Base
      * @throws \InvalidArgumentException When no filter was found.
      */
-    protected function _loadFilter(string $name, string $filter, array $options = []): Base
+    protected function loadFilter(string $name, string $filter, array $options = []): Base
     {
         if (empty($options['className'])) {
             $class = $filter;
@@ -88,7 +88,7 @@ class FilterCollection implements FilterCollectionInterface
             throw new InvalidArgumentException(sprintf('Search filter "%s" was not found.', $class));
         }
 
-        return new $className($name, $this->_manager, $options);
+        return new $className($name, $this->manager, $options);
     }
 
     /**
@@ -119,7 +119,7 @@ class FilterCollection implements FilterCollectionInterface
      * @param string $name Name of the filter
      * @return $this
      */
-    public function remove(string $name)
+    public function remove(string $name): static
     {
         $this->offsetUnset($name);
 
@@ -133,7 +133,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function getIterator(): Iterator
     {
-        return new ArrayIterator($this->_filters);
+        return new ArrayIterator($this->filters);
     }
 
     /**
@@ -144,7 +144,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function offsetExists(mixed $name): bool
     {
-        return isset($this->_filters[$name]);
+        return isset($this->filters[$name]);
     }
 
     /**
@@ -156,7 +156,7 @@ class FilterCollection implements FilterCollectionInterface
     public function offsetGet(mixed $name): ?Base
     {
         if ($this->offsetExists($name)) {
-            return $this->_filters[$name];
+            return $this->filters[$name];
         }
 
         return null;
@@ -171,7 +171,7 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function offsetSet(mixed $name, mixed $value): void
     {
-        $this->_filters[$name] = $value;
+        $this->filters[$name] = $value;
     }
 
     /**
@@ -182,6 +182,6 @@ class FilterCollection implements FilterCollectionInterface
      */
     public function offsetUnset(mixed $name): void
     {
-        unset($this->_filters[$name]);
+        unset($this->filters[$name]);
     }
 }

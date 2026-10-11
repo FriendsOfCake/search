@@ -8,7 +8,21 @@
 
 Search provides a simple interface to create paginate-able filters for your CakePHP application.
 
-This branch is for CakePHP **5.x**. For details see [version map](https://github.com/FriendsOfCake/search/wiki#cakephp-version-map).
+This branch is for CakePHP **6.x** and requires **PHP 8.5 or newer**. For details see [version map](https://github.com/FriendsOfCake/search/wiki#cakephp-version-map).
+
+## Upgrading from CakePHP 5
+
+Call behavior methods through `$table->getBehavior('Search')`, for example
+`$table->getBehavior('Search')->searchManager()` or
+`$table->getBehavior('Search')->isSearch()`. The `find('search', search: $params)`
+API is unchanged.
+
+Custom subclasses must remove leading underscores from overridden protected
+methods and property references (for example, `$_defaultConfig` becomes
+`$defaultConfig`). Fluent methods now return `static`.
+
+The filter collection generator requires Bake 4 and TwigView 3. Its command
+methods now use CakePHP 6's `$this->args` and `$this->io` properties.
 
 ## Installation
 

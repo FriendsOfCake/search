@@ -22,7 +22,7 @@ class FilterCollectionCommandTest extends TestCase
         'core.Posts',
     ];
 
-    protected string $_generatedBasePath;
+    protected string $generatedBasePath;
 
     /**
      * setup method
@@ -32,11 +32,11 @@ class FilterCollectionCommandTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->_compareBasePath = Plugin::path('Search') . 'tests' . DS . 'comparisons' . DS . 'Filter' . DS;
-        $this->_generatedBasePath = ROOT . DS . 'tests/test_app/TestApp/Model/Filter/';
+        $this->compareBasePath = Plugin::path('Search') . 'tests' . DS . 'comparisons' . DS . 'Filter' . DS;
+        $this->generatedBasePath = ROOT . DS . 'tests/test_app/TestApp/Model/Filter/';
 
         $fs = new Filesystem();
-        $fs->deleteDir($this->_generatedBasePath);
+        $fs->deleteDir($this->generatedBasePath);
 
         EventManager::instance()->on(
             'Console.buildCommands',
@@ -59,7 +59,7 @@ class FilterCollectionCommandTest extends TestCase
 
         $this->assertExitCode(BaseCommand::CODE_SUCCESS);
 
-        $file = $this->_generatedBasePath . 'EmptyCollection.php';
+        $file = $this->generatedBasePath . 'EmptyCollection.php';
         $result = file_get_contents($file);
         $this->assertSameAsFile(__FUNCTION__ . '.php', $result);
     }
@@ -73,7 +73,7 @@ class FilterCollectionCommandTest extends TestCase
 
         $this->assertExitCode(BaseCommand::CODE_SUCCESS);
 
-        $file = $this->_generatedBasePath . 'PostsCollection.php';
+        $file = $this->generatedBasePath . 'PostsCollection.php';
         $result = file_get_contents($file);
         $this->assertSameAsFile(__FUNCTION__ . '.php', $result);
     }
@@ -87,7 +87,7 @@ class FilterCollectionCommandTest extends TestCase
 
         $this->assertExitCode(BaseCommand::CODE_SUCCESS);
 
-        $file = $this->_generatedBasePath . 'MyPostsCollection.php';
+        $file = $this->generatedBasePath . 'MyPostsCollection.php';
         $result = file_get_contents($file);
         $this->assertSameAsFile(__FUNCTION__ . '.php', $result);
     }
@@ -101,7 +101,7 @@ class FilterCollectionCommandTest extends TestCase
 
         $this->assertExitCode(BaseCommand::CODE_SUCCESS);
 
-        $file = $this->_generatedBasePath . 'Admin/PrefixedPostsCollection.php';
+        $file = $this->generatedBasePath . 'Admin/PrefixedPostsCollection.php';
         $result = file_get_contents($file);
         $this->assertSameAsFile(__FUNCTION__ . '.php', $result);
     }

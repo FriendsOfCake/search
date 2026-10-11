@@ -263,8 +263,7 @@ class BaseTest extends TestCase
      */
     public function testFieldAliasingWithNonSupportingRepository()
     {
-        $repo = $this->getMockBuilder(RepositoryInterface::class)
-            ->getMock();
+        $repo = $this->createStub(RepositoryInterface::class);
 
         $filter = new TestFilter(
             'fields',

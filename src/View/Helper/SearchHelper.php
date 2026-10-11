@@ -15,7 +15,7 @@ use function Cake\I18n\__d;
 class SearchHelper extends Helper
 {
     /**
-     * @var array
+     * @var array<int|string, string|array<string, mixed>>
      */
     protected array $helpers = [
         'Url',
@@ -30,7 +30,7 @@ class SearchHelper extends Helper
      *
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'additionalBlacklist' => [],
     ];
 
@@ -44,7 +44,7 @@ class SearchHelper extends Helper
     {
         foreach ($View->getVars() as $name) {
             if ($View->get($name) instanceof PaginatedInterface) {
-                $this->_defaultConfig['additionalBlacklist'][] = 'page';
+                $this->defaultConfig['additionalBlacklist'][] = 'page';
                 break;
             }
         }
@@ -59,7 +59,7 @@ class SearchHelper extends Helper
      */
     public function isSearch(): bool
     {
-        return (bool)$this->_View->get('_isSearch');
+        return (bool)$this->getView()->get('_isSearch');
     }
 
     /**
@@ -81,9 +81,9 @@ class SearchHelper extends Helper
      */
     public function resetUrl(): array
     {
-        $query = $this->_View->getRequest()->getQueryParams();
+        $query = $this->getView()->getRequest()->getQueryParams();
 
-        $searchParams = (array)$this->_View->get('_searchParams');
+        $searchParams = (array)$this->getView()->get('_searchParams');
         $query = array_diff_key($query, $searchParams);
 
         $additionalBlacklist = (array)$this->getConfig('additionalBlacklist');

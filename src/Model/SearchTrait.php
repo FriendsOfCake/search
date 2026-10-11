@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Search\Model;
 
 use Cake\Datasource\QueryInterface;
+use Cake\Datasource\RepositoryInterface;
 use Search\Manager;
 use Search\Model\Filter\FilterCollectionInterface;
 use Search\Processor;
@@ -16,28 +17,28 @@ trait SearchTrait
      *
      * @var \Search\Manager|null
      */
-    protected ?Manager $_manager = null;
+    protected ?Manager $manager = null;
 
     /**
      * Internal flag to check whether the behavior modified the query.
      *
      * @var bool
      */
-    protected bool $_isSearch = false;
+    protected bool $isSearch = false;
 
     /**
      * Default collection class.
      *
      * @var class-string<\Search\Model\Filter\FilterCollectionInterface>|null
      */
-    protected ?string $_collectionClass = null;
+    protected ?string $collectionClass = null;
 
     /**
      * Filters processor instance.
      *
      * @var \Search\Processor|null
      */
-    protected ?Processor $_processor = null;
+    protected ?Processor $processor = null;
 
     /**
      * Callback fired from the controller.
@@ -52,11 +53,11 @@ trait SearchTrait
         array $search,
         string $collection = Manager::DEFAULT_COLLECTION,
     ): QueryInterface {
-        $filters = $this->_getFilters($collection);
+        $filters = $this->getFilters($collection);
 
-        $this->processor()->setEmptyValues($this->_emptyValues());
+        $this->processor()->setEmptyValues($this->emptyValues());
 
-        $this->_isSearch = $this->processor()->process(
+        $this->isSearch = $this->processor()->process(
             $filters,
             $query,
             $search,
@@ -72,7 +73,7 @@ trait SearchTrait
      */
     public function processor(): Processor
     {
-        return $this->_processor ??= new Processor();
+        return $this->processor ??= new Processor();
     }
 
     /**
@@ -83,7 +84,7 @@ trait SearchTrait
      */
     public function isSearch(): bool
     {
-        return $this->_isSearch;
+        return $this->isSearch;
     }
 
     /**
@@ -103,9 +104,9 @@ trait SearchTrait
      */
     public function searchManager(): Manager
     {
-        return $this->_manager ??= new Manager(
-            $this->_repository(),
-            $this->_collectionClass,
+        return $this->manager ??= new Manager(
+            $this->repository(),
+            $this->collectionClass,
         );
     }
 
@@ -115,9 +116,9 @@ trait SearchTrait
      * @param string $collection name of collection
      * @return \Search\Model\Filter\FilterCollectionInterface Filter collection instance.
      */
-    protected function _getFilters(string $collection = Manager::DEFAULT_COLLECTION): FilterCollectionInterface
+    protected function getFilters(string $collection = Manager::DEFAULT_COLLECTION): FilterCollectionInterface
     {
-        if (method_exists($this->_repository(), 'searchManager')) {
+        if (method_exists($this->repository(), 'searchManager')) {
             deprecationWarning(
                 '7.7.1',
                 'Support for `searchManager() function on the table class is deprecated.'
@@ -125,7 +126,7 @@ trait SearchTrait
                 . ' filter collections.',
             );
 
-            return $this->_repository()->searchManager()->getFilters($collection);
+            return $this->repository()->searchManager()->getFilters($collection);
         }
 
         return $this->searchManager()->getFilters($collection);
@@ -134,9 +135,9 @@ trait SearchTrait
     /**
      * Returns the repository on which the filters should be applied.
      *
-     * @return $this
+     * @return \Cake\Datasource\RepositoryInterface
      */
-    protected function _repository()
+    protected function repository(): RepositoryInterface
     {
         return $this;
     }
@@ -146,7 +147,7 @@ trait SearchTrait
      *
      * @return array
      */
-    protected function _emptyValues(): array
+    protected function emptyValues(): array
     {
         return [];
     }

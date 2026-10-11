@@ -53,7 +53,7 @@ class SearchComponent extends Component
      *
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'actions' => ['index', 'lookup'],
         'queryStringWhitelist' => ['sort', 'direction', 'limit'],
         'queryStringBlacklist' => ['_csrfToken', '_Token'],
@@ -74,7 +74,7 @@ class SearchComponent extends Component
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
-        $this->_defaultConfig = (array)Configure::read('Search.component') + $this->_defaultConfig;
+        $this->defaultConfig = (array)Configure::read('Search.component') + $this->defaultConfig;
 
         parent::__construct($registry, $config);
     }
@@ -98,7 +98,7 @@ class SearchComponent extends Component
      */
     public function startup(EventInterface $event): void
     {
-        if (!$this->_isSearchAction()) {
+        if (!$this->isSearchAction()) {
             return;
         }
 
@@ -121,13 +121,13 @@ class SearchComponent extends Component
         }
 
         $url = $this->getController()->getRequest()->getPath();
-        $params = $this->_filterParams($params);
+        $params = $this->filterParams($params);
         if ($params) {
             $params = Hash::expand($params);
             $url .= '?' . http_build_query($params);
         }
 
-        $event->setResult($this->_registry->getController()->redirect($url));
+        $event->setResult($this->registry->getController()->redirect($url));
     }
 
     /**
@@ -163,7 +163,7 @@ class SearchComponent extends Component
      */
     public function beforeRender(): void
     {
-        if (!$this->_isSearchAction()) {
+        if (!$this->isSearchAction()) {
             return;
         }
 
@@ -222,7 +222,7 @@ class SearchComponent extends Component
      *
      * @return bool
      */
-    protected function _isSearchAction(): bool
+    protected function isSearchAction(): bool
     {
         $actions = $this->getConfig('actions');
         if (is_bool($actions)) {
@@ -238,7 +238,7 @@ class SearchComponent extends Component
      * @param array $params The params to filter.
      * @return array
      */
-    protected function _filterParams(array $params): array
+    protected function filterParams(array $params): array
     {
         $params = Hash::filter($params);
 

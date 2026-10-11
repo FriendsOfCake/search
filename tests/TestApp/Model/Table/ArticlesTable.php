@@ -6,7 +6,7 @@ namespace Search\Test\TestApp\Model\Table;
 use Cake\ORM\Table;
 
 /**
- * @mixin \Search\Model\Behavior\SearchBehavior
+ * @extends \Cake\ORM\Table<array{Search: \Search\Model\Behavior\SearchBehavior}>
  */
 class ArticlesTable extends Table
 {

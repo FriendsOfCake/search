@@ -12,7 +12,7 @@ class Callback extends Base
      *
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'extraParams' => [],
     ];
 

@@ -12,7 +12,7 @@ an explanation of the available options supported by the different filters.
 
 ```php
 /**
- * @mixin \Search\Model\Behavior\SearchBehavior
+ * @extends \Cake\ORM\Table<array{Search: \Search\Model\Behavior\SearchBehavior}>
  */
 class PostsTable extends Table
 {

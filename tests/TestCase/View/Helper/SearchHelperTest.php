@@ -132,7 +132,7 @@ class SearchHelperTest extends TestCase
 
         $this->view = new View($request);
 
-        $paginatedResult = $this->createMock(PaginatedInterface::class);
+        $paginatedResult = $this->createStub(PaginatedInterface::class);
         $this->view->set('results', $paginatedResult);
 
         $this->searchHelper = new SearchHelper($this->view, []);
@@ -164,7 +164,7 @@ class SearchHelperTest extends TestCase
 
         $this->view = new View($request);
 
-        $paginatedResult = $this->createMock(PaginatedInterface::class);
+        $paginatedResult = $this->createStub(PaginatedInterface::class);
         $this->view->set('results', $paginatedResult);
 
         $config = [

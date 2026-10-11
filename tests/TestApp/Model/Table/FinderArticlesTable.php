@@ -7,7 +7,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 
 /**
- * @mixin \Search\Model\Behavior\SearchBehavior
+ * @extends \Cake\ORM\Table<array{Search: \Search\Model\Behavior\SearchBehavior}>
  */
 class FinderArticlesTable extends Table
 {

@@ -7,7 +7,7 @@ All you need to do is:
 
 ```php
 // PostsTable::initialize()
-    $this->Search->searchManager()
+    $this->getBehavior('Search')->searchManager()
         ->useCollection('backend')
         ->add('q', 'Search.Like', [
             'before' => true,
